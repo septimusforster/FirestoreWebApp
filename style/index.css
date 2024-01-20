@@ -11,6 +11,10 @@ body {
 a {
     text-decoration: none;
 }
+button {
+    border: none;
+    outline: none;
+}
 .wrapper {
     border: 1px solid #d3d3d3;
     height: 80vh;
@@ -32,8 +36,6 @@ a {
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    border: none;
-    outline: none;
     background-color: #ddd;
     margin: 20px;
     border-radius: 50%;
@@ -101,13 +103,13 @@ a {
 }
 input[type="text"],
 input[type="date"],
-select,
+select, textarea,
 input[type="number"],
 input[type="email"],
 input[type="submit"] {
-    -webkit-appearance: none;
+    /* -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
+    appearance: none; */
     padding: 10px;
     border: 1px solid #d3d3d3;
     border-radius: 4px;
@@ -124,9 +126,6 @@ input[type="submit"] {
     border: 2px solid #fff;
     color: #fff;
     cursor: pointer;
-}
-input[type="submit"]:hover {
-    background-color: #007960;
 }
 .content ol {
     list-style-position: inside;

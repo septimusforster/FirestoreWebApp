@@ -10,20 +10,29 @@
 </head>
 <body>
     <header>
-        <nav class="top-nav">
-            <a href="#" class="active-top-nav">TopLink 1</a>
-            <a href="#">TopLink 2</a>
-            <a href="#">TopLink 3</a>
-            <a href="#">TopLink 4</a>
-        </nav>
+        
+            <button type="button" onclick="location.href='../index.html'" class="link active">Home</button>
+            <div class="dropdown">
+                <button type="button" class="link" onclick="document.querySelector('.dropdown-menu').style.pointerEvents='auto'">Classroom</button>
+                <div class="dropdown-menu">
+                    <nav class="top-nav">
+                        <a href="#">JSS 1</a>
+                        <a href="#">JSS 2</a>
+                        <a href="#">JSS 3</a>
+                        <a href="#">SSS 1</a>
+                        <a href="#">SSS 2</a>
+                        <a href="#">SSS 3</a>
+                    </nav>
+                </div>
+            </div>
+        
     </header>
     <div class="section">
         <aside>
             <nav class="left-nav">
-                <a href="#" class="active-left-nav">Excellence</a>
+                <a href="#">Excellence</a>
                 <a href="#">Distinction</a>
                 <a href="#">Dominion</a>
-                <a href="#">Excellence</a>
                 <a href="#">Merit</a>
                 <a href="#">Classic</a>
             </nav>
@@ -93,6 +102,15 @@
                             <label for="lga">Local Government Area</label>
                             <input type="text" name="lga" id="lga" placeholder="LGA">
                         </div>
+                        <div class="input-group">
+                            <label for="addr">Address</label>
+                            <textarea name="home_address" id="addr" cols="30" rows="5" placeholder="Type in your home address"></textarea>
+                            <!-- <input type="text" name="home_address" id="addr" placeholder="Home address"> -->
+                        </div>
+                        <div class="input-group">
+                            <label for="father_name">Father's name</label>
+                            <input type="text" name="father_name" id="father_name" placeholder="Father's name">
+                        </div>
                             <input type="hidden" name="arm" value="Distinction">
                             <input type="hidden" name="upass" value="abcdef">
                         <div class="input-group">
@@ -116,7 +134,15 @@
         document.querySelector('.side-panel-toggle').addEventListener('click', () => {
             document.querySelector('.wrapper').classList.toggle('side-panel-open');
         })
+        document.querySelector('.dropdown-menu').style.pointerEvents='none';
+        //reset pointer-events rule on Classroom link
+        // function resetPointerEvents() {
+        //     //onblur="document.querySelector('.dropdown-menu').style.pointerEvents='none'" onclick="document.querySelector('.dropdown-menu').style.pointerEvents='auto'"
+        //     const dm = document.querySelector('.dropdown-menu');
+        //     dm.style.pointerEvents == 'none' ? dm.style.pointerEvents = 'auto' : dm.style.pointerEvents = 'none';
+        // }
     </script>
+    <!-- <script type="module" src="../src/upass.js"></script> -->
     <script type="module" src="bundle.js"></script>
 </body>
 </html>

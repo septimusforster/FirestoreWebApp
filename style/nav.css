@@ -1,8 +1,56 @@
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+}
 header nav {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1em;
+}
+.dropdown {
+    position: relative;
+}
+.link {
+    font-size: 16px;
+    padding: 0.7em 1em;
+    cursor: pointer;
+    color: #777;
+    transition: 150ms;
+}
+.link:is(:hover, :active, :visited, :focus).active {
+    background-color: #ddd;
+    color: #009578;
+}
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + .9rem);
+    left: 0;
+    width: 150px;
+    background-color: #fff;
+    padding: 1.5rem 0;
+    border-radius: .25rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.1);
+    opacity: 0;
+    /* pointer-events: none; */
+    transform: translateY(-10px);
+    transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+}
+.dropdown > .link:focus + .dropdown-menu {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0);
+}
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 40px;
+    transform:rotate(45deg);
+    background-color: #fff;
+    padding: 7px;
 }
 nav a {
     color: #777;
@@ -21,8 +69,17 @@ nav.left-nav a:hover {
     color: #fff;
     background-color: #009578;
 }
+nav.top-nav {
+    display: flex;
+    flex-direction: column;
+}
+nav.top-nav a {
+    width: 100%;
+    text-align: center;
+}
 nav.top-nav a:hover {
-    box-shadow: 0 3px #007960;
+    background-color: #ddd;
+    color: #009578;
 }
 .active-top-nav {
     box-shadow: 0 3px #009578;
