@@ -61,7 +61,8 @@ function setIframeAttr(para1) {
 const leftNavAnchors = document.querySelectorAll('.left-nav a');
 leftNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
-        // anchors.forEach(() => a.classList.remove('active-left-nav'))
+        anchors.forEach((link) => link.classList.remove('active-left-nav'))
+        a.classList.add('active-left-nav');
         setIframeAttr(e.target.textContent);
     })
 })
