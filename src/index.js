@@ -74,24 +74,20 @@ function setColRef(para1="JSS 1") {
     let data = [];
     colRef = collection(db, para1);
     //get and count documents in chosen collection
-    if(sessionStorage.getItem('numInClass') == null) {
-        getDocs(colRef)
-            .then((snapshot) => {
-                numInClass = snapshot.size;
-                snapshot.docs.forEach(doc => {
-                    data.push(doc.data().upass)
-                })
-                // console.log(data)
-                for (const upass of classrooms[para1]) {
-                    if(!data.includes(upass)) {
-                        hiddenElems[1].value = upass;
-                        return;
-                    }
-                }
+    getDocs(colRef)
+        .then((snapshot) => {
+            numInClass = snapshot.size;
+            // console.log(numInClass, ": this is numInClass.")
+            snapshot.docs.forEach(doc => {
+                data.push(doc.data().upass)
             })
-    } else {
-        hiddenElems[1].value = classrooms[para1][Number(sessionStorage.getItem('numInClass'))];
-    }
+            for (const upass of classrooms[para1]) {
+                if(!data.includes(upass)) {
+                    hiddenElems[1].value = upass;
+                    return;
+                }
+            }
+        })
 };
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
@@ -113,10 +109,9 @@ fm_createStudent.addEventListener('submit', (e) => {
     addDoc(colRef, {...studentDoc, createdAt: serverTimestamp()})
     .then(() => {
         numInClass++;
-        console.log('numberinclass: ', numInClass)
-        sessionStorage.setItem('numInClass', numInClass);
+        // console.log('numberinclass: ', numInClass);
         fm_createStudent.reset()
-        hiddenElems[1].value = classrooms[myIframe.contentDocument.querySelector('h3').textContent][Number(sessionStorage.getItem('numInClass'))];
+        hiddenElems[1].value = classrooms[myIframe.contentDocument.querySelector('h3').textContent][numInClass];
     })
 })
 
