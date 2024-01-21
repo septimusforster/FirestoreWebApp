@@ -4,16 +4,16 @@ import {
 } from "firebase/firestore"
 import pk from "../src/JSON/upass.json" assert {type: 'json'};
 // let j1k, j2k, j3k, s1k;/*, s2k, s3k;*/
-const {j1, j2, j3, demo} = pk;
+const {j1, j2, j3, s1, s2, s3, demo} = pk;
 let classrooms = {
     "JSS 1": j1,
     "JSS 2": j2,
     "JSS 3": j3,
+    "SSS 1": s1,
+    "SSS 2": s2,
+    "SSS 3": s3,
     "demo": demo
 }
-// console.log(j1k)
-// s2k = pk[4];
-// s3k = pk[5];
 const firebaseConfig = {
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
     authDomain: "fir-pro-152a1.firebaseapp.com",
@@ -30,7 +30,6 @@ initializeApp(firebaseConfig)
 const db = getFirestore()
 
 // collection ref
-// var colRef = collection(db, "JSS 1")
 var colRef = '';
 const hiddenElems = document.querySelectorAll("input[type='hidden'");
 function setIframeAttr(para1) {
