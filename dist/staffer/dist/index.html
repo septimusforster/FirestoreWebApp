@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educator portal</title>
+    <style>
+        button {
+            border: none;
+            outline: none;
+            padding: 12px 20px;
+            background-color: #009578;
+            position: relative;
+        }
+        .button {
+            /* content: ''; */
+            padding: 6px;
+            /* position: absolute;
+            top: 25%;
+            left: 40px; */
+            transform: rotate(45deg);
+            border: 2px solid;
+            border-color: #009578 #009578 transparent transparent;
+            opacity: 0;
+        }
+        button:hover + .button{
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <form action="#">
+            <input type="file" name="job" id="file-job">
+            <input type="submit" value="Upload">
+        </form>
+        <div style="margin:350px">
+            <button type="button" onclick="stuff()">Click Me.</button>
+            <span class="button"></span>
+        </div>
+    </div>
+    <!-- <script type="module" src="../src/index.js"></script> -->
+    <script>
+        let myjson = [1,2,3,4,5,6,7,8,9,10];
+        let b = [2,4,5,6,1];
+
+        function stuff() {
+            for (const element of myjson) {
+                if (!b.includes(element)) {
+                    console.log(element);
+                    return;
+                }
+            }   
+        }
+        
+    </script>
+</body>
+</html>

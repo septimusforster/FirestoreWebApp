@@ -2,6 +2,18 @@ import { initializeApp } from "firebase/app"
 import {
     getFirestore, collection, getDocs, addDoc, onSnapshot, query, where, orderBy, serverTimestamp
 } from "firebase/firestore"
+import pk from "../src/JSON/upass.json" assert {type: 'json'};
+// let j1k, j2k, j3k, s1k;/*, s2k, s3k;*/
+const {j1, j2, j3, demo} = pk;
+let classrooms = {
+    "JSS 1": j1,
+    "JSS 2": j2,
+    "JSS 3": j3,
+    "demo": demo
+}
+// console.log(j1k)
+// s2k = pk[4];
+// s3k = pk[5];
 const firebaseConfig = {
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
     authDomain: "fir-pro-152a1.firebaseapp.com",
@@ -9,7 +21,7 @@ const firebaseConfig = {
     storageBucket: "fir-pro-152a1.appspot.com",
     messagingSenderId: "158660765747",
     appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46"
-  };
+};
 var myIframe = document.getElementById('myIframe');
 // initialize firebase app
 initializeApp(firebaseConfig)
@@ -20,21 +32,8 @@ const db = getFirestore()
 // collection ref
 // var colRef = collection(db, "JSS 1")
 var colRef = '';
-// get collection data
-// getDocs(colRef)
-//   .then((snapshot) => {
-//     snapshot.docs.forEach((doc) => {
-//         students.push({ ...doc.data(), id: doc.id })
-//     })
-//     students.forEach(student => {
-//         ol.insertAdjacentHTML('beforeend',`<li>${student.name.first} ${student.name.last} ${student.name.others}</li>`)
-//     })
-//   })
-//   .catch(err => {
-//     console.log(err.message)
-//   })
+const hiddenElems = document.querySelectorAll("input[type='hidden'");
 function setIframeAttr(para1) {
-    const hiddenElems = document.querySelectorAll("input[type='hidden'");
     //there are two hidden elems: the second one holds upass value
     myIframe.setAttribute('data-class-arm', para1);
     hiddenElems[0].value = para1;
@@ -53,10 +52,15 @@ function setIframeAttr(para1) {
         //clear <ol> list
         myIframe.contentDocument.querySelector('ol').innerHTML = '';
         students.forEach(student => {
-            myIframe.contentDocument.querySelector('ol').insertAdjacentHTML('beforeend',`<li>${student.first_name} ${student.last_name} ${student.other_name}</li>`);
+            myIframe.contentDocument.querySelector('ol').insertAdjacentHTML('beforeend',`
+                <div>
+                    <li onclick="deleteStudent('${student.id}',this.firstElementChild.textContent)">
+                        <span>${student.first_name} ${student.last_name} ${student.other_name}</span>
+                    </li>
+                </div>
+            `);
         })
     })
-    
 }
 const leftNavAnchors = document.querySelectorAll('.left-nav a');
 leftNavAnchors.forEach((a, i, anchors) => {
@@ -66,19 +70,40 @@ leftNavAnchors.forEach((a, i, anchors) => {
         setIframeAttr(e.target.textContent);
     })
 })
+var numInClass = 0;
 function setColRef(para1="JSS 1") {
+    let data = [];
     colRef = collection(db, para1);
+    //get and count documents in chosen collection
+    if(sessionStorage.getItem('numInClass') == null) {
+        getDocs(colRef)
+            .then((snapshot) => {
+                numInClass = snapshot.size;
+                snapshot.docs.forEach(doc => {
+                    data.push(doc.data().upass)
+                })
+                // console.log(data)
+                for (const upass of classrooms[para1]) {
+                    if(!data.includes(upass)) {
+                        hiddenElems[1].value = upass;
+                        return;
+                    }
+                }
+            })
+    } else {
+        hiddenElems[1].value = classrooms[para1][Number(sessionStorage.getItem('numInClass'))];
+    }
 };
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
+        document.querySelector('.dropdown-menu').style.pointerEvents='none';
         myIframe.contentDocument.querySelector('ol').innerHTML = '';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
         setColRef(e.target.textContent);
-        document.querySelector('.dropdown-menu').style.pointerEvents='none';
     })
 })
-setColRef("JSS 1");
+setColRef();
 const fm_createStudent = document.forms.createStudent;
 fm_createStudent.addEventListener('submit', (e) => {
     e.preventDefault();    
@@ -88,7 +113,16 @@ fm_createStudent.addEventListener('submit', (e) => {
     }
     addDoc(colRef, {...studentDoc, createdAt: serverTimestamp()})
     .then(() => {
+        numInClass++;
+        console.log('numberinclass: ', numInClass)
+        sessionStorage.setItem('numInClass', numInClass);
         fm_createStudent.reset()
+        hiddenElems[1].value = classrooms[myIframe.contentDocument.querySelector('h3').textContent][Number(sessionStorage.getItem('numInClass'))];
     })
 })
 
+/*
+//code to resolve
+document.querySelector('#myIframe').contentDocument.querySelector('ol li:first-child span').id
+document.querySelector('#myIframe').contentDocument.querySelector('ol li:nth-of-type(1) span').id
+*/
