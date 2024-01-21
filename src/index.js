@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app"
 import {
-    getFirestore, collection, getDocs, addDoc, onSnapshot, query, where, orderBy, serverTimestamp
+    getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, query, where, orderBy, serverTimestamp
 } from "firebase/firestore"
 import pk from "../src/JSON/upass.json" assert {type: 'json'};
 // let j1k, j2k, j3k, s1k;/*, s2k, s3k;*/
@@ -81,9 +81,9 @@ function setColRef(para1="JSS 1") {
             snapshot.docs.forEach(doc => {
                 data.push(doc.data().email)
             })
-            for (const email of classrooms[para1]) {
-                if(!data.includes(email)) {
-                    hiddenElems[1].value = email;
+            for (const k of classrooms[para1]) {
+                if(!data.includes(k)) {
+                    hiddenElems[1].value = k;
                     return;
                 }
             }
@@ -114,7 +114,19 @@ fm_createStudent.addEventListener('submit', (e) => {
         hiddenElems[1].value = classrooms[myIframe.contentDocument.querySelector('h3').textContent][numInClass];
     })
 })
-
+//delete doc
+const yesBtn = document.querySelector('dialog button');
+const msgDialog = document.querySelectorAll('dialog');
+yesBtn.onclick = function() {
+    msgDialog[0].close();
+    let col = myIframe.contentDocument.querySelector('h3').textContent;
+    const docRef = doc(db, col, yesBtn.value);
+    deleteDoc(docRef)
+        .then(() => {
+            msgDialog[1].querySelector('p').textContent = "Deletion Complete.";
+            msgDialog[1].showModal();
+        })
+}
 /*
 //code to resolve
 document.querySelector('#myIframe').contentDocument.querySelector('ol li:first-child span').id

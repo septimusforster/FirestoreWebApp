@@ -31,8 +31,8 @@
     <div class="section">
         <aside>
             <nav class="left-nav">
-                <a href="#">Classic</a>
                 <a href="#">Brilliance</a>
+                <a href="#">Classic</a>
                 <a href="#">Distinction</a>
                 <a href="#">Excellence</a>
                 <a href="#">Genius</a>
@@ -52,6 +52,10 @@
                 <p class="msg"></p>
                 <button type="button" autofocus>Yes</button>
                 <button type="button" onclick="this.parentElement.close()">No</button>
+            </dialog>
+            <dialog>
+                <p class="msg"></p>
+                <button type="button" onclick="this.parentElement.close()" autofocus>OK</button>
             </dialog>
             <div class="side-panel">
                 <form action="" method="post" name="createStudent">
@@ -160,10 +164,11 @@
             document.querySelector('.wrapper').classList.toggle('side-panel-open');
         })
         document.querySelector('.dropdown-menu').style.pointerEvents='none';
-        const dialog = document.querySelector('dialog');
+        const dialog = document.querySelectorAll('dialog');
         const sidePanelBtns = document.querySelectorAll('.side-panel-toggle');
+        //sidePanelBtns[1] is the delete icon used to 'show' the <dialog>
         sidePanelBtns[1].onclick  = function () {
-            dialog.showModal();
+            dialog[0].showModal();
         }
     </script>
     <script type="module" src="bundle.js"></script>
