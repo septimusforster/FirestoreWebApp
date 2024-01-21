@@ -79,11 +79,11 @@ function setColRef(para1="JSS 1") {
             numInClass = snapshot.size;
             // console.log(numInClass, ": this is numInClass.")
             snapshot.docs.forEach(doc => {
-                data.push(doc.data().upass)
+                data.push(doc.data().email)
             })
-            for (const upass of classrooms[para1]) {
-                if(!data.includes(upass)) {
-                    hiddenElems[1].value = upass;
+            for (const email of classrooms[para1]) {
+                if(!data.includes(email)) {
+                    hiddenElems[1].value = email;
                     return;
                 }
             }
