@@ -113,6 +113,7 @@ fm_createStudent.addEventListener('submit', (e) => {
         // console.log('numberinclass: ', numInClass);
         fm_createStudent.reset()
         setColRef(col)
+        document.querySelector('.side-panel').scroll({top:0,left:0,behavior:"smooth"});
         // hiddenElems[1].value = classrooms[myIframe.contentDocument.querySelector('h3').textContent][numInClass];
     })
 })
