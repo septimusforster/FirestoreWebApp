@@ -79,7 +79,7 @@ function setColRef(para1="JSS 1") {
             numInClass = snapshot.size;
             // console.log(numInClass, ": this is numInClass.")
             snapshot.docs.forEach(doc => {
-                data.push(doc.data().email)
+                data.push(doc.data().password)
             })
             for (const k of classrooms[para1]) {
                 if(!data.includes(k)) {
@@ -108,10 +108,12 @@ fm_createStudent.addEventListener('submit', (e) => {
     }
     addDoc(colRef, {...studentDoc, createdAt: serverTimestamp()})
     .then(() => {
-        numInClass++;
+        let col = myIframe.contentDocument.querySelector('h3').textContent;
+        // numInClass++;
         // console.log('numberinclass: ', numInClass);
         fm_createStudent.reset()
-        hiddenElems[1].value = classrooms[myIframe.contentDocument.querySelector('h3').textContent][numInClass];
+        setColRef(col)
+        // hiddenElems[1].value = classrooms[myIframe.contentDocument.querySelector('h3').textContent][numInClass];
     })
 })
 //delete doc
@@ -122,9 +124,10 @@ yesBtn.onclick = function() {
     let col = myIframe.contentDocument.querySelector('h3').textContent;
     const docRef = doc(db, col, yesBtn.value);
     deleteDoc(docRef)
-        .then(() => {
-            msgDialog[1].querySelector('p').textContent = "Deletion Complete.";
+    .then(() => {
+        msgDialog[1].querySelector('p').textContent = "Deletion Complete.";
             msgDialog[1].showModal();
+            setColRef(col);
         })
 }
 /*
