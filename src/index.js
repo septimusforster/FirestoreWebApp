@@ -184,11 +184,11 @@ function resetEditForm() {
 }
 //delete doc
 const yesBtn = document.querySelector('dialog button');
-const msgDialog = document.querySelectorAll('dialog');
 yesBtn.onclick = function() {
+    const msgDialog = document.querySelectorAll('dialog');
     msgDialog[0].close();
     let col = myIframe.contentDocument.querySelector('h3').textContent;
-    const docRef = doc(db, col, yesBtn.value);
+    const docRef = doc(db, col, document.querySelectorAll('.side-panel-toggle')[1].value);
     deleteDoc(docRef)
     .then(() => {
         msgDialog[1].querySelector('p').textContent = "Deletion Complete.";
