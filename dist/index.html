@@ -41,10 +41,10 @@
                 <a href="#">Radiance</a>
             </nav>
         </aside>
-        <div class="wrapper side-panel-open">
+        <div class="wrapper">
             <iframe data-class-arm="Excellence" class="main" id="myIframe" src="./content.html" frameborder="0"></iframe>
-            <div>
-                <button class="side-panel-toggle" type="button" title="Collapse/Expand"><span class="material-symbols-outlined sp-icon-open">chevron_left</span><span class="material-symbols-outlined sp-icon-close">navigate_next</span></button>
+            <div style="grid-column:1/1;grid-row:1/2;">
+                <button class="side-panel-toggle" type="button"><span class="material-symbols-outlined sp-icon-open" title="Add Student">add</span><span class="material-symbols-outlined sp-icon-close" title="Hide">remove</span></button>
                 <button class="side-panel-toggle" type="button" title="Delete"><span class="material-symbols-outlined sp-icon-open">delete</span><span class="material-symbols-outlined sp-icon-close">delete</span></button>
                 <button class="side-panel-toggle" type="button" title="Edit"><span class="material-symbols-outlined sp-icon-open">edit</span><span class="material-symbols-outlined sp-icon-close">edit</span></button>
             </div>
@@ -62,7 +62,7 @@
                     <button class="side-panel-toggle times-entity" type="button" onclick="document.querySelectorAll('dialog')[2].close();document.querySelectorAll('dialog')[2].lastElementChild.remove();">&times;</button>
                 </div>
             </dialog>
-            <div class="side-panel">
+            <div class="side-panel" style="grid-column: 2/-1;grid-row: 1/2;">
                 <!-- <button class="side-panel-toggle scrollUp">UP</button> -->
                 <form action="" method="post" name="createStudent">
                     <div>

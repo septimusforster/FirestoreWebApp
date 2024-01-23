@@ -1,0 +1,12 @@
+* {margin: 0; padding: 0; box-sizing: border-box;}
+.wrapper {
+    border: 1px solid #777;
+    height: 100vh;
+    height: 100dvh;
+}
+.body {
+    width: 20%;
+    height: 50px;
+    border: 1px solid #777;
+    transition: width 1s ease-in;
+}

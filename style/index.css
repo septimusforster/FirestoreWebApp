@@ -23,11 +23,15 @@ button {
     border-radius: 5px;
     margin: 25px auto;
     width: 80%;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     overflow: auto;
 }
 .main {
-    flex-grow: 1;
+    /* flex-grow: 1; */
+    grid-column: 2/5;
+    grid-row: 1/2;
+    width: 100%;
     padding: 20px;
     overflow-y: auto;
 }
@@ -91,8 +95,10 @@ dialog:nth-of-type(3) > div {
 }
 .side-panel {
     display: none;
-    width: 70%;
-    flex-shrink: 0;
+    grid-column: 4/-1;
+    grid-row: 1/2;
+    /* width: 70%; */
+    /* flex-shrink: 0; */
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);

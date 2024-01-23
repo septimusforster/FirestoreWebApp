@@ -103,7 +103,6 @@ fm_createStudent.addEventListener('submit', (e) => {
         fm_createStudent.reset()
         setColRef(col)
         document.querySelector('.side-panel').scroll({top:0,left:0,behavior:"smooth"});
-        // hiddenElems[1].value = classrooms[myIframe.contentDocument.querySelector('h3').textContent][numInClass];
     })
 })
 //edit doc
@@ -163,7 +162,6 @@ function collectDataForUpdate() {
         e.preventDefault();
         fields[e.target.name] = e.target.value;
     })
-    // const submitBtn = document.querySelectorAll('dialog')[2].querySelector("input[type='submit']");
     document.querySelectorAll('dialog')[2].querySelector('form').addEventListener('submit', (e) => {
         e.preventDefault();
         const collectionName = myIframe.contentDocument.querySelector('h3').textContent;

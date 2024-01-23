@@ -37,5 +37,20 @@ fileInput.addEventListener('change', (e) => {
     );
 })
 */
-import pk from "../src/JSON/upass.json" assert {type: 'json'};
-console.log(pk[0]);
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
+    authDomain: "fir-pro-152a1.firebaseapp.com",
+    projectId: "fir-pro-152a1",
+    storageBucket: "fir-pro-152a1.appspot.com",
+    messagingSenderId: "158660765747",
+    appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46"
+};
+// initialize firebase app
+initializeApp(firebaseConfig)
+// init services
+const db = getFirestore()
+// collection ref
+var colRef = collection(db, "");
