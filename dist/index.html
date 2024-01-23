@@ -67,22 +67,29 @@
                 <form action="" method="post" name="createStudent">
                     <div>
                         <div class="input-group">
+                            <label for="admission_no">
+                                Admission Number
+                                <sup class="required">*</sup>
+                            </label>
+                            <input type="text" name="admission_no" id="admission_no" autofocus autocapitalize="off" placeholder="Admission Number" aria-required="true" autocomplete="off" required>
+                        </div>
+                        <div class="input-group">
                             <label for="first_name">
                                 First name
                                 <sup class="required" title="Required">*</sup>
                             </label>
-                            <input type="text" name="first_name" id="first_name" required autocapitalize="off" autofocus="autofocus" placeholder="First name" aria-required="true">
+                            <input type="text" name="first_name" id="first_name" required autocapitalize="off" placeholder="First name" autocomplete="off" aria-required="true">
                         </div>
                         <div class="input-group">
                             <label for="last_name">
                                 Last name
                                 <sup class="required" title="Required">*</sup>
                             </label>
-                            <input type="text" name="last_name" id="last_name" required autocapitalize="off" placeholder="Last name" aria-required="true">
+                            <input type="text" name="last_name" id="last_name" required autocapitalize="off" placeholder="Last name" autocomplete="off" aria-required="true">
                         </div>
                         <div class="input-group">
                             <label for="other_name">Other names</label>
-                            <input type="text" name="other_name" id="other_name" autocapitalize="off" placeholder="Other name(s)" aria-required="true">
+                            <input type="text" name="other_name" id="other_name" autocapitalize="off" placeholder="Other name(s)" autocomplete="off" aria-required="true">
                         </div>
                         <div class="input-group">
                             <label for="gender">
