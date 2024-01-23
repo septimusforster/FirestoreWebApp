@@ -43,7 +43,12 @@
                 var pMsg = parent.document.querySelector('p.msg');
                 var yesBtn = parent.document.querySelector('dialog button');
                 pMsg.textContent = "Delete: " + studentName;
-                yesBtn.value = studentID;
+                // yesBtn.value = studentID;
+                parent.document.querySelectorAll('.side-panel-toggle').forEach((panelBtn, index) => {
+                    if(index == 1 || index || 2) {
+                        panelBtn.value = studentID;
+                    }
+                })
                 console.log(this.innerHTML)
             }
         </script>

@@ -1,19 +1,11 @@
 import { initializeApp } from "firebase/app"
 import {
-    getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, query, where, orderBy, serverTimestamp
+    getFirestore, collection, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, serverTimestamp
 } from "firebase/firestore"
 import pk from "../src/JSON/upass.json" assert {type: 'json'};
 // let j1k, j2k, j3k, s1k;/*, s2k, s3k;*/
 const {j1, j2, j3, s1, s2, s3, demo} = pk;
-let classrooms = {
-    "JSS 1": j1,
-    "JSS 2": j2,
-    "JSS 3": j3,
-    "SSS 1": s1,
-    "SSS 2": s2,
-    "SSS 3": s3,
-    "demo": demo
-}
+let classrooms = {"JSS 1": j1,"JSS 2": j2,"JSS 3": j3,"SSS 1": s1,"SSS 2": s2,"SSS 3": s3,"demo": demo}
 const firebaseConfig = {
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
     authDomain: "fir-pro-152a1.firebaseapp.com",
@@ -25,10 +17,8 @@ const firebaseConfig = {
 var myIframe = document.getElementById('myIframe');
 // initialize firebase app
 initializeApp(firebaseConfig)
-
 // init services
 const db = getFirestore()
-
 // collection ref
 var colRef = '';
 const hiddenElems = document.querySelectorAll("input[type='hidden'");
@@ -110,13 +100,88 @@ fm_createStudent.addEventListener('submit', (e) => {
     .then(() => {
         let col = myIframe.contentDocument.querySelector('h3').textContent;
         // numInClass++;
-        // console.log('numberinclass: ', numInClass);
         fm_createStudent.reset()
         setColRef(col)
         document.querySelector('.side-panel').scroll({top:0,left:0,behavior:"smooth"});
         // hiddenElems[1].value = classrooms[myIframe.contentDocument.querySelector('h3').textContent][numInClass];
     })
 })
+//edit doc
+const sidePanelBtns = document.querySelectorAll('.side-panel-toggle');
+sidePanelBtns[2].addEventListener('click', (e) => {
+    fields = {};
+        const getSingleDoc = async (collectionName, documentId) => {
+            try {
+                const docRef = doc(db, collectionName, documentId);
+                const docSnapshot = await getDoc(docRef);
+        
+                if (docSnapshot.exists()) {
+                    const documentData = docSnapshot.data();
+                    return documentData;
+                } else {
+                    console.log(`Document with ID ${documentId} does not exist in collection ${collectionName}.`);
+                    return null;
+                }
+            } catch (error) {
+                console.error("Error getting document:", error);
+                return null;
+            }
+        };
+        const collectionName = myIframe.contentDocument.querySelector('h3').textContent;
+        const documentId = sidePanelBtns[2].value;
+        getSingleDoc(collectionName, documentId)
+            .then((documentData) => {
+                if (documentData) {
+                    document.querySelectorAll('dialog')[2].innerHTML += document.forms.createStudent.outerHTML;
+                    var inputElems = document.querySelectorAll('dialog')[2].querySelectorAll(".input-group input");
+                    for( var i of inputElems ){
+                        if(i.type == 'submit') continue;
+                        i.value = documentData[i.name];
+                    }
+                    if(documentData.gender == "M") {
+                        document.querySelectorAll('dialog')[2].querySelector("select").selectedIndex = 0;
+                    } else {
+                        document.querySelectorAll('dialog')[2].querySelector("select").selectedIndex = 1
+                    }
+                    document.querySelectorAll('dialog')[2].querySelectorAll("input[type='hidden']")[1].value = documentData.password;
+                    document.forms.createStudent.querySelector('textarea').value = documentData.home_address;
+                    document.querySelectorAll('dialog')[2].lastElementChild.querySelector("input[type='submit']").value = 'Submit';
+                    collectDataForUpdate();
+                } else {
+                    console.log("Document not found.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+            const dlog = document.querySelectorAll('dialog')[2];
+            dlog.showModal();
+});
+var fields = {};
+function collectDataForUpdate() {
+    document.querySelectorAll('dialog')[2].querySelector('form').addEventListener('change', (e) => {
+        e.preventDefault();
+        fields[e.target.name] = e.target.value;
+    })
+    // const submitBtn = document.querySelectorAll('dialog')[2].querySelector("input[type='submit']");
+    document.querySelectorAll('dialog')[2].querySelector('form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const collectionName = myIframe.contentDocument.querySelector('h3').textContent;
+        const documentId = sidePanelBtns[2].value;
+        const docRef = doc(db, collectionName, documentId);
+        updateDoc(docRef, fields)
+            .then(() => {
+                window.alert("Update successful.")
+                resetEditForm();
+            })
+    })
+}
+//clear form after data submission
+function resetEditForm() {
+    fields = {};
+    document.querySelectorAll('dialog')[2].close();
+    document.querySelectorAll('dialog')[2].lastElementChild.remove();
+}
 //delete doc
 const yesBtn = document.querySelector('dialog button');
 const msgDialog = document.querySelectorAll('dialog');

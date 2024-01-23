@@ -5,7 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Educator portal</title>
     <style>
-        
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        .input {
+            padding: 12px 18px;
+            background-color: #ccc;
+            color: #777;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 18px;
+            position: relative;
+            margin: 300px auto;
+            width: 250px;
+        }
+        .input::before, .input::after {
+            content: '';
+            position: absolute;
+            /* border: 1px solid; */
+            left: -50px;
+            padding: 12px 18px;
+        }
+        .input::before {
+            top: 0;
+            border-radius: 70px 70px 0 0;
+            background-color: #aaa;
+        }
+        .input::after {
+            bottom: 0;
+            border-radius: 0 0 50px 50px;
+            background-color: #999;
+            transform: rotateX(90deg);
+            transition: all 250ms;
+        }
+        .input:hover + .after {
+            background-color: #009578;
+            /* transform: rotateX(0deg); */
+        }
+        .after {
+            transition: all 250ms;
+        }
     </style>
 </head>
 <body>
@@ -17,6 +53,9 @@
             </li>
         </ol>
     </div>
+
+    <div class="input">Aarom Ramsey</div>
+    <div class="after">dklalsk</div>
     <!-- <script type="module" src="../src/index.js"></script> -->
     <script>
         let myjson = [1,2,3,4,5,6,7,8,9,10];
