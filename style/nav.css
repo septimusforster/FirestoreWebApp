@@ -3,6 +3,19 @@ header {
     justify-content: center;
     align-items: center;
     height: 80px;
+    position: relative;
+}
+#maintenance {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
 }
 header nav {
     display: flex;

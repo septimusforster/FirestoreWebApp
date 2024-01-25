@@ -33,7 +33,7 @@ button {
     grid-row: 1/2;
     width: 100%;
     padding: 20px;
-    overflow-y: auto;
+    height: 100%;
 }
 dialog:nth-of-type(3) {
     /* display: flex;

@@ -3,17 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="TeacherID" id="tID">
     <title>Educator portal</title>
     <link rel="stylesheet" href="../style/index.css">
 </head>
 <body>
     <div class="wrapper">
         <header class="header"></header>
-        <div class="body"></div>
-        <footer class="footer"></footer>
+        <div class="body">
+            <div id="profile-wrapper">
+                <h2>Profile</h2>
+                <p id="avatar">
+                    <img src="../img/avatar_male_man_portrait_icon.png" height="100" width="100" alt="Photo">
+                </p>
+                <div class="profile" style="display: none;">
+                    <span>Name:</span><span></span><hr>
+                    <span>Alias:</span><span></span><hr>
+                    <span>Classes:</span><span></span><hr>
+                    <span>Subject(s):</span><span></span>
+                </div>
+            </div>
+            <div id="upload-wrapper">
+                <h2>Upload</h2>
+                <form action="#" name="formEl">
+                    <div class="input-group">
+                        <label for="categoryId">Exercise/Note</label>
+                        <select name="category" id="categoryId" required>
+                            <option value="">Choose exercise or note</option>
+                            <option value="note">Note</option>
+                            <option value="exercise">Exercise</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="theClassroomId">Classroom</label>
+                        <select name="theClassroom" id="theClassroomId" required>
+                            <option value="">Choose classroom</option>
+                            <option value="JSS 1">demo</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" name="theFile" id="fileId" accept=".doc,.docx,application/msword,.pdf,image/*" required>
+                        <label id="docpicker" for="fileId">Choose file.<span style="font-size: 50px;">&#128462;</span></span></label>
+                        <p id="file-selected"></p>
+                    </div>
+                    <div class="input-group">
+                        <label for="infoId">Info (optional)</label>
+                        <textarea name="info" id="infoId" cols="30" rows="10" placeholder="Type in an optional message or information concerning the upload."></textarea>
+                    </div>
+                    <input type="hidden" name="theAuthorId" value="000000">
+                    <div class="input-group">
+                        <input type="submit" value="Upload">
+                    </div>
+                </form>
+            </div>
+            <div id="documents-wrapper">
+                <h2>Documents</h2>
+                <div>
+                    <label>Here resides your uploaded documents.</label>
+                </div>
+                <div style="text-align: right;">
+                    Download mode:
+                    <label class="switch" for="modes">
+                        <input type="checkbox" name="modes" id="modes">
+                        <span class="slider"></span>
+                </div>
+                </label>
+                <!-- <a href="" download="My Arabesque.docx">Download</a> -->
+            </div>
+        </div>
+        <footer class="footer">Dynamax | &copy; 2018</footer>
     </div>
-    <!-- <script type="module" src="../src/index.js"></script> -->
-    <script>        
+    <!-- <script type="module" src="bundle.js"></script> -->
+    <script>
+        const fileId = document.querySelector('#fileId');
+        const fileSelected = document.querySelector('#file-selected');
+        fileId.onchange = (e) => {
+            fileSelected.textContent = e.target.files[0].name;
+        }
+        // fileId.addEventListener('change', (e) => {
+        //     fileSelected.textContent = e.target.files[0].name;
+        // })
     </script>
+    
 </body>
 </html>
