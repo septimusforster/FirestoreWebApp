@@ -148,3 +148,17 @@ p.msg {
     border-bottom: 1px solid #aaa;
     color: #555;
 }
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  #maintenance {
+    animation: blink 1s infinite;
+    color: red;
+  }
+
+
+ 
