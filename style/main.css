@@ -3,12 +3,16 @@ body {
     margin: 0;
     box-sizing: border-box;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-image: url(/img/10.jpeg);
+    background-size: cover;
+    background-position: center;
 }
+
 .main-container {
     height: 100vh;
     height: 100dvh;
     width: 100%;
-    background-color: #ddd;
+    /* background-color: #ddd; */
     color: #555;
     display: flex;
     flex-direction: column;
@@ -31,3 +35,16 @@ a {
     /* box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .3); */
     box-shadow: 0 0px 3px rgba(0, 0, 0, .3);
 }
+
+.joz {
+    animation: moveUpDown 400ms linear infinite alternate;
+  }
+  
+  @keyframes moveUpDown {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(20px);
+    }
+  }
