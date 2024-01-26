@@ -62,7 +62,7 @@ h2,
 .profile > span:nth-of-type(even) {
     padding-left: 20px;
 }
-.profile hr {
+hr {
     margin: 12px 0;
 }
 #avatar {
@@ -103,7 +103,7 @@ input[type="submit"] {
     color: #fff;
     border-color: #fff;
 }
-label:not(#docpicker) {
+#upload-wrapper label:not(#docpicker) {
     padding: 10px 0;
 }
 input[type="file"] {
@@ -135,7 +135,7 @@ input[type="file"] {
     position: relative;
     display: inline-block;
     width: 40px;
-    height: 34px;
+    height: 22px;
 }
 .switch input {
     opacity: 0;
@@ -166,7 +166,7 @@ input[type="file"] {
     transition: .4s;
 }
 .switch input:checked + .slider {
-    background-color: orange;
+    background-color: #004d3d;
 }
 .switch input:focus + .slider {
     box-shadow: 0 0 1px #999;
@@ -176,9 +176,108 @@ input[type="file"] {
     -ms-transform: translateX(18px);
     transform: translateX(18px);
 }
-.files {
-    color: red;
+#documents-wrapper div:nth-of-type(1) {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    width: 100%;
+}
+#documents-wrapper div:nth-of-type(1) > button {
+    padding: 10px 20px;
+    margin-left: auto;
+    background-color: #fff;
+    border: 1px solid #009578;
+    border-radius: 7px;
+    cursor: pointer;
+}
+#documents-wrapper div:nth-of-type(1) > button.mode {
+    background-color: #004d3d;
+    color: #fff;
+}
+#documents-wrapper div:nth-of-type(2) {
+    height: 100%;
+    width: 100%;
+    border-top: 1px solid #ccc;
+    padding: 15px;
+}
+span#mode {
+    flex-basis: 20%;
+}
+.radio-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+.radio-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #ccc;
+    border-radius: 50%;
+}
+.radio-container:hover input ~ .checkmark {
+    background-color: #aaa;
+}
+.radio-container input:checked ~ .checkmark {
+    background-color: #009578;
+}
+.checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+}
+.radio-container input:checked ~ .checkmark:after {
+    display: block;
+}
+.radio-container .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #fff;
 }
 a {
     text-decoration: none;
+}
+dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30vh;
+    padding: 20px;
+    border: 1px solid #009578;
+    border-radius: 7px;
+}
+dialog a {
+    display: inline-block;
+    width: 100%;
+    margin: 10px 0;
+    text-align: center;
+    padding: 10px;
+    border-radius: 7px;
+    background-color: #009578;
+    color: #fff;
+    transition: .2s;
+}
+dialog a:hover {
+    background-color: #004d3d;
+}
+output {
+    display: inline-block;
+    width: 100%;
+    margin: 10px 0;
+    text-align: center;
 }

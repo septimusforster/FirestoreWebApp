@@ -1,11 +1,14 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, addDoc, getDoc, serverTimestamp, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, serverTimestamp, onSnapshot } from "firebase/firestore";
 //declare all const and var
 const uploadForm = document.querySelectorAll('form')[0];
-const documentsWrapper = document.getElementById('documents-wrapper');
+const documentsWrapper = document.querySelector('#documents-wrapper div:nth-of-type(2)');
 const evenSpans = document.querySelectorAll('.profile span:nth-of-type(even)');
 const photo = document.querySelector('#avatar img');
+const runBtn = document.querySelector('#documents-wrapper button');
+var authorId = document.querySelector('#upload-wrapper input[type="hidden"]');
 var fields = {};
+const fileRef = "fileCollection";
 
 const firebaseConfig = {    
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
@@ -20,7 +23,7 @@ initializeApp(firebaseConfig)
 // init services
 const db = getFirestore()
 // collection refs
-const fileCollectionRef = collection(db, "fileCollection");
+const fileCollectionRef = collection(db, fileRef);
 const staffCollectionRef = doc(db, "staffCollection", "nw3qHYLzZcBgEIKr5OCq");
 
 //add demo staff member
@@ -45,7 +48,7 @@ const getSingleDoc = async () => {
 
         if (docSnapshot.exists()) {
             const documentData = docSnapshot.data();
-            return documentData;
+            return {data: documentData, id: docSnapshot.id};
         } else {
             console.log(`Document with ID ${documentId} does not exist in collection ${collectionName}.`);
             return null;
@@ -56,19 +59,25 @@ const getSingleDoc = async () => {
     }
 };
 getSingleDoc()
-    .then((documentData) => {
-        if(documentData) {
-            photo.src = documentData.avatar;
-            evenSpans[0].textContent = documentData.fullname;
-            evenSpans[1].textContent = documentData.username;
-            documentData.classroomsTaught.forEach(classroom => {
+    .then((res) => {
+        if(res) {
+            authorId.value = res.id;
+            if(res.data.avatar) {
+                photo.src = res.data.avatar;
+            }
+            evenSpans[0].textContent = res.data.fullname;
+            evenSpans[1].textContent = res.data.username;
+            res.data.classroomsTaught.forEach(classroom => {
                 evenSpans[2].insertAdjacentHTML('afterbegin', `${classroom}<br>`)
                 //Enter these values also for the select element for classrooms
+                let option = new Option(classroom, classroom);
+                document.querySelector('select#theClassroomId').insertAdjacentElement('beforeend', option);
             })
-            documentData.subjectsTaught.forEach(subject => {
+            res.data.subjectsTaught.forEach(subject => {
                 evenSpans[3].insertAdjacentHTML('afterbegin', `${subject}<br>`)
             })
             document.querySelector('#profile-wrapper').children[2].style.display = 'flex';
+            getDataOnValue();
         }
     })
     
@@ -80,10 +89,11 @@ uploadForm.addEventListener('change', (e) => {
         const file = e.target.files[0];
         const fileName = file.name;
         if(file.size > 1048487) {
-            console.log("The selected file has exceeded the maximum size of 1 MiB allowed.")
+            document.querySelector('#file-selected').innerText = "";
+            document.querySelector('dialog#to-delete output').textContent = "The selected file has exceeded the maximum size of 1 MiB.";
+            document.querySelector('dialog#to-delete').showModal();
             return;
         } else {
-
             //create base64 value
             const fr = new FileReader();
             fr.onload = function(event){
@@ -102,33 +112,68 @@ uploadForm.addEventListener('change', (e) => {
 uploadForm.addEventListener('submit', (e) => {
     e.preventDefault();
     //get authorId
-    const theAuthorId = document.querySelector('input[type="hidden"]').value;
-    addDoc(fileCollectionRef, {...fields, theAuthorId, theDateCreated: serverTimestamp()})
+    // const theAuthorId = document.querySelector('input[type="hidden"]').value;
+    addDoc(fileCollectionRef, {...fields, theAuthorId: authorId.value, theDateCreated: serverTimestamp()})
         .then(() => {
             // reset fields
             fields = {};
-            console.log("Document uploaded successfully.");
+            document.querySelector('dialog#to-delete output').textContent = "Document upload successful.";
+            document.querySelector('dialog#to-delete').showModal();
+            uploadForm.reset();
             getDataOnValue();
         })
 })
 //function to retrieve newly inserted data
 function getDataOnValue() {
-    onSnapshot(fileCollectionRef, (snapshot) => {
+    const q = query(fileCollectionRef, where("theAuthorId", "==", authorId.value));
+    onSnapshot(q, (snapshot) => {
+        documentsWrapper.innerHTML = '';
         snapshot.docs.forEach(doc => {
             let data = doc.data();
             // insert docs into Document page
             documentsWrapper.insertAdjacentHTML('beforeend',`
-                <div class="files">
-                    <label>
-                        <input type="radio" name="fireDoc" id="${doc.id}" value="${data.theFileEncoding}">
-                        ${data.theFileName}
-                    </label>
-                </div>    
+                <label class="radio-container">${data.theFileName}
+                    <input type="radio" name="rd" id="${doc.id}" value="${data.theFileEncoding}">
+                    <span class="checkmark"></span>
+                </label>
             `)
         })
     })
 }
-
+runBtn.onclick = (e) => {
+    // if(e.target.value == "delete") {
+        let fileId, fileLink, fileName;
+     let radioList = document.querySelectorAll("input[type='radio']");
+     let checked = false;
+     radioList.forEach(radio => {
+        if (radio.checked) {
+            checked = true;
+            fileId = radio.id;
+            fileLink = radio.value;
+            fileName = radio.parentElement.innerText;
+            return;
+        }
+     });
+     if (checked && e.target.value == "download") {
+        document.querySelector('dialog#to-download output').textContent = "Download " + fileName;
+        document.querySelector('dialog#to-download a:nth-of-type(2)').href = fileLink;
+        document.querySelector('dialog#to-download a:nth-of-type(2)').download = fileName;
+        document.querySelector('dialog#to-download').showModal();
+     } else if (checked && e.target.value == "delete") {
+        if (confirm("Delete  " + fileName)) {
+            const ref = doc(db, fileRef, fileId)
+            deleteDoc(ref)
+            .then(() => {
+               document.querySelector('dialog#to-delete output').textContent = "Document deleted.";
+               document.querySelector('dialog#to-delete').showModal();
+            })
+        }
+     } else {
+        //showModal for nULL
+        document.querySelector('dialog#to-delete output').textContent = "Please, first select a document.";
+        document.querySelector('dialog#to-delete').showModal();
+     }
+}
 // onSnapshot(fileCollectionRef,)
 
 /*

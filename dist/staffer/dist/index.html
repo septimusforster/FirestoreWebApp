@@ -38,7 +38,6 @@
                         <label for="theClassroomId">Classroom</label>
                         <select name="theClassroom" id="theClassroomId" required>
                             <option value="">Choose classroom</option>
-                            <option value="JSS 1">demo</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -59,21 +58,30 @@
             <div id="documents-wrapper">
                 <h2>Documents</h2>
                 <div>
-                    <label>Here resides your uploaded documents.</label>
-                </div>
-                <div style="text-align: right;">
-                    Download mode:
+                    <span id="mode">Delete mode:</span>
                     <label class="switch" for="modes">
                         <input type="checkbox" name="modes" id="modes">
                         <span class="slider"></span>
+                    </label>
+                    <button type="submit" value="delete">Run</button>
                 </div>
-                </label>
-                <!-- <a href="" download="My Arabesque.docx">Download</a> -->
+                <div>
+
+                </div>
             </div>
         </div>
+        <dialog id="to-download">
+            <output>Delete 7385620_green_boy_avatar.png</output><hr><br>
+            <a href="#" onclick="this.parentElement.close()">No, I don't wanna.</a>
+            <a href="#" onclick="this.parentElement.close()" download>Yes, go on.</a>
+        </dialog>
+        <dialog id="to-delete">
+            <output></output>
+            <a href="#" onclick="this.parentElement.close()">It's alright.</a>
+        </dialog>
         <footer class="footer">Dynamax | &copy; 2018</footer>
     </div>
-    <!-- <script type="module" src="bundle.js"></script> -->
+    <script type="module" src="bundle.js"></script>
     <script>
         const fileId = document.querySelector('#fileId');
         const fileSelected = document.querySelector('#file-selected');
@@ -83,6 +91,19 @@
         // fileId.addEventListener('change', (e) => {
         //     fileSelected.textContent = e.target.files[0].name;
         // })
+        const inputMode = document.querySelector('input#modes');
+        const spanMode = document.querySelector('span#mode');
+        inputMode.onchange = (e) => {
+            if(inputMode.checked) {
+                spanMode.textContent = "Download mode:";
+                document.querySelector('#documents-wrapper button').classList.toggle('mode');
+                document.querySelector('#documents-wrapper button').value = "download";
+            } else {
+                spanMode.textContent = "Delete mode:";
+                document.querySelector('#documents-wrapper button').classList.toggle('mode');
+                document.querySelector('#documents-wrapper button').value = "delete";
+            }
+        }
     </script>
     
 </body>

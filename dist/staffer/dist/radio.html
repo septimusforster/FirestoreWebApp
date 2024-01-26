@@ -8,20 +8,78 @@
             font-size: 70px;
             color: gray;
         }
+        .radio-container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .radio-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 50%;
+        }
+        .radio-container:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+        .radio-container input:checked ~ .checkmark {
+            background-color: #009578;
+        }
+        .checkmark:after {
+            content: '';
+            position: absolute;
+            display: none;
+        }
+        .radio-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+        .radio-container .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #fff;
+        }
     </style>
 </head>
 <body>
-    <div class="files">a
-        <label>
-            <input type="radio" name="fireDoc" id="fireDoc" value="${data.theFileEncoding}">
-            Nexus
+    <button type="button" onclick="thumbnail()">Create thumbnail</button>
+    <input type="file" name="thumb" id="thumb">
+        <label class="radio-container">Nexus
+            <input type="radio" name="rd" value="${data.theFileEncoding}">
+            <span class="checkmark"></span>
         </label>
-    </div>
-    <div>
+    <!-- <div>
         &#128462;
     </div>
     <div>
         &#129492;
-    </div>
+    </div> -->
+    <div class="preview"><span id="placeholder"></span></div>
+    <script>
+        const preview = document.querySelector('.preview');
+        const thumbFile = document.querySelector('input#thumb');
+        thumbFile.addEventListener('change', (e) => {
+            preview.lastElementChild.remove();
+            const image = document.createElement("img");
+            image.src = URL.createObjectURL(e.target.files[0]);
+            image.height = '100';
+            image.width = '100';
+            image.alt = image.title = e.target.name;
+            preview.appendChild(image);
+        })
+    </script>
 </body>
 </html>
