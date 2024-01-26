@@ -6,6 +6,9 @@ const documentsWrapper = document.querySelector('#documents-wrapper div:nth-of-t
 const evenSpans = document.querySelectorAll('.profile span:nth-of-type(even)');
 const photo = document.querySelector('#avatar img');
 const runBtn = document.querySelector('#documents-wrapper button');
+const commentOK = ["It's alright.","I get it.","Fine.","Okay."];
+const commentYES = ["Yes, go on.","Of course.","Yes, please."];
+const commentNO = ["No, I don't wanna.","No, sorry.","No, don't."];
 var authorId = document.querySelector('#upload-wrapper input[type="hidden"]');
 var fields = {};
 const fileRef = "fileCollection";
@@ -91,6 +94,7 @@ uploadForm.addEventListener('change', (e) => {
         if(file.size > 1048487) {
             document.querySelector('#file-selected').innerText = "";
             document.querySelector('dialog#to-delete output').textContent = "The selected file has exceeded the maximum size of 1 MiB.";
+            document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
             document.querySelector('dialog#to-delete').showModal();
             return;
         } else {
@@ -118,6 +122,7 @@ uploadForm.addEventListener('submit', (e) => {
             // reset fields
             fields = {};
             document.querySelector('dialog#to-delete output').textContent = "Document upload successful.";
+            document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
             document.querySelector('dialog#to-delete').showModal();
             uploadForm.reset();
             getDataOnValue();
@@ -158,6 +163,8 @@ runBtn.onclick = (e) => {
         document.querySelector('dialog#to-download output').textContent = "Download " + fileName;
         document.querySelector('dialog#to-download a:nth-of-type(2)').href = fileLink;
         document.querySelector('dialog#to-download a:nth-of-type(2)').download = fileName;
+        document.querySelector('dialog#to-download a:nth-of-type(1)').textContent = commentNO[Math.floor(Math.random()*3)];
+        document.querySelector('dialog#to-download a:nth-of-type(2)').textContent = commentYES[Math.floor(Math.random()*3)];
         document.querySelector('dialog#to-download').showModal();
      } else if (checked && e.target.value == "delete") {
         if (confirm("Delete  " + fileName)) {
@@ -165,12 +172,14 @@ runBtn.onclick = (e) => {
             deleteDoc(ref)
             .then(() => {
                document.querySelector('dialog#to-delete output').textContent = "Document deleted.";
+               document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
                document.querySelector('dialog#to-delete').showModal();
             })
         }
      } else {
         //showModal for nULL
         document.querySelector('dialog#to-delete output').textContent = "Please, first select a document.";
+        document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
         document.querySelector('dialog#to-delete').showModal();
      }
 }
