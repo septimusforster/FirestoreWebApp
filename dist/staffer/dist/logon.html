@@ -1,0 +1,128 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log On</title>
+    <link rel="stylesheet" href="../style/logon.css">
+</head>
+<body>
+    <div id="wrapper">
+        <main>
+            <small>Not yet registered?</small>
+            <h2>Sign Up</h2>
+            <form name="signup">
+                <label for="fullName">Full Name</label>
+                <input type="text" name="fullName" id="fullName" placeholder="Full name" autocomplete="off" autocapitalize="words" required>
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" placeholder="Email" autocomplete="off" required>
+                <label for="password">Password</label>
+                <span class="eye-class">
+                    <input type="password" name="password" id="password" class="passwords" required>
+                    <span class="eye">show</span>
+                </span>
+                <label for="confirm_password">Confirm password</label>
+                <span class="eye-class">
+                    <input type="password" name="confirm_password" id="confirm_password" class="passwords" required>
+                    <span class="eye">show</span>
+                </span>
+                <label for="classrooms">Add/remove classes</label>
+                <div class="group-items">
+                    <span class="add">+</span>
+                    <select name="classroomsTaught" id="classrooms">
+                        <option value="JSS 1">JSS 1</option>
+                        <option value="JSS 2">JSS 2</option>
+                        <option value="JSS 3">JSS 3</option>
+                        <option value="SSS 1">SSS 1</option>
+                        <option value="SSS 2">SSS 2</option>
+                        <option value="SSS 3">SSS 3</option>
+                    </select>
+                    <span class="remove">-</span>
+                </div>
+                <textarea class="classrooms" name="classrooms" placeholder="You teach these classes..." readonly></textarea>
+                <label for="subjects">Add/remove subjects</label>
+                <div class="group-items">
+                    <span class="add">+</span>
+                    <select name="subjectsTaught" id="subjects">
+                        <option value="Agricultural Science">Agricultural Science</option>
+                        <option value="Basic Science">Basic Science</option>
+                        <option value="Basic Technology">Basic Technology</option>
+                        <option value="Biology">Biology</option>
+                        <option value="Business Studies">Business Studies</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Christian Religious Studies">Christian Religious Studies</option>
+                        <option value="Civic Education">Civic Education</option>
+                        <option value="Computer Studies">Computer Studies</option>
+                        <option value="Cultural and Creative Arts">Cultrual and Creative Arts</option>
+                        <option value="English">English Language</option>
+                        <option value="Fisheries">Fisheries</option>
+                        <option value="Food and Nutrition">Food and Nutrition</option>
+                        <option value="French">French</option>
+                        <option value="Home Economics">Home Economics</option>
+                        <option value="Hausa">Hausa</option>
+                        <option value="History">History</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physical Health Education">Physical Health Education</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Social Studies">Social Studies</option>
+                    </select>
+                    <span class="remove">-</span>
+                </div>
+                <textarea class="classrooms" name="subjects" placeholder="You teach these subjects..." readonly></textarea>
+                <label>Profile picture <small>(passport size, under 1 MiB)</small></label>
+                <img src="../img/avatar_male_man_portrait_icon.png" id="preview" alt="Profile picture" width="80" height="80">
+                <label id="photo-label" for="photo-picker">Pick a photo.
+                    <input type="file" name="avatar" id="photo-picker">
+                </label>
+                <label>Enter your code</label>
+                <div class="group-items">
+                    <input type="text" name="code" id="code" placeholder="_ _ _ _ _ _" maxlength="6" autocomplete="off" autocapitalize="off">
+                    <strong id="checkmark" style="display: none;">&check;</strong>
+                </div>
+                <button>Sign Up</button>
+            </form>
+        </main>
+        <main>
+            <small>Already registered?</small>
+            <h2>Log In</h2>
+            <form name="signin">
+                <label for="uname">Enter email</label>
+                <input type="text" name="username" id="uname" placeholder="Enter email" autocomplete="off" autofocus="autofocus" required>
+                <label for="pwd">Enter password</label>
+                <span class="eye-class">
+                    <input type="password" name="pwd" id="pwd" class="passwords" required>
+                    <span class="eye">show</span>
+                </span>
+                <button>Log In</button>
+            </form>
+        </main>
+        <dialog id="dialog-notice">
+            <button type="button" onclick="closeModal()">&times;</button>
+            <output></output>
+        </dialog>
+        <dialog id="dialog-success">
+            <div class="icon-success">&check;</div>
+            <h1></h1>
+            <button>Return to login</button>
+        </dialog>
+    </div>
+    <script type="module" src="./logon_bundle.js"></script>
+    <script>
+        const eyes = document.querySelectorAll('.eye');
+        eyes.forEach(eye => {
+            eye.addEventListener('click', (e) => {
+                if (e.target.previousElementSibling.type == 'password') {
+                    e.target.previousElementSibling.type = 'text';
+                    e.target.textContent = 'hide';
+                } else {
+                    e.target.previousElementSibling.type = 'password';
+                    e.target.textContent = 'show';
+                }
+            })
+        })
+        function closeModal() {
+            document.querySelector('dialog').close();
+        }      
+    </script>
+</body>
+</html>

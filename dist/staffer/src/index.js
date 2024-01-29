@@ -27,7 +27,7 @@ initializeApp(firebaseConfig)
 const db = getFirestore()
 // collection refs
 const fileCollectionRef = collection(db, fileRef);
-const staffCollectionRef = doc(db, "staffCollection", "nw3qHYLzZcBgEIKr5OCq");
+const staffCollectionRef = doc(db, "staffCollection", sessionStorage.getItem('snapshotId'));
 
 //add demo staff member
 // addDoc(staffCollectionRef, {...{
@@ -68,8 +68,9 @@ getSingleDoc()
             if(res.data.avatar) {
                 photo.src = res.data.avatar;
             }
-            evenSpans[0].textContent = res.data.fullname;
+            evenSpans[0].textContent = res.data.fullName;
             evenSpans[1].textContent = res.data.username;
+            /*
             res.data.classroomsTaught.forEach(classroom => {
                 evenSpans[2].insertAdjacentHTML('afterbegin', `${classroom}<br>`)
                 //Enter these values also for the select element for classrooms
@@ -79,6 +80,7 @@ getSingleDoc()
             res.data.subjectsTaught.forEach(subject => {
                 evenSpans[3].insertAdjacentHTML('afterbegin', `${subject}<br>`)
             })
+            */
             document.querySelector('#profile-wrapper').children[2].style.display = 'flex';
             getDataOnValue();
         }
