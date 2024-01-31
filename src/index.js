@@ -110,7 +110,9 @@ topNavAnchors.forEach((a, i, anchors) => {
 setColRef();
 const fm_createStudent = document.forms.createStudent;
 fm_createStudent.addEventListener('submit', (e) => {
-    e.preventDefault();    
+    e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
     let i, studentDoc = {}; 
     for(i = 0; i < e.target.length - 1; i++){
         studentDoc[e.srcElement[i].name] = e.srcElement[i].value;
@@ -120,6 +122,10 @@ fm_createStudent.addEventListener('submit', (e) => {
         let col = myIframe.contentDocument.querySelector('h3').textContent;
         // numInClass++;
         fm_createStudent.reset()
+        document.querySelectorAll('dialog')[1].querySelector('.msg'). textContent = "Student Created.";
+        document.querySelectorAll('dialog')[1].showModal();
+        e.submitter.disabled = false;
+        e.submitter.style.cursor = 'pointer';
         setColRef(col)
         document.querySelector('.side-panel').scroll({top:0,left:0,behavior:"smooth"});
     })
