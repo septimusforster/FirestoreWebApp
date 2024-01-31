@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, getDocs, query, where, and, or } from "firebase/firestore";
+import { getFirestore, collection, collectionGroup, doc, getDocs, query, where, and, or, addDoc } from "firebase/firestore";
 const firebaseConfig = {    
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
     authDomain: "fir-pro-152a1.firebaseapp.com",
@@ -37,3 +37,39 @@ loginForm.addEventListener('submit', async (e) => {
         // location.href = 'index.html';
     }
 })
+/*
+const mainRef = collection(db, "fileCollection");
+addDoc(collection(mainRef, "AGR", "JSS 1"),{
+*/
+
+// const mainRef = collection(db, "demo");
+// addDoc(collection(mainRef, "AGR", "subjectId"),{
+//     name: 'Konan Perry',
+//     type: 'Note'
+// })
+// .then(() => {
+//     console.log("Sent.")
+// })
+
+/*
+const note = query(collectionGroup(db, "subjectId"), where("type", "==", "Note"));
+const querySnapshot1 = await getDocs(note);
+querySnapshot1.docChanges().forEach((change) => {
+    if(change.type === "added") {
+        console.log("Document added.")
+    }
+    if (change.type === "modified") {
+        console.log("Document modified.")
+    }
+    if (change.type === "removed") {
+        console.log("Document removed.")
+    } else {
+        console.log("No document has changed since.")
+    }
+    console.log(change);
+})
+*/
+
+// querySnapshot1.forEach((doc) => {
+//     console.log(doc.id)
+// })

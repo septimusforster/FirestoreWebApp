@@ -1,0 +1,204 @@
+*{margin: 0; padding: 0;box-sizing: 0;}
+body {
+    height: 100vh;
+    height: 100dvh;
+    background-color: rgb(42, 7, 75);
+}
+header {
+    height: 5vh;
+}
+main {
+    height: 80vh;
+    height: 80dvh;
+    width: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-family: Poppins, sans-serif;
+    /* border: 1px solid red; */
+}
+button {
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+aside, nav, section {
+    height: 100vh;
+    height: 100dvh;
+    color: #fff;
+}
+nav {
+    display: block;
+}
+aside {
+    width: 5%;
+    min-width: 100px;
+    background-color: rgba(0,0,0,0.1);
+    padding: 100px 0;
+    /* border: 1px solid white; */
+}
+aside button {
+    /* border: 1px solid white; */
+    display: block;
+    text-align: center;
+    height: 70px;
+    width: 100%;
+    margin: 10px 0;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    /* position: relative; */
+    transition: all .2s ease-in-out;
+}
+aside button:hover {
+    background-color: rgba(0,0,0,0.3);
+    color: #fff;
+}
+button img {
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+}
+span.material-symbols-outlined {
+    font-size: 40px;
+}
+/* aside button::after {
+    content: '';
+    opacity: 0;
+    height: 25%;
+    border: 2px solid #fff;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(0%,-50%);
+} */
+aside button.active {
+    box-shadow: 3px 0 #fff inset;
+    background-color: rgba(0,0,0,0.3);
+    color: #fff;
+}
+nav {
+    /* border: 1px solid white; */
+    width: 15%;
+    min-width: 300px;
+    background-color: rgba(0,0,0,0.2);
+    /* padding: 50px 0; */
+}
+nav h3 {
+    margin: 10px;
+    padding: 8px 20px;
+    font-weight: normal;
+    text-transform: capitalize;
+    color: rgba(255,255,255,0.9);
+}
+nav hr {
+    margin: 0 10px 50px;
+    border-color: rgba(255,255,255,0.2);
+}
+nav a {
+    display: block;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    padding: 8px 20px;
+    /* border-radius: 20px; */
+    margin: 0 10px;
+    /* transition: all .2s ease-in-out; */
+    /* border: 1px solid white; */
+}
+nav a:hover {
+    color: #fff;
+    background-color: rgba(0,0,0,0.3);
+}
+section {
+    /* border: 1px solid white; */
+    background-color: rgba(0,0,0,0.3);
+    width: 80%;
+    padding: 100px;
+}
+#timeline-bar {
+    /* width: 0; */
+    margin-left: 100px;
+    padding-left: 100px;
+    padding-top: 100px;
+    /* border: 1px solid; */
+    height: 100%;
+    border-color: rgba(255,255,255,0.2);
+    position: relative;
+}
+#timeline-bar::before {
+    content: 'Timeline';
+    position: absolute;
+    top: 0;
+    left: -100px;
+    height: 100%;
+    padding: 0 20px;
+    border-right: 1px solid;
+    border-color: rgba(255,255,255,0.2);
+}
+.timeline-content {
+    /* padding: 10px; */
+    /* height: 60px; */
+    margin-bottom: 100px;
+    width: 500px;
+    min-width: 500px;
+    position: relative;
+    border-bottom: 1px solid white;
+    /* overflow: hidden; */
+}
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: -105px;
+    height: 10px;
+    width: 10px;
+    transform: rotate(45deg);
+    /* border-radius: 50%; */
+    background-color: #fff;
+    transition: transform .3s ease-in-out;
+}
+.timeline-content:hover::before {
+    transform: scale(1.7);
+}
+.timeline-content span {
+    padding: 20px;
+    /* color: blue; */
+    display: inline-block;
+    /* border: 1px solid red; */
+}
+.timeline-content span:nth-last-of-type(3) {
+    float: right;
+}
+.timeline-content span:first-child {
+    cursor: pointer;
+}
+.message {
+    /* padding: 20px; */
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    border-bottom: 1px solid white;
+    transition: all .3s ease-in-out;
+}
+.autoHeight {
+    height: auto;
+}
+.message::before {
+    content: '"';
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 54px;
+    position: absolute;
+    top: 20%;
+    left: 0;
+    transform: translate(-50%, -50%);
+}
+.message::after {
+    content: '"';
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 54px;
+    position: absolute;
+    top: 100%;
+    right: -20px;
+    transform: translate(-50%, -50%);
+}

@@ -2,9 +2,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../style/index.css">
     <title>Home</title>
 </head>
 <body>
-    div
+    <header></header>
+    <main>
+        <aside>
+            <button class="active"><img src="../img/9035117_person_icon.png" alt="Profile"></button>
+            <button><img src="../img/1737368_comment_description_outline_problem_task_icon.png" alt="Tasks"/><!--span class="material-symbols-outlined">assignment</span--></button>
+        </aside>
+        <nav id="left-nav">
+            <h3>context</h3>
+            <hr/>
+            <a href="#">Mathematics</a>
+            <a href="#">English</a>
+            <a href="#">Christian Religious Studies</a>
+            <a href="#">Home Economics</a>
+            <a href="#">Food and Nutrition</a>
+            <a href="#">French</a>
+            <a href="#">Chemistry</a>
+            <a href="#">Biology</a>
+            <a href="#">Physics</a>
+            <a href="#">Marketing</a>
+            <a href="#">Fisheries</a>
+            <a href="#">Literature in English</a>
+        </nav>
+        <section>
+            <div id="timeline-bar">
+                <div class="timeline-content">
+                    <span>&pitchfork;Info (1)</span><span>&checkmark;Note</span><span>Download</span>
+                    <blockquote class="message">A note for the category of activity, such as: This is an exercise on the topic we treated today. Please do it and submit before Monday, this instant.</blockquote>
+                </div>
+                <div class="timeline-content">
+                    <span>&pitchfork;Info (0)</span><span>&checkmark;Note</span><span>Download</span>
+                </div>
+                <div class="timeline-content">
+                    <span>&pitchfork;Info (0)</span><span>&checkmark;Note</span><span>Download</span>
+                </div>
+                <div class="timeline-content">
+                    <span>&pitchfork;Info (1)</span><span>&checkmark;Note</span><span>Download</span>
+                    <blockquote class="message">A note for the category of activity.</blockquote>
+                </div>
+            </div>
+            <!-- <div id="timeline-content">
+                <div class="doc">Document 1
+                    <button type="button">Doc1 button</button>
+                </div>
+            </div> -->
+        </section>
+    </main>
+    <footer></footer>
+    <script>
+        const asideButtons = document.querySelectorAll('aside button');
+        asideButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                asideButtons.forEach(b => {
+                    b.classList.remove("active")
+                })
+                e.target.classList.toggle('active');
+            })
+        })
+        const timelineContentSpans = document.querySelectorAll('.timeline-content span:first-child');
+        timelineContentSpans.forEach((span, index) => {
+            if (span.textContent != "Info (0)") {
+                span.addEventListener('click', (e) => {
+                    document.querySelectorAll('.timeline-content .message')[index].classList.toggle('autoHeight');    
+                })
+            }
+        })
+        
+    </script>
 </body>
 </html>
