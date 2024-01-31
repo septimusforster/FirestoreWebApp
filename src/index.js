@@ -14,6 +14,7 @@ let classrooms = {
     "SSS 3": s3.toReversed(),
     "demo": demo.toReversed()
 }
+/*
 const firebaseConfig = {
     apiKey: "AIzaSyCT92x3HE8nUsYsKgQ2eJZU7DHQ83mTgwE",
     authDomain: "dca-mobile-26810.firebaseapp.com",
@@ -22,7 +23,7 @@ const firebaseConfig = {
     messagingSenderId: "843119620986",
     appId: "1:843119620986:web:e1a4f469626cbd4f241cc3"
   };
-/*
+*/
   const firebaseConfig = {
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
     authDomain: "fir-pro-152a1.firebaseapp.com",
@@ -32,7 +33,7 @@ const firebaseConfig = {
     appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46"
     // appId: "1:158660765747:web:77fed76bf03f32d97ddb46"
 };
-*/
+
 var myIframe = document.getElementById('myIframe');
 // initialize firebase app
 initializeApp(firebaseConfig)
