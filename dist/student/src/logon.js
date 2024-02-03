@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, collectionGroup, doc, getDocs, query, where, and, or, addDoc } from "firebase/firestore";
+
 const firebaseConfig = {    
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
     authDomain: "fir-pro-152a1.firebaseapp.com",
@@ -8,6 +9,16 @@ const firebaseConfig = {
     messagingSenderId: "158660765747",
     appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46"
 };
+/*
+const firebaseConfig = {
+    apiKey: "AIzaSyCT92x3HE8nUsYsKgQ2eJZU7DHQ83mTgwE",
+    authDomain: "dca-mobile-26810.firebaseapp.com",
+    projectId: "dca-mobile-26810",
+    storageBucket: "dca-mobile-26810.appspot.com",
+    messagingSenderId: "843119620986",
+    appId: "1:843119620986:web:e1a4f469626cbd4f241cc3"
+};
+*/
 // initialize firebase app
 initializeApp(firebaseConfig)
 // init services
@@ -17,26 +28,43 @@ const db = getFirestore()
 const classroom = document.querySelector('#classroom');
 const email = document.querySelector('#email');
 const password = document.querySelector('#password');
+const notice = document.querySelector('dialog#notice');
 const loginForm = document.forms.login;
+
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    console.warn('Messaging in-coming...');
+    e.submitter.disable = true;
+    e.submitter.style.cursor = 'not-allowed';
     const classroomCollectionRef = collection(db, classroom.value);
     const q = query(classroomCollectionRef, and(or(where("email", "==", email.value), where("admission_no", "==", email.value)), where("password", "==", password.value)))
     const querySnapshot = await getDocs(q);
     // console.log(querySnapshot);
     if(querySnapshot.empty) {
-        // dialogNotice.querySelector('output').innerHTML = "The username/password is incorrect.";
-        // dialogNotice.showModal();
-        // e.submitter.disabled = false;
-        // e.submitter.style.cursor = 'pointer';
-        console.log('snapshotId does not exist.');
+        notice.querySelector('output').textContent = "The username/password is incorrect.";
+        notice.classList.add('active');
+        e.submitter.disabled = false;
+        e.submitter.style.cursor = 'pointer';
     } else {
-        querySnapshot.docs.forEach(doc => console.log('snapshotId', doc.id));
-        // querySnapshot.docs.forEach(doc => sessionStorage.setItem('snapshotId', doc.id));
-        // location.href = 'index.html';
+        // querySnapshot.docs.forEach(doc => console.log('snapshotId', doc.data()));
+        querySnapshot.docs.forEach(doc => {
+            let snapshot = {
+                'snapshotId': doc.id,
+                'first_name': doc.data().first_name,
+                'last_name': doc.data().last_name,
+                'other_name': doc.data().other_name,
+                'gender': doc.data().gender,
+                'admission_no': doc.data().admission_no,
+                'arm': doc.data().arm,
+                'class': classroom.value,
+                'em': doc.data().email ? doc.data().email : "default",
+                'pwd': doc.data().password,
+            }
+            sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
+        });
+        location.href = '../dist/index.html';
     }
 })
+
 /*
 const mainRef = collection(db, "fileCollection");
 addDoc(collection(mainRef, "AGR", "JSS 1"),{

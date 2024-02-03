@@ -61,18 +61,6 @@ button img {
 span.material-symbols-outlined {
     font-size: 40px;
 }
-/* aside button::after {
-    content: '';
-    opacity: 0;
-    height: 25%;
-    border: 2px solid #fff;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translate(0%,-50%);
-} */
 aside button.active {
     box-shadow: 3px 0 #fff inset;
     background-color: rgba(0,0,0,0.3);
@@ -80,9 +68,13 @@ aside button.active {
 }
 nav {
     /* border: 1px solid white; */
+    opacity: 0;
     width: 15%;
     min-width: 300px;
     background-color: rgba(0,0,0,0.2);
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: transform .3s ease-in-out;
     /* padding: 50px 0; */
 }
 nav h3 {
@@ -90,7 +82,7 @@ nav h3 {
     padding: 8px 20px;
     font-weight: normal;
     text-transform: capitalize;
-    color: rgba(255,255,255,0.9);
+    color: rgba(255,255,255,0.7);
 }
 nav hr {
     margin: 0 10px 50px;
@@ -110,17 +102,64 @@ nav a:hover {
     color: #fff;
     background-color: rgba(0,0,0,0.3);
 }
+#subject-nav, #editProfile-nav {
+    position: absolute;
+    left: 100px;
+}
+nav.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+#profile-nav {
+    padding-top: 100px;
+}
+#profile-nav span {
+    padding: 0 0 0 50px;
+    margin-bottom: 50px;
+    /* border: 1px solid; */
+    display: block;
+}
+#editProfile-nav input,
+#editProfile-nav label {
+    display: block;
+    margin: 0px auto;
+    width: 80%;
+    padding: 10px;
+    outline: none;
+}
+#editProfile-nav {
+    /* margin-bottom: 30px; */
+}
+#editProfile-nav hr {
+    margin: 50px 10px;
+}
+input[type="submit"] {
+    border: none;
+    border-radius: 7px;
+    margin: 20px auto !important;
+    color: #fff;
+    background-color: #ff2727;
+    cursor: pointer;
+    pointer-events: none;
+}
+input[type="submit"].active {
+    pointer-events: all;
+    background-color: #009578;
+}
+input[name="password"].invalid {
+    border: 2px double #ff2727;
+}
 section {
-    /* border: 1px solid white; */
     background-color: rgba(0,0,0,0.3);
     width: 80%;
-    padding: 100px;
+    padding: 20px;
 }
 #timeline-bar {
     /* width: 0; */
     margin-left: 100px;
     padding-left: 100px;
-    padding-top: 100px;
+    padding-top: 50px;
     /* border: 1px solid; */
     height: 100%;
     border-color: rgba(255,255,255,0.2);
@@ -161,44 +200,50 @@ section {
 .timeline-content:hover::before {
     transform: scale(1.7);
 }
-.timeline-content span {
-    padding: 20px;
-    /* color: blue; */
-    display: inline-block;
+.accordion__content, .accordion__label {
+    padding: 14px 20px;
+    font-family: Quicksand, sans-serif;
+    font-size: 1em;
     /* border: 1px solid red; */
 }
-.timeline-content span:nth-last-of-type(3) {
-    float: right;
+.accordion__input, .accordion__content {
+    display: none;
 }
-.timeline-content span:first-child {
+.accordion__input:checked ~ .accordion__content {
+    display: block;
+}
+.accordion__input:checked ~ .accordion__label::after {
+    transform: rotate(225deg);
+}
+.accordion__label {
+    display: block;
     cursor: pointer;
-}
-.message {
-    /* padding: 20px; */
     position: relative;
-    height: 0;
+    background-color: #fff;
+    border-radius: 7px 7px 0 0;
+    color: rgb(42, 7, 75);
+    padding-right: 50px;
+    white-space: nowrap;
     overflow: hidden;
-    border-bottom: 1px solid white;
-    transition: all .3s ease-in-out;
+    text-overflow: ellipsis;
 }
-.autoHeight {
-    height: auto;
-}
-.message::before {
-    content: '"';
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 54px;
+.accordion__label::after {
+    content: '';
     position: absolute;
-    top: 20%;
-    left: 0;
-    transform: translate(-50%, -50%);
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    right: 20px;
+    padding: 0;
+    border: 7px solid;
+    border-color: transparent rgb(42, 7, 75) rgb(42, 7, 75) transparent;
+    transition: transform 0.4s;
 }
-.message::after {
-    content: '"';
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 54px;
-    position: absolute;
-    top: 100%;
-    right: -20px;
-    transform: translate(-50%, -50%);
+.accordion__content a {
+    display: inline-block;
+    padding: 14px 20px;
+    background-color: #009578;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    margin: 20px auto;
 }

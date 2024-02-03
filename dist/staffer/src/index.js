@@ -9,7 +9,7 @@ const runBtn = document.querySelector('#documents-wrapper button');
 const commentOK = ["It's alright.","I get it.","Fine.","Okay."];
 const commentYES = ["Yes, go on.","Of course.","Yes, please."];
 const commentNO = ["No, I don't wanna.","No, sorry.","No, don't."];
-var authorId = document.querySelector('#upload-wrapper input[type="hidden"]');
+// var authorId = document.querySelector('#upload-wrapper input[type="hidden"]');
 var fields = {};
 const fileRef = "fileCollection";
 
@@ -29,21 +29,7 @@ const db = getFirestore()
 const fileCollectionRef = collection(db, fileRef);
 const staffCollectionRef = doc(db, "staffCollection", sessionStorage.getItem('snapshotId'));
 
-//add demo staff member
-// addDoc(staffCollectionRef, {...{
-//     fullname: "Matthew Henry",
-//     username: "airlock",
-//     password: "drone",
-//     // classroomsTaught: ["JSS 1","JSS 3","demo"],
-//     // subjectsTaught: ["Mathematics", "Physics"],
-//     avatar: ""
-// }, createdAt: serverTimestamp()})
-//     .then(() => {
-//         console.log("Demo staff member registered.")
-//     })
-
 //load member profile
-
 const getSingleDoc = async () => {
     try {
         // const docRef = doc(db, collectionName, documentId);
@@ -64,13 +50,13 @@ const getSingleDoc = async () => {
 getSingleDoc()
     .then((res) => {
         if(res) {
-            authorId.value = res.id;
+            // authorId.value = res.id;
             if(res.data.avatar) {
                 photo.src = res.data.avatar;
             }
             evenSpans[0].textContent = res.data.fullName;
             evenSpans[1].textContent = res.data.username;
-            /*
+            
             res.data.classroomsTaught.forEach(classroom => {
                 evenSpans[2].insertAdjacentHTML('afterbegin', `${classroom}<br>`)
                 //Enter these values also for the select element for classrooms
@@ -78,11 +64,13 @@ getSingleDoc()
                 document.querySelector('select#theClassroomId').insertAdjacentElement('beforeend', option);
             })
             res.data.subjectsTaught.forEach(subject => {
-                evenSpans[3].insertAdjacentHTML('afterbegin', `${subject}<br>`)
+                evenSpans[3].insertAdjacentHTML('afterbegin', `${subject}<br>`);
+                let option = new Option(subject, subject);
+                document.querySelector('select#theSubjectId').insertAdjacentElement('beforeend', option);
             })
-            */
+            
             document.querySelector('#profile-wrapper').children[2].style.display = 'flex';
-            getDataOnValue();
+            // getDataOnValue();
         }
     })
     
@@ -111,7 +99,6 @@ uploadForm.addEventListener('change', (e) => {
     } else {
         fields[e.target.name] = e.target.value;
     }
-    // console.log(fields)
 })
 
 //on form submit
@@ -119,15 +106,16 @@ uploadForm.addEventListener('submit', (e) => {
     e.preventDefault();
     //get authorId
     // const theAuthorId = document.querySelector('input[type="hidden"]').value;
-    addDoc(fileCollectionRef, {...fields, theAuthorId: authorId.value, theDateCreated: serverTimestamp()})
+    addDoc(fileCollectionRef, {...fields, theDateCreated: serverTimestamp()})
         .then(() => {
             // reset fields
             fields = {};
             document.querySelector('dialog#to-delete output').textContent = "Document upload successful.";
             document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
             document.querySelector('dialog#to-delete').showModal();
+            document.querySelector('#file-selected').innerText = "";
             uploadForm.reset();
-            getDataOnValue();
+            // getDataOnValue();
         })
 })
 //function to retrieve newly inserted data

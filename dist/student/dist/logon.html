@@ -18,7 +18,7 @@
                 <option value="SSS 1">SSS 1</option>
                 <option value="SSS 2">SSS 2</option>
                 <option value="SSS 3">SSS 3</option>
-                <option value="demo">demo</option>
+                <!-- <option value="demo">demo</option> -->
             </select>
             <label for="email">Enter your e-mail address or admission number.</label>
             <input type="text" name="email" id="email" placeholder="E-mail or admission number" autofocus="autofocus" autocomplete="off" required>
@@ -30,7 +30,16 @@
             </label>
             <input type="submit" value="Login">
         </form>
+        <dialog open id="notice">
+            <output></output>
+            <button type="button">Okay</button>
+        </dialog>
     </main>
     <script type="module" src="../src/logon_bundle.js"></script>
+    <script>
+        document.querySelector('dialog#notice button').onclick = function (e) {
+            document.querySelector('dialog#notice').classList.remove('active');
+        }
+    </script>
 </body>
 </html>

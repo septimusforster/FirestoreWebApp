@@ -22,7 +22,7 @@
                 </span>
                 <label for="confirm_password">Confirm password</label>
                 <span class="eye-class">
-                    <input type="password" name="confirm_password" id="confirm_password" class="passwords" required>
+                    <input type="password" name="confirm_password" id="confirm_password" class="passwords" required> <!--minlength="8"-->
                     <span class="eye">show</span>
                 </span>
                 <label for="classrooms">Add/remove classes</label>
@@ -106,7 +106,7 @@
             <button>Return to login</button>
         </dialog>
     </div>
-    <script type="module" src="./logon_bundle.js"></script>
+    <script type="module" src="../src/logon_bundle.js"></script>
     <script>
         const eyes = document.querySelectorAll('.eye');
         eyes.forEach(eye => {

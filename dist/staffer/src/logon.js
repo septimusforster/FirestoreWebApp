@@ -77,6 +77,7 @@ photoPicker.addEventListener('change', (e) => {
 const inputCode = document.querySelector('input#code');
 inputCode.addEventListener('keyup', (e) => {
     if (e.target.value.length == 6 && pk.includes(e.target.value)) {
+        code = e.target.value;
         e.target.disabled = true;
         document.querySelector('strong').style.display = 'flex';
     }
@@ -89,6 +90,7 @@ signUpForm.addEventListener('submit', (e) => {
     if (cfp && code) {
         e.submitter.disabled = true;
         e.submitter.style.cursor = 'not-allowed';
+        
         addDoc(staffCollectionRef, {
             fullName: document.getElementById('fullName').value,
             username: document.getElementById('email').value,

@@ -49,7 +49,7 @@ form label {
     color: #fff;
     padding: 20px 0;
 }
-form input, select {
+form input, select, dialog button {
     padding: 15px 20px;
     transition: .3s ease-in-out;
 }
@@ -61,7 +61,8 @@ select {
     cursor: pointer;
 }
 input[type="submit"],
-form label:last-of-type {
+form label:last-of-type,
+dialog button {
     cursor: pointer;
     margin: 10px 0;
 }
@@ -78,4 +79,38 @@ h1 {
     font-weight: normal;
     margin: 20px 0 40px;
     color: #fff;
+}
+dialog {
+    opacity: 0;
+    position: absolute;
+    top: -20px;
+    margin: 0 auto;
+    width: 300px;
+    padding: 20px;
+    border: none;
+    border-radius: 7px;
+    pointer-events: none;
+    transition: opacity .3s ease-in-out, transform .3s ease-in-out;
+}
+dialog.active {
+    opacity: 1;
+    transform: translateY(40px);
+    pointer-events: visible;
+}
+dialog button {
+    display: block;
+    width: 50%;
+    margin: 10px auto;
+    background-color: #ff2727;
+    color: #fff;
+    border-radius: 7px;
+    border: none;
+    font-size: 1rem;
+}
+output {
+    display: block;
+    text-align: center;
+    padding: 20px;
+    font-size: 1rem;
+    font-family: monospace;
 }

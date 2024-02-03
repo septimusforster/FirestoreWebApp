@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app"
 import {
-    getFirestore, collection, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, serverTimestamp
+    getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp
 } from "firebase/firestore"
 import pk from "../src/JSON/upass.json" assert {type: 'json'};
 // let j1k, j2k, j3k, s1k;/*, s2k, s3k;*/
@@ -24,6 +24,7 @@ const firebaseConfig = {
     appId: "1:843119620986:web:e1a4f469626cbd4f241cc3"
   };
 */
+
   const firebaseConfig = {
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
     authDomain: "fir-pro-152a1.firebaseapp.com",
@@ -80,24 +81,35 @@ leftNavAnchors.forEach((a, i, anchors) => {
     })
 })
 var numInClass = 0;
-function setColRef(para1="JSS 1") {
+async function setColRef(para1="JSS 1") {
     let data = [];
     colRef = collection(db, para1);
+    //GET LAST DOCUMENT FROM SERVER
+    const q = query(colRef, orderBy("createdAt", "desc"), limit(1));
+    const snapDoc = await getDocs(q);
+    snapDoc.docs.forEach(doc => {
+        const lastPasswordIndex = classrooms[para1].indexOf(doc.data().password);
+        const newPassword = classrooms[para1][lastPasswordIndex + 1];
+        hiddenElems[1].value = newPassword;
+    })
     //get and count documents in chosen collection
-    getDocs(colRef)
-        .then((snapshot) => {
-            numInClass = snapshot.size;
-            // console.log(numInClass, ": this is numInClass.")
-            snapshot.docs.forEach(doc => {
-                data.push(doc.data().password)
-            })
-            for (const k of classrooms[para1]) {
-                if(!data.includes(k)) {
-                    hiddenElems[1].value = k;
-                    return;
-                }
-            }
-        })
+/*    const snapshot = await getCountFromServer(colRef);
+    const numOfDocs = snapshot.data().count;
+    // hiddenElems[1].value = classrooms[para1][numOfDocs];
+    console.log(numOfDocs) */
+        // .then((snapshot) => {
+        //     numInClass = snapshot.size;
+        //     // console.log(numInClass, ": this is numInClass.")
+        //     snapshot.docs.forEach(doc => {
+        //         data.push(doc.data().password)
+        //     })
+            // for (const k of classrooms[para1]) {
+            //     if(!data.includes(k)) {
+            //         hiddenElems[1].value = k;
+            //         return;
+            //     }
+            // }
+        //})
 };
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {

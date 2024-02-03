@@ -17,10 +17,10 @@
                     <img src="../img/avatar_male_man_portrait_icon.png" height="100" width="100" alt="Photo">
                 </p>
                 <div class="profile" style="display: none;">
-                    <span>Name:</span><span></span><hr>
-                    <span>Alias:</span><span></span><hr>
-                    <span>Classes:</span><span></span><hr>
-                    <span>Subject(s):</span><span></span>
+                    <span>Name</span><span></span><hr>
+                    <span>Alias</span><span></span><hr>
+                    <span>Classes</span><span></span><hr>
+                    <span>Subject</span><span></span>
                 </div>
             </div>
             <div id="upload-wrapper">
@@ -41,15 +41,21 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <input type="file" name="theFile" id="fileId" accept=".doc,.docx,application/msword,.pdf,image/*" required>
-                        <label id="docpicker" for="fileId">Choose file.<span style="font-size: 50px;">&#128462;</span></span></label>
+                        <label for="theSubjectId">Classroom</label>
+                        <select name="theSubject" id="theSubjectId" required>
+                            <option value="">Choose subject</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" name="theFile" id="fileId" accept=".doc,.docx,application/msword,.pdf,image/*" />
+                        <label id="docpicker" for="fileId">Choose file.<span style="font-size: 50px;">&#128462;</span></label>
                         <p id="file-selected"></p>
                     </div>
                     <div class="input-group">
-                        <label for="infoId">Info (optional)</label>
-                        <textarea name="info" id="infoId" cols="30" rows="10" placeholder="Type in an optional message or information concerning the upload."></textarea>
+                        <label for="infoId">Info (optional): <span>200 remaining</span></label>
+                        <textarea name="info" id="infoId" maxlength="200" cols="30" rows="10" placeholder="Write a brief message (200 characters long maximum) directly to the student."></textarea>
                     </div>
-                    <input type="hidden" name="theAuthorId" value="000000">
+                    <!-- <input type="hidden" name="theAuthorId" value="000000"> -->
                     <div class="input-group">
                         <input type="submit" value="Upload">
                     </div>
@@ -81,7 +87,7 @@
         </dialog>
         <footer class="footer">Dynamax | &copy; 2018</footer>
     </div>
-    <script type="module" src="bundle.js"></script>
+    <script type="module" src="../src/bundle.js"></script>
     <script>
         const fileId = document.querySelector('#fileId');
         const fileSelected = document.querySelector('#file-selected');
@@ -104,6 +110,11 @@
                 document.querySelector('#documents-wrapper button').value = "delete";
             }
         }
+        const txtArea = document.querySelector('textarea');
+        txtArea.addEventListener('keyup', (e) => {
+            let remainder = e.target.maxLength - e.target.textLength;
+            e.target.previousElementSibling.lastElementChild.textContent = remainder + " remaining."
+        })
     </script>
     
 </body>
