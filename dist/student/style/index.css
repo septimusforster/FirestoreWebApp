@@ -63,7 +63,7 @@ span.material-symbols-outlined {
 }
 aside button.active {
     box-shadow: 3px 0 #fff inset;
-    background-color: rgba(0,0,0,0.3);
+    background-color: #009578;
     color: #fff;
 }
 nav {
@@ -93,14 +93,13 @@ nav a {
     color: rgba(255,255,255,0.7);
     text-decoration: none;
     padding: 8px 20px;
-    /* border-radius: 20px; */
     margin: 0 10px;
     /* transition: all .2s ease-in-out; */
     /* border: 1px solid white; */
 }
-nav a:hover {
+nav a:hover, nav a.active {
     color: #fff;
-    background-color: rgba(0,0,0,0.3);
+    background-color: #009578;
 }
 #subject-nav, #editProfile-nav {
     position: absolute;

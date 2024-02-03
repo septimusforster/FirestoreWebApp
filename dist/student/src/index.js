@@ -124,7 +124,13 @@ async function getDocuments(arg) {
 const subjectNav = document.querySelector('#subject-nav');
 subjectNav.addEventListener('click', (e) => {
     if (e.target.hasAttribute('href')) {
-        getDocuments(e.target.textContent);
+        subjectNav.querySelectorAll('a').forEach(anchor => {
+            if (anchor.classList.contains('active')) {
+                return anchor.classList.remove('active');
+            }
+        })
+        e.target.classList.add('active');
+        // getDocuments(e.target.textContent);
     }
 })
 // getDocuments();

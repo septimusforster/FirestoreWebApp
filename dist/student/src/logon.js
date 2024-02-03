@@ -56,7 +56,7 @@ loginForm.addEventListener('submit', async (e) => {
                 'admission_no': doc.data().admission_no,
                 'arm': doc.data().arm,
                 'class': classroom.value,
-                'em': doc.data().email ? doc.data().email : "default",
+                'em': doc.data().email || doc.data().admission_no,
                 'pwd': doc.data().password,
             }
             sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
