@@ -25,6 +25,7 @@ initializeApp(firebaseConfig)
 
 const db = getFirestore()
 const ss = JSON.parse(sessionStorage.getItem('snapshot'));
+const headerParagraph = document.querySelector('header p');
 
 document.querySelectorAll('#profile-nav div').forEach(div => {
     if (div.id === "full_name") {
@@ -42,7 +43,7 @@ const refToDocs = collection(db, "fileCollection");
 const formUser = document.forms.formUser;
 const currentUser = formUser.querySelector('#currentUsername');
 
-currentUser.dataset.value = ss.em;
+headerParagraph.textContent = currentUser.dataset.value = ss.em;
 formUser.addEventListener('change', (e) => {
     if (e.target.id === "currentUsername" && e.target.value === e.target.dataset.value) {
         e.target.disabled = true;
