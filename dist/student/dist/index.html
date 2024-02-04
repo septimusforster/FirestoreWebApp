@@ -7,7 +7,16 @@
     <title>Home</title>
 </head>
 <body>
-    <header></header>
+    <dialog id="photo-dialog">
+        <output>Upload only appropriate photo to avoid </output>
+        <button>Upload Photo</button>
+    </dialog>
+    <header>
+        <p onclick="document.querySelector('dialog#photo-dialog').showModal();">abang@gmail.com &nbsp; &nearrow;</p>
+        <button type="button">
+            <img src="../img/daffy_sly.png" alt="Photo" width="200"/>
+        </button>
+    </header>
     <main>
         <aside>
             <button type="button" class="active"><img src="../img/9035117_person_icon.png" alt="Profile"></button>
@@ -17,7 +26,7 @@
         </aside>
         <nav id="profile-nav" class="active">
             <div id="admission_no">
-                <h3>Admission Number</h3>
+                <h3 class="active">Admission Number</h3>
                 <span></span>
             </div>
             <div id="full_name">
@@ -55,7 +64,7 @@
         </nav>
         <nav id="editProfile-nav">
             <form name="formUser">
-                <h3>Change username</h3>
+                <h3>Change username<i></i><i>&check;</i></h3>
                 <label for="currentUsername">Current username</label>
                 <input type="text" id="currentUsername" name="currentUsername" placeholder="Enter current username" autocomplete="off" data-value="default" required/>
                 <label for="newUsername">New username</label>
@@ -64,7 +73,7 @@
             </form>
             <hr/>
             <form name="formPass">
-                <h3>Change password</h3>
+                <h3>Change password<i></i><i>&check;</i></h3>
                 <label for="currentPassword">Current Password</label>
                 <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password" data-value="default" required />
                 <label for="newPassword">New password</label>

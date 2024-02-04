@@ -51,13 +51,25 @@ formUser.addEventListener('change', (e) => {
 })
 formUser.addEventListener('submit', async (e) => {
     e.preventDefault();
+    loadStart(e);
     const formData = new FormData(formUser);
     const docSnap = await updateDoc(ref,{
         email: formData.get('email'),
         timestamp: serverTimestamp()
     })
-    console.log('Username changed, though it will take some time to effect.')
+    loadEnd(e);
+    // formUser.reset();
 })
+
+function loadStart(event) {
+    event.submitter.style.pointerEvents = 'none';
+    event.submitter.parentElement.querySelector('i:first-child').classList.add('active');
+}
+function loadEnd(event) {
+    event.submitter.parentElement.querySelectorAll('i').forEach(i => {
+        i.classList.toggle('active');
+    })
+}
 
 const formPass = document.forms.formPass;
 const currentPassword = formPass.querySelector('#currentPassword');
@@ -71,14 +83,14 @@ formPass.addEventListener('change', (e) => {
 })
 formPass.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (cfp) { // && new and confirm password are the same
+    if (cfp) {
+        loadStart(e);
         const formData = new FormData(formPass);
-        console.log(formData.get('password'));
         const docSnap = await updateDoc(ref, {
             password: formData.get('password'),
             timestamp: serverTimestamp()
         })
-        console.log("Password changed, though it will take some time to effect.");
+        loadEnd(e);
     }
 })
 
