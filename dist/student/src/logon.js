@@ -58,6 +58,7 @@ loginForm.addEventListener('submit', async (e) => {
                 'class': classroom.value,
                 'em': doc.data().email || doc.data().admission_no,
                 'pwd': doc.data().password,
+                'ue': doc.data().upload_enabled,
             }
             sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
         });

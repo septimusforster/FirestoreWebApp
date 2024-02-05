@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy } from "firebase/firestore";
-
 const firebaseConfig = {    
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
     authDomain: "fir-pro-152a1.firebaseapp.com",
@@ -43,7 +42,7 @@ const refToDocs = collection(db, "fileCollection");
 const formUser = document.forms.formUser;
 const currentUser = formUser.querySelector('#currentUsername');
 
-headerParagraph.textContent = currentUser.dataset.value = ss.em;
+headerParagraph.innerHTML = (currentUser.dataset.value = ss.em) + "&nbsp; &nearrow;";
 formUser.addEventListener('change', (e) => {
     if (e.target.id === "currentUsername" && e.target.value === e.target.dataset.value) {
         e.target.disabled = true;
@@ -147,7 +146,21 @@ subjectNav.addEventListener('click', (e) => {
     }
 })
 // getDocuments();
-
+const dialog = document.querySelector('dialog#photo-dialog');
+headerParagraph.addEventListener('click', (e) => {
+    if (ss.ue) {
+        dialog.insertAdjacentHTML('beforeend', "<button onclick='changePhoto()'></button>")
+    } else {
+        dialog.showModal();
+    }
+})
+async function changePhoto() {
+    const updateSnap = await updateDoc(ref, {
+        photo: 'base64',
+        upload_enabled: false,
+        timestamp: serverTimestamp(),
+    })
+}
 /*
 const demoSnap = await getDoc(doc(db, "JSS 3", "13IPf5eMe3sFCTBnBc8T"));
 console.log(demoSnap.data());

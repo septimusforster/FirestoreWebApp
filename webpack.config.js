@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //STUDENT logon.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/logon.js",
@@ -46,4 +46,14 @@ module.exports = {
     },
     watch: true
 }
-
+*/
+//STUDENT storage.js
+module.exports = {
+    mode: "development",
+    entry: "./dist/student/src/storage.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/student/src"),
+        filename: "storage_bundle.js"
+    },
+    watch: true
+}

@@ -1,30 +1,32 @@
 *{margin: 0; padding: 0;box-sizing: 0;}
 body {
-    height: 100vh;
-    height: 100dvh;
     background-color: rgb(42, 7, 75);
+}
+dialog {
+    margin: auto;
+
 }
 header {
     display: flex;
     justify-content: flex-end;
-    align-items: flex-start;
-    height: 5vh;
+    align-items: center;
+    padding: 7px;
     gap: 3em;
+    position: sticky;
+    top: 0;
 }
 header button {
     border: 1px solid #fff7;
     border-radius: 50%;
-    height: 100px;
-    width: 100px;
-    margin: 2vh 5vh 0 0;
+    height: 50px;
+    width: 50px;
+    margin: 0 5vh 0 0;
     color: #fff;
     overflow: hidden;
-    z-index: 1;
 }
 header button img {
     height: 100%;
     width: 100%;
-    /* background-size: cover; */
 }
 header p {
     color: #fff;
@@ -38,13 +40,14 @@ header p:hover {
     opacity: 1;
 }
 main {
-    height: 80vh;
-    height: 80dvh;
+    /* height: 80vh;
+    height: 80dvh; */
     width: 100%;
     width: 100%;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     font-family: Poppins, sans-serif;
+    /* position: relative; */
     /* border: 1px solid red; */
 }
 button {
@@ -59,13 +62,15 @@ aside, nav, section {
 }
 nav {
     display: block;
+    margin-left: 100px;
 }
 aside {
     width: 5%;
     min-width: 100px;
     background-color: rgba(0,0,0,0.1);
     padding: 100px 0;
-    /* border: 1px solid white; */
+    position: fixed;
+    top: 0;
 }
 aside button {
     /* border: 1px solid white; */
@@ -149,6 +154,7 @@ nav h3 i:last-child {
     font-size: 1.3em;
     padding: 0 20px;
     font-weight: bold;
+    font-style: normal;
 }
 nav h3 i:last-child.active {
     opacity: 1;
@@ -186,7 +192,7 @@ nav a:hover, nav a.active {
 }
 #subject-nav, #editProfile-nav {
     position: absolute;
-    left: 100px;
+    /* left: 100px; */
 }
 nav.active {
     opacity: 1;

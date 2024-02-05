@@ -24,7 +24,6 @@ const firebaseConfig = {
     appId: "1:843119620986:web:e1a4f469626cbd4f241cc3"
   };
 */
-
   const firebaseConfig = {
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
     authDomain: "fir-pro-152a1.firebaseapp.com",
@@ -80,16 +79,16 @@ leftNavAnchors.forEach((a, i, anchors) => {
         setIframeAttr(e.target.textContent);
     })
 })
-var numInClass = 0;
-async function setColRef(para1="JSS 1") {
+async function setColRef(para1="demo") {
     let data = [];
     colRef = collection(db, para1);
     //GET LAST DOCUMENT FROM SERVER
     const q = query(colRef, orderBy("createdAt", "desc"), limit(1));
     const snapDoc = await getDocs(q);
     snapDoc.docs.forEach(doc => {
+        // console.log(doc.data().password)
         const lastPasswordIndex = classrooms[para1].indexOf(doc.data().password);
-        const newPassword = classrooms[para1][lastPasswordIndex + 1];
+        const newPassword = classrooms[para1][lastPasswordIndex - 1];
         hiddenElems[1].value = newPassword;
     })
     //get and count documents in chosen collection
@@ -114,13 +113,14 @@ async function setColRef(para1="JSS 1") {
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
+        console.log('topnav', e)
         document.querySelector('.dropdown-menu').style.pointerEvents='none';
         myIframe.contentDocument.querySelector('ol').innerHTML = '';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
         setColRef(e.target.textContent);
     })
 })
-setColRef();
+// setColRef();
 const fm_createStudent = document.forms.createStudent;
 fm_createStudent.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -128,9 +128,9 @@ fm_createStudent.addEventListener('submit', (e) => {
     e.submitter.style.cursor = 'not-allowed';
     let i, studentDoc = {}; 
     for(i = 0; i < e.target.length - 1; i++){
-        studentDoc[e.srcElement[i].name] = e.srcElement[i].value;
+        studentDoc[e.target[i].name] = e.target[i].value;
     }
-    addDoc(colRef, {...studentDoc, createdAt: serverTimestamp()})
+    addDoc(colRef, {...studentDoc, upload_enabled: true, createdAt: serverTimestamp()})
     .then(() => {
         let col = myIframe.contentDocument.querySelector('h3').textContent;
         // numInClass++;
