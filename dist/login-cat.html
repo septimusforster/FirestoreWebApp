@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="2;URL='sign in.html'" /> -->
+    <link rel="icon" href="images/real.png" type="image/png" />
+    <link rel="stylesheet" href="login-cat.css">
+    <link rel="#" href="#">
+    <title>Destiny Christian Academy</title>
+</head>
+<body>
+    <div class="image">
+      <span>Welcome to Destiny Academy</span>
+      <img src="/dist/staffer/img/DCA LOGO.png" class="ima">
+      <p>Choose Category as Applicable</p>
+    </div>
+    <div class="login-cat">
+        <button class="student" id="log-btn">student</button>
+      </div>
+    <div class="login-cat">
+        <button id="log-btn" onclick="teachLog(1)">teacher</button>
+      </div>
+    <div class="login-cat">
+        <button id="log-btn" onclick="teachLog(2)">admin</button>
+      </div>
+    <div class="login-cat">
+        <button id="log-btn">management</button>
+      </div>
+
+      <script>
+        const but = document.querySelector('.student')
+        console.log(but)
+
+        but.addEventListener('click', function() {
+          console.log('the Lord is so good')
+          const targetPage = '/sign in.html'
+          window.location.href = targetPage
+          window.history.replaceState(null, '', targetPage)
+        })
+      </script>
+
+<script>
+  function openForm(index) {
+      // Send a message to the other page with the index of the form to open
+      window.postMessage({ type: 'openForm', index }, '*');
+  }
+</script>
+      
+</body>
+</html>

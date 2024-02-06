@@ -18,12 +18,38 @@ h2, small {
     color: #fff;
 }
 main {
-    height: 80vh;
-    height: 80dvh;
-    /* border: 1px solid #fff; */
+    /* Existing styles */
+    height: auto;
+    margin-bottom: 50px;
+    margin-top: 100px;
     padding: 20px;
     font-family: Arial, Helvetica, sans-serif;
+    background-color: rgba(150, 245, 198, 0.9);
+    border-radius: 10px;
 }
+
+/* Hide the sign-up form */
+main:nth-child(3) {
+    display: none;
+}
+main:nth-child(2) {
+    display: none;
+}
+
+/* Center the sign-in form */
+main:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 35rem; /* Center vertically on the page */
+  
+}
+
+
+
+
+
 main form {
     display: flex;
     flex-direction: column;
