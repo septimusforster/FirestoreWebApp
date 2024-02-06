@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, collectionGroup, doc, getDocs, query, where, and, or, addDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc, getDocs, query, where, and, or } from "firebase/firestore";
 
 const firebaseConfig = {    
     apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
@@ -24,12 +24,17 @@ initializeApp(firebaseConfig)
 // init services
 const db = getFirestore()
 // collection refs
+const JSSubjectRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
+const SSSubjectRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
+
 
 const classroom = document.querySelector('#classroom');
 const email = document.querySelector('#email');
 const password = document.querySelector('#password');
 const notice = document.querySelector('dialog#notice');
 const loginForm = document.forms.login;
+
+// document.forms.login.removeAttribute('data-disabled')
 
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -45,24 +50,35 @@ loginForm.addEventListener('submit', async (e) => {
         e.submitter.disabled = false;
         e.submitter.style.cursor = 'pointer';
     } else {
-        // querySnapshot.docs.forEach(doc => console.log('snapshotId', doc.data()));
-        querySnapshot.docs.forEach(doc => {
-            let snapshot = {
-                'snapshotId': doc.id,
-                'first_name': doc.data().first_name,
-                'last_name': doc.data().last_name,
-                'other_name': doc.data().other_name,
-                'gender': doc.data().gender,
-                'admission_no': doc.data().admission_no,
-                'arm': doc.data().arm,
-                'class': classroom.value,
-                'em': doc.data().email || doc.data().admission_no,
-                'pwd': doc.data().password,
-                'ue': doc.data().upload_enabled,
+        querySnapshot.docs.forEach(async doc => {
+            let ue = doc.data().upload_enabled;
+            if(ue === 2) {
+                let snapshot = {
+                    'snapshotId': doc.id,
+                    'first_name': doc.data().first_name,
+                    'last_name': doc.data().last_name,
+                    'other_name': doc.data().other_name,
+                    'gender': doc.data().gender,
+                    'admission_no': doc.data().admission_no,
+                    'arm': doc.data().arm,
+                    'class': classroom.value,
+                    'em': doc.data().email || doc.data().admission_no,
+                    'pwd': doc.data().password,
+                    ue,
+                }
+                sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
+                return location.href = '../dist/index.html';
+            } else {
+                const reservedSnapshot = classroom.value.startsWith('JSS') ? await getDoc(JSSubjectRef) : await getDoc(SSSubjectRef);
+                let snapshot = {
+                    'id': doc.id,
+                    'class': classroom.value,
+                    'reservedPayload': reservedSnapshot.data().sub,
+                }
+                sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
+                return location.href = '../dist/temp.html';
             }
-            sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
         });
-        location.href = '../dist/index.html';
     }
 })
 

@@ -130,7 +130,7 @@ fm_createStudent.addEventListener('submit', (e) => {
     for(i = 0; i < e.target.length - 1; i++){
         studentDoc[e.target[i].name] = e.target[i].value;
     }
-    addDoc(colRef, {...studentDoc, upload_enabled: true, createdAt: serverTimestamp()})
+    addDoc(colRef, {...studentDoc, upload_enabled: 0, createdAt: serverTimestamp()})
     .then(() => {
         let col = myIframe.contentDocument.querySelector('h3').textContent;
         // numInClass++;
