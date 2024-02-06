@@ -1,0 +1,104 @@
+	* {
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+	}
+
+  body {
+	display: flex;
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	background-image: url(/dist/staffer/img/6.jpg);
+	background-size: cover;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 20px;
+	box-sizing: border-box;
+  }
+
+  .image {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	font: sans-serif;
+	margin-bottom: 10px;
+	width: 55vw;
+	height: 40vh;
+	/* border: 1px solid blue; */
+}
+.ima {
+	margin-top: 60px;
+	margin-bottom: 60px;
+	width: 18rem;
+	/* border: 1px solid blue; */
+  }
+
+  .login-cat {
+	display: flex;
+	justify-content: center;
+	width: 35em;
+	box-sizing: border-box;
+	margin-left: 90px;
+	margin-right: 100px;
+	/* border: 1px solid turquoise; */
+	border-radius: 10px;
+  }
+
+  #log-btn {
+	width: 100%;
+	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 1.4em;
+	color: aqua;
+	padding: 20px;
+	border: none;
+	cursor: pointer;
+  }
+
+  body {
+	container-type: inline-size;
+  }
+  
+  @container (max-width: 430px) {
+	  .login-cat {
+		  width: 50%; height: 50px;
+		}
+		#log-btn {
+			text-transform: capitalize;
+			padding: 0;
+			background: rgb(241, 223, 196);
+		}
+		.image {
+			color: green;
+		}
+		.ima {
+			width: 9rem;
+		}
+		.login-cat:hover, #log-btn:hover{
+			background: cyan;
+			color: aliceblue;
+			box-shadow: 0 0 8px 1px cyan;
+		}
+		.login-cat:active, #log-btn:active {
+			background: cyan;
+			color: aliceblue;
+			box-shadow: 0 0 12px 3px cyan;
+		}
+	}
+	
+	.login-cat:hover, #log-btn:hover{
+		background: cyan;
+		color: aliceblue;
+		box-shadow: 0 0 8px 1px cyan;
+	}
+	.login-cat:active, #log-btn:active {
+		background: cyan;
+		color: aliceblue;
+		box-shadow: 0 0 12px 3px cyan;
+	}
+
+	
