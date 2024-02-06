@@ -80,7 +80,7 @@ h1 {
     margin: 20px 0 40px;
     color: #fff;
 }
-dialog {
+dialog#notice {
     opacity: 0;
     position: absolute;
     top: -20px;
@@ -92,7 +92,7 @@ dialog {
     pointer-events: none;
     transition: opacity .3s ease-in-out, transform .3s ease-in-out;
 }
-dialog.active {
+dialog#notice.active {
     opacity: 1;
     transform: translateY(40px);
     pointer-events: visible;
@@ -125,4 +125,16 @@ label i {
 label i.active {
     opacity: 1;
     transform: scale(1);
+}
+[data-disabled] {
+    display: none;
+}
+dialog#info {
+    margin: auto;
+    border: none;
+    outline: none;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    box-shadow: 0 0 5px #333f;
 }

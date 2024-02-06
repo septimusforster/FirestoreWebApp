@@ -11,18 +11,21 @@
             <small>Not yet registered?</small>
             <h2>Sign Up</h2>
             <form name="signup">
+                <dialog id="info">
+                    <output></output>
+                </dialog>
                 <label for="fullName">Full Name</label>
                 <input type="text" name="fullName" id="fullName" placeholder="Full name" autocomplete="off" autocapitalize="words" required>
                 <label for="email">Email</label>
                 <input type="text" name="email" id="email" placeholder="Email" autocomplete="off" required>
                 <label for="password">Password</label>
                 <span class="eye-class">
-                    <input type="password" name="password" id="password" class="passwords" required>
+                    <input type="password" name="password" id="password" class="passwords deactivate" disabled required>
                     <span class="eye">show</span>
                 </span>
                 <label for="confirm_password">Confirm password</label>
                 <span class="eye-class">
-                    <input type="password" name="confirm_password" id="confirm_password" class="passwords" required> <!--minlength="8"-->
+                    <input type="password" name="confirm_password" id="confirm_password" class="passwords deactivate" disabled required> <!--minlength="8"-->
                     <span class="eye">show</span>
                 </span>
                 <label for="classrooms">Add/remove classes</label>
@@ -74,7 +77,7 @@
                 <label id="photo-label" for="photo-picker">Pick a photo.
                     <input type="file" name="avatar" id="photo-picker">
                 </label>
-                <label>Enter your code</label>
+                <label>Type <em>FDANTA</em> in the box below.</label>
                 <div class="group-items">
                     <input type="text" name="code" id="code" placeholder="_ _ _ _ _ _" maxlength="6" autocomplete="off" autocapitalize="off">
                     <strong id="checkmark" style="display: none;">&check;</strong>
@@ -84,13 +87,25 @@
         </main>
         <main>
             <small>Already registered?</small>
-            <h2>Log In</h2>
+            <h2>Log In <sub><small>as Teacher</small></sub></h2>
             <form name="signin">
                 <label for="uname">Enter email</label>
                 <input type="text" name="username" id="uname" placeholder="Enter email" autocomplete="off" autofocus="autofocus" required>
                 <label for="pwd">Enter password</label>
                 <span class="eye-class">
                     <input type="password" name="pwd" id="pwd" class="passwords" required>
+                    <span class="eye">show</span>
+                </span>
+                <button>Log In</button>
+            </form>
+            <hr/>
+            <h2>Log In <sub><small>as Admin</small></sub></h2>
+            <form name="signin2">
+                <label for="uname_admin">Enter email</label>
+                <input type="text" name="username" id="uname_admin" placeholder="Enter email" autocomplete="off" autofocus="autofocus" required>
+                <label for="pwd">Enter password</label>
+                <span class="eye-class">
+                    <input type="password" name="pwd" id="pwd_admin" class="passwords" required>
                     <span class="eye">show</span>
                 </span>
                 <button>Log In</button>
@@ -108,6 +123,7 @@
     </div>
     <script type="module" src="../src/logon_bundle.js"></script>
     <script>
+        // console.log(window.getComputedStyle(document.querySelector('hr')).borderColor);
         const eyes = document.querySelectorAll('.eye');
         eyes.forEach(eye => {
             eye.addEventListener('click', (e) => {

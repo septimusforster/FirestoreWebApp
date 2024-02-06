@@ -6,8 +6,12 @@
     <title>Student Login</title>
 </head>
 <body>
+    <dialog id="info">
+        <output>Initializing app.</output>
+    </dialog>
     <main id="main-wrapper">
-        <form name="login">
+        
+        <form name="login" data-disabled>
             <h1>Student Login</h1>
             <label for="classroom">What class are you in?</label>
             <select name="classroom" id="classroom" required>

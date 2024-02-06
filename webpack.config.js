@@ -11,6 +11,18 @@ module.exports = {
     watch: true
 }
 */
+//STAFFER index.js
+/*
+module.exports = {
+    mode: "development",
+    entry: "./dist/staffer/src/index.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/staffer/src"),
+        filename: "bundle.js"
+    },
+    watch: true
+}
+*/
 //STAFFER logon.js
 /*
 module.exports = {
@@ -36,7 +48,7 @@ module.exports = {
 }
 */
 //STUDENT logon.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/logon.js",
@@ -46,8 +58,9 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STUDENT storage.js
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/storage.js",
@@ -57,3 +70,4 @@ module.exports = {
     },
     watch: true
 }
+*/

@@ -33,6 +33,42 @@ passwords.forEach((password, index) => {
         // console.log(passwords[index].value)
     })
 })
+const emailField = signUpForm.querySelector('#email');
+const dialogInfo = document.querySelector('dialog#info');
+emailField.addEventListener('blur', (e) => {
+    //checking email animation
+    if(e.target.value === '') {
+        return
+    } else {
+        dialogInfo.querySelector('output').textContent = 'Verifying if user exists...';
+        dialogInfo.showModal();
+        
+        setTimeout(async function () {
+            const emailQuery = query(staffCollectionRef, where("username", "==", e.target.value));
+            const docSnap = await getDocs(emailQuery);
+            if(docSnap.empty) {
+                dialogInfo.querySelector('output').textContent = 'All done.';
+                setTimeout(() => {
+                    dialogInfo.close();
+                    signUpForm.querySelectorAll("input[type='password']").forEach(input => {
+                        input.classList.toggle('deactivate');
+                        input.disabled = false;
+                    })
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    dialogInfo.close();
+                }, 3000)
+                dialogInfo.querySelector('output').textContent = "User already exists.";
+            }
+        }, 3000);
+    }
+    /*
+    const timerID1 = setTimeout(function () {
+        console.log("Found result.", timerID)
+        clearTimeout(timerID)
+    }, 10000)*/
+})
 const addSpans = document.querySelectorAll('.add');
 const removeSpans = document.querySelectorAll('.remove');
 const textAreas = document.querySelectorAll('textarea');
@@ -132,5 +168,25 @@ loginForm.addEventListener('submit', async (e) => {
         location.href = 'index.html';
     }
 })
+const loginForm2 = document.forms.signin2;
+const inputs2 = loginForm2.querySelectorAll('input');
+loginForm2.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
+    const dialogNotice = document.querySelector('#dialog-notice');
+    const q = query(staffCollectionRef, where("code", "==", "USADEY"), where("username", "==", inputs2[0].value), where("password", "==", inputs2[1].value));
+    const querySnapshot = await getDocs(q);
+    if(querySnapshot.empty) {
+        dialogNotice.querySelector('output').innerHTML = "The username/password is incorrect.";
+        dialogNotice.showModal();
+        e.submitter.disabled = false;
+        e.submitter.style.cursor = 'pointer';
+    } else {
+        // querySnapshot.docs.forEach(doc => sessionStorage.setItem('snapshotId', doc.id));
+        location.href = '../../../index.html';
+    }
+})
+
 // server: smtp.elasticemail.com
 // port: 2525

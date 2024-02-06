@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, serverTimestamp, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, onSnapshot } from "firebase/firestore";
 //declare all const and var
 const uploadForm = document.querySelectorAll('form')[0];
 const documentsWrapper = document.querySelector('#documents-wrapper div:nth-of-type(2)');
@@ -104,9 +104,12 @@ uploadForm.addEventListener('change', (e) => {
 //on form submit
 uploadForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
+    let theDateCreated = Intl.DateTimeFormat('en-us', {dateStyle: "medium"}).format(new Date());
     //get authorId
     // const theAuthorId = document.querySelector('input[type="hidden"]').value;
-    addDoc(fileCollectionRef, {...fields, theDateCreated: serverTimestamp()})
+    addDoc(fileCollectionRef, {...fields, theDateCreated})
         .then(() => {
             // reset fields
             fields = {};
@@ -115,6 +118,8 @@ uploadForm.addEventListener('submit', (e) => {
             document.querySelector('dialog#to-delete').showModal();
             document.querySelector('#file-selected').innerText = "";
             uploadForm.reset();
+            e.submitter.disabled = false;
+            e.submitter.style.cursor = 'pointer';
             // getDataOnValue();
         })
 })
@@ -213,4 +218,45 @@ fileInput.addEventListener('change', (e) => {
         }
     );
 })
+*/
+
+
+/*
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
+const storage = getStorage();
+const storageRef = ref(storage, 'images/rivers.jpg');
+
+const uploadTask = uploadBytesResumable(storageRef, file);
+
+// Register three observers:
+// 1. 'state_changed' observer, called any time the state changes
+// 2. Error observer, called on failure
+// 3. Completion observer, called on successful completion
+uploadTask.on('state_changed', 
+  (snapshot) => {
+    // Observe state change events such as progress, pause, and resume
+    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    console.log('Upload is ' + progress + '% done');
+    switch (snapshot.state) {
+      case 'paused':
+        console.log('Upload is paused');
+        break;
+      case 'running':
+        console.log('Upload is running');
+        break;
+    }
+  }, 
+  (error) => {
+    // Handle unsuccessful uploads
+  }, 
+  () => {
+    // Handle successful uploads on complete
+    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      console.log('File available at', downloadURL);
+    });
+  }
+);
 */

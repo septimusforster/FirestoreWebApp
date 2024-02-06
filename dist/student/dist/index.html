@@ -8,8 +8,14 @@
 </head>
 <body>
     <dialog id="photo-dialog">
+        <button type="button" class="times">&times;</button>
         <output>Upload only appropriate photo to avoid </output>
-        <button>Upload Photo</button>
+        <div>
+            <img src="../img/daffy_sly.png" alt="Photo"/>
+            <label for="photo">upload-icon</label>
+            <input type="file" name="photo" id="photo" />
+        </div>
+        <button type="button" id="uploadBtn">Upload Photo</button>
     </dialog>
     <header>
         <p></p>
@@ -54,7 +60,7 @@
             <a href="#">Christian Religious Studies</a>
             <a href="#">Home Economics</a>
             <a href="#">Food and Nutrition</a>
-            <a href="#">French</a>
+            <a href="#">Agricultural Science</a>
             <a href="#">Chemistry</a>
             <a href="#">Biology</a>
             <a href="#">Physics</a>

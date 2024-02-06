@@ -131,6 +131,8 @@ async function getDocuments(arg) {
             </div>
         </div>
         `)
+        document.querySelectorAll('.timeline-content')[i].style.setProperty('--beforeContent',`"${data.theDateCreated}"`);
+        // console.log(data.theDateCreated)
     })
 };
 const subjectNav = document.querySelector('#subject-nav');
@@ -142,7 +144,7 @@ subjectNav.addEventListener('click', (e) => {
             }
         })
         e.target.classList.add('active');
-        // getDocuments(e.target.textContent);
+        getDocuments(e.target.textContent);
     }
 })
 // getDocuments();
