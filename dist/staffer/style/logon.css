@@ -11,7 +11,7 @@
     overflow: auto;
 }
 h2 {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     font-weight: 100;
 }
 h2, small {
@@ -26,17 +26,31 @@ main {
     font-family: Arial, Helvetica, sans-serif;
     background-color: rgba(150, 245, 198, 0.9);
     border-radius: 10px;
+   
+}
+
+.sign {
+    position: relative;
 }
 
 /* Hide the sign-up form */
 main:nth-child(1) {
     display: none;
+    background-color: inherit;
+    position: relative;
+    padding-right: 5%;
+    padding-top: 55%;
+    
+    
+    
 }
 main:nth-child(2) {
     display: none;
+    position: absolute;
 }
 main:nth-child(3) {
     display: none;
+    position: absolute;
 }
 /* Center the sign-in form */
 /* main:nth-child(3) { */
@@ -53,7 +67,7 @@ main form {
 }
 label, input, .group-items, .eye, button{
     /* display: block; */
-    margin: 5px 0;
+    margin: 2px 0;
     font-size: 16px;
 }
 label {
@@ -62,8 +76,8 @@ label {
 }
 input, select, .group-items span, .eye, textarea, button {
     padding: .5rem 1rem;
-    margin-bottom: 25px;
-    /* border-radius: 5px; */
+    margin-bottom: 10px;
+    border-radius: 5px;
 }
 input, button {
     outline: none;
@@ -88,12 +102,15 @@ input:focus {
     height: 35px;
     border: 1px solid;
     background-color: transparent;
-    color: #fff;
+    color: #777;
     cursor: pointer;
 }
 .group-items select {
     flex: 3;
     border-color: #fff;
+    background-color: #4aa391 ;
+    border-radius: 0;
+    color: #fff;
     /* border-color: #fff #fff #fff transparent; */
 }
 .group-items span {
