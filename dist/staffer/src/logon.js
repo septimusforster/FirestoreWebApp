@@ -186,7 +186,7 @@ loginForm2.addEventListener('submit', async (e) => {
     } else {
         // querySnapshot.docs.forEach(doc => sessionStorage.setItem('snapshotId', doc.id));
         loginForm2.reset();
-        location.href = '../../../index.html';
+        location.href = '../../USADEYZHluYW1heAib.html';
     }
 })
 
