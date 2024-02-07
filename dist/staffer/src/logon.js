@@ -103,12 +103,16 @@ removeSpans.forEach((removeSpan, index) => {
 const preview = document.querySelector('#preview');
 const photoPicker = document.getElementById('photo-picker');
 photoPicker.addEventListener('change', (e) => {
-    const fr = new FileReader();
-    fr.onload = () => {
-        avatar = fr.result;
+    if (e.target.files[0].size > 400000) {
+        window.alert("File size exceeded.")
+    } else {
+        const fr = new FileReader();
+        fr.onload = () => {
+            avatar = fr.result;
+        }
+        fr.readAsDataURL(e.target.files[0])
+        preview.src = URL.createObjectURL(e.target.files[0])
     }
-    fr.readAsDataURL(e.target.files[0])
-    preview.src = URL.createObjectURL(e.target.files[0])
 })
 const inputCode = document.querySelector('input#code');
 inputCode.addEventListener('keyup', (e) => {
