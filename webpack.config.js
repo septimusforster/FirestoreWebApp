@@ -1,12 +1,24 @@
 const path = require("path");
 //ROOT index.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "bundle.js"
+    },
+    watch: true
+}
+*/
+//ROOT hacks.js
+
+module.exports = {
+    mode: "development",
+    entry: "./src/hacks.js",
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "hacks_bundle.js"
     },
     watch: true
 }
