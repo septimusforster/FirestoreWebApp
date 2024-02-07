@@ -164,6 +164,7 @@ loginForm.addEventListener('submit', async (e) => {
         e.submitter.disabled = false;
         e.submitter.style.cursor = 'pointer';
     } else {
+        loginForm.reset();
         querySnapshot.docs.forEach(doc => sessionStorage.setItem('snapshotId', doc.id));
         location.href = 'index.html';
     }
@@ -184,6 +185,7 @@ loginForm2.addEventListener('submit', async (e) => {
         e.submitter.style.cursor = 'pointer';
     } else {
         // querySnapshot.docs.forEach(doc => sessionStorage.setItem('snapshotId', doc.id));
+        loginForm2.reset();
         location.href = '../../../index.html';
     }
 })

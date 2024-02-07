@@ -12,7 +12,7 @@ module.exports = {
 }
 */
 //ROOT hacks.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/hacks.js",
@@ -22,7 +22,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STAFFER index.js
 /*
 module.exports = {
@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //STAFFER logon.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/logon.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STUDENT index.js
 /*
 module.exports = {
