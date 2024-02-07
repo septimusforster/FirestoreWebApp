@@ -85,12 +85,16 @@ async function setColRef(para1="demo") {
     //GET LAST DOCUMENT FROM SERVER
     const q = query(colRef, orderBy("createdAt", "desc"), limit(1));
     const snapDoc = await getDocs(q);
-    snapDoc.docs.forEach(doc => {
-        // console.log(doc.data().password)
-        const lastPasswordIndex = classrooms[para1].indexOf(doc.data().password);
-        const newPassword = classrooms[para1][lastPasswordIndex - 1];
-        hiddenElems[1].value = newPassword;
-    })
+    if (snapDoc.empty) {
+        hiddenElems[1].value = classrooms[para1][0];
+    } else {
+        snapDoc.docs.forEach(doc => {
+            // console.log(doc.data().password)
+            const lastPasswordIndex = classrooms[para1].indexOf(doc.data().password);
+            const newPassword = classrooms[para1][lastPasswordIndex - 1];
+            hiddenElems[1].value = newPassword;
+        })
+    }
     //get and count documents in chosen collection
 /*    const snapshot = await getCountFromServer(colRef);
     const numOfDocs = snapshot.data().count;
@@ -113,7 +117,6 @@ async function setColRef(para1="demo") {
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
-        console.log('topnav', e)
         document.querySelector('.dropdown-menu').style.pointerEvents='none';
         myIframe.contentDocument.querySelector('ol').innerHTML = '';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
@@ -130,7 +133,7 @@ fm_createStudent.addEventListener('submit', (e) => {
     for(i = 0; i < e.target.length - 1; i++){
         studentDoc[e.target[i].name] = e.target[i].value;
     }
-    addDoc(colRef, {...studentDoc, upload_enabled: 0, createdAt: serverTimestamp()})
+    addDoc(colRef, {...studentDoc, upload_enabled: 0, photo_src: "", createdAt: serverTimestamp()})
     .then(() => {
         let col = myIframe.contentDocument.querySelector('h3').textContent;
         // numInClass++;

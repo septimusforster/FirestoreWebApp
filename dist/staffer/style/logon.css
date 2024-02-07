@@ -35,21 +35,18 @@ main:nth-child(1) {
 main:nth-child(2) {
     display: none;
 }
-
-/* Center the sign-in form */
 main:nth-child(3) {
+    display: none;
+}
+/* Center the sign-in form */
+/* main:nth-child(3) { */
+main.activate {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 35rem; /* Center vertically on the page */
-  
 }
-
-
-
-
-
 main form {
     display: flex;
     flex-direction: column;

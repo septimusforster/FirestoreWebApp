@@ -97,7 +97,7 @@
                     <span class="eye">show</span>
                 </span>
                 <button>Log In</button>
-                <p>Don't have account? <a href="">Create account</a></p>
+                <p>Don't have account? <a href="#" onclick="login()">Create account</a></p>
             </form>
             <hr/>
         </main>
@@ -112,7 +112,7 @@
                     <span class="eye">show</span>
                 </span>
                 <button>Log In</button>
-                <p>Don't have account? <a href="">Sign Up</a> </p>
+                <p>Don't have account? <a href="#" onclick="login()">Sign Up</a> </p>
             </form>
         </main>
         <dialog id="dialog-notice">
@@ -127,6 +127,23 @@
     </div>
     <script type="module" src="../src/logon_bundle.js"></script>
     <script>
+        const mains = document.querySelectorAll('main');
+        window.addEventListener('load', (e) => {
+            let params = new URL(document.location).searchParams;
+            const ua = params.get('ua');
+            const ui = parseInt(params.get('ui'));
+            if (ua == 'local/space') {
+                mains[ui].classList.toggle('activate')
+            } else {
+                mains[ui].classList.toggle('activate')
+            }
+        })
+        function login() {
+            mains.forEach(main => {
+                main.classList.remove('activate')
+            })
+            mains[0].classList.toggle('activate')
+        }
         // console.log(window.getComputedStyle(document.querySelector('hr')).borderColor);
         const eyes = document.querySelectorAll('.eye');
         eyes.forEach(eye => {

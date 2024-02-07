@@ -73,7 +73,7 @@ loginForm.addEventListener('submit', async (e) => {
                 let snapshot = {
                     'id': doc.id,
                     'class': classroom.value,
-                    'reservedPayload': reservedSnapshot.data().sub,
+                    'reservedPayload': reservedSnapshot.data().js_sub || reservedSnapshot.data().ss_sub,
                 }
                 sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
                 return location.href = '../dist/temp.html';

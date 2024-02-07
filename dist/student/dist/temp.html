@@ -46,15 +46,15 @@
             background-color: rgba(0,0,0,.2);
         }
         .banner div {
-            flex-basis: 30%;
-            min-width: 300px;
+            flex-basis: 27%;
+            min-width: 200px;
         }
         section {
             grid-row: 3/-1;
             justify-content: space-around;
             align-items: flex-start !important;
             padding: 50px;
-            /* background-color: green; */
+            margin-top: 10px;
         }
         div#photo-section {
             flex-basis: 20%;
@@ -76,7 +76,7 @@
         header h1 {
             font-weight: 100;
         }
-        div#header {
+        div.header {
             background-color: rgba(0,0,0,.2);
             color: #333;
             position: sticky;
@@ -84,17 +84,20 @@
             margin-bottom: 7px;
             /* border-bottom: 1px solid #777; */
         }
-        div#header label, div#header #counter {
+        div.header label, div.header #counter {
             display: inline-block;
         }
-        div#header label {
+        div.header label {
             padding: 10px;
             margin: 10px;
+        }
+        input#photoSrc {
+            display: none;
         }
         input#all {
             margin-left: 20px;
         }
-        div#header #counter {
+        div.header #counter {
             text-align: center;
             width: 30px;
             padding: 20px;
@@ -108,29 +111,40 @@
             /* border: 1px solid red; */
             position: relative;
         }
-        #formBody::-webkit-scrollbar {
+        #formBody::-webkit-scrollbar {/*.formBody*/
             width: 0.7em;
             transition: all .1s ease-in-out;
         }
-        #formBody:hover::-webkit-scrollbar-track {
+        #formBody:hover::-webkit-scrollbar-track {/*.formBody*/
             background-color: #fff;
             border-radius: 20px;
         }
-        #formBody:hover::-webkit-scrollbar-thumb {
+        #formBody:hover::-webkit-scrollbar-thumb {/*.formBody*/
             background-color: #777;
             border-radius: 20px;
         }
-        #formBody label {
+        #formBody label {/*.formBody*/
             display: block;
             padding: 7px 14px;
             color: #333;
             cursor: pointer;
             transition: all .1s ease-in-out;
         }
-        #formBody label:hover {
+        #formBody label:hover {/*.formBody*/
             background-color: rgba(100,100,100,.1);
         }
-        #footer {
+        #photoBody {
+            width: 250px;
+            height: 250px;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .footer {
             position: sticky;
             bottom: 0;
             padding: 10px;
@@ -138,7 +152,7 @@
             margin-top: 10px;
             border-top: 1px solid #aaa;
         }
-        #footer input {
+        .footer input {
             padding: 10px 20px;
             margin: 10px;
             background-color: rgba(100,100,100,.3);
@@ -147,7 +161,7 @@
             border-radius: 7px;
             transition: all .1s ease-in-out;
         }
-        #footer input:hover {
+        .footer input:hover {
             background-color: #007960;
             color: #fff;
         }
@@ -172,28 +186,29 @@
             <div>Select the range of subjects you offer;<br/>only Senior Secondary students have provision to amend them.</div>
         </div>
         <section>
-            <div id="photo-section"></div>
+            <div id="photo-section">
+                <div class="header">
+                    <input type="file" name="photo_src" id="photoSrc" accept="image/*"><label for="photoSrc">&plus; Pick a photo</label>
+                </div>
+                <form action="" name="photoForm">
+                    <div id="photoBody">
+                        <img src="" alt="photo-preview" width="250">
+                    </div>
+                    <div class="footer">
+                        <input type="submit" value="Upload">
+                    </div>
+                </form>
+            </div>
             <div id="subject-section">
-                <div id="header">
+                <div class="header">
                     <input type="checkbox" name="all" id="all" /><label for="all">Select all</label>
                     <span id="counter">0</span>
                 </div>
                 <form action="" name="subjectForm">
                     <div id="formBody">
-                        <label id="cb1">
-                            <input type="checkbox" name="offered" id="cb1" value="Christian Religious Studies" /> Christian Religious Studies
-                            <span></span>
-                        </label>
-                        <label id="cb2">
-                            <input type="checkbox" name="offered" id="cb2" value="Mathematics" /> Mathematics
-                            <span></span>
-                        </label>
-                        <label id="cb3">
-                            <input type="checkbox" name="offered" id="cb3" value="Biology" /> Biology
-                            <span></span>
-                        </label>
+                        
                     </div>
-                    <div id="footer">
+                    <div class="footer">
                         <input type="submit" value="Submit"/>
                         <!-- <button type="submit">Submit</button> -->
                     </div>
@@ -204,6 +219,7 @@
     <script>
         // console.log(JSON.parse(sessionStorage.snapshot))
         const subjectForm = document.forms.subjectForm;
+        const photoForm = document.forms.photoForm;
         const selectAll = document.querySelector('input#all');
         const counter = document.querySelector('#counter');
         selectAll.onclick = function (e) {

@@ -126,6 +126,7 @@ label i.active {
     opacity: 1;
     transform: scale(1);
 }
+/*
 [data-disabled] {
     display: none;
 }
@@ -138,3 +139,4 @@ dialog#info {
     font-size: 1.2em;
     box-shadow: 0 0 5px #333f;
 }
+*/

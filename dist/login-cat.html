@@ -11,36 +11,33 @@
     <title>Destiny Christian Academy</title>
 </head>
 <body>
+
     <div class="image">
       <span>Welcome to Destiny Academy</span>
       <img src="/dist/staffer/img/DCA LOGO.png" class="ima">
       <p>Choose Category as Applicable</p>
     </div>
     <div class="login-cat">
-        <button class="student" id="log-btn">student</button>
+        <button class="student" type="button" id="log-btn">student</button>
       </div>
     <div class="login-cat">
-        <button id="log-btn" onclick="teachLog(1)">teacher</button>
+        <button id="log-btn" type="button" onclick="location.href='./staffer/dist/logon.html?ua=local/space&ui=1'">teacher</button>
       </div>
     <div class="login-cat">
-        <button id="log-btn" onclick="teachLog(2)">admin</button>
+        <button id="log-btn" type="button" onclick="location.href='./staffer/dist/logon.html?ua=local/space&ui=2'">admin</button>
       </div>
     <div class="login-cat">
-        <button id="log-btn">management</button>
+        <button type="button" id="log-btn">management</button>
       </div>
 
       <script>
         const but = document.querySelector('.student')
-        console.log(but)
-
+        
         but.addEventListener('click', function() {
-          console.log('the Lord is so good')
           const targetPage = '/sign in.html'
           window.location.href = targetPage
           window.history.replaceState(null, '', targetPage)
         })
       </script>
-
-
 </body>
 </html>
