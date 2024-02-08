@@ -25,7 +25,7 @@ initializeApp(firebaseConfig)
 const db = getFirestore()
 const ss = JSON.parse(sessionStorage.getItem('snapshot'));
 const headerParagraph = document.querySelector('header p');
-
+//load user profile data
 document.querySelectorAll('#profile-nav div').forEach(div => {
     if (div.id === "full_name") {
         div.lastElementChild.textContent = ss.last_name.concat(" ", ss.first_name, " ", ss.other_name);
@@ -33,7 +33,14 @@ document.querySelectorAll('#profile-nav div').forEach(div => {
         div.lastElementChild.textContent = ss[div.id];
     }
 })
-const studentID = ss.snapshotId;
+//load user picture
+document.querySelector("img[alt='Photo']").src = ss.photo_src;
+//load user subjects
+let i;
+for (i = 0; i < ss.offered.length; i++) {
+    document.querySelector('#subject-nav').insertAdjacentHTML('beforeend', `<a href="#" value="${ss.offered[i]}">${ss.offered[i]}</a>`)
+}
+const studentID = ss.id;
 const studentClass = ss.class;
 // collection refs
 const ref = doc(db, studentClass, studentID);
@@ -144,7 +151,7 @@ subjectNav.addEventListener('click', (e) => {
             }
         })
         e.target.classList.add('active');
-        getDocuments(e.target.textContent);
+        // getDocuments(e.target.textContent);
     }
 })
 // getDocuments();

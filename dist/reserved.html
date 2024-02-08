@@ -3,14 +3,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../style/reserved.css">
 </head>
 <body>
     <main class="wrapper">
-        <form action="#">
+        <header></header>
+        <div class="mainBody">
+            <aside></aside>
+            <section>
+                <div class="section__div">
+                    <button type="button"></button><span>Create a new Junior Secondary subject</span>
+                </div>
+                <div class="section__div">
+                    <button type="button"></button><span>Create a new Senior Secondary subject</span>
+                </div>
+                <div class="section__div">
+                    <button type="button"></button><span>Create a new arm</span>
+                </div>
+            </section>
+            <aside>
+                <div class="aside__header">
+                    <input type="radio" name="jnr" id="jnr1"/>
+                    <label for="jnr1">Junior Subjects</label>
+                    <div class="aside__content">
+                        <ul>
+                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="aside__header">
+                    <input type="radio" name="jnr" id="jnr2"/>
+                    <label for="jnr2">Senior Subjects</label>
+                    <div class="aside__content">
+                        <ul>
+                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="aside__header">
+                    <input type="radio" name="jnr" id="jnr3"/>
+                    <label for="jnr3">Arms</label>
+                    <div class="aside__content">
+                        <ul>
+                            <li>List item no.</li>
+                            <li>List item no.</li>
+                            <li>List item no.</li>
+                            <li>List item no.</li>
+                            <li>List item no.</li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        <!-- <form action="#">
             <label for="sub">Enter subject</label>
             <input type="text" name="sub" id="sub" />
             <input type="submit" value="Submit" />
-        </form>
+        </form> -->
+        <footer></footer>
     </main>
+
+    <script>
+        // document.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
+        //     console.log(e.target.checked)
+        // })
+    </script>
+    <script type="module" src="../src/reserved_bundle.js"></script>
 </body>
 </html>

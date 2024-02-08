@@ -23,6 +23,18 @@ module.exports = {
     watch: true
 }
 */
+//ROOT reserved.js
+/*
+module.exports = {
+    mode: "development",
+    entry: "./src/reserved.js",
+    output: {
+        path: path.resolve(__dirname, "src"),
+        filename: "reserved_bundle.js"
+    },
+    watch: true
+}
+*/
 //STAFFER index.js
 /*
 module.exports = {
@@ -36,7 +48,7 @@ module.exports = {
 }
 */
 //STAFFER logon.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/logon.js",
@@ -46,9 +58,9 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STUDENT index.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/index.js",
@@ -58,7 +70,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STUDENT logon.js
 /*
 module.exports = {

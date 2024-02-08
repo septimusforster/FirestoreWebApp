@@ -51,30 +51,37 @@ loginForm.addEventListener('submit', async (e) => {
         e.submitter.style.cursor = 'pointer';
     } else {
         querySnapshot.docs.forEach(async doc => {
-            let ue = doc.data().upload_enabled;
-            if(ue === 2) {
-                let snapshot = {
-                    'snapshotId': doc.id,
-                    'first_name': doc.data().first_name,
-                    'last_name': doc.data().last_name,
-                    'other_name': doc.data().other_name,
-                    'gender': doc.data().gender,
-                    'admission_no': doc.data().admission_no,
-                    'arm': doc.data().arm,
-                    'class': classroom.value,
-                    'em': doc.data().email || doc.data().admission_no,
-                    'pwd': doc.data().password,
-                    ue,
-                }
+            // let ue = doc.data().upload_enabled;
+            let photo_src = doc.data().photo_src;
+            let offered = doc.data().offered;
+            let snapshot = {
+                'id': doc.id,
+                'first_name': doc.data().first_name,
+                'last_name': doc.data().last_name,
+                'other_name': doc.data().other_name,
+                'gender': doc.data().gender,
+                'admission_no': doc.data().admission_no,
+                'arm': doc.data().arm,
+                'class': classroom.value,
+                'em': doc.data().email || doc.data().admission_no,
+                'pwd': doc.data().password,
+                photo_src,
+                offered,
+            }
+            if(photo_src && offered) {
                 sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
                 return location.href = '../dist/index.html';
-            } else {
+            } else if (offered) {
+                sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
+                return location.href = '../dist/temp.html?of=1&ps=0';
+            } else if (photo_src) {
                 const reservedSnapshot = classroom.value.startsWith('JSS') ? await getDoc(JSSubjectRef) : await getDoc(SSSubjectRef);
-                let snapshot = {
-                    'id': doc.id,
-                    'class': classroom.value,
-                    'reservedPayload': reservedSnapshot.data().js_sub || reservedSnapshot.data().ss_sub,
-                }
+                snapshot = {...snapshot, 'reservedPayload': reservedSnapshot.data().js_sub || reservedSnapshot.data().ss_sub,}
+                sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
+                return location.href = '../dist/temp.html?of=0&ps=1';
+            } else {
+                // const reservedSnapshot = classroom.value.startsWith('JSS') ? await getDoc(JSSubjectRef) : await getDoc(SSSubjectRef);
+                // snapshot = {...snapshot, 'reservedPayload': reservedSnapshot.data().js_sub || reservedSnapshot.data().ss_sub,}
                 sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
                 return location.href = '../dist/temp.html';
             }

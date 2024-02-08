@@ -32,8 +32,8 @@
         header {
             grid-row: 1/1;
             justify-content: space-around;
-            position: sticky;
-            top: 0;
+            /* position: sticky;
+            top: 0; */
             background-color: rgba(42,7,75);
         }
         .banner {
@@ -62,6 +62,11 @@
         div#subject-section {
             flex-basis: 25%;
             position: relative;
+        }
+        .deactivate {
+            pointer-events: none;
+            opacity: 0;
+            display: none;
         }
         section > div {
             flex-basis: 20%;
@@ -152,7 +157,7 @@
             margin-top: 10px;
             border-top: 1px solid #aaa;
         }
-        .footer input {
+        .footer input, #skip-btn {
             padding: 10px 20px;
             margin: 10px;
             background-color: rgba(100,100,100,.3);
@@ -165,13 +170,29 @@
             background-color: #007960;
             color: #fff;
         }
+        #skip-btn:hover {
+            background-color: rgb(42,7,75);
+            color: #fff;
+        }
         button, input {
             border: none;
             outline: none;
             cursor: pointer;
         }
-        @media screen {
-            
+        ::backdrop {
+            background-color: #555f;
+        }
+        dialog {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            margin: auto;
+            text-align: center;
+            border: none;
+        }
+        output {
+            padding: 20px;
+            font-size: 2rem;
         }
     </style>
 </head>
@@ -195,7 +216,8 @@
                         <img src="" alt="photo-preview" width="250">
                     </div>
                     <div class="footer">
-                        <input type="submit" value="Upload">
+                        <button type="button" id="skip-btn" class="deactivate">Skip</button>
+                        <input type="submit" value="Upload" class="deactivate">
                     </div>
                 </form>
             </div>
@@ -216,7 +238,33 @@
             </div>
         </section>
     </main>
+    <dialog id="success">
+        <output></output>
+        <p></p>
+    </dialog>
     <script>
+        const wrapperChildren = document.querySelector('.wrapper').children;
+        window.addEventListener('load', (e) => {
+
+            let params = new URL(document.location).searchParams;
+            const offered = parseInt(params.get('of'));
+            const photosrc = parseInt(params.get('ps'));
+            if (offered) {
+                for(i = 0; i < wrapperChildren.length; i++) {
+                    wrapperChildren[i].lastElementChild.classList.add('deactivate');
+                }
+                skipBtn.classList.remove('deactivate')
+            }
+            if (photosrc) {
+                for(i = 0; i < wrapperChildren.length; i++) {
+                    wrapperChildren[i].firstElementChild.classList.add('deactivate');
+                }
+            }
+        })
+        const skipBtn = document.querySelector('#skip-btn');
+        skipBtn.onclick = function () {
+            location.replace('./index.html')
+        }
         // console.log(JSON.parse(sessionStorage.snapshot))
         const subjectForm = document.forms.subjectForm;
         const photoForm = document.forms.photoForm;
@@ -249,6 +297,7 @@
         })
         const formBody = document.getElementById('formBody');
         const ss = JSON.parse(sessionStorage.getItem('snapshot'));
+        /*
         ss.reservedPayload.forEach((sub, i) => {
             formBody.insertAdjacentHTML('beforeend', `
             <label id="cb${i+1}">
@@ -256,7 +305,7 @@
                 <span></span>
             </label>
             `)
-        })
+        })*/
     </script>
     <script type="module" src="../src/temp_bundle.js"></script>
 </body>
