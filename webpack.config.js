@@ -12,7 +12,7 @@ module.exports = {
 }
 */
 //ROOT hacks.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/hacks.js",
@@ -22,7 +22,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT reserved.js
 /*
 module.exports = {
@@ -60,7 +60,7 @@ module.exports = {
 }
 */
 //STUDENT index.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/index.js",
@@ -70,7 +70,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STUDENT logon.js
 /*
 module.exports = {

@@ -243,6 +243,8 @@
         <p></p>
     </dialog>
     <script>
+        const formBody = document.getElementById('formBody');
+        const ss = JSON.parse(sessionStorage.getItem('snapshot'));
         const wrapperChildren = document.querySelector('.wrapper').children;
         window.addEventListener('load', (e) => {
 
@@ -254,6 +256,15 @@
                     wrapperChildren[i].lastElementChild.classList.add('deactivate');
                 }
                 skipBtn.classList.remove('deactivate')
+            } else {
+                ss.reservedPayload.forEach((sub, i) => {
+                    formBody.insertAdjacentHTML('beforeend', `
+                    <label id="cb${i+1}">
+                        <input type="checkbox" name="offered" id="cb${i+1}" value="${sub}" /> ${sub}
+                        <span></span>
+                    </label>
+                    `)
+                })
             }
             if (photosrc) {
                 for(i = 0; i < wrapperChildren.length; i++) {
@@ -288,24 +299,14 @@
         subjectForm.addEventListener('change', (e) => {
             counter.textContent = subjectForm.querySelectorAll("input[type='checkbox']:checked").length;
             if (counter.textContent == subjectForm.querySelectorAll("input[type='checkbox']").length) {
-                selectAll.checked = false;
+                selectAll.checked = true;
                 selectAll.nextElementSibling.innerText = "Unselect all";
             } else {
-                selectAll.checked = true;
+                selectAll.checked = false;
                 selectAll.nextElementSibling.innerText = "Select all";
             }
         })
-        const formBody = document.getElementById('formBody');
-        const ss = JSON.parse(sessionStorage.getItem('snapshot'));
-        /*
-        ss.reservedPayload.forEach((sub, i) => {
-            formBody.insertAdjacentHTML('beforeend', `
-            <label id="cb${i+1}">
-                <input type="checkbox" name="offered" id="cb${i+1}" value="${sub}" /> ${sub}
-                <span></span>
-            </label>
-            `)
-        })*/
+        
     </script>
     <script type="module" src="../src/temp_bundle.js"></script>
 </body>

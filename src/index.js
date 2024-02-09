@@ -14,6 +14,7 @@ let classrooms = {
     "SSS 3": s3.toReversed(),
     "demo": demo.toReversed()
 }
+
 /*
 const firebaseConfig = {
     apiKey: "AIzaSyCT92x3HE8nUsYsKgQ2eJZU7DHQ83mTgwE",

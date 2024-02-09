@@ -34,7 +34,7 @@ document.querySelectorAll('#profile-nav div').forEach(div => {
     }
 })
 //load user picture
-document.querySelector("img[alt='Photo']").src = ss.photo_src;
+document.querySelector("img#avatar").src = ss.photo_src;
 //load user subjects
 let i;
 for (i = 0; i < ss.offered.length; i++) {

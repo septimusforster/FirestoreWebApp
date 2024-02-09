@@ -1,31 +1,22 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, deleteApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, getDocs, query, where, and, or } from "firebase/firestore";
+import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
-const firebaseConfig = {    
-    apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
-    authDomain: "fir-pro-152a1.firebaseapp.com",
-    projectId: "fir-pro-152a1",
-    storageBucket: "fir-pro-152a1.appspot.com",
-    messagingSenderId: "158660765747",
-    appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46"
-};
-/*
-const firebaseConfig = {
-    apiKey: "AIzaSyCT92x3HE8nUsYsKgQ2eJZU7DHQ83mTgwE",
-    authDomain: "dca-mobile-26810.firebaseapp.com",
-    projectId: "dca-mobile-26810",
-    storageBucket: "dca-mobile-26810.appspot.com",
-    messagingSenderId: "843119620986",
-    appId: "1:843119620986:web:e1a4f469626cbd4f241cc3"
-};
-*/
-// initialize firebase app
-initializeApp(firebaseConfig)
-// init services
-const db = getFirestore()
-// collection refs
-const JSSubjectRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
-const SSSubjectRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
+// initial firebase app
+var app = initializeApp(configs[0])
+var db, JSSubjectRef, SSSubjectRef;
+
+const selectElt = document.querySelector('select#classroom');
+selectElt.addEventListener('change', (e) => {
+    deleteApp(app);
+    let optIndex = e.target.selectedIndex - 1;
+    app = initializeApp(configs[optIndex]);
+    // init services
+    db = getFirestore()
+    // collection refs
+    JSSubjectRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
+    SSSubjectRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
+})
 
 
 const classroom = document.querySelector('#classroom');
@@ -80,8 +71,8 @@ loginForm.addEventListener('submit', async (e) => {
                 sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
                 return location.href = '../dist/temp.html?of=0&ps=1';
             } else {
-                // const reservedSnapshot = classroom.value.startsWith('JSS') ? await getDoc(JSSubjectRef) : await getDoc(SSSubjectRef);
-                // snapshot = {...snapshot, 'reservedPayload': reservedSnapshot.data().js_sub || reservedSnapshot.data().ss_sub,}
+                const reservedSnapshot = classroom.value.startsWith('JSS') ? await getDoc(JSSubjectRef) : await getDoc(SSSubjectRef);
+                snapshot = {...snapshot, 'reservedPayload': reservedSnapshot.data().js_sub || reservedSnapshot.data().ss_sub,}
                 sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
                 return location.href = '../dist/temp.html';
             }
