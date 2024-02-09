@@ -1,5 +1,9 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, deleteApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, onSnapshot } from "firebase/firestore";
+import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
+
+
 //declare all const and var
 const uploadForm = document.querySelectorAll('form')[0];
 const documentsWrapper = document.querySelector('#documents-wrapper div:nth-of-type(2)');
@@ -13,18 +17,17 @@ const commentNO = ["No, I don't wanna.","No, sorry.","No, don't."];
 var fields = {};
 const fileRef = "fileCollection";
 
-const firebaseConfig = {    
-    apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
-    authDomain: "fir-pro-152a1.firebaseapp.com",
-    projectId: "fir-pro-152a1",
-    storageBucket: "fir-pro-152a1.appspot.com",
-    messagingSenderId: "158660765747",
-    appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46"
-};
 // initialize firebase app
-initializeApp(firebaseConfig)
+var app = initializeApp(configs[0]);
 // init services
-const db = getFirestore()
+var db;
+
+function chooseConfig(projConfig) {
+    deleteApp(app);
+    app = initializeApp(projConfig);
+    db = getFirestore();
+}
+
 // collection refs
 const fileCollectionRef = collection(db, fileRef);
 const staffCollectionRef = doc(db, "staffCollection", sessionStorage.getItem('snapshotId'));
@@ -107,6 +110,24 @@ uploadForm.addEventListener('submit', (e) => {
     e.submitter.disabled = true;
     e.submitter.style.cursor = 'not-allowed';
     let theDateCreated = Intl.DateTimeFormat('en-us', {dateStyle: "medium"}).format(new Date());
+    const formData = new FormData(uploadForm);
+    let catPath = formData.get('category');
+    let subPath = formData.get('theSubject');
+
+    const storage = getStorage();
+    const rootPath = ref(storage, `files/${subPath}/${catPath}`);
+    const imagesRef = ref(rootPath, e.target.files[0].name);
+    uploadBytes(imagesRef, e.target.files[0]).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then(async (downloadURL) => {
+            const notesRef = collection(db, "activities");
+            await addDoc(collection(notesRef, "notes", "mth"), {
+                dest: downloadURL,
+                timestamp: serverTimestamp(),
+            })
+            console.log('Successful.')
+        });
+    })
+
     //get authorId
     // const theAuthorId = document.querySelector('input[type="hidden"]').value;
     addDoc(fileCollectionRef, {...fields, theDateCreated})

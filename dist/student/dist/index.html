@@ -53,9 +53,19 @@
             </div>
         </nav>
         <nav id="subject-nav">
-            <h3>context</h3>
-            <hr/>
-            
+            <h3>context <span class="gt">&nbsp;&gt;&nbsp;</span> <span id="ctx-txt"></span></h3>
+            <div id="subject-navs">
+                <hr/>
+                <div class="inner opened">
+                    <span class="selected-context"><a href="#">Note</a></span>
+                    <span class="selected-context"><a href="#">Exercise</a></span>
+                    <span class="selected-context"><a href="#">Quiz</a></span>
+                    <span class="selected-context"><a href="#">Test</a></span>
+                </div>
+                <div class="inner">
+                    
+                </div>
+            </div>
         </nav>
         <nav id="editProfile-nav">
             <form name="formUser">
@@ -104,6 +114,27 @@
                 navs[ind].classList.add("active")
             })
         })
+
+        const ctxButton = document.querySelector('#subject-nav h3');
+        const selectedCtxs = document.querySelectorAll('span.selected-context');
+        const outerDiv = document.querySelector('#subject-navs');
+        const innerDivs = document.querySelectorAll('.inner');
+
+        selectedCtxs.forEach(ctx => {
+            ctx.addEventListener('click', (e) => {
+                document.querySelector('span#ctx-txt').textContent = e.target.textContent;
+                outerDiv.style.justifyContent = 'flex-end';
+                innerDivs[1].classList.add('opened');
+                innerDivs[0].classList.remove('opened');
+            })
+        }) 
+
+        ctxButton.onclick = function () {
+            document.querySelector('span#ctx-txt').textContent = '';
+            outerDiv.style.justifyContent = 'flex-start';
+            innerDivs[0].classList.add('opened');
+            innerDivs[1].classList.remove('opened');
+        }
     </script>
 </body>
 </html>

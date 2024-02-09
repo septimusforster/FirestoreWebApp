@@ -1,29 +1,24 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy } from "firebase/firestore";
-const firebaseConfig = {    
-    apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
-    authDomain: "fir-pro-152a1.firebaseapp.com",
-    projectId: "fir-pro-152a1",
-    storageBucket: "fir-pro-152a1.appspot.com",
-    messagingSenderId: "158660765747",
-    appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46"
-};
-/*
-const firebaseConfig = {
-    apiKey: "AIzaSyCT92x3HE8nUsYsKgQ2eJZU7DHQ83mTgwE",
-    authDomain: "dca-mobile-26810.firebaseapp.com",
-    projectId: "dca-mobile-26810",
-    storageBucket: "dca-mobile-26810.appspot.com",
-    messagingSenderId: "843119620986",
-    appId: "1:843119620986:web:e1a4f469626cbd4f241cc3"
-};
-*/
-// initialize firebase app
-initializeApp(firebaseConfig)
-// init services
+import { initializeApp, deleteApp } from "firebase/app";
+import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy } from "firebase/firestore";
+import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
+// var [f1, f2, f3, f4, f5, f6] = configs;
 
-const db = getFirestore()
 const ss = JSON.parse(sessionStorage.getItem('snapshot'));
+const studentID = ss.id;
+const studentClass = ss.class;
+const classCollection = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3","def"];
+const classConfiguration = configs[classCollection.indexOf(studentClass)];
+//initial firebase app
+var app = initializeApp(classConfiguration)
+//init services
+var db;
+// collection refs
+function chooseConfig(projConfig) {
+    deleteApp(app);
+    app = initializeApp(projConfig);
+    db = getFirestore();
+}
+
 const headerParagraph = document.querySelector('header p');
 //load user profile data
 document.querySelectorAll('#profile-nav div').forEach(div => {
@@ -38,13 +33,8 @@ document.querySelector("img#avatar").src = ss.photo_src;
 //load user subjects
 let i;
 for (i = 0; i < ss.offered.length; i++) {
-    document.querySelector('#subject-nav').insertAdjacentHTML('beforeend', `<a href="#" value="${ss.offered[i]}">${ss.offered[i]}</a>`)
+    document.querySelector('#subject-navs .inner:last-child').insertAdjacentHTML('beforeend', `<a href="#" value="${ss.offered[i]}">${ss.offered[i]}</a>`)
 }
-const studentID = ss.id;
-const studentClass = ss.class;
-// collection refs
-const ref = doc(db, studentClass, studentID);
-const refToDocs = collection(db, "fileCollection");
 
 const formUser = document.forms.formUser;
 const currentUser = formUser.querySelector('#currentUsername');
@@ -59,6 +49,7 @@ formUser.addEventListener('change', (e) => {
 formUser.addEventListener('submit', async (e) => {
     e.preventDefault();
     loadStart(e);
+
     const formData = new FormData(formUser);
     const docSnap = await updateDoc(ref,{
         email: formData.get('email'),
@@ -119,12 +110,13 @@ passwords.forEach((password, index) => {
 })
 
 const timelineBar = document.querySelector('#timeline-bar');
-async function getDocuments(arg) {
-    const q = query(refToDocs, where("theSubject", "==", arg), where("theClassroom", "==", studentClass)/*, orderBy("theDateCreated", "desc")*/);
-    const docSnaps = await getDocs(q);
-    if (docSnaps.empty) return timelineBar.innerHTML = 'There are no tasks to perform.';
+async function getDocuments(subject) {
+    const group = query(collectionGroup(db, subject));
+    const querySnapshot = await getDocs(group);
+    if (querySnapshot.empty) return timelineBar.innerHTML = 'There are no tasks to perform.';
     timelineBar.innerHTML = '';
-    docSnaps.docs.forEach((doc, i) => {
+    querySnapshot.forEach((doc) => {
+        // console.log(doc.id, ' => ', doc.data());
         let data = doc.data();
         let docName = doc.data().theFileName || "No topic.";
         let title = docName.slice(0,docName.lastIndexOf('.'));
@@ -139,10 +131,20 @@ async function getDocuments(arg) {
         </div>
         `)
         document.querySelectorAll('.timeline-content')[i].style.setProperty('--beforeContent',`"${data.theDateCreated}"`);
+    });
+    /*
+    //get collection; get subject; PATH: files/mth/notes/*.txt
+    const refToDocs = collection(db, "fileCollection");
+    const q = query(refToDocs, where("theSubject", "==", arg), where("theClassroom", "==", studentClass)/*, orderBy("theDateCreated", "desc"));
+    const docSnaps = await getDocs(q);
+    if (docSnaps.empty) return timelineBar.innerHTML = 'There are no tasks to perform.';
+    timelineBar.innerHTML = '';
+    docSnaps.docs.forEach((doc, i) => {
         // console.log(data.theDateCreated)
     })
+    */
 };
-const subjectNav = document.querySelector('#subject-nav');
+const subjectNav = document.querySelector('#subject-navs .inner:last-child');
 subjectNav.addEventListener('click', (e) => {
     if (e.target.hasAttribute('href')) {
         subjectNav.querySelectorAll('a').forEach(anchor => {
@@ -151,7 +153,8 @@ subjectNav.addEventListener('click', (e) => {
             }
         })
         e.target.classList.add('active');
-        // getDocuments(e.target.textContent);
+        chooseConfig(classConfiguration);
+        getDocuments(e.target.textContent);
     }
 })
 // getDocuments();
