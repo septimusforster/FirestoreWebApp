@@ -74,29 +74,37 @@ const removeSpans = document.querySelectorAll('.remove');
 const textAreas = document.querySelectorAll('textarea');
 addSpans.forEach((addSpan, index) => {
     addSpan.addEventListener('click', (e) => {
-        let val = e.target.nextElementSibling.value;
+        let abbr = e.target.nextElementSibling.value;
+        let txt = e.target.nextElementSibling.selectedOptions[0].text;
+        
         if(textAreas[index].textContent.length == 0) {
-            textAreas[index].textContent = val;
-        } else if (!textAreas[index].textContent.includes(val)) {
-            textAreas[index].textContent += "," + val;
+            textAreas[index].textContent = txt;
+        } else if (!textAreas[index].textContent.includes(txt)) {
+            textAreas[index].textContent += "," + txt;
         }
         if (addSpan.nextElementSibling.id == "classrooms") {
-            classroomsTaught = textAreas[index].textContent.split(",")
+            classroomsTaught = textAreas[index].textContent.split(",");
         } else {
-            subjectsTaught = textAreas[index].textContent.split(",")
+            const obj1 = {
+                [abbr]: txt,
+            }
+            if (!subjectsTaught.filter(a => a.hasOwnProperty(abbr)).length) {
+                subjectsTaught.push(obj1)
+            }
         }
     })
 })
-// const textAreas = document.querySelectorAll('.textarea');
 removeSpans.forEach((removeSpan, index) => {
     removeSpan.addEventListener('click', (e) => {
-        let val = e.target.previousElementSibling.value;
+        let abbr = e.target.previousElementSibling.value;
+        let txt = e.target.previousElementSibling.selectedOptions[0].text;
+
         let areaVal = textAreas[index].textContent.split(',');
-        textAreas[index].textContent = areaVal.filter(a => a != val);
+        textAreas[index].textContent = areaVal.filter(a => a != txt);
         if (removeSpan.previousElementSibling.id == "classrooms") {
-            classroomsTaught = classroomsTaught.filter(a => a != val)
+            classroomsTaught = classroomsTaught.filter(a => a != txt)
         } else {
-            subjectsTaught = subjectsTaught.filter(a => a != val)
+            subjectsTaught = subjectsTaught.filter(a => !a.hasOwnProperty(abbr));
         }
     })
 })
@@ -132,8 +140,8 @@ signUpForm.addEventListener('submit', (e) => {
         e.submitter.style.cursor = 'not-allowed';
         
         addDoc(staffCollectionRef, {
-            fullName: document.getElementById('fullName').value,
-            username: document.getElementById('email').value,
+            fullName: document.getElementById('fullName').value.trim(),
+            username: document.getElementById('email').value.trim(),
             password: cfp,
             code,
             classroomsTaught,
@@ -169,7 +177,7 @@ loginForm.addEventListener('submit', async (e) => {
         e.submitter.style.cursor = 'pointer';
     } else {
         loginForm.reset();
-        querySnapshot.docs.forEach(doc => sessionStorage.setItem('snapshotId', doc.id));
+        querySnapshot.docs.forEach(doc => sessionStorage.setItem('snapshotId', JSON.stringify({id: doc.id, data: doc.data()})));
         location.href = 'index.html';
     }
 })

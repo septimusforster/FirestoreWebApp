@@ -6,8 +6,8 @@ import configs from "../../../src/JSON/configurations.json" assert {type: 'json'
 const ss = JSON.parse(sessionStorage.getItem('snapshot'));
 const studentID = ss.id;
 const studentClass = ss.class;
-const classCollection = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3","def"];
-const classConfiguration = configs[classCollection.indexOf(studentClass)];
+const classArray = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3","def"];
+const classConfiguration = configs[classArray.indexOf(studentClass)];
 //initial firebase app
 var app = initializeApp(classConfiguration)
 //init services

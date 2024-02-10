@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //STAFFER index.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/index.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STAFFER logon.js
 /*
 module.exports = {
@@ -96,7 +96,7 @@ module.exports = {
 }
 */
 //STUDENT storage.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/storage.js",
@@ -106,3 +106,4 @@ module.exports = {
     },
     watch: true
 }
+*/

@@ -10,9 +10,11 @@ const documentsWrapper = document.querySelector('#documents-wrapper div:nth-of-t
 const evenSpans = document.querySelectorAll('.profile span:nth-of-type(even)');
 const photo = document.querySelector('#avatar img');
 const runBtn = document.querySelector('#documents-wrapper button');
+const selectClassroom = document.querySelector('select#theClassroomId');
 const commentOK = ["It's alright.","I get it.","Fine.","Okay."];
 const commentYES = ["Yes, go on.","Of course.","Yes, please."];
 const commentNO = ["No, I don't wanna.","No, sorry.","No, don't."];
+const classArray = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
 // var authorId = document.querySelector('#upload-wrapper input[type="hidden"]');
 var fields = {};
 const fileRef = "fileCollection";
@@ -29,10 +31,32 @@ function chooseConfig(projConfig) {
 }
 
 // collection refs
-const fileCollectionRef = collection(db, fileRef);
-const staffCollectionRef = doc(db, "staffCollection", sessionStorage.getItem('snapshotId'));
+// const fileCollectionRef = collection(db, fileRef);
+// const staffCollectionRef = doc(db, "staffCollection", sessionStorage.getItem('snapshotId'));
 
-//load member profile
+// load member profile
+const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
+// load profile pic
+if (ss.data.avatar) photo.src = ss.data.avatar;
+// load full name and alias
+evenSpans[0].textContent = ss.data.fullName;
+evenSpans[1].textContent = ss.data.username;
+// load classes taught in profile and selectElt
+ss.data.classroomsTaught.forEach(classroom => {
+    evenSpans[2].insertAdjacentHTML('afterbegin', `${classroom}<br>`)
+    let option = new Option(classroom, classroom);
+    selectClassroom.insertAdjacentElement('beforeend', option);
+});
+// load subjects taught in profile and selectElt
+ss.data.subjectsTaught.forEach(subject => {
+    for (const [k, v] of Object.entries(subject)) {
+        evenSpans[3].insertAdjacentHTML('afterbegin', `${v}<br>`);
+        let option = new Option(v, k);
+        document.querySelector('select#theSubjectId').insertAdjacentElement('beforeend', option);
+    }
+});
+document.querySelector('#profile-wrapper').children[2].style.display = 'flex';
+/*
 const getSingleDoc = async () => {
     try {
         // const docRef = doc(db, collectionName, documentId);
@@ -64,7 +88,7 @@ getSingleDoc()
                 evenSpans[2].insertAdjacentHTML('afterbegin', `${classroom}<br>`)
                 //Enter these values also for the select element for classrooms
                 let option = new Option(classroom, classroom);
-                document.querySelector('select#theClassroomId').insertAdjacentElement('beforeend', option);
+                selectClassroom.insertAdjacentElement('beforeend', option);
             })
             res.data.subjectsTaught.forEach(subject => {
                 evenSpans[3].insertAdjacentHTML('afterbegin', `${subject}<br>`);
@@ -72,18 +96,21 @@ getSingleDoc()
                 document.querySelector('select#theSubjectId').insertAdjacentElement('beforeend', option);
             })
             
-            document.querySelector('#profile-wrapper').children[2].style.display = 'flex';
             // getDataOnValue();
         }
     })
-    
+*/
 //on form change
-uploadForm.addEventListener('change', (e) => {
-    e.preventDefault();
+selectClassroom.addEventListener('change', (e) => {
+    let optIndex = classArray.indexOf(e.target.value);
+    chooseConfig(configs[optIndex])
+
+    /*
     if(e.target.id == "fileId") {
         //get file, filename
         const file = e.target.files[0];
         const fileName = file.name;
+
         if(file.size > 1048487) {
             document.querySelector('#file-selected').innerText = "";
             document.querySelector('dialog#to-delete output').textContent = "The selected file has exceeded the maximum size of 1 MiB.";
@@ -101,48 +128,56 @@ uploadForm.addEventListener('change', (e) => {
         }
     } else {
         fields[e.target.name] = e.target.value;
-    }
+    }*/
 })
 
 //on form submit
-uploadForm.addEventListener('submit', (e) => {
+uploadForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
     e.submitter.style.cursor = 'not-allowed';
+
     let theDateCreated = Intl.DateTimeFormat('en-us', {dateStyle: "medium"}).format(new Date());
     const formData = new FormData(uploadForm);
     let catPath = formData.get('category');
     let subPath = formData.get('theSubject');
+    let file = formData.get('theFile');
+    let info = formData.get('info');
+    let dest = '';
 
-    const storage = getStorage();
-    const rootPath = ref(storage, `files/${subPath}/${catPath}`);
-    const imagesRef = ref(rootPath, e.target.files[0].name);
-    uploadBytes(imagesRef, e.target.files[0]).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then(async (downloadURL) => {
-            const notesRef = collection(db, "activities");
-            await addDoc(collection(notesRef, "notes", "mth"), {
-                dest: downloadURL,
-                timestamp: serverTimestamp(),
-            })
-            console.log('Successful.')
-        });
-    })
-
-    //get authorId
-    // const theAuthorId = document.querySelector('input[type="hidden"]').value;
-    addDoc(fileCollectionRef, {...fields, theDateCreated})
-        .then(() => {
-            // reset fields
-            fields = {};
-            document.querySelector('dialog#to-delete output').textContent = "Document upload successful.";
-            document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
-            document.querySelector('dialog#to-delete').showModal();
-            document.querySelector('#file-selected').innerText = "";
-            uploadForm.reset();
-            e.submitter.disabled = false;
-            e.submitter.style.cursor = 'pointer';
-            // getDataOnValue();
+    if(file) {
+        const storage = getStorage();
+        const rootPath = ref(storage, `files/${subPath}/${catPath}`);
+        const imagesRef = ref(rootPath, file.name);
+        uploadBytes(imagesRef, file).then(async (snapshot) => {
+            await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
+                // console.log('getdownloadURL succeeded.')
+                const notesRef = collection(db, "activities");
+                await addDoc(collection(notesRef, catPath, subPath), {
+                    name: file.name,
+                    dest: downloadURL,
+                    timestamp: theDateCreated,
+                    info,
+                })
+                // console.log('Document added successfully.')
+                document.querySelector('dialog#to-delete output').textContent = "Document upload successful.";
+                document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
+                document.querySelector('dialog#to-delete').showModal();
+                document.querySelector('#file-selected').innerText = "";
+                uploadForm.reset();
+                e.submitter.disabled = false;
+                e.submitter.style.cursor = 'pointer';
+            });
         })
+    } else {
+        const notesRef = collection(db, "activities");
+        await addDoc(collection(notesRef, catPath, subPath), {
+            name: "No topic.",
+            dest,
+            timestamp: theDateCreated,
+            info,
+        })
+    }
 })
 //function to retrieve newly inserted data
 function getDataOnValue() {
