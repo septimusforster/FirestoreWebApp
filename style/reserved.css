@@ -120,3 +120,70 @@ li {
     padding: 10px;
     margin-left: 10px;
 }
+::backdrop {
+    background-color: transparent;
+}
+dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 3px #555;
+}
+dialog form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+form#junior-form > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0px auto;
+}
+form#junior-form > div input,
+form#junior-form > div button {
+    padding: 14px;
+    border: none;
+    outline: none;
+}
+form#junior-form > div input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+input.abbr {
+    width: 20%;
+}
+input.txt {
+    margin-left: auto;
+    flex-basis: 60%;
+}
+form#junior-form > div button {
+    cursor: pointer;
+    margin: 10px;
+}
+form#junior-form > div button:nth-child(3) {
+    border-radius: 8px;
+}
+form#junior-form > div button:nth-child(2) {
+    margin-left: auto;
+    border-radius: 8px;
+}
+form#junior-form > div button:nth-child(1), .minus {
+    padding: 0 !important;
+    height: 44px;
+    width: 44px;
+    font-size: 26px;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: all .2s ease-in-out;
+}
+form#junior-form > div button:nth-child(1):hover, .minus {
+    background-color: #eee;
+}
+.footer {
+    width: 100%;
+}

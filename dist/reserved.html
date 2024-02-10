@@ -12,7 +12,7 @@
             <aside></aside>
             <section>
                 <div class="section__div">
-                    <button type="button"></button><span>Create a new Junior Secondary subject (One input field should require the subject, and another should require the < abbr >)</span>
+                    <button type="button" id="junior-btn"></button><span>Create a new Junior Secondary subject</span>
                 </div>
                 <div class="section__div">
                     <button type="button"></button><span>Create a new Senior Secondary subject</span>
@@ -62,11 +62,42 @@
         </form> -->
         <footer></footer>
     </main>
-
+    <dialog id="junior-dialog">
+        <form name="juniorForm" id="junior-form">
+            <div>
+                <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="3" autocomplete="off" required/>
+                <input type="text" name="txt" class="txt" placeholder="full text" autocomplete="off" required/>
+                <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+            </div>
+            <div class="footer">
+                <button id="plus" type="button" acce>&plus;</button><button onclick="deleteGrandParent(this)" id="cancel-btn" type="button">Cancel</button><button type="submit">Submit</button>
+            </div>
+        </form>
+    </dialog>
     <script>
-        // document.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
-        //     console.log(e.target.checked)
-        // })
+        const juniorBtn = document.querySelector('button#junior-btn');
+        const juniorDialog = document.querySelector('dialog#junior-dialog');
+        juniorBtn.onclick = function () {
+            juniorDialog.showModal();
+        }
+
+        const plus = document.querySelector('#plus');
+        plus.onclick = function () {
+            document.querySelector('.footer').insertAdjacentHTML('beforebegin', `
+                <div>
+                    <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="3" autocomplete="off" required/>
+                    <input type="text" name="txt" class="txt" placeholder="full text" autocomplete="off" required/>
+                    <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+                </div>
+            `)
+        }
+        
+        function deleteField(e) {
+            e.parentElement.remove()
+        }
+        function deleteGrandParent(e) {
+            e.offsetParent.close()
+        }
     </script>
     <script type="module" src="../src/reserved_bundle.js"></script>
 </body>

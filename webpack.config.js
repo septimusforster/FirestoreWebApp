@@ -24,7 +24,7 @@ module.exports = {
 }
 */
 //ROOT reserved.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/reserved.js",
@@ -34,9 +34,9 @@ module.exports = {
     },
     watch: true
 }
-*/
-//STAFFER index.js
 
+//STAFFER index.js
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/index.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STAFFER logon.js
 /*
 module.exports = {

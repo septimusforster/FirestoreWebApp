@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app"
 import {
-    getFirestore, collection, getDoc, addDoc, deleteDoc, doc, query, where, limit
+    getFirestore, collection, getDoc, setDoc, addDoc, deleteDoc, doc, query, where, limit
 } from "firebase/firestore"
 
 const firebaseConfig = {
@@ -18,6 +18,8 @@ initializeApp(firebaseConfig)
 // init services
 const db = getFirestore()
 // collection ref
+const jnrRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
+/*
 const JSSubjectRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
 const SSSubjectRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
 // const armRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
@@ -43,7 +45,7 @@ for(i = 0; i < 2; i++) {
             const armSnap = await getDoc(armRef);
             armSnap.docs.forEach(doc => {
                 sessionStorage.setItem('arm', JSON.stringify(doc.data().arm))
-            })*/
+            })*//*
     }
 }
 const snrArray = JSON.parse(sessionStorage.getItem('snr_sub')).sort();
@@ -56,4 +58,21 @@ jnrArray.forEach((sub, i) => {
 })
 snrArray.forEach((sub, i) => {
     uls[1].insertAdjacentHTML('beforeend', `<li>${i + 1 + " - " + sub}</li>`)
+})
+*/
+const juniorForm = document.forms.juniorForm;
+juniorForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
+    let obj = new Object();
+    const formData = new FormData(juniorForm);
+    let abbr = formData.getAll('abbr');
+    let txt = formData.getAll('txt');
+
+    abbr.forEach((a, i) => obj[a] = txt[i]);
+    await setDoc(jnrRef, obj, {merge: true})
+    window.alert('Subject upload successful');
+    e.submitter.disabled = false;
+    e.submitter.style.cursor = 'pointer';
 })
