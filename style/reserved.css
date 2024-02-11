@@ -138,41 +138,43 @@ dialog form {
     flex-direction: column;
     gap: 1em;
 }
-form#junior-form > div {
+.dialog-fm > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 0px auto;
 }
-form#junior-form > div input,
-form#junior-form > div button {
+.dialog-fm > div input,
+.dialog-fm > div button,
+#view-changes {
     padding: 14px;
     border: none;
     outline: none;
 }
-form#junior-form > div input {
+.dialog-fm > div input {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 input.abbr {
+    text-transform: uppercase;
     width: 20%;
 }
 input.txt {
     margin-left: auto;
     flex-basis: 60%;
 }
-form#junior-form > div button {
+.dialog-fm > div button {
     cursor: pointer;
     margin: 10px;
 }
-form#junior-form > div button:nth-child(3) {
+.dialog-fm > div button:nth-child(3) {
     border-radius: 8px;
 }
-form#junior-form > div button:nth-child(2) {
+.dialog-fm > div button:nth-child(2) {
     margin-left: auto;
     border-radius: 8px;
 }
-form#junior-form > div button:nth-child(1), .minus {
+.dialog-fm > div button:nth-child(1), .minus {
     padding: 0 !important;
     height: 44px;
     width: 44px;
@@ -181,9 +183,20 @@ form#junior-form > div button:nth-child(1), .minus {
     background-color: transparent;
     transition: all .2s ease-in-out;
 }
-form#junior-form > div button:nth-child(1):hover, .minus {
+.dialog-fm > div button:nth-child(1):hover,
+.dialog-fm > div button:nth-child(1):focus,
+.minus {
     background-color: #eee;
 }
 .footer {
     width: 100%;
+}
+.delete-btn,
+#view-changes {
+    border-radius: 8px;
+    background-color: orangered;
+    color: #fff;
+}
+#view-div {
+    text-align: center;
 }

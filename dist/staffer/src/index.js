@@ -56,79 +56,11 @@ ss.data.subjectsTaught.forEach(subject => {
     }
 });
 document.querySelector('#profile-wrapper').children[2].style.display = 'flex';
-/*
-const getSingleDoc = async () => {
-    try {
-        // const docRef = doc(db, collectionName, documentId);
-        const docSnapshot = await getDoc(staffCollectionRef);
 
-        if (docSnapshot.exists()) {
-            const documentData = docSnapshot.data();
-            return {data: documentData, id: docSnapshot.id};
-        } else {
-            console.log(`Document with ID ${documentId} does not exist in collection ${collectionName}.`);
-            return null;
-        }
-    } catch (error) {
-        console.error("Error getting document:", error);
-        return null;
-    }
-};
-getSingleDoc()
-    .then((res) => {
-        if(res) {
-            // authorId.value = res.id;
-            if(res.data.avatar) {
-                photo.src = res.data.avatar;
-            }
-            evenSpans[0].textContent = res.data.fullName;
-            evenSpans[1].textContent = res.data.username;
-            
-            res.data.classroomsTaught.forEach(classroom => {
-                evenSpans[2].insertAdjacentHTML('afterbegin', `${classroom}<br>`)
-                //Enter these values also for the select element for classrooms
-                let option = new Option(classroom, classroom);
-                selectClassroom.insertAdjacentElement('beforeend', option);
-            })
-            res.data.subjectsTaught.forEach(subject => {
-                evenSpans[3].insertAdjacentHTML('afterbegin', `${subject}<br>`);
-                let option = new Option(subject, subject);
-                document.querySelector('select#theSubjectId').insertAdjacentElement('beforeend', option);
-            })
-            
-            // getDataOnValue();
-        }
-    })
-*/
 //on form change
 selectClassroom.addEventListener('change', (e) => {
     let optIndex = classArray.indexOf(e.target.value);
-    chooseConfig(configs[optIndex])
-
-    /*
-    if(e.target.id == "fileId") {
-        //get file, filename
-        const file = e.target.files[0];
-        const fileName = file.name;
-
-        if(file.size > 1048487) {
-            document.querySelector('#file-selected').innerText = "";
-            document.querySelector('dialog#to-delete output').textContent = "The selected file has exceeded the maximum size of 1 MiB.";
-            document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
-            document.querySelector('dialog#to-delete').showModal();
-            return;
-        } else {
-            //create base64 value
-            const fr = new FileReader();
-            fr.onload = function(event){
-                fields["theFileName"] = fileName;
-                fields["theFileEncoding"] = event.target.result;
-            }
-            fr.readAsDataURL(file);
-        }
-    } else {
-        fields[e.target.name] = e.target.value;
-    }*/
+    chooseConfig(configs[optIndex]);
 })
 
 //on form submit

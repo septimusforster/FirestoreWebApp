@@ -34,9 +34,9 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /*!*************************!*\
   !*** ./src/reserved.js ***!
   \*************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! firebase/app */ \"./node_modules/firebase/app/dist/esm/index.esm.js\");\n/* harmony import */ var firebase_firestore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/firestore */ \"./node_modules/firebase/firestore/dist/esm/index.esm.js\");\n\r\n\r\n\r\nconst firebaseConfig = {\r\n    apiKey: \"AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU\",\r\n    authDomain: \"fir-pro-152a1.firebaseapp.com\",\r\n    projectId: \"fir-pro-152a1\",\r\n    storageBucket: \"fir-pro-152a1.appspot.com\",\r\n    messagingSenderId: \"158660765747\",\r\n    appId: \"1:158660765747:web:bd2b4358cc5fc9067ddb46\",\r\n    // appId: \"1:158660765747:web:77fed76bf03f32d97ddb46\"\r\n};\r\n\r\n// initialize firebase app\r\n(0,firebase_app__WEBPACK_IMPORTED_MODULE_0__.initializeApp)(firebaseConfig)\r\n// init services\r\nconst db = (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.getFirestore)()\r\n// collection ref\r\nconst jnrRef = (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.doc)(db, \"reserved\", \"2aOQTzkCdD24EX8Yy518\");\r\n/*\r\nconst JSSubjectRef = doc(db, \"reserved\", \"2aOQTzkCdD24EX8Yy518\");\r\nconst SSSubjectRef = doc(db, \"reserved\", \"eWfgh8PXIEid5xMVPkoq\");\r\n// const armRef = doc(db, \"reserved\", \"eWfgh8PXIEid5xMVPkoq\");\r\nlet i;\r\n//Loop twice and store docs in sessionStorage\r\nfor(i = 0; i < 2; i++) {\r\n    switch (i) {\r\n        case 0:\r\n            if(sessionStorage.hasOwnProperty('jnr_sub')) {\r\n                continue;\r\n            }\r\n            await getDoc(JSSubjectRef).then(doc => sessionStorage.setItem('jnr_sub', JSON.stringify(doc.data().js_sub)))\r\n            console.log('From server')\r\n            break;\r\n        case 1:\r\n            if(sessionStorage.hasOwnProperty('snr_sub')) {\r\n                continue;\r\n            }\r\n            await getDoc(SSSubjectRef).then(doc => sessionStorage.setItem('snr_sub', JSON.stringify(doc.data().ss_sub)))\r\n            console.log('From server')\r\n            break;/*\r\n        case 3:\r\n            const armSnap = await getDoc(armRef);\r\n            armSnap.docs.forEach(doc => {\r\n                sessionStorage.setItem('arm', JSON.stringify(doc.data().arm))\r\n            })*//*\r\n    }\r\n}\r\nconst snrArray = JSON.parse(sessionStorage.getItem('snr_sub')).sort();\r\nconst jnrArray = JSON.parse(sessionStorage.getItem('jnr_sub')).sort();\r\n\r\nconst uls = document.querySelectorAll('.aside__content ul');\r\n\r\njnrArray.forEach((sub, i) => {\r\n    uls[0].insertAdjacentHTML('beforeend', `<li>${i + 1 + \" - \" + sub}</li>`)\r\n})\r\nsnrArray.forEach((sub, i) => {\r\n    uls[1].insertAdjacentHTML('beforeend', `<li>${i + 1 + \" - \" + sub}</li>`)\r\n})\r\n*/\r\nconst juniorForm = document.forms.juniorForm;\r\njuniorForm.addEventListener('submit', async (e) => {\r\n    e.preventDefault();\r\n    e.submitter.disabled = true;\r\n    e.submitter.style.cursor = 'not-allowed';\r\n    let obj = new Object();\r\n    const formData = new FormData(juniorForm);\r\n    let abbr = formData.getAll('abbr');\r\n    let txt = formData.getAll('txt');\r\n\r\n    abbr.forEach((a, i) => obj[a] = txt[i]);\r\n    await (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.setDoc)(jnrRef, obj, {merge: true})\r\n    window.alert('Subject upload successful');\r\n    e.submitter.disabled = false;\r\n    e.submitter.style.cursor = 'pointer';\r\n})\n\n//# sourceURL=webpack://firestorewebapp/./src/reserved.js?");
+eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! firebase/app */ \"./node_modules/firebase/app/dist/esm/index.esm.js\");\n/* harmony import */ var firebase_firestore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/firestore */ \"./node_modules/firebase/firestore/dist/esm/index.esm.js\");\n\r\n\r\n\r\nconst firebaseConfig = {\r\n    apiKey: \"AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU\",\r\n    authDomain: \"fir-pro-152a1.firebaseapp.com\",\r\n    projectId: \"fir-pro-152a1\",\r\n    storageBucket: \"fir-pro-152a1.appspot.com\",\r\n    messagingSenderId: \"158660765747\",\r\n    appId: \"1:158660765747:web:bd2b4358cc5fc9067ddb46\",\r\n    // appId: \"1:158660765747:web:77fed76bf03f32d97ddb46\"\r\n};\r\n\r\n// initialize firebase app\r\n(0,firebase_app__WEBPACK_IMPORTED_MODULE_0__.initializeApp)(firebaseConfig)\r\n// init services\r\nconst db = (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.getFirestore)()\r\n// collection ref\r\nconst jnrRef = (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.doc)(db, \"reserved\", \"2aOQTzkCdD24EX8Yy518\");\r\nconst snrRef = (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.doc)(db, \"reserved\", \"eWfgh8PXIEid5xMVPkoq\");\r\n\r\n// const JSSubjectRef = doc(db, \"reserved\", \"2aOQTzkCdD24EX8Yy518\");\r\n// const armRef = doc(db, \"reserved\", \"eWfgh8PXIEid5xMVPkoq\");\r\nlet i;\r\n//Loop twice and store docs in sessionStorage\r\nfor(i = 0; i < 2; i++) {\r\n    switch (i) {\r\n        case 0:\r\n            if(sessionStorage.hasOwnProperty('jnr_sub')) {\r\n                continue;\r\n            }\r\n            await (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.getDoc)(jnrRef).then(doc => sessionStorage.setItem('jnr_sub', JSON.stringify(doc.data())))\r\n            console.log('From server')\r\n            break;\r\n        case 1:\r\n            if(sessionStorage.hasOwnProperty('snr_sub')) {\r\n                continue;\r\n            }\r\n            await (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.getDoc)(snrRef).then(doc => sessionStorage.setItem('snr_sub', JSON.stringify(doc.data())))\r\n            console.log('From server')\r\n            break;/*\r\n        case 3:\r\n            const armSnap = await getDoc(armRef);\r\n            armSnap.docs.forEach(doc => {\r\n                sessionStorage.setItem('arm', JSON.stringify(doc.data().arm))\r\n            })*/\r\n    }\r\n}\r\nconst snrObj = JSON.parse(sessionStorage.getItem('snr_sub'));\r\nconst jnrObj = JSON.parse(sessionStorage.getItem('jnr_sub'));\r\n\r\nconst uls = document.querySelectorAll('.aside__content ul');\r\nconst viewChanges = document.querySelector('#view-changes');\r\n\r\nlet jnrArray = Object.values(jnrObj);\r\nlet snrArray = Object.values(snrObj);\r\nviewChanges.addEventListener('click', (e) => {\r\n    sessionStorage.removeItem('jnr_sub')\r\n    sessionStorage.removeItem('snr_sub')\r\n    location.reload();\r\n})\r\n\r\njnrArray.forEach((sub, i) => {\r\n    uls[0].insertAdjacentHTML('beforeend', `<li>${i + 1 + \" - \" + sub}</li>`)\r\n})\r\nsnrArray.forEach((sub, i) => {\r\n    uls[1].insertAdjacentHTML('beforeend', `<li>${i + 1 + \" - \" + sub}</li>`)\r\n})\r\n\r\n\r\nconst juniorForm = document.forms.juniorForm;\r\njuniorForm.addEventListener('submit', async (e) => {\r\n    e.preventDefault();\r\n    e.submitter.disabled = true;\r\n    e.submitter.style.cursor = 'not-allowed';\r\n    let obj = new Object();\r\n    if (e.submitter.id === 'submit') {\r\n        const formData = new FormData(juniorForm);\r\n        let abbr = formData.getAll('abbr');\r\n        let txt = formData.getAll('txt');\r\n    \r\n        abbr.forEach((a, i) => obj[a.toUpperCase()] = txt[i]);\r\n        await (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.setDoc)(jnrRef, obj, {merge: true})\r\n        window.alert('Subject upload successful');\r\n        e.submitter.disabled = false;\r\n        e.submitter.style.cursor = 'pointer';\r\n    } else {\r\n        const formData = new FormData(juniorForm);\r\n        let abbr = formData.getAll('abbr');\r\n\r\n        abbr.forEach((a) => obj[a.toUpperCase()] = (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.deleteField)())\r\n        await (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.updateDoc)(jnrRef, obj)\r\n        window.alert('Subject delete successful');\r\n        e.submitter.disabled = false;\r\n        e.submitter.style.cursor = 'pointer';\r\n    }  \r\n})\r\n\r\nconst seniorForm = document.forms.seniorForm;\r\nseniorForm.addEventListener('submit', async (e) => {\r\n    e.preventDefault();\r\n    e.submitter.disabled = true;\r\n    e.submitter.style.cursor = 'not-allowed';\r\n    let obj = new Object();\r\n    if (e.submitter.id === 'submit') {\r\n        const formData = new FormData(seniorForm);\r\n        let abbr = formData.getAll('abbr');\r\n        let txt = formData.getAll('txt');\r\n    \r\n        abbr.forEach((a, i) => obj[a.toUpperCase()] = txt[i]);\r\n        await (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.setDoc)(snrRef, obj, {merge: true})\r\n        window.alert('Subject upload successful');\r\n        e.submitter.disabled = false;\r\n        e.submitter.style.cursor = 'pointer';\r\n    } else {\r\n        const formData = new FormData(seniorForm);\r\n        let abbr = formData.getAll('abbr');\r\n\r\n        abbr.forEach((a) => obj[a.toUpperCase()] = (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.deleteField)())\r\n        await (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_1__.updateDoc)(snrRef, obj)\r\n        window.alert('Subject delete successful');\r\n        e.submitter.disabled = false;\r\n        e.submitter.style.cursor = 'pointer';\r\n    }\r\n})\r\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } }, 1);\n\n//# sourceURL=webpack://firestorewebapp/./src/reserved.js?");
 
 /***/ }),
 
@@ -147,6 +147,75 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && queue.d < 1) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = -1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && queue.d < 0 && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports

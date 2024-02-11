@@ -257,10 +257,11 @@
                 }
                 skipBtn.classList.remove('deactivate')
             } else {
-                ss.reservedPayload.forEach((sub, i) => {
+                let reserved = Object.entries(ss.reservedPayload);
+                reserved.forEach((sub, i) => {
                     formBody.insertAdjacentHTML('beforeend', `
                     <label id="cb${i+1}">
-                        <input type="checkbox" name="offered" id="cb${i+1}" value="${sub}" /> ${sub}
+                        <input type="checkbox" name="offered" id="cb${i+1}" value="${sub[0]}" /> ${sub[1]}
                         <span></span>
                     </label>
                     `)

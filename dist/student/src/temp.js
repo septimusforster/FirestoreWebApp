@@ -1,16 +1,13 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, increment, updateDoc, query, where, and, or } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-const firebaseConfig = {    
-    apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
-    authDomain: "fir-pro-152a1.firebaseapp.com",
-    projectId: "fir-pro-152a1",
-    storageBucket: "fir-pro-152a1.appspot.com",
-    messagingSenderId: "158660765747",
-    appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46",
-};
+
+import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
+
+const classIndex = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"].indexOf(ss.class);
 // initialize firebase app
-initializeApp(firebaseConfig)
+var app = initializeApp(configs[classIndex])
+
 // init services
 const db = getFirestore();
 //init references

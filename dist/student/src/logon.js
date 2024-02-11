@@ -3,7 +3,7 @@ import { getFirestore, collection, doc, getDoc, getDocs, query, where, and, or }
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 // initial firebase app
-var app = initializeApp(configs[0])
+var app = initializeApp(configs[6])
 var db, JSSubjectRef, SSSubjectRef;
 
 const selectElt = document.querySelector('select#classroom');
@@ -14,10 +14,7 @@ selectElt.addEventListener('change', (e) => {
     // init services
     db = getFirestore()
     // collection refs
-    JSSubjectRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
-    SSSubjectRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
 })
-
 
 const classroom = document.querySelector('#classroom');
 const email = document.querySelector('#email');
@@ -31,7 +28,7 @@ loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disable = true;
     e.submitter.style.cursor = 'not-allowed';
-    const classroomCollectionRef = collection(db, classroom.value);
+    const classroomCollectionRef = collection(db, 'students');
     const q = query(classroomCollectionRef, and(or(where("email", "==", email.value), where("admission_no", "==", email.value)), where("password", "==", password.value)))
     const querySnapshot = await getDocs(q);
     // console.log(querySnapshot);
@@ -59,6 +56,9 @@ loginForm.addEventListener('submit', async (e) => {
                 photo_src,
                 offered,
             }
+            //reset Configuration to fetch subjects
+            resetConfig();
+
             if(photo_src && offered) {
                 sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
                 return location.href = '../dist/index.html';
@@ -67,12 +67,12 @@ loginForm.addEventListener('submit', async (e) => {
                 return location.href = '../dist/temp.html?of=1&ps=0';
             } else if (photo_src) {
                 const reservedSnapshot = classroom.value.startsWith('JSS') ? await getDoc(JSSubjectRef) : await getDoc(SSSubjectRef);
-                snapshot = {...snapshot, 'reservedPayload': reservedSnapshot.data().js_sub || reservedSnapshot.data().ss_sub,}
+                snapshot = {...snapshot, 'reservedPayload': reservedSnapshot.data() || reservedSnapshot.data()}
                 sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
                 return location.href = '../dist/temp.html?of=0&ps=1';
             } else {
                 const reservedSnapshot = classroom.value.startsWith('JSS') ? await getDoc(JSSubjectRef) : await getDoc(SSSubjectRef);
-                snapshot = {...snapshot, 'reservedPayload': reservedSnapshot.data().js_sub || reservedSnapshot.data().ss_sub,}
+                snapshot = {...snapshot, 'reservedPayload': reservedSnapshot.data()}
                 sessionStorage.setItem('snapshot', JSON.stringify(snapshot));
                 return location.href = '../dist/temp.html';
             }
@@ -80,6 +80,13 @@ loginForm.addEventListener('submit', async (e) => {
     }
 })
 
+function resetConfig () {
+    deleteApp(app);
+    app = initializeApp(configs[6])
+    db = getFirestore();
+    JSSubjectRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
+    SSSubjectRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
+}
 /*
 const mainRef = collection(db, "fileCollection");
 addDoc(collection(mainRef, "AGR", "JSS 1"),{

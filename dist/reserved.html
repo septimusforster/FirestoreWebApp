@@ -12,13 +12,16 @@
             <aside></aside>
             <section>
                 <div class="section__div">
-                    <button type="button" id="junior-btn"></button><span>Create a new Junior Secondary subject</span>
+                    <button type="button" id="junior-btn"></button><span>Manage Junior Secondary subjects</span>
                 </div>
                 <div class="section__div">
-                    <button type="button"></button><span>Create a new Senior Secondary subject</span>
+                    <button type="button" id="senior-btn"></button><span>Manage Senior Secondary subjects</span>
                 </div>
                 <div class="section__div">
-                    <button type="button"></button><span>Create a new arm</span>
+                    <button type="button"></button><span>Manage Arms</span>
+                </div>
+                <div id="view-div">
+                    <button id="view-changes">View Changes</button>
                 </div>
             </section>
             <aside>
@@ -45,57 +48,75 @@
                     <label for="jnr3">Arms</label>
                     <div class="aside__content">
                         <ul>
-                            <li>List item no.</li>
-                            <li>List item no.</li>
-                            <li>List item no.</li>
-                            <li>List item no.</li>
-                            <li>List item no.</li>
+                            
                         </ul>
                     </div>
                 </div>
             </aside>
         </div>
-        <!-- <form action="#">
-            <label for="sub">Enter subject</label>
-            <input type="text" name="sub" id="sub" />
-            <input type="submit" value="Submit" />
-        </form> -->
         <footer></footer>
     </main>
     <dialog id="junior-dialog">
-        <form name="juniorForm" id="junior-form">
+        <form name="juniorForm" class="dialog-fm" id="junior-form">
             <div>
-                <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="3" autocomplete="off" required/>
+                <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="4" autocomplete="off" required/>
                 <input type="text" name="txt" class="txt" placeholder="full text" autocomplete="off" required/>
                 <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
             </div>
             <div class="footer">
-                <button id="plus" type="button" acce>&plus;</button><button onclick="deleteGrandParent(this)" id="cancel-btn" type="button">Cancel</button><button type="submit">Submit</button>
+                <button onclick="plus(this)" type="button">&plus;</button><button onclick="closeGrandParent(this)" id="cancel-btn" type="button">Cancel</button><button id="submit">Submit</button><button class="delete-btn" id="delete">Delete</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="senior-dialog">
+        <form name="seniorForm" class="dialog-fm" id="senior-form">
+            <div>
+                <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="4" autocomplete="off" required/>
+                <input type="text" name="txt" class="txt" placeholder="full text" autocomplete="off" required/>
+                <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+            </div>
+            <div class="footer">
+                <button onclick="plus(this)" type="button">&plus;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="submit">Submit</button><button class="delete-btn" id="delete">Delete</button>
             </div>
         </form>
     </dialog>
     <script>
         const juniorBtn = document.querySelector('button#junior-btn');
+        const seniorBtn = document.querySelector('button#senior-btn');
         const juniorDialog = document.querySelector('dialog#junior-dialog');
-        juniorBtn.onclick = function () {
+        const seniorDialog = document.querySelector('dialog#senior-dialog');
+        juniorBtn.onclick = function (e) {
+            const topOffset = e.target.offsetTop + 50;
+            const leftOffset = e.target.offsetLeft;
+            juniorDialog.style.top = topOffset + 'px';
+            juniorDialog.style.left = leftOffset + 'px';
+            
             juniorDialog.showModal();
         }
+        seniorBtn.onclick = function (e) {
+            const topOffset = e.target.offsetTop + 50;
+            const leftOffset = e.target.offsetLeft;
+            seniorDialog.style.top = topOffset + 'px';
+            seniorDialog.style.left = leftOffset + 'px';
+            
+            seniorDialog.showModal();
+        }
 
-        const plus = document.querySelector('#plus');
-        plus.onclick = function () {
-            document.querySelector('.footer').insertAdjacentHTML('beforebegin', `
+        // const plus = document.querySelector('#plus');
+        function plus(e) {
+            e.parentElement.insertAdjacentHTML('beforebegin', `
                 <div>
-                    <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="3" autocomplete="off" required/>
+                    <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="4" autocomplete="off" required/>
                     <input type="text" name="txt" class="txt" placeholder="full text" autocomplete="off" required/>
                     <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
                 </div>
             `)
-        }
-        
+        } 
         function deleteField(e) {
-            e.parentElement.remove()
+            let fm = e.parentElement.parentElement;
+            if (fm.childElementCount > 2) e.parentElement.remove();          
         }
-        function deleteGrandParent(e) {
+        function closeGrandParent(e) {
             e.offsetParent.close()
         }
     </script>
