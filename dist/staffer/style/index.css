@@ -1,9 +1,11 @@
 * {margin: 0; padding: 0; box-sizing: border-box;}
-.wrapper {
-    /* border: 1px solid #777; */
-    height: 100vh;
-    height: 100dvh;
+body {
     background-color: #004d3d33;
+}
+.wrapper {
+    /* border: 1px solid #777;
+    height: 100vh;
+    height: 100dvh; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -16,11 +18,12 @@
     width: 100%;
 }
 .header {
-    /* border: 1px solid #aaa; */
     box-shadow: 0 3px 7px #004d3d33;
 }
 .footer {
-    text-align: center;
+    position: absolute;
+    bottom: 0;
+    padding-left: 40px;
     color: #aaa;
 }
 .body {

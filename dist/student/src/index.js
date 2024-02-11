@@ -1,25 +1,26 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy } from "firebase/firestore";
+
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 // var [f1, f2, f3, f4, f5, f6] = configs;
 
 const ss = JSON.parse(sessionStorage.getItem('snapshot'));
-const studentID = ss.id;
-const studentClass = ss.class;
-const classArray = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3","def"];
-const classConfiguration = configs[classArray.indexOf(studentClass)];
+const classIndex = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3","def"].indexOf(ss.class);
+const classConfiguration = configs[classIndex];
 //initial firebase app
 var app = initializeApp(classConfiguration)
 //init services
-var db;
+var db = getFirestore();
 // collection refs
+const userRef = doc(db, "students", ss.id);
+
+/*
 function chooseConfig(projConfig) {
     deleteApp(app);
     app = initializeApp(projConfig);
     db = getFirestore();
 }
-
-const headerParagraph = document.querySelector('header p');
+*/
 //load user profile data
 document.querySelectorAll('#profile-nav div').forEach(div => {
     if (div.id === "full_name") {
@@ -29,17 +30,19 @@ document.querySelectorAll('#profile-nav div').forEach(div => {
     }
 })
 //load user picture
-document.querySelector("img#avatar").src = ss.photo_src;
+document.querySelector("img#avatar").src = ss.photo_src || '../img/../img/9035117_person_icon.png';
 //load user subjects
+let offered = Object.entries(ss.offered);
 let i;
-for (i = 0; i < ss.offered.length; i++) {
-    document.querySelector('#subject-navs .inner:last-child').insertAdjacentHTML('beforeend', `<a href="#" value="${ss.offered[i]}">${ss.offered[i]}</a>`)
-}
+offered.forEach((o) => {
+    document.querySelector('#subject-navs .inner:last-child').insertAdjacentHTML('beforeend', `<a href="#" id="${o[0]}">${o[1]}</a>`)
+})
 
 const formUser = document.forms.formUser;
 const currentUser = formUser.querySelector('#currentUsername');
-
+const headerParagraph = document.querySelector('header p');
 headerParagraph.innerHTML = (currentUser.dataset.value = ss.em) + "&nbsp; &nearrow;";
+
 formUser.addEventListener('change', (e) => {
     if (e.target.id === "currentUsername" && e.target.value === e.target.dataset.value) {
         e.target.disabled = true;
@@ -49,9 +52,8 @@ formUser.addEventListener('change', (e) => {
 formUser.addEventListener('submit', async (e) => {
     e.preventDefault();
     loadStart(e);
-
     const formData = new FormData(formUser);
-    const docSnap = await updateDoc(ref,{
+    await updateDoc(userRef,{
         email: formData.get('email'),
         timestamp: serverTimestamp()
     })
@@ -79,12 +81,13 @@ formPass.addEventListener('change', (e) => {
         e.target.parentElement.lastElementChild.classList.add('active');
     }
 })
+let cfp;
 formPass.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (cfp) {
         loadStart(e);
         const formData = new FormData(formPass);
-        const docSnap = await updateDoc(ref, {
+        await updateDoc(userRef, {
             password: formData.get('password'),
             timestamp: serverTimestamp()
         })
@@ -92,7 +95,6 @@ formPass.addEventListener('submit', async (e) => {
     }
 })
 
-let cfp;
 const passwords = formPass.querySelectorAll('input[name="password"]');
 passwords.forEach((password, index) => {
     password.addEventListener('change', (e) => {
@@ -105,47 +107,52 @@ passwords.forEach((password, index) => {
             cfp = undefined;
             e.target.classList.toggle('invalid');
         }
-        // console.log(passwords[index].value)
     })
+})
+const hideUnhide = document.querySelector('#hide__unhide');
+hideUnhide.addEventListener('change', (e) => {
+    if (e.target.checked) {
+        passwords.forEach(password => {
+            password.type = 'text'
+        })
+    } else {
+        passwords.forEach(password => {
+            password.type = 'password'
+        })
+    }
 })
 
 const timelineBar = document.querySelector('#timeline-bar');
-async function getDocuments(subject) {
-    const group = query(collectionGroup(db, subject));
-    const querySnapshot = await getDocs(group);
+async function getDocuments(category, subject) {
+    // const group = query(collectionGroup(db, subject));
+    const querySnapshot = await getDocs(collection(db, "activities", category, subject));
     if (querySnapshot.empty) return timelineBar.innerHTML = 'There are no tasks to perform.';
     timelineBar.innerHTML = '';
-    querySnapshot.forEach((doc) => {
-        // console.log(doc.id, ' => ', doc.data());
+    let counter = 0;
+    querySnapshot.forEach((doc, i) => {
+        // console.log(counter, doc.id, ' => ', doc.data());        
         let data = doc.data();
-        let docName = doc.data().theFileName || "No topic.";
+        let docName = doc.data().name;
         let title = docName.slice(0,docName.lastIndexOf('.'));
         timelineBar.insertAdjacentHTML('beforeend', `
         <div class="timeline-content">
-            <input type="checkbox" class="accordion__input" id="cb${i+1}" />
-            <label for="cb${i+1}" class="accordion__label" title="${title}">#${i+1} ${title}</label>
+            <input type="checkbox" class="accordion__input" id="cb${counter+1}"/>
+            <label for="cb${counter+1}" class="accordion__label" title="${title}">#${counter+1} ${title}</label>
             <div class="accordion__content">
                 <p>${data.info ? data.info : "No messages."}</p>
-                ${title != "No topic" ? `<a href="${data.theFileEncoding}" download="${title}">Download ${data.category}</a>` : ""}    
+                ${title != "No topic" ? `<a href="${data.dest}" download="${title}">Download ${data.catPath}</a>` : ""}    
             </div>
         </div>
         `)
-        document.querySelectorAll('.timeline-content')[i].style.setProperty('--beforeContent',`"${data.theDateCreated}"`);
+        document.querySelectorAll('.timeline-content')[counter].style.setProperty('--beforeContent',`"${data.timestamp}"`);
+        counter++;
     });
-    /*
-    //get collection; get subject; PATH: files/mth/notes/*.txt
-    const refToDocs = collection(db, "fileCollection");
-    const q = query(refToDocs, where("theSubject", "==", arg), where("theClassroom", "==", studentClass)/*, orderBy("theDateCreated", "desc"));
-    const docSnaps = await getDocs(q);
-    if (docSnaps.empty) return timelineBar.innerHTML = 'There are no tasks to perform.';
-    timelineBar.innerHTML = '';
-    docSnaps.docs.forEach((doc, i) => {
-        // console.log(data.theDateCreated)
-    })
-    */
 };
 const subjectNav = document.querySelector('#subject-navs .inner:last-child');
 subjectNav.addEventListener('click', (e) => {
+    e.preventDefault();
+    let ctx = document.querySelector('#ctx-txt').textContent.toLowerCase();
+    // e.stopPropagation();
     if (e.target.hasAttribute('href')) {
         subjectNav.querySelectorAll('a').forEach(anchor => {
             if (anchor.classList.contains('active')) {
@@ -153,8 +160,7 @@ subjectNav.addEventListener('click', (e) => {
             }
         })
         e.target.classList.add('active');
-        chooseConfig(classConfiguration);
-        getDocuments(e.target.textContent);
+        getDocuments(ctx, e.target.id);
     }
 })
 // getDocuments();

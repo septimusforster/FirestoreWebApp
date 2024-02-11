@@ -120,10 +120,11 @@ nav {
 aside {
     width: 5%;
     min-width: 100px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(40,40,40,.9);
     padding: 100px 0;
     position: fixed;
     top: 0;
+    z-index: 1;
 }
 aside button {
     /* border: 1px solid white; */
@@ -145,13 +146,14 @@ button img {
     width: 30px;
     height: 30px;
     background-color: #fff;
+    padding: 1px;
 }
 span.material-symbols-outlined {
     font-size: 40px;
 }
 aside button.active {
     box-shadow: 3px 0 #fff inset;
-    background-color: #009578;
+    background-color: #fff;
     color: #fff;
 }
 nav {
@@ -423,6 +425,7 @@ h1 {
     margin: 70px 0;
     width: 80%;
     max-width: 500px;
+    min-width: 400px;
 }
 .panel__details img {
     /* border: 1px solid green; */
@@ -432,7 +435,7 @@ h1 {
     /* margin-left: 10px; */
 }
 .panel__details p {
-    background-color: #fff;
+    background-color: hsl(0, 0%, 100%);
     color: black;
     border: 16px double;
     margin-left: 20px;

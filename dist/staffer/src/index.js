@@ -75,9 +75,8 @@ uploadForm.addEventListener('submit', async (e) => {
     let subPath = formData.get('theSubject');
     let file = formData.get('theFile');
     let info = formData.get('info');
-    let dest = '';
 
-    if(file) {
+    if(file.size) {
         const storage = getStorage();
         const rootPath = ref(storage, `files/${subPath}/${catPath}`);
         const imagesRef = ref(rootPath, file.name);
@@ -88,8 +87,9 @@ uploadForm.addEventListener('submit', async (e) => {
                 await addDoc(collection(notesRef, catPath, subPath), {
                     name: file.name,
                     dest: downloadURL,
-                    timestamp: theDateCreated,
+                    catPath,
                     info,
+                    timestamp: theDateCreated,
                 })
                 // console.log('Document added successfully.')
                 document.querySelector('dialog#to-delete output').textContent = "Document upload successful.";
@@ -105,10 +105,17 @@ uploadForm.addEventListener('submit', async (e) => {
         const notesRef = collection(db, "activities");
         await addDoc(collection(notesRef, catPath, subPath), {
             name: "No topic.",
-            dest,
-            timestamp: theDateCreated,
+            catPath,
             info,
+            timestamp: theDateCreated,
         })
+        document.querySelector('dialog#to-delete output').textContent = "Document upload successful.";
+        document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
+        document.querySelector('dialog#to-delete').showModal();
+        document.querySelector('#file-selected').innerText = "";
+        uploadForm.reset();
+        e.submitter.disabled = false;
+        e.submitter.style.cursor = 'pointer';
     }
 })
 //function to retrieve newly inserted data
