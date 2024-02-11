@@ -159,6 +159,7 @@ subjectNav.addEventListener('click', (e) => {
 })
 // getDocuments();
 const dialog = document.querySelector('dialog#photo-dialog');
+/*
 headerParagraph.addEventListener('click', (e) => {
     if (ss.ue) {
         dialog.insertAdjacentHTML('beforeend', "<button onclick='changePhoto()'></button>")
@@ -166,13 +167,15 @@ headerParagraph.addEventListener('click', (e) => {
         dialog.showModal();
     }
 })
+
 async function changePhoto() {
     const updateSnap = await updateDoc(ref, {
         photo: 'base64',
-        upload_enabled: false,
+        // upload_enabled: false,
         timestamp: serverTimestamp(),
     })
 }
+*/
 /*
 const demoSnap = await getDoc(doc(db, "JSS 3", "13IPf5eMe3sFCTBnBc8T"));
 console.log(demoSnap.data());

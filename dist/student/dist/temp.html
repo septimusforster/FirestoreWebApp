@@ -180,7 +180,7 @@
             cursor: pointer;
         }
         ::backdrop {
-            background-color: #555f;
+            background-color: rgba(42,7,75,.5);
         }
         dialog {
             position: absolute;
@@ -262,7 +262,6 @@
                     formBody.insertAdjacentHTML('beforeend', `
                     <label id="cb${i+1}">
                         <input type="checkbox" name="offered" id="cb${i+1}" value="${sub[0]}" /> ${sub[1]}
-                        <span></span>
                     </label>
                     `)
                 })

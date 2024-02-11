@@ -11,20 +11,27 @@ var app = initializeApp(configs[classIndex])
 // init services
 const db = getFirestore();
 //init references
-const userRef = doc(db, ss.class, ss.id);
+const userRef = doc(db, "students", ss.id);
 
 subjectForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
     const formData = new FormData(subjectForm);
-    const docSnap = await updateDoc(userRef, {
-        offered: formData.getAll('offered'),
-        upload_enabled: increment(1),
-    });
+    let obj = {}, i;
+    const offered = formData.getAll('offered');
+    offered.forEach((abbr, i) => {
+        obj[abbr] = ss.reservedPayload[abbr];
+    })
+
+    await updateDoc(userRef, { offered: obj });
     dialogSuccess.firstElementChild.textContent = "Submit Successful.";
     dialogSuccess.lastElementChild.textContent = "Redirecting to login..."
+    dialogSuccess.showModal();
     setTimeout(function() {
         location.href = "./logon.html";
     }, 5000)
+
 })
 const storage = getStorage();
 const rootPath = ref(storage, "img/" + ss.class);
@@ -46,16 +53,17 @@ const dialogSuccess = document.querySelector('dialog#success');
 photoForm.addEventListener('submit', (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
     const imagesRef = ref(rootPath, ss.id + "." + photoSrc.files[0].type.split('/')[1]);
     uploadBytes(imagesRef, photoSrc.files[0]).then((snapshot) => {
         getDownloadURL(snapshot.ref).then(async (downloadURL) => {
             const docSnap = await updateDoc(userRef, {
                 photo_src: downloadURL,
-                upload_enabled: increment(1),
             });
             //bring up modal box: Login
             dialogSuccess.firstElementChild.textContent = "Upload Successful.";
-            dialogSuccess.lastElementChild.textContent = "Redirecting to login..."
+            dialogSuccess.lastElementChild.textContent = "Redirecting to login...";
+            dialogSuccess.showModal();
             setTimeout(function() {
                 location.href = "./logon.html";
             }, 5000)

@@ -395,6 +395,12 @@ section {
     align-items: center;
     overflow: hidden;
 }
+#subject-nav > h3 {
+    cursor: pointer;
+}
+#subject-nav > h3:hover {
+    color: #fff;
+}
 .inner {
     height: 100%;
     flex-shrink: 0;
@@ -409,4 +415,41 @@ section {
 }
 span.gt {
     font-family: cursive;
+}
+h1 {
+    font-weight: normal;
+}
+.panel__details {
+    margin: 70px 0;
+    width: 80%;
+    max-width: 500px;
+}
+.panel__details img {
+    /* border: 1px solid green; */
+    background-color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    /* margin-left: 10px; */
+}
+.panel__details p {
+    background-color: #fff;
+    color: black;
+    border: 16px double;
+    margin-left: 20px;
+    margin-top: 10px;
+    padding: 20px;
+    line-height: 1.5;
+    border-radius: 0 7px 7px 7px;
+    text-align: justify;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    position: relative;
+}
+.panel__details p::before {
+    content: '';
+    position: absolute;
+    top: -11px;
+    left: -30px;
+    border: 10px solid;
+    border-color: white white transparent transparent;
+    /* transform: rotate(180deg); */
 }

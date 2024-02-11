@@ -33,7 +33,7 @@ loginForm.addEventListener('submit', async (e) => {
     const querySnapshot = await getDocs(q);
     // console.log(querySnapshot);
     if(querySnapshot.empty) {
-        notice.querySelector('output').textContent = "The username/password is incorrect.";
+        notice.querySelector('output').textContent = "Something's gone awry. Try again.";
         notice.classList.add('active');
         e.submitter.disabled = false;
         e.submitter.style.cursor = 'pointer';
