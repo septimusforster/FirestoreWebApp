@@ -20,8 +20,9 @@
                 <div class="section__div">
                     <button type="button"></button><span>Manage Arms</span>
                 </div>
+                <hr>
                 <div class="section__div">
-                    <button type="button"></button><span>Manage staff</span>
+                    <button type="button" id="subject-btn"></button><span>Manage staff subjects</span>
                 </div>
                 <div id="view-div">
                     <button id="view-changes">View Changes</button>
@@ -83,11 +84,39 @@
             </div>
         </form>
     </dialog>
+    <dialog id="subject-dialog">
+        <form action="" class="dialog-fm">
+            <div>
+                <input type="text" name="username" class="txt" placeholder="username or email"/>
+            </div>
+            <div>
+                <input type="text" list="abbr" class="abbr" placeholder="abbr"/>
+                <input type="text" list="fulltxt" name="fulltxt" class="txt" placeholder="full txt"/>
+                <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+            </div>
+            <div class="footer">
+                <button onclick="plus(this)" type="button">&plus;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="submit">Add</button><button class="delete-btn" id="delete">Remove</button>
+            </div>
+        </form>
+    </dialog>
+    <datalist id="abbr">
+        <option value="ACC"></option>
+        <option value="TOU"></option>
+        <option value="MTH"></option>
+    </datalist>
+    <datalist id="fulltxt">
+        <option value="Accounting"></option>
+        <option value="Tourism"></option>
+        <option value="Mathematics"></option>
+    </datalist>
     <script>
         const juniorBtn = document.querySelector('button#junior-btn');
         const seniorBtn = document.querySelector('button#senior-btn');
+        const subjectBtn = document.querySelector('button#subject-btn');
         const juniorDialog = document.querySelector('dialog#junior-dialog');
         const seniorDialog = document.querySelector('dialog#senior-dialog');
+        const subjectDialog = document.querySelector('dialog#subject-dialog');
+
         juniorBtn.onclick = function (e) {
             const topOffset = e.target.offsetTop + 50;
             const leftOffset = e.target.offsetLeft;
@@ -104,16 +133,34 @@
             
             seniorDialog.showModal();
         }
+        subjectBtn.onclick = function (e) {
+            const topOffset = e.target.offsetTop + 50;
+            const leftOffset = e.target.offsetLeft;
+            subjectDialog.style.top = topOffset + 'px';
+            subjectDialog.style.left = leftOffset + 'px';
+            
+            subjectDialog.showModal();
+        }
 
         // const plus = document.querySelector('#plus');
         function plus(e) {
-            e.parentElement.insertAdjacentHTML('beforebegin', `
+            if (e.offsetParent.id.startsWith('junior') || e.offsetParent.id.startsWith('senior')) {
+                e.parentElement.insertAdjacentHTML('beforebegin', `
+                    <div>
+                        <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="4" autocomplete="off" required/>
+                        <input type="text" name="txt" class="txt" placeholder="full text" autocomplete="off" required/>
+                        <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+                    </div>
+                `)
+            } else if (e.offsetParent.id.startsWith('subject')) {
+                e.parentElement.insertAdjacentHTML('beforebegin', `
                 <div>
-                    <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="4" autocomplete="off" required/>
-                    <input type="text" name="txt" class="txt" placeholder="full text" autocomplete="off" required/>
+                    <input type="text" list="abbr" class="abbr" placeholder="abbr"/>
+                    <input type="text" list="fulltxt" name="fulltxt" class="txt" placeholder="full txt"/>
                     <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
                 </div>
-            `)
+                `)
+            }
         } 
         function deleteField(e) {
             let fm = e.parentElement.parentElement;

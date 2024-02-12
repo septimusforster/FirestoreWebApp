@@ -22,6 +22,9 @@
                     <span>Classes</span><span></span><hr>
                     <span>Subject</span><span></span>
                 </div>
+                <!-- <div> -->
+                <img src="../img/185095_settings_icon.png" alt="settings-icon">
+                <!-- </div> -->
             </div>
             <div id="upload-wrapper">
                 <h2>Upload</h2>
@@ -87,6 +90,26 @@
             <output></output>
             <a href="#" onclick="this.parentElement.close()"></a>
         </dialog>
+        <dialog id="settings">
+            <form name="fm-settings">
+                <div>
+                    <h2>Profile settings</h2><i onclick="closeModal(this)">&times;</i>
+                </div>
+                <p>You may edit your desired settings and leave other information as untouched, before you click "Submit".</p>
+                <label for="fullName">Change full name</label>
+                <input type="text" name="fullName" id="fullName" placeholder="Full name" autocomplete="off"/>
+                <label for="username">Change username/alias</label>
+                <input type="text" name="currentUsername" id="currentUsername" placeholder="Enter current username" autocomplete="off" data-value=""/>
+                <input type="text" name="username" id="username" placeholder="Enter new username" autocomplete="off" class="true" disabled/>
+                <label for="password">Change password</label>
+                <input type="password" name="currentPassword" id="currentPassword" placeholder="Enter current password" data-value=""/>
+                <input type="password" name="password" id="password" placeholder="Enter new password" disabled class="true"/>
+                <label for="hide-unhide">
+                    <input type="checkbox" name="hide-unhide" id="hide-unhide" />Show/hide passwords
+                </label>
+                <input type="submit" value="Submit">
+            </form>
+        </dialog>
         <footer class="footer">Dynamax | &copy; 2018</footer>
     </div>
     <script type="module" src="../src/bundle.js"></script>
@@ -118,6 +141,43 @@
             e.target.previousElementSibling.lastElementChild.textContent = remainder + " remaining."
         })
     </script>
-    
+    <script>
+        const dialogSettings = document.querySelector('dialog#settings');
+        const fmSettings = document.querySelector("form[name='fm-settings']");
+        const imgSettings = document.querySelector('img[alt="settings-icon"]');
+        imgSettings.onclick = function (e) {
+            dialogSettings.showModal();
+        }
+        function closeModal(e) {
+            e.offsetParent.close();
+            fmSettings.reset();
+        }
+        const passwords = fmSettings.querySelectorAll('input[type="password"]');
+        const hideUnhide = document.querySelector('#hide-unhide');
+        hideUnhide.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                passwords.forEach(password => {
+                    password.type = 'text'
+                })
+            } else {
+                passwords.forEach(password => {
+                    password.type = 'password'
+                })
+            }
+        })
+        fmSettings.addEventListener('change', (e) => {
+            if (e.target.type === 'text' && e.target.dataset.value === e.target.value) {
+                e.target.disabled = true;
+                e.target.classList.add('true');
+                e.target.nextElementSibling.disabled = false;
+                e.target.nextElementSibling.classList.remove('true');
+            } else if (e.target.type === 'password' && e.target.dataset.value === e.target.value) {
+                e.target.disabled = true;
+                e.target.classList.add('true');
+                e.target.nextElementSibling.disabled = false;
+                e.target.nextElementSibling.classList.remove('true');
+            }
+        })
+    </script>
 </body>
 </html>

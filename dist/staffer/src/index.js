@@ -1,6 +1,6 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, onSnapshot, updateDoc } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 
@@ -24,9 +24,9 @@ var app = initializeApp(configs[0]);
 // init services
 var db;
 
-function chooseConfig(projConfig) {
+function chooseConfig(projNum) {
     deleteApp(app);
-    app = initializeApp(projConfig);
+    app = initializeApp(configs[projNum]);
     db = getFirestore();
 }
 
@@ -39,8 +39,11 @@ const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
 // load profile pic
 if (ss.data.avatar) photo.src = ss.data.avatar;
 // load full name and alias
+const currUser = document.querySelector('#currentUsername');
+const currPass = document.querySelector('#currentPassword');
 evenSpans[0].textContent = ss.data.fullName;
-evenSpans[1].textContent = ss.data.username;
+evenSpans[1].textContent = currUser.dataset.value = ss.data.username;
+currPass.dataset.value = ss.data.password;
 // load classes taught in profile and selectElt
 ss.data.classroomsTaught.forEach(classroom => {
     evenSpans[2].insertAdjacentHTML('afterbegin', `${classroom}<br>`)
@@ -60,7 +63,7 @@ document.querySelector('#profile-wrapper').children[2].style.display = 'flex';
 //on form change
 selectClassroom.addEventListener('change', (e) => {
     let optIndex = classArray.indexOf(e.target.value);
-    chooseConfig(configs[optIndex]);
+    chooseConfig(optIndex);
 })
 
 //on form submit
@@ -173,85 +176,24 @@ runBtn.onclick = (e) => {
         document.querySelector('dialog#to-delete').showModal();
      }
 }
-// onSnapshot(fileCollectionRef,)
+fmSettings.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
+    chooseConfig(6);
+    const formData = new FormData(fmSettings);
+    const fullName = ['fullName', formData.get('fullName')];
+    const username = ['username', formData.get('username')];
+    const password = ['password', formData.get('password')];
 
-/*
-import firebase from 'firebase/app'
-import 'firebase/storage'
+    const dataArray = [fullName, username, password].filter(a => Boolean(a[1]));
+    let entries = new Map(dataArray);
+    let obj = Object.fromEntries(entries);
 
-const firebaseConfig = {
-    apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
-    authDomain: "fir-pro-152a1.firebaseapp.com",
-    projectId: "fir-pro-152a1",
-    storageBucket: "fir-pro-152a1.appspot.com",
-    messagingSenderId: "158660765747",
-    appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46"
-};
-//Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+    await updateDoc(doc(db, "staffCollection", ss.id), obj)
+    dialogSettings.close();
 
-//Get a reference to Firebase storage
-const storage = firebase.storage();
-
-//File input element
-const fileInput = document.getElementById('file-job');
-
-fileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    const storageRef = storage.ref('pdfs/' + file.name);
-    const uploadTask = storageRef.put(file);
-    //monitor upload progress
-    uploadTask.on('state_changed', (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytesTransferred) * 100;
-        console.log('Upload is ' + progress + ' done.')
-    },
-        (error) => {
-            console.log(error)
-        },
-        () => {
-            console.log("File uploaded successfully.")
-        }
-    );
+    document.querySelector('dialog#to-delete output').textContent = "Profile settings updated.";
+    document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
+    document.querySelector('dialog#to-delete').showModal();
 })
-*/
-
-
-/*
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-
-const storage = getStorage();
-const storageRef = ref(storage, 'images/rivers.jpg');
-
-const uploadTask = uploadBytesResumable(storageRef, file);
-
-// Register three observers:
-// 1. 'state_changed' observer, called any time the state changes
-// 2. Error observer, called on failure
-// 3. Completion observer, called on successful completion
-uploadTask.on('state_changed', 
-  (snapshot) => {
-    // Observe state change events such as progress, pause, and resume
-    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    console.log('Upload is ' + progress + '% done');
-    switch (snapshot.state) {
-      case 'paused':
-        console.log('Upload is paused');
-        break;
-      case 'running':
-        console.log('Upload is running');
-        break;
-    }
-  }, 
-  (error) => {
-    // Handle unsuccessful uploads
-  }, 
-  () => {
-    // Handle successful uploads on complete
-    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      console.log('File available at', downloadURL);
-    });
-  }
-);
-*/

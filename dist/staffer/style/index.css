@@ -28,8 +28,6 @@ body {
 }
 .body {
     width: 70%;
-    height: 77vh;
-    height: 77dvh;
     border: 1px solid #aaa;
     border-radius: 5px;
     box-shadow: 0 0 7px #004d3d33;
@@ -258,12 +256,16 @@ span#mode {
 a {
     text-decoration: none;
 }
+::backdrop {
+    background-color: rgba(40,40,40,.5);
+}
 dialog {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 30vh;
+    min-width: 30vh;
+    max-width: 350px;
     padding: 20px;
     border: 1px solid #009578;
     border-radius: 7px;
@@ -287,4 +289,64 @@ output {
     width: 100%;
     margin: 10px 0;
     text-align: center;
+}
+#profile-wrapper {
+    position: relative;
+}
+img[alt='settings-icon'] {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 20px;
+    width: 30px;
+    padding: 5px;
+    border-radius: 50%;
+    box-shadow: 0 0 1px 3px #fff;
+    transition: all .2s ease-in-out;
+}
+img[alt='settings-icon']:hover {
+    background-color: #fff;
+}
+form[name='fm-settings'] {
+    display: flex;
+    flex-direction: column;
+}
+form[name='fm-settings'] div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+form[name='fm-settings'] > div > h2 {
+    margin-right: auto;
+    display: inline;
+    font-weight: normal;
+}
+form[name='fm-settings'] > div > i {
+    /* padding: 0; */
+    font-size: 2em;
+    height: 1.5em;
+    width: 1.5em;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+form[name='fm-settings'] > div > i:hover {
+    background-color: #eee;
+}
+form[name='fm-settings'] label,
+form[name='fm-settings'] input {
+    font-size: 1em;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+form[name='fm-settings'] input {
+    margin: 10px 10px;
+    box-shadow: 0 0 1px #333;
+}
+form[name='fm-settings'] p {
+    margin: 20px 0;
+}
+.true {
+    pointer-events: none;
 }
