@@ -85,30 +85,25 @@
         </form>
     </dialog>
     <dialog id="subject-dialog">
-        <form action="" class="dialog-fm">
+        <form name="subjectForm" id="subject-form" class="dialog-fm">
             <div>
-                <input type="text" name="username" class="txt" placeholder="username or email"/>
+                <input type="text" name="username" class="txt" placeholder="username or email" autocomplete="off"/>
             </div>
             <div>
-                <input type="text" list="abbr" class="abbr" placeholder="abbr"/>
-                <input type="text" list="fulltxt" name="fulltxt" class="txt" placeholder="full txt"/>
+                <input type="text" list="abbr" name="abbr" class="abbr" placeholder="abbr" autocomplete="off"/>
+                <input type="text" list="fulltxt" name="txt" class="txt" placeholder="full txt" autocomplete="off"/>
                 <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
             </div>
             <div class="footer">
-                <button onclick="plus(this)" type="button">&plus;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="submit">Add</button><button class="delete-btn" id="delete">Remove</button>
+                <button onclick="plus(this)" type="button">&plus;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="add">Add</button><button class="delete-btn" id="remove">Remove</button>
             </div>
         </form>
     </dialog>
     <datalist id="abbr">
-        <option value="ACC"></option>
-        <option value="TOU"></option>
-        <option value="MTH"></option>
     </datalist>
     <datalist id="fulltxt">
-        <option value="Accounting"></option>
-        <option value="Tourism"></option>
-        <option value="Mathematics"></option>
     </datalist>
+    <script type="module" src="../src/reserved_bundle.js"></script>
     <script>
         const juniorBtn = document.querySelector('button#junior-btn');
         const seniorBtn = document.querySelector('button#senior-btn');
@@ -155,8 +150,8 @@
             } else if (e.offsetParent.id.startsWith('subject')) {
                 e.parentElement.insertAdjacentHTML('beforebegin', `
                 <div>
-                    <input type="text" list="abbr" class="abbr" placeholder="abbr"/>
-                    <input type="text" list="fulltxt" name="fulltxt" class="txt" placeholder="full txt"/>
+                    <input type="text" list="abbr" name="abbr" class="abbr" placeholder="abbr"/>
+                    <input type="text" list="fulltxt" name="txt" class="txt" placeholder="full txt"/>
                     <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
                 </div>
                 `)
@@ -170,6 +165,5 @@
             e.offsetParent.close()
         }
     </script>
-    <script type="module" src="../src/reserved_bundle.js"></script>
 </body>
 </html>

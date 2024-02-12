@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app"
 import {
-    getFirestore, collection, getDoc, setDoc, addDoc, deleteDoc, deleteField, doc, query, where, limit, updateDoc
+    getFirestore, arrayUnion, arrayRemove, collection, getDoc, getDocs, setDoc, addDoc, deleteDoc, deleteField, doc, query, where, limit, updateDoc
 } from "firebase/firestore"
 
 const firebaseConfig = {
@@ -48,27 +48,51 @@ for(i = 0; i < 2; i++) {
             })*/
     }
 }
-const snrObj = JSON.parse(sessionStorage.getItem('snr_sub'));
-const jnrObj = JSON.parse(sessionStorage.getItem('jnr_sub'));
-
+const jnrArray = Object.entries(JSON.parse(sessionStorage.getItem('jnr_sub'))).sort();
+const snrArray = Object.entries(JSON.parse(sessionStorage.getItem('snr_sub'))).sort();
+//load Jnr subs into <datalist>
+const abbrDatalist = document.querySelector('datalist#abbr');
+const fullTxtDatalist = document.querySelector('datalist#fulltxt');
 const uls = document.querySelectorAll('.aside__content ul');
-const viewChanges = document.querySelector('#view-changes');
 
-let jnrArray = Object.values(jnrObj);
-let snrArray = Object.values(snrObj);
+function loadSubjectsIntoUls(entries, list) {
+    if (list.startsWith('j')) {
+        entries.forEach((ent, ind) => {
+            uls[0].insertAdjacentHTML('beforeend', `<li>${ind + 1}. ${ent[0]} - ${ent[1]}</li>`)
+        })
+    }
+    if (list.startsWith('s')) {
+        entries.forEach((ent, ind) => {
+            uls[1].insertAdjacentHTML('beforeend', `<li>${ind + 1}. ${ent[0]} - ${ent[1]}</li>`)
+        })
+    }
+}
+loadSubjectsIntoUls(jnrArray, "juniors");
+loadSubjectsIntoUls(snrArray, "seniors");
+const myobjects = [JSON.parse(sessionStorage.getItem('jnr_sub')),JSON.parse(sessionStorage.getItem('snr_sub'))];
+function mergeObjects(objs) {
+    var result = {};
+    objs.forEach(obj => {
+        for (const key in obj) {
+                if (!result.hasOwnProperty(key)) result[key] = obj[key];
+        }
+    });
+    return result;
+}
+
+const uniqueAbbr = Object.keys(mergeObjects(myobjects))
+const uniqueFullTxt = Object.values(mergeObjects(myobjects))
+uniqueAbbr.forEach((abbr, i) => {
+    abbrDatalist.insertAdjacentHTML('afterbegin', `<option value="${abbr}"></option>`)
+    fullTxtDatalist.insertAdjacentHTML('afterbegin', `<option value="${uniqueFullTxt[i]}"></option>`)
+})
+
+const viewChanges = document.querySelector('#view-changes');
 viewChanges.addEventListener('click', (e) => {
     sessionStorage.removeItem('jnr_sub')
     sessionStorage.removeItem('snr_sub')
     location.reload();
 })
-
-jnrArray.forEach((sub, i) => {
-    uls[0].insertAdjacentHTML('beforeend', `<li>${i + 1 + " - " + sub}</li>`)
-})
-snrArray.forEach((sub, i) => {
-    uls[1].insertAdjacentHTML('beforeend', `<li>${i + 1 + " - " + sub}</li>`)
-})
-
 
 const juniorForm = document.forms.juniorForm;
 juniorForm.addEventListener('submit', async (e) => {
@@ -109,7 +133,7 @@ seniorForm.addEventListener('submit', async (e) => {
         let abbr = formData.getAll('abbr');
         let txt = formData.getAll('txt');
     
-        abbr.forEach((a, i) => obj[a.toUpperCase()] = txt[i]);
+        abbr.forEach((a,i) => obj[a.toUpperCase()] = txt[i]);
         await setDoc(snrRef, obj, {merge: true})
         window.alert('Subject upload successful');
         e.submitter.disabled = false;
@@ -123,5 +147,49 @@ seniorForm.addEventListener('submit', async (e) => {
         window.alert('Subject delete successful');
         e.submitter.disabled = false;
         e.submitter.style.cursor = 'pointer';
+    }
+})
+const subjectForm = document.forms.subjectForm;
+subjectForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    // e.submitter.disabled = true;
+    // e.submitter.style.cursor = 'not-allowed';
+    const formData = new FormData(subjectForm);
+    let user = formData.get('username');
+    if (!user.trim().length) return window.alert("Enter a username or email.")
+    const q = query(collection(db, "staffCollection"), where("username", "==", user), limit(1))
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) return window.alert("Username does not exist.")
+    let userID;
+    querySnapshot.docs.forEach(doc => {
+        userID = doc.id;
+    })
+    let abbr = formData.getAll('abbr')
+    let txt = formData.getAll('txt')
+    
+    if (e.submitter.id === 'add') {
+        const promises = 
+            abbr.map( async (a,i) => {
+                let obj = {};
+                obj[a] = txt[i];
+                await updateDoc(doc(db, "staffCollection", userID), {
+                    subjectsTaught: arrayUnion(obj),
+                })
+            });
+
+        await Promise.all(promises)
+        window.alert("Subject(s) added.")
+    } else {
+        const promises = 
+            abbr.map( async (a,i) => {
+                let obj = {};
+                obj[a] = txt[i];
+                await updateDoc(doc(db, "staffCollection", userID), {
+                    subjectsTaught: arrayRemove(obj),
+                })
+            });
+
+        await Promise.all(promises)
+        window.alert("Subject(s) removed.") 
     }
 })
