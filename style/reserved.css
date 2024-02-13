@@ -200,3 +200,11 @@ input.txt {
 #view-div {
     text-align: center;
 }
+.class {
+    width: 40%;
+}
+input.txt,
+input.abbr,
+input.class {
+    letter-spacing: 2px;
+}

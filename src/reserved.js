@@ -94,11 +94,20 @@ viewChanges.addEventListener('click', (e) => {
     location.reload();
 })
 
+function formStatus(e, submit='disabled') {
+    e.preventDefault();
+    if (submit === 'enabled') {
+        e.submitter.disabled = true;
+        e.submitter.style.cursor = 'not-allowed'
+    } else {
+        e.submitter.disabled = false;
+        e.submitter.style.cursor = 'pointer'
+    }
+}
+
 const juniorForm = document.forms.juniorForm;
 juniorForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    e.submitter.disabled = true;
-    e.submitter.style.cursor = 'not-allowed';
+    formStatus(e, 'enabled');
     let obj = new Object();
     if (e.submitter.id === 'submit') {
         const formData = new FormData(juniorForm);
@@ -108,8 +117,7 @@ juniorForm.addEventListener('submit', async (e) => {
         abbr.forEach((a, i) => obj[a.toUpperCase()] = txt[i]);
         await setDoc(jnrRef, obj, {merge: true})
         window.alert('Subject upload successful');
-        e.submitter.disabled = false;
-        e.submitter.style.cursor = 'pointer';
+        formStatus(e);
     } else {
         const formData = new FormData(juniorForm);
         let abbr = formData.getAll('abbr');
@@ -117,16 +125,13 @@ juniorForm.addEventListener('submit', async (e) => {
         abbr.forEach((a) => obj[a.toUpperCase()] = deleteField())
         await updateDoc(jnrRef, obj)
         window.alert('Subject delete successful');
-        e.submitter.disabled = false;
-        e.submitter.style.cursor = 'pointer';
+        formStatus(e);
     }  
 })
 
 const seniorForm = document.forms.seniorForm;
 seniorForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    e.submitter.disabled = true;
-    e.submitter.style.cursor = 'not-allowed';
+    formStatus(e, 'enabled');
     let obj = new Object();
     if (e.submitter.id === 'submit') {
         const formData = new FormData(seniorForm);
@@ -136,8 +141,7 @@ seniorForm.addEventListener('submit', async (e) => {
         abbr.forEach((a,i) => obj[a.toUpperCase()] = txt[i]);
         await setDoc(snrRef, obj, {merge: true})
         window.alert('Subject upload successful');
-        e.submitter.disabled = false;
-        e.submitter.style.cursor = 'pointer';
+        formStatus(e);
     } else {
         const formData = new FormData(seniorForm);
         let abbr = formData.getAll('abbr');
@@ -145,21 +149,52 @@ seniorForm.addEventListener('submit', async (e) => {
         abbr.forEach((a) => obj[a.toUpperCase()] = deleteField())
         await updateDoc(snrRef, obj)
         window.alert('Subject delete successful');
-        e.submitter.disabled = false;
-        e.submitter.style.cursor = 'pointer';
+        formStatus(e);
+    }
+})
+const armForm = document.forms.armForm;
+armForm.addEventListener('submit', async (e) => {
+    formStatus(e, 'enabled');
+    const formData = new FormData(armForm);
+    let arms = formData.getAll('arms');
+
+    if (e.submitter.id === 'submit') {
+        const promises = arms.map(async arm => {
+            await updateDoc(doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu"), {
+                arms: arrayUnion(arm),
+            })
+        })
+        await Promise.all(promises)
+        window.alert("Arms successfully updated.")
+        formStatus(e);
+    } else {
+        const promises = arms.map(async arm => {
+            await updateDoc(doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu"), {
+                arms: arrayRemove(arm),
+            })
+        })
+        await Promise.all(promises)
+        window.alert("Deletion success.")
+        formStatus(e);
     }
 })
 const subjectForm = document.forms.subjectForm;
 subjectForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    // e.submitter.disabled = true;
-    // e.submitter.style.cursor = 'not-allowed';
+    formStatus(e, 'enabled');
     const formData = new FormData(subjectForm);
     let user = formData.get('username');
-    if (!user.trim().length) return window.alert("Enter a username or email.")
+    if (!user.trim().length) {
+        window.alert("Enter your current username.");
+        formStatus(e);
+        return;
+    }
     const q = query(collection(db, "staffCollection"), where("username", "==", user), limit(1))
     const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) return window.alert("Username does not exist.")
+    if (querySnapshot.empty) {
+        window.alert("Username does not exist.");
+        formStatus(e);
+        return;
+    }
     let userID;
     querySnapshot.docs.forEach(doc => {
         userID = doc.id;
@@ -178,7 +213,8 @@ subjectForm.addEventListener('submit', async (e) => {
             });
 
         await Promise.all(promises)
-        window.alert("Subject(s) added.")
+        window.alert("Subject(s) added.");
+        formStatus(e)
     } else {
         const promises = 
             abbr.map( async (a,i) => {
@@ -190,6 +226,54 @@ subjectForm.addEventListener('submit', async (e) => {
             });
 
         await Promise.all(promises)
-        window.alert("Subject(s) removed.") 
+        window.alert("Subject(s) removed.");
+        formStatus(e);
     }
 })
+const classForm = document.forms.classForm;
+classForm.addEventListener('submit', async (e) => {
+    formStatus(e, 'enabled');
+    const formData = new FormData(classForm);
+    let user = formData.get('username');
+    if (!user.trim().length) {
+        window.alert("Enter your current username.");
+        formStatus(e);
+        return;
+    }
+    const q = query(collection(db, "staffCollection"), where("username", "==", user), limit(1))
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+        window.alert("Username does not exist.");
+        formStatus(e);
+        return;
+    }
+    let userID;
+    querySnapshot.docs.forEach(doc => {
+        userID = doc.id;
+    })
+    let abbr = formData.getAll('classesTaught')
+    
+    if (e.submitter.id === 'register') {
+        const promises = 
+            abbr.map( async (a) => {
+                await updateDoc(doc(db, "staffCollection", userID), {
+                    classroomsTaught: arrayUnion(a),
+                })
+            });
+        await Promise.all(promises)
+        window.alert("Your class(es) have been updated.");
+        formStatus(e)
+    } else {
+        const promises = 
+            abbr.map( async (a) => {
+                await updateDoc(doc(db, "staffCollection", userID), {
+                    classroomsTaught: arrayRemove(a),
+                })
+            });
+
+        await Promise.all(promises)
+        window.alert("Subject(s) removed.");
+        formStatus(e);
+    }
+})
+

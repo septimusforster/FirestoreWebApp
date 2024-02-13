@@ -12,17 +12,20 @@
             <aside></aside>
             <section>
                 <div class="section__div">
-                    <button type="button" id="junior-btn"></button><span>Manage Junior Secondary subjects</span>
+                    <button type="button" id="junior-btn" onclick="displayModal(this, '#junior-dialog')"></button><span>Manage Junior Secondary subjects</span>
                 </div>
                 <div class="section__div">
-                    <button type="button" id="senior-btn"></button><span>Manage Senior Secondary subjects</span>
+                    <button type="button" id="senior-btn" onclick="displayModal(this, '#senior-dialog')"></button><span>Manage Senior Secondary subjects</span>
                 </div>
                 <div class="section__div">
-                    <button type="button"></button><span>Manage Arms</span>
+                    <button type="button" id="arm-btn" onclick="displayModal(this, '#arm-dialog')"></button><span>Manage Arms</span>
                 </div>
                 <hr>
                 <div class="section__div">
-                    <button type="button" id="subject-btn"></button><span>Manage staff subjects</span>
+                    <button type="button" id="subject-btn" onclick="displayModal(this, '#subject-dialog')"></button><span>Manage staff subjects</span>
+                </div>
+                <div class="section__div">
+                    <button type="button" id="class-btn" onclick="displayModal(this, '#class-dialog')"></button><span>Manage staff classes</span>
                 </div>
                 <div id="view-div">
                     <button id="view-changes">View Changes</button>
@@ -84,6 +87,17 @@
             </div>
         </form>
     </dialog>
+    <dialog id="arm-dialog">
+        <form name="armForm" id="arm-form" class="dialog-fm">
+            <div>
+                <input type="text" name="arms" class="txt" placeholder="Enter arm name" autocomplete="off" required/>
+                <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+            </div>
+            <div class="footer">
+                <button onclick="plus(this)" type="button">&plus;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="submit">Submit</button><button class="delete-btn" id="delete">Delete</button>
+            </div>
+        </form>
+    </dialog>
     <dialog id="subject-dialog">
         <form name="subjectForm" id="subject-form" class="dialog-fm">
             <div>
@@ -99,45 +113,51 @@
             </div>
         </form>
     </dialog>
+    <dialog id="class-dialog">
+        <form name="classForm" class="dialog-fm" id="class-form">
+            <div>
+                <input type="text" name="username" class="txt" placeholder="username or email" autocomplete="off"/>
+            </div>
+            <div>
+                <input type="text" list="cls" name="classesTaught" class="class" placeholder="class" autocomplete="off"/>
+                <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+            </div>
+            <div class="footer">
+                <button onclick="plus(this)" type="button">&plus;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="register">Add</button><button class="delete-btn" id="unregister">Remove</button>
+            </div>
+        </form>
+    </dialog>
     <datalist id="abbr">
     </datalist>
     <datalist id="fulltxt">
+    </datalist>
+    <datalist id="cls">
+        <option value="JSS 1"></option>
+        <option value="JSS 2"></option>
+        <option value="JSS 3"></option>
+        <option value="SSS 1"></option>
+        <option value="SSS 2"></option>
+        <option value="SSS 3"></option>
     </datalist>
     <script type="module" src="../src/reserved_bundle.js"></script>
     <script>
         const juniorBtn = document.querySelector('button#junior-btn');
         const seniorBtn = document.querySelector('button#senior-btn');
+        const armBtn = document.querySelector('button#arm-btn');
         const subjectBtn = document.querySelector('button#subject-btn');
         const juniorDialog = document.querySelector('dialog#junior-dialog');
         const seniorDialog = document.querySelector('dialog#senior-dialog');
+        const armDialog = document.querySelector('dialog#arm-dialog');
         const subjectDialog = document.querySelector('dialog#subject-dialog');
 
-        juniorBtn.onclick = function (e) {
-            const topOffset = e.target.offsetTop + 50;
-            const leftOffset = e.target.offsetLeft;
-            juniorDialog.style.top = topOffset + 'px';
-            juniorDialog.style.left = leftOffset + 'px';
-            
-            juniorDialog.showModal();
-        }
-        seniorBtn.onclick = function (e) {
-            const topOffset = e.target.offsetTop + 50;
-            const leftOffset = e.target.offsetLeft;
-            seniorDialog.style.top = topOffset + 'px';
-            seniorDialog.style.left = leftOffset + 'px';
-            
-            seniorDialog.showModal();
-        }
-        subjectBtn.onclick = function (e) {
-            const topOffset = e.target.offsetTop + 50;
-            const leftOffset = e.target.offsetLeft;
-            subjectDialog.style.top = topOffset + 'px';
-            subjectDialog.style.left = leftOffset + 'px';
-            
-            subjectDialog.showModal();
-        }
+        function displayModal(elem, query) {
+            const topOffset = elem.offsetTop + 50;
+            const leftOffset = elem.offsetLeft;
+            document.querySelector(query).style.top = topOffset + 'px';
+            document.querySelector(query).style.left = leftOffset + 'px';
 
-        // const plus = document.querySelector('#plus');
+            document.querySelector(query).showModal();
+        }
         function plus(e) {
             if (e.offsetParent.id.startsWith('junior') || e.offsetParent.id.startsWith('senior')) {
                 e.parentElement.insertAdjacentHTML('beforebegin', `
@@ -152,6 +172,20 @@
                 <div>
                     <input type="text" list="abbr" name="abbr" class="abbr" placeholder="abbr"/>
                     <input type="text" list="fulltxt" name="txt" class="txt" placeholder="full txt"/>
+                    <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+                </div>
+                `)
+            } else if (e.offsetParent.id.startsWith('arm')) {
+                e.parentElement.insertAdjacentHTML('beforebegin', `
+                <div>
+                    <input type="text" name="arms" class="txt" placeholder="Enter arm name" autocomplete="off" required/>
+                    <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+                </div>
+                `)
+            } else if (e.offsetParent.id.startsWith('class')) {
+                e.parentElement.insertAdjacentHTML('beforebegin', `
+                <div>
+                    <input type="text" list="cls" name="classesTaught" class="class" placeholder="class" autocomplete="off"/>
                     <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
                 </div>
                 `)
