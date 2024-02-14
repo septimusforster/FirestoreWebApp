@@ -350,3 +350,10 @@ form[name='fm-settings'] p {
 .true {
     pointer-events: none;
 }
+#documents-wrapper div:nth-of-type(3) input[type="submit"] {
+    width: 100px;
+}
+#documents-wrapper div:nth-of-type(3) select {
+    border: none;
+    /* background: transparent; */
+}

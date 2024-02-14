@@ -1,6 +1,6 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, onSnapshot, updateDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, onSnapshot, updateDoc, arrayUnion, getDocFromServer } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 
@@ -32,7 +32,7 @@ function chooseConfig(projNum) {
 
 // collection refs
 // const fileCollectionRef = collection(db, fileRef);
-// const staffCollectionRef = doc(db, "staffCollection", sessionStorage.getItem('snapshotId'));
+// const staffCollectionRef = doc(db, "staffCollection", ss.id);
 
 // load member profile
 const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
@@ -45,17 +45,23 @@ evenSpans[0].textContent = ss.data.fullName;
 evenSpans[1].textContent = currUser.dataset.value = ss.data.username;
 currPass.dataset.value = ss.data.password;
 // load classes taught in profile and selectElt
+const className = document.querySelector('#classname');
 ss.data.classroomsTaught.forEach(classroom => {
     evenSpans[2].insertAdjacentHTML('afterbegin', `${classroom}<br>`)
     let option = new Option(classroom, classroom);
     selectClassroom.insertAdjacentElement('beforeend', option);
+    // let option2 = new Option(classroom, classroom);
+    // className.insertAdjacentElement('beforeend', option2);
 });
 // load subjects taught in profile and selectElt
+const subjectName = document.querySelector('#subjectname')
 ss.data.subjectsTaught.forEach(subject => {
     for (const [k, v] of Object.entries(subject)) {
         evenSpans[3].insertAdjacentHTML('afterbegin', `${v}<br>`);
         let option = new Option(v, k);
         document.querySelector('select#theSubjectId').insertAdjacentElement('beforeend', option);
+        let option2 = new Option(v, k);
+        subjectName.insertAdjacentElement('beforeend', option2);
     }
 });
 document.querySelector('#profile-wrapper').children[2].style.display = 'flex';
@@ -93,15 +99,26 @@ uploadForm.addEventListener('submit', async (e) => {
                     catPath,
                     info,
                     timestamp: theDateCreated,
+                }).then(async snapDoc => {                    
+                    //send URL to teacher's doc
+                    chooseConfig(6);
+                    await updateDoc(doc(db, "staffCollection", ss.id), {
+                        [subPath]: arrayUnion({
+                            [file.name]: downloadURL,
+                            fileID: snapDoc.id,
+                        })
+                    })
+                    let nullify = JSON.parse(sessionStorage.getItem('snapshotId'));
+                    nullify.subPath = null;
+                    // console.log('Document added successfully.')
+                    document.querySelector('dialog#to-delete output').textContent = "Document upload successful.";
+                    document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
+                    document.querySelector('dialog#to-delete').showModal();
+                    document.querySelector('#file-selected').innerText = "";
+                    uploadForm.reset();
+                    e.submitter.disabled = false;
+                    e.submitter.style.cursor = 'pointer';
                 })
-                // console.log('Document added successfully.')
-                document.querySelector('dialog#to-delete output').textContent = "Document upload successful.";
-                document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
-                document.querySelector('dialog#to-delete').showModal();
-                document.querySelector('#file-selected').innerText = "";
-                uploadForm.reset();
-                e.submitter.disabled = false;
-                e.submitter.style.cursor = 'pointer';
             });
         })
     } else {
@@ -121,30 +138,28 @@ uploadForm.addEventListener('submit', async (e) => {
         e.submitter.style.cursor = 'pointer';
     }
 })
-//function to retrieve newly inserted data
-function getDataOnValue() {
-    const q = query(fileCollectionRef, where("theAuthorId", "==", authorId.value));
-    onSnapshot(q, (snapshot) => {
-        documentsWrapper.innerHTML = '';
-        snapshot.docs.forEach(doc => {
-            let data = doc.data();
-            // insert docs into Document page
-            documentsWrapper.insertAdjacentHTML('beforeend',`
-                <label class="radio-container">${data.theFileName}
-                    <input type="radio" name="rd" id="${doc.id}" value="${data.theFileEncoding}">
-                    <span class="checkmark"></span>
-                </label>
-            `)
-        })
-    })
-}
+
+//change configuration object for a particular class to retrieve uploads
+// className.addEventListener('change', (e) => {
+//     let optIndex = classArray.indexOf(e.target.value);
+//     chooseConfig(optIndex);
+// })
+
 runBtn.onclick = (e) => {
     // if(e.target.value == "delete") {
-        let fileId, fileLink, fileName;
+        // 'https:/firebase/.com/v0/b/dss-3-75ccr1'.search(/[js]s{2}-\d-/)
+        let fileId, fileLink, fileName, colName, URIcomp;
      let radioList = document.querySelectorAll("input[type='radio']");
      let checked = false;
      radioList.forEach(radio => {
         if (radio.checked) {
+            let _start = radio.value.indexOf('files');
+            let _end = radio.value.indexOf('?');
+            URIcomp = decodeURIComponent(radio.value.slice(_start, _end));
+
+            let regExp = radio.value.search(/[js]s{2}-[1-3]-/);
+            colName = radio.value.slice(regExp, regExp + 5).replace('-',' ').toUpperCase();
+            chooseConfig(classArray.indexOf(colName));
             checked = true;
             fileId = radio.id;
             fileLink = radio.value;
@@ -160,14 +175,20 @@ runBtn.onclick = (e) => {
         document.querySelector('dialog#to-download a:nth-of-type(2)').textContent = commentYES[Math.floor(Math.random()*3)];
         document.querySelector('dialog#to-download').showModal();
      } else if (checked && e.target.value == "delete") {
-        if (confirm("Delete  " + fileName)) {
-            const ref = doc(db, fileRef, fileId)
-            deleteDoc(ref)
-            .then(() => {
-               document.querySelector('dialog#to-delete output').textContent = "Document deleted.";
-               document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
-               document.querySelector('dialog#to-delete').showModal();
+         if (confirm("Delete  " + fileName)) {
+            const storage = getStorage(); 
+            const filePath = ref(storage, URIcomp);
+            deleteObject(filePath)
+            .then(()=> {
+                document.querySelector('dialog#to-delete output').textContent = "Document deleted.";
+                document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
+                document.querySelector('dialog#to-delete').showModal();
             })
+            .catch(err => {
+                document.querySelector('dialog#to-delete output').textContent = "This document has already been deleted. Re-login to view present changes.";
+                document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
+                document.querySelector('dialog#to-delete').showModal();
+            })            
         }
      } else {
         //showModal for nULL
@@ -197,3 +218,63 @@ fmSettings.addEventListener('submit', async (e) => {
     document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
     document.querySelector('dialog#to-delete').showModal();
 })
+const fmViewDocs = document.querySelector("form[name='fm-viewdocs']");
+fmViewDocs.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(fmViewDocs);
+    // let clsName = formData.get('classname');
+    documentsWrapper.innerHTML = '';
+    let subName = formData.get('subjectname');
+    let docs = ss.data[subName];
+    // let ssID = (clsName + subName).replaceAll(' ','');
+    if (docs == null) {
+        //enable configuration for Firestore
+        chooseConfig(6)
+        // getData from database
+        await getDocFromServer(doc(db, "staffCollection", ss.id)).then((snapshot => {
+            if (!snapshot.data().subName) {
+                document.querySelector('dialog#to-delete output').textContent = 'No document has been uploaded for this subject.';
+                document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
+                document.querySelector('dialog#to-delete').showModal();
+                return; 
+            }
+            let snapDoc = snapshot.data().subName;
+            getData(snapDoc);
+            //store docs in ss.ssID
+            ss.data.subName = snapDoc;
+        }))
+    } else {
+        getData(docs)
+    }
+})
+function getData(docs) {
+    for (const a of docs) {
+        let keys = Object.keys(a);
+        let vals = Object.values(a);
+        
+        documentsWrapper.insertAdjacentHTML('beforeend',`
+            <label class="radio-container">${keys[0].startsWith('fileID') ? keys[1] : keys[0]}
+                <input type="radio" name="rd" id="${vals[1].startsWith('http') ? vals[0] : vals[1]}" value="${vals[0].startsWith('http') ? vals[0] : vals[1]}">
+                <span class="checkmark"></span>
+            </label>
+        `)
+    }
+}
+//function to retrieve newly inserted data
+async function getDataOnValue() {
+    const querySnapshot = await getDocs(collection(db, "activities", category, subject))
+    const q = query(fileCollectionRef, where("theAuthorId", "==", authorId.value));
+    onSnapshot(q, (snapshot) => {
+        documentsWrapper.innerHTML = '';
+        snapshot.docs.forEach(doc => {
+            let data = doc.data();
+            // insert docs into Document page
+            documentsWrapper.insertAdjacentHTML('beforeend',`
+                <label class="radio-container">${data.theFileName}
+                    <input type="radio" name="rd" id="${doc.id}" value="${data.theFileEncoding}">
+                    <span class="checkmark"></span>
+                </label>
+            `)
+        })
+    })
+}
