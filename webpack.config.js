@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //STAFFER index.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/index.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STAFFER logon.js
 /*
 module.exports = {
@@ -59,6 +59,18 @@ module.exports = {
     watch: true
 }
 */
+//STAFFER logon.js
+
+module.exports = {
+    mode: "development",
+    entry: "./dist/staffer/src/register.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/staffer/src"),
+        filename: "register_bundle.js"
+    },
+    watch: true
+}
+
 //STUDENT index.js
 /*
 module.exports = {

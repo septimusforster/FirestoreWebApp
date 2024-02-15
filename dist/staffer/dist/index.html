@@ -9,7 +9,9 @@
 </head>
 <body>
     <div class="wrapper">
-        <header class="header"></header>
+        <header class="header">
+            <button type="button" id="register-btn">Register</button>
+        </header>
         <div class="body">
             <div id="profile-wrapper">
                 <h2>Profile</h2>
@@ -195,6 +197,10 @@
                 e.target.nextElementSibling.classList.remove('true');
             }
         })
+        const registerBtn = document.querySelector('#register-btn');
+        registerBtn.onclick = function () {
+            location.href = './register.html';
+        }
     </script>
 </body>
 </html>

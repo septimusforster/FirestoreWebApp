@@ -64,7 +64,7 @@
                 <label for="currentUsername">Current username</label>
                 <input type="text" id="currentUsername" name="currentUsername" placeholder="Enter current username" autocomplete="off" data-value="default" required/>
                 <label for="newUsername">New username</label>
-                <input type="text" id="newUsername" name="email" placeholder="Enter new username" autocomplete="off" minlength="7" required />
+                <input type="text" id="newUsername" name="email" placeholder="Enter new username" autocomplete="off" maxlength="20" required />
                 <input type="submit" value="Submit username">
             </form>
             <hr/>
@@ -73,9 +73,9 @@
                 <label for="currentPassword">Current Password</label>
                 <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password" data-value="default" required />
                 <label for="newPassword">New password</label>
-                <input type="password" id="newPassword" name="password" placeholder="Enter new password" minlength="7" required/>
+                <input type="password" id="newPassword" name="password" placeholder="Enter new password" minlength="4" maxlength="8" required/>
                 <label for="newPasswordConfirm">Confirm new password</label>
-                <input type="password" id="newPasswordConfirm" name="password" placeholder="Confirm new password" minlength="7" required/>
+                <input type="password" id="newPasswordConfirm" name="password" placeholder="Confirm new password" minlength="4" maxlength="8" required/>
 
                 <label for="hide__unhide">
                     <input type="checkbox" id="hide__unhide" /> Show/hide password
@@ -96,7 +96,7 @@
                 </div>
                 <div class="panel__details">
                     <img src="../img/326602_create_edit_pencil_write_icon.png" alt="edit">
-                    <p>Personalize your profile by setting a friendlier, easy-to-remember username and password. However, either of them must be at least 7 characters long.</p>
+                    <p>Personalize your profile by setting a friendlier, easy-to-remember username and password.</p>
                 </div>
             </div>
         </section>

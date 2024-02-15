@@ -1,6 +1,6 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, onSnapshot, updateDoc, arrayUnion, getDocFromServer } from "firebase/firestore";
+import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, onSnapshot, updateDoc, arrayUnion, getDocFromServer, arrayRemove } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 
@@ -36,6 +36,7 @@ function chooseConfig(projNum) {
 
 // load member profile
 const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
+
 // load profile pic
 if (ss.data.avatar) photo.src = ss.data.avatar;
 // load full name and alias
@@ -148,7 +149,7 @@ uploadForm.addEventListener('submit', async (e) => {
 runBtn.onclick = (e) => {
     // if(e.target.value == "delete") {
         // 'https:/firebase/.com/v0/b/dss-3-75ccr1'.search(/[js]s{2}-\d-/)
-        let fileId, fileLink, fileName, colName, URIcomp;
+        let fileId, fileLink, fileName, colName, URIcomp, subName;
      let radioList = document.querySelectorAll("input[type='radio']");
      let checked = false;
      radioList.forEach(radio => {
@@ -156,7 +157,7 @@ runBtn.onclick = (e) => {
             let _start = radio.value.indexOf('files');
             let _end = radio.value.indexOf('?');
             URIcomp = decodeURIComponent(radio.value.slice(_start, _end));
-
+            subName = URIcomp.match(/\/[a-zA-Z]{1,4}\//).replaceAll('/','');
             let regExp = radio.value.search(/[js]s{2}-[1-3]-/);
             colName = radio.value.slice(regExp, regExp + 5).replace('-',' ').toUpperCase();
             chooseConfig(classArray.indexOf(colName));
@@ -179,7 +180,11 @@ runBtn.onclick = (e) => {
             const storage = getStorage(); 
             const filePath = ref(storage, URIcomp);
             deleteObject(filePath)
-            .then(()=> {
+            .then(async () => {
+                chooseConfig(6);
+                await updateDoc(doc(db, "staffCollection", ss.id), {
+                    [subName]: arrayRemove({[fileName]: fileLink})
+                })
                 document.querySelector('dialog#to-delete output').textContent = "Document deleted.";
                 document.querySelector('dialog#to-delete a').textContent = commentOK[Math.floor(Math.random()*4)];
                 document.querySelector('dialog#to-delete').showModal();
