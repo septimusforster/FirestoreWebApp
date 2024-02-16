@@ -12,20 +12,23 @@
             <aside></aside>
             <section>
                 <div class="section__div">
-                    <button type="button" id="junior-btn" onclick="displayModal(this, '#junior-dialog')"></button><span>Manage Junior Secondary subjects</span>
+                    <button type="button" id="junior-btn" onclick="displayModal(this, '#junior-dialog')"></button><span>Manage <em>Junior Secondary Subjects</em></span>
                 </div>
                 <div class="section__div">
-                    <button type="button" id="senior-btn" onclick="displayModal(this, '#senior-dialog')"></button><span>Manage Senior Secondary subjects</span>
+                    <button type="button" id="senior-btn" onclick="displayModal(this, '#senior-dialog')"></button><span>Manage <em>Senior Secondary Subjects</em></span>
                 </div>
                 <div class="section__div">
-                    <button type="button" id="arm-btn" onclick="displayModal(this, '#arm-dialog')"></button><span>Manage Arms</span>
+                    <button type="button" id="arm-btn" onclick="displayModal(this, '#arm-dialog')"></button><span>Manage <em>Arms</em></span>
+                </div>
+                <div class="section__div">
+                    <button type="button" id="cOS-btn" onclick="displayModal(this, '#cOS-dialog')"></button><span>Manage <em>Change of Subject</em></span>
                 </div>
                 <hr>
                 <div class="section__div">
-                    <button type="button" id="subject-btn" onclick="displayModal(this, '#subject-dialog')"></button><span>Manage staff subjects</span>
+                    <button type="button" id="subject-btn" onclick="displayModal(this, '#subject-dialog')"></button><span>Manage <em>Staff Subjects</em></span>
                 </div>
                 <div class="section__div">
-                    <button type="button" id="class-btn" onclick="displayModal(this, '#class-dialog')"></button><span>Manage staff classes</span>
+                    <button type="button" id="class-btn" onclick="displayModal(this, '#class-dialog')"></button><span>Manage <em>Staff Classes</em></span>
                 </div>
                 <div id="view-div">
                     <button id="view-changes">View Changes</button>
@@ -66,7 +69,7 @@
     <dialog id="junior-dialog">
         <form name="juniorForm" class="dialog-fm" id="junior-form">
             <div>
-                <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="4" autocomplete="off" required/>
+                <input type="text" name="abbr" class="abbr" placeholder="abbr" maxlength="4" pattern="[^&*%$#@\/\\]{1,4}" autocomplete="off" required/>
                 <input type="text" name="txt" class="txt" placeholder="full text" autocomplete="off" required/>
                 <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
             </div>
@@ -95,6 +98,21 @@
             </div>
             <div class="footer">
                 <button onclick="plus(this)" type="button">&plus;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="submit">Submit</button><button class="delete-btn" id="delete">Delete</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="cOS-dialog">
+        <form name="cOSForm" id="cOS-form" class="dialog-fm">
+            <div>
+                <input type="text" list="cls" name="abbr" class="class" placeholder="class" autocomplete="off" required/>
+                <input type="text" name="adm" class="txt" placeholder="Enter admission number" autocomplete="off" required/>
+            </div>
+            <div>
+                <input type="text" list="fulltxt" name="cos" class="txt" placeholder="Subject to change" autocomplete="off" required/>
+                <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+            </div>
+            <div class="footer">
+                <button onclick="plus(this)" type="button">&plus;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="add">Add</button><button class="delete-btn" id="remove">Remove</button>
             </div>
         </form>
     </dialog>
@@ -132,23 +150,23 @@
     <datalist id="fulltxt">
     </datalist>
     <datalist id="cls">
-        <option value="JSS 1"></option>
-        <option value="JSS 2"></option>
-        <option value="JSS 3"></option>
-        <option value="SSS 1"></option>
-        <option value="SSS 2"></option>
-        <option value="SSS 3"></option>
+        <option name="JSS 1" value="JSS 1"></option>
+        <option name="JSS 2" value="JSS 2"></option>
+        <option name="JSS 3" value="JSS 3"></option>
+        <option name="SSS 1" value="SSS 1"></option>
+        <option name="SSS 2" value="SSS 2"></option>
+        <option name="SSS 3" value="SSS 3"></option>
     </datalist>
     <script type="module" src="../src/reserved_bundle.js"></script>
     <script>
-        const juniorBtn = document.querySelector('button#junior-btn');
-        const seniorBtn = document.querySelector('button#senior-btn');
-        const armBtn = document.querySelector('button#arm-btn');
-        const subjectBtn = document.querySelector('button#subject-btn');
-        const juniorDialog = document.querySelector('dialog#junior-dialog');
-        const seniorDialog = document.querySelector('dialog#senior-dialog');
-        const armDialog = document.querySelector('dialog#arm-dialog');
-        const subjectDialog = document.querySelector('dialog#subject-dialog');
+        // const juniorBtn = document.querySelector('button#junior-btn');
+        // const seniorBtn = document.querySelector('button#senior-btn');
+        // const armBtn = document.querySelector('button#arm-btn');
+        // const subjectBtn = document.querySelector('button#subject-btn');
+        // const juniorDialog = document.querySelector('dialog#junior-dialog');
+        // const seniorDialog = document.querySelector('dialog#senior-dialog');
+        // const armDialog = document.querySelector('dialog#arm-dialog');
+        // const subjectDialog = document.querySelector('dialog#subject-dialog');
 
         function displayModal(elem, query) {
             const topOffset = elem.offsetTop + 50;
@@ -186,6 +204,13 @@
                 e.parentElement.insertAdjacentHTML('beforebegin', `
                 <div>
                     <input type="text" list="cls" name="classesTaught" class="class" placeholder="class" autocomplete="off"/>
+                    <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+                </div>
+                `)
+            } else if (e.offsetParent.id.startsWith('cOS')) {
+                e.parentElement.insertAdjacentHTML('beforebegin', `
+                <div>
+                    <input type="text" list="fulltxt" name="cos" class="txt" placeholder="Subject to change" autocomplete="off" required/>
                     <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
                 </div>
                 `)

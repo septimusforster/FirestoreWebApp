@@ -28,6 +28,7 @@ header {
     display: flex;
     flex-direction: column;
     gap: 2em;
+    min-width: 700px;
 }
 .mainBody > aside {
     flex-basis: 24.5%;
@@ -43,7 +44,7 @@ section, aside {
     align-items: center;
     gap: 1em;
 }
-.section__div:hover {
+.section__div:hover ~ em {
     background-color: #eee;
 }
 .section__div button {
@@ -207,4 +208,14 @@ input.txt,
 input.abbr,
 input.class {
     letter-spacing: 2px;
+}
+span em {
+    font-style: normal;
+    font-size: calc(100% + .2em);
+    color: #004d3d;
+    font-weight: 500;
+}
+button#submit:hover, button#add:hover {
+    background-color: #004d3d;
+    color: #fff;
 }

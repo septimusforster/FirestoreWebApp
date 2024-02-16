@@ -13,7 +13,6 @@ var app = initializeApp(configs[0]);
 // init services
 var db;
 
-
 function chooseConfig(projNum) {
     deleteApp(app);
     app = initializeApp(configs[projNum]);

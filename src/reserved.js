@@ -1,28 +1,25 @@
-import { initializeApp } from "firebase/app"
+import { initializeApp, deleteApp } from "firebase/app";
 import {
     getFirestore, arrayUnion, arrayRemove, collection, getDoc, getDocs, setDoc, addDoc, deleteDoc, deleteField, doc, query, where, limit, updateDoc
-} from "firebase/firestore"
+} from "firebase/firestore";
+import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
-const firebaseConfig = {
-    apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
-    authDomain: "fir-pro-152a1.firebaseapp.com",
-    projectId: "fir-pro-152a1",
-    storageBucket: "fir-pro-152a1.appspot.com",
-    messagingSenderId: "158660765747",
-    appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46",
-    // appId: "1:158660765747:web:77fed76bf03f32d97ddb46"
-};
+// initial firebase app
+var app = initializeApp(configs[6])
+var db;
 
-// initialize firebase app
-initializeApp(firebaseConfig)
-// init services
-const db = getFirestore()
+function chooseConfig(num) {
+    deleteApp(app);
+    app = initializeApp(configs[num]);
+    // init services
+    db = getFirestore()
+}
+
+db = getFirestore()
 // collection ref
 const jnrRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
 const snrRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
 
-// const JSSubjectRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
-// const armRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
 let i;
 //Loop twice and store docs in sessionStorage
 for(i = 0; i < 2; i++) {
@@ -177,6 +174,57 @@ armForm.addEventListener('submit', async (e) => {
         window.alert("Deletion success.")
         formStatus(e);
     }
+})
+const cOSForm = document.forms.cOSForm;
+cOSForm.addEventListener('submit', async (e) => {
+    formStatus(e, 'enabled');
+    const formData = new FormData(cOSForm);
+    const optItem = formData.get('abbr'), q_adm = formData.get('adm'), q_cos = formData.getAll('cos');
+    const datalcls = document.querySelector('datalist#cls').options;
+    const datalAbbr = Array.from(document.querySelector('datalist#abbr').options);
+    const datal = datalcls.namedItem(optItem);
+    const q_class = Array.from(datalcls).indexOf(datal);
+    chooseConfig(q_class);
+
+    let datalfulltxt = Array.from(document.querySelector('datalist#fulltxt').options);
+    let obj = {};
+    datalfulltxt.forEach((opt, ind) => {
+        if (q_cos.includes(opt.value)) {
+            let a = datalAbbr[ind].value
+            obj[a] = opt.value;
+            // update.push(obj)
+        }
+    })
+    // console.log(Object.keys(obj))
+    // console.log(update)
+    const q = query(collection(db, "students"), where("admission_no", "==", q_adm));
+    const docSnap = await getDocs(q);
+    if (docSnap.empty) return window.alert('No such student exists.');
+    let id, offering;
+    docSnap.docs.forEach(doc => {
+       id = doc.id;
+       offering = doc.data().offered;
+    })
+    const studentRef = doc(db, "students", id);
+    if (e.submitter.id === 'add') {
+        await updateDoc(studentRef, {
+            offered: { ...offering, ...obj }
+        })
+        window.alert('Subjects have been successfully added.')
+    } else {
+        // console.log(offering)
+        const mykeys = Object.keys(obj);
+        mykeys.forEach(k => {
+            delete offering[k];
+        })
+        // console.log(offering)
+        await updateDoc(studentRef, {
+            offered: offering
+        })
+        window.alert('Subjects have been successfully removed.')
+    }
+    chooseConfig(6);
+    formStatus(e);
 })
 const subjectForm = document.forms.subjectForm;
 subjectForm.addEventListener('submit', async (e) => {
