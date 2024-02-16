@@ -6,6 +6,7 @@
                 font-weight: 100;
                 font-family: Geneva, Verdana, sans-serif;
                 color: #777;
+                /* text-align: center; */
             }
             em {
                 font-size: 1.5rem;
@@ -16,7 +17,7 @@
             ol {
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             }
-            li {
+            /* li {
                 padding: 7px;
                 line-height: 1;
                 cursor: pointer;
@@ -36,15 +37,107 @@
             }
             li:active + li::before {
                 opacity: 1;    
+            } */
+            body {
+                display: flex;
+                justify-content: center;
             }
-
-           
+            .content {
+                flex-basis: 70%;
+            }
+            #preview {
+                flex-basis: 30%;
+            }
+            .preview__content {
+                border-left: 1px solid #ccc;
+            }
+            ul {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            }
+            li {
+                list-style-type: none;
+                padding: 8px;
+                color: #777;
+                margin: 20px 0;
+                position: relative;
+            }
+            li::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: -10px;
+                border: 2px solid #009578;
+                border-radius: 0 7px 7px 0;
+                /* border-color: #ccc #ccc transparent transparent; */
+                /* transform: rotate(45deg); */
+            }
+            table {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                border-collapse: collapse;
+                text-align: center;
+                display: none;
+            }
+            thead tr {
+                background-color: #009578;
+                color: #fff;
+            }
+            th, td {
+                padding: 12px 15px;
+            }
+            tbody {
+                border: 1px solid #ddd;
+            }
+            tbody tr {
+                border-bottom: 1px solid #ddd;
+            }
+            tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+            tbody tr:last-of-type {
+                border-bottom: 2px solid #009578;
+            }
+            tr th:nth-of-type(3),
+            tr td:nth-of-type(3) {
+                text-align: left;
+            }
         </style>
     </head>
     <body>
         <h3 id="students"></h3>
         <div class="content">
-            <ol>Please select a <em>Classroom</em> and an <em>Arm</em> to begin.</ol>
+            <div>Please select a <em>Classroom</em> and an <em>Arm</em> to begin.</div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Admission No.</th>
+                            <th>Name</th>
+                            <!-- <th></th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="preview">
+            <h3>Preview pane</h3>
+            <div class="preview__content">
+                <ul>
+                    <li>Abraham Lincoln</li>
+                    <li>Abraham Lincoln</li>
+                    <li>Abraham Lincoln</li>
+                    <li>Abraham Lincoln</li>
+                    <li>Abraham Lincoln</li>
+                    <li>Abraham Lincoln</li>
+                    <li>Abraham Lincoln</li>
+                    <li>Abraham Lincoln</li>
+                    <li>Abraham Lincoln</li>
+                </ul>
+            </div>
         </div>
         <script>
             // document.querySelector('#myIframe').src = './ruler.html'

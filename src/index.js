@@ -1,8 +1,9 @@
-import { initializeApp } from "firebase/app"
+import { initializeApp, deleteApp } from "firebase/app"
 import {
     getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp
 } from "firebase/firestore"
 import pk from "../src/JSON/upass.json" assert {type: 'json'};
+import  configs from "./JSON/configurations.json" assert {type: 'json'};
 // let j1k, j2k, j3k, s1k;/*, s2k, s3k;*/
 const {j1, j2, j3, s1, s2, s3, demo} = pk;
 let classrooms = {
@@ -15,63 +16,121 @@ let classrooms = {
     "demo": demo.toReversed()
 }
 
-/*
-const firebaseConfig = {
-    apiKey: "AIzaSyCT92x3HE8nUsYsKgQ2eJZU7DHQ83mTgwE",
-    authDomain: "dca-mobile-26810.firebaseapp.com",
-    projectId: "dca-mobile-26810",
-    storageBucket: "dca-mobile-26810.appspot.com",
-    messagingSenderId: "843119620986",
-    appId: "1:843119620986:web:e1a4f469626cbd4f241cc3"
-  };
-*/
-  const firebaseConfig = {
-    apiKey: "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
-    authDomain: "fir-pro-152a1.firebaseapp.com",
-    projectId: "fir-pro-152a1",
-    storageBucket: "fir-pro-152a1.appspot.com",
-    messagingSenderId: "158660765747",
-    appId: "1:158660765747:web:bd2b4358cc5fc9067ddb46"
-    // appId: "1:158660765747:web:77fed76bf03f32d97ddb46"
-};
-
 var myIframe = document.getElementById('myIframe');
 // initialize firebase app
-initializeApp(firebaseConfig)
+var app = initializeApp(configs[6])
 // init services
-const db = getFirestore()
+var db;
+db = getFirestore();
+
+function chooseConfig(num) {
+    deleteApp(app);
+    app = initializeApp(configs[num]);
+    // init services
+    db = getFirestore()
+}
 // collection ref
 var colRef = '';
+const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
+
+if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
+    await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)))
+    console.log('From server')
+}
+const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
+const leftNav = document.querySelector('.left-nav');
+armArray.forEach(arm => {
+    leftNav.insertAdjacentHTML('beforeend', `
+    <a href="#">${arm}</a>
+    `)
+}) // EOF
 const hiddenElems = document.querySelectorAll("input[type='hidden'");
-function setIframeAttr(para1) {
+// const preview = JSON.parse(sessionStorage.getItem('preview'))
+async function setIframeAttr(para1) {
     //there are two hidden elems: the second one holds upass value
     myIframe.setAttribute('data-class-arm', para1);
     hiddenElems[0].value = para1;
-    //queries
+    if (sessionStorage.hasOwnProperty('preview')) sessionStorage.removeItem('preview')
+    let data = [];
     const q = query(colRef, where("arm", "==", myIframe.getAttribute('data-class-arm')), orderBy("first_name"))
-    // a.classList.toggle
-    onSnapshot(q, (snapshot) => {
-        if (!snapshot.docs) {
-            console.log("Snapshot empty.");
-            return
-        }
-        const students = [];
-        snapshot.docs.forEach((doc) => {
-            students.push({ ...doc.data(), id: doc.id })
+    await getDocs(q).then(docs => {
+        
+        docs.docs.forEach(obj => {
+            data.push(obj.data())
         })
-        //clear <ol> list
-        myIframe.contentDocument.querySelector('ol').innerHTML = '';
-        students.forEach(student => {
-            myIframe.contentDocument.querySelector('ol').insertAdjacentHTML('beforeend',`
-                <div>
-                    <li onclick="deleteStudent('${student.id}',this.firstElementChild.textContent)">
-                        <span>${student.first_name} ${student.last_name} ${student.other_name}</span>
-                    </li>
-                </div>
-            `);
-        })
+        sessionStorage.setItem('preview', JSON.stringify(data))
+        // console.log('Done.')
     })
+    /*myIframe.contentDocument.querySelector('.content div:first-child').innerHTML = */
+    myIframe.contentDocument.querySelector('tbody').innerHTML = '';
+    
+    data.forEach((student, index) => {
+        myIframe.contentDocument.querySelector('tbody').insertAdjacentHTML('beforeend',`
+            <tr onclick="deleteStudent('${student.id}',this.firstElementChild.textContent)">
+                <td>${index + 1}</td>
+                <td>${student.admission_no}</td>
+                <td>${student.last_name} ${student.first_name} ${student.other_name}</td>
+            </tr>
+        `);
+    })
+    myIframe.contentDocument.querySelector('table').style.display = 'block';
+    // })
 }
+/*
+function addDataIDB() {
+    let idb, armStore, data = [];
+    const reqOpen = window.indexedDB.open('SSS 3', 1);
+    reqOpen.onupgradeneeded = async (event) => {
+        idb = event.target.result;
+        if ( !idb.objectStoreNames.contains('Perfection') ) {
+            //create arm store if does not exist
+            armStore = idb.createObjectStore('Perfection', {keyPath: 'id'})
+            const q = query(colRef, where("arm", "==", myIframe.getAttribute('data-class-arm')), orderBy("first_name"), limit(5))
+            await getDocs(q).then(docs => {
+                //run indexedDB function to add data to IDB
+                console.log('metadata from cache?: ', docs.metadata.fromCache)
+                docs.forEach(doc => {
+                    data.push(doc.data());
+                })
+            })
+        }
+    }
+    reqOpen.onsuccess = (event) => {
+        idb = event.target.result;
+        // making a transaction
+        let tx = idb.transaction('Perfection', 'readwrite');
+        let arm = tx.objectStore('Perfection');
+        console.log(data)
+        data.forEach(obj => {
+            arm.add(obj)
+        })
+        tx.oncomplete = (event) => {
+            console.log('complete tx: ', event)
+        }
+        tx.onerror = (err) => {
+            console.warn('tx:', err)
+        }
+        // req.onsuccess = (event) => {
+        //     console.log('Added successfully.')
+        // }
+        // req.onerror = (err) => {
+        //     console.warn('Failed to add data.')
+        // }
+    }
+    // idb.onerror = (err) => {
+    //     console.log('idb error:', err);
+    // }
+    reqOpen.onerror = (event) => {
+        console.error('req error:', event.target.errorCode);
+    }
+}
+function makeTX (armName, mode) {
+    let tx = idb.transaction(armName, mode);
+    tx.onerror = (err) => {
+        console.warn('tx:', err)
+    }
+    return tx;
+}*/
 const leftNavAnchors = document.querySelectorAll('.left-nav a');
 leftNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
@@ -80,19 +139,18 @@ leftNavAnchors.forEach((a, i, anchors) => {
         setIframeAttr(e.target.textContent);
     })
 })
-async function setColRef(para1="demo") {
+async function setColRef(arg) {
     let data = [];
-    colRef = collection(db, para1);
+    colRef = collection(db, "students");
     //GET LAST DOCUMENT FROM SERVER
-    const q = query(colRef, orderBy("createdAt", "desc"), limit(1));
+    const q = query(colRef, /*where('password', '==', 'undefined'),*/ orderBy("createdAt", "desc"), limit(1));
     const snapDoc = await getDocs(q);
     if (snapDoc.empty) {
-        hiddenElems[1].value = classrooms[para1][0];
+        hiddenElems[1].value = classrooms[arg][0];
     } else {
         snapDoc.docs.forEach(doc => {
-            // console.log(doc.data().password)
-            const lastPasswordIndex = classrooms[para1].indexOf(doc.data().password);
-            const newPassword = classrooms[para1][lastPasswordIndex - 1];
+            const lastPasswordIndex = classrooms[arg].indexOf(doc.data().password);
+            const newPassword = classrooms[arg][lastPasswordIndex - 1];
             hiddenElems[1].value = newPassword;
         })
     }
@@ -119,8 +177,10 @@ const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
         document.querySelector('.dropdown-menu').style.pointerEvents='none';
-        myIframe.contentDocument.querySelector('ol').innerHTML = '';
+        myIframe.contentDocument.querySelector('.content div:first-child').innerHTML = '';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
+        const num = Object.keys(classrooms).indexOf(e.target.textContent);
+        chooseConfig(num);
         setColRef(e.target.textContent);
     })
 })
@@ -134,7 +194,7 @@ fm_createStudent.addEventListener('submit', (e) => {
     for(i = 0; i < e.target.length - 1; i++){
         studentDoc[e.target[i].name] = e.target[i].value;
     }
-    addDoc(colRef, {...studentDoc, upload_enabled: 0, photo_src: "", createdAt: serverTimestamp()})
+    addDoc(colRef, {...studentDoc, photo_src: "", createdAt: serverTimestamp()})
     .then(() => {
         let col = myIframe.contentDocument.querySelector('h3').textContent;
         // numInClass++;

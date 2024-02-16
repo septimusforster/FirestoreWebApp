@@ -70,10 +70,10 @@ nav a {
     padding: 0.3em 1em;
     transition: 150ms;
 }
-nav.left-nav a {
+/* nav.left-nav a {
     border: 1px solid;
     border-radius: 2em;
-}
+} */
 nav.left-nav a:hover {
     color: #fff;
     background-color: #007960;
