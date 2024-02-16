@@ -19,10 +19,11 @@ db = getFirestore()
 // collection ref
 const jnrRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
 const snrRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
+const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 
 let i;
 //Loop twice and store docs in sessionStorage
-for(i = 0; i < 2; i++) {
+for(i = 0; i < 3; i++) {
     switch (i) {
         case 0:
             if(sessionStorage.hasOwnProperty('jnr_sub')) {
@@ -37,16 +38,20 @@ for(i = 0; i < 2; i++) {
             }
             await getDoc(snrRef).then(doc => sessionStorage.setItem('snr_sub', JSON.stringify(doc.data())))
             console.log('From server')
-            break;/*
-        case 3:
-            const armSnap = await getDoc(armRef);
-            armSnap.docs.forEach(doc => {
-                sessionStorage.setItem('arm', JSON.stringify(doc.data().arm))
-            })*/
+            break;
+        case 2:
+            if(sessionStorage.hasOwnProperty('arm')) {
+                continue;
+            }
+            await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)))
+            console.log('From server')
+            break;
     }
 }
 const jnrArray = Object.entries(JSON.parse(sessionStorage.getItem('jnr_sub'))).sort();
 const snrArray = Object.entries(JSON.parse(sessionStorage.getItem('snr_sub'))).sort();
+const armArray = JSON.parse(sessionStorage.getItem('arm'));
+
 //load Jnr subs into <datalist>
 const abbrDatalist = document.querySelector('datalist#abbr');
 const fullTxtDatalist = document.querySelector('datalist#fulltxt');
@@ -63,9 +68,16 @@ function loadSubjectsIntoUls(entries, list) {
             uls[1].insertAdjacentHTML('beforeend', `<li>${ind + 1}. ${ent[0]} - ${ent[1]}</li>`)
         })
     }
+    if (list.startsWith('a')) {
+        entries.forEach((ent, ind) => {
+            uls[2].insertAdjacentHTML('beforeend', `<li>${ind + 1}. ${ent}</li>`)
+        })
+    }
 }
 loadSubjectsIntoUls(jnrArray, "juniors");
 loadSubjectsIntoUls(snrArray, "seniors");
+loadSubjectsIntoUls(armArray, "arms");
+
 const myobjects = [JSON.parse(sessionStorage.getItem('jnr_sub')),JSON.parse(sessionStorage.getItem('snr_sub'))];
 function mergeObjects(objs) {
     var result = {};
