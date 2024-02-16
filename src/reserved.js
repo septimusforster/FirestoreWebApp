@@ -100,6 +100,7 @@ const viewChanges = document.querySelector('#view-changes');
 viewChanges.addEventListener('click', (e) => {
     sessionStorage.removeItem('jnr_sub')
     sessionStorage.removeItem('snr_sub')
+    sessionStorage.removeItem('arm')
     location.reload();
 })
 
