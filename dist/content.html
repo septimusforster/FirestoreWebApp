@@ -127,8 +127,8 @@
         </div>
         <script>
             // document.querySelector('#myIframe').src = './ruler.html'
-            const ss = JSON.parse(sessionStorage.preview);
             function deleteStudent(studentID, studentName, e) {
+                const ss = JSON.parse(sessionStorage.preview);
                 //first set active class on <tr>
                 document.querySelectorAll('tbody tr').forEach(tr => {
                     if (tr.classList.contains('active')) return tr.classList.remove('active')
