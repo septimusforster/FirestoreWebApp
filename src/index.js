@@ -204,6 +204,7 @@ fm_createStudent.addEventListener('submit', (e) => {
         setColRef(col)
         document.querySelector('.side-panel').scroll({top:0,left:0,behavior:"smooth"});
     })
+    console.log("edit form")
 })
 //edit doc
 const sidePanelBtns = document.querySelectorAll('.side-panel-toggle');
@@ -226,9 +227,9 @@ sidePanelBtns[2].addEventListener('click', (e) => {
                 return null;
             }
         };
-        const collectionName = myIframe.contentDocument.querySelector('h3').textContent;
+        // const collectionName = myIframe.contentDocument.querySelector('h3').textContent;
         const documentId = sidePanelBtns[2].value;
-        getSingleDoc(collectionName, documentId)
+        getSingleDoc("students", documentId)
             .then((documentData) => {
                 if (documentData) {
                     document.querySelectorAll('dialog')[2].innerHTML += document.forms.createStudent.outerHTML;
@@ -264,7 +265,7 @@ function collectDataForUpdate() {
     })
     document.querySelectorAll('dialog')[2].querySelector('form').addEventListener('submit', (e) => {
         e.preventDefault();
-        const collectionName = myIframe.contentDocument.querySelector('h3').textContent;
+        const collectionName = "students";
         const documentId = sidePanelBtns[2].value;
         const docRef = doc(db, collectionName, documentId);
         updateDoc(docRef, fields)
