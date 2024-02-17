@@ -8,6 +8,10 @@
                 color: #777;
                 /* text-align: center; */
             }
+            h3#students {
+                margin: 0 100px;
+                width: 100px;
+            }
             em {
                 font-size: 1.5rem;
                 color: #009578;
@@ -17,27 +21,6 @@
             ol {
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             }
-            /* li {
-                padding: 7px;
-                line-height: 1;
-                cursor: pointer;
-                position: relative;
-            }
-            li::before {
-                content: '';
-                position: absolute;
-                top: 20%;
-                left: -50px;
-                transform: rotate(45deg);
-                padding: 7px;
-                border: 2px solid;
-                border-color: #009578 #009578 transparent transparent;
-                background-color: #009578;
-                opacity: 0;
-            }
-            li:active + li::before {
-                opacity: 1;    
-            } */
             body {
                 display: flex;
                 justify-content: center;
@@ -50,6 +33,7 @@
             }
             .preview__content {
                 border-left: 1px solid #ccc;
+                margin-top: 50px;
             }
             ul {
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -85,14 +69,24 @@
             th, td {
                 padding: 12px 15px;
             }
+            th {
+                padding: 2rem;
+                background-color: #434343;
+            }
             tbody {
                 border: 1px solid #ddd;
             }
             tbody tr {
                 border-bottom: 1px solid #ddd;
+                cursor: pointer;
             }
             tbody tr:nth-of-type(even) {
                 background-color: #f3f3f3;
+            }
+            tbody tr:hover,
+            tbody tr.active {
+                background-color: #009578;
+                color: #fff;
             }
             tbody tr:last-of-type {
                 border-bottom: 2px solid #009578;
@@ -127,21 +121,38 @@
             <h3>Preview pane</h3>
             <div class="preview__content">
                 <ul>
-                    <li>Abraham Lincoln</li>
-                    <li>Abraham Lincoln</li>
-                    <li>Abraham Lincoln</li>
-                    <li>Abraham Lincoln</li>
-                    <li>Abraham Lincoln</li>
-                    <li>Abraham Lincoln</li>
-                    <li>Abraham Lincoln</li>
-                    <li>Abraham Lincoln</li>
-                    <li>Abraham Lincoln</li>
+                    
                 </ul>
             </div>
         </div>
         <script>
             // document.querySelector('#myIframe').src = './ruler.html'
-            function deleteStudent(studentID, studentName) {
+            const ss = JSON.parse(sessionStorage.preview);
+            function deleteStudent(studentID, studentName, e) {
+                //first set active class on <tr>
+                document.querySelectorAll('tbody tr').forEach(tr => {
+                    if (tr.classList.contains('active')) return tr.classList.remove('active')
+                })
+                e.classList.toggle('active');
+                //display data in preview pane
+                document.querySelector('.preview__content ul').innerHTML = '';
+                ss.forEach(obj => {
+                    if (obj.id === studentID) {
+                        document.querySelector('.preview__content ul').insertAdjacentHTML('beforeend', `
+                            <li>NAME: ${''.concat(obj.last_name, obj.first_name, obj.other_name)}</li>
+                            <li>ADM NO: ${obj.admission_no}}</li>
+                            <li>GENDER: ${obj.gender}</li>
+                            <li>DOB: ${obj.dob}</li>
+                            <li>ADDR: ${obj.home_address}</li>
+                            <li>EMAIL: ${obj.email}</li>
+                            <li>PWD: ${obj.password}</li>
+                            <li>NAT: ${obj.nationality}</li>
+                            <li>STA: ${obj.state}</li>
+                            <li>ADM YR: ${obj.admission_year}</li>
+                        `)
+                    }
+                    return;
+                })
                 var pMsg = parent.document.querySelector('p.msg');
                 var yesBtn = parent.document.querySelector('dialog button');
                 pMsg.textContent = "Delete: " + studentName;

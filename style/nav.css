@@ -5,7 +5,7 @@ header {
     height: 80px;
     position: relative;
 }
-#maintenance {
+/* #maintenance {
     position: absolute;
     right: 60px;
     top: 50%;
@@ -16,7 +16,7 @@ header {
     justify-content: center;
     align-items: center;
     
-}
+} */
 header nav {
     display: flex;
     justify-content: center;
@@ -149,7 +149,7 @@ p.msg {
     color: #555;
 }
 
-@keyframes blink {
+/* @keyframes blink {
     0% { opacity: 1; }
     50% { opacity: 0; }
     100% { opacity: 1; }
@@ -158,7 +158,7 @@ p.msg {
   #maintenance {
     animation: blink 1s infinite;
     color: red;
-  }
+  } */
 
 
  

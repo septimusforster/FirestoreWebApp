@@ -61,12 +61,10 @@ async function setIframeAttr(para1) {
         sessionStorage.setItem('preview', JSON.stringify(data))
         // console.log('Done.')
     })
-    /*myIframe.contentDocument.querySelector('.content div:first-child').innerHTML = */
-    myIframe.contentDocument.querySelector('tbody').innerHTML = '';
     
     data.forEach((student, index) => {
         myIframe.contentDocument.querySelector('tbody').insertAdjacentHTML('beforeend',`
-            <tr onclick="deleteStudent('${student.id}',this.firstElementChild.textContent)">
+            <tr onclick="deleteStudent('${student.id}',this.lastElementChild.textContent, this)">
                 <td>${index + 1}</td>
                 <td>${student.admission_no}</td>
                 <td>${student.last_name} ${student.first_name} ${student.other_name}</td>
@@ -178,6 +176,8 @@ topNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
         document.querySelector('.dropdown-menu').style.pointerEvents='none';
         myIframe.contentDocument.querySelector('.content div:first-child').innerHTML = '';
+        myIframe.contentDocument.querySelector('tbody').innerHTML = '';
+        myIframe.contentDocument.querySelector('table').style.display = 'none';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
         const num = Object.keys(classrooms).indexOf(e.target.textContent);
         chooseConfig(num);
