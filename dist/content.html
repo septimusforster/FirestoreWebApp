@@ -87,6 +87,8 @@
             tbody tr.active {
                 background-color: #009578;
                 color: #fff;
+                position: sticky;
+                bottom: 0;
             }
             tbody tr:last-of-type {
                 border-bottom: 2px solid #009578;
@@ -139,16 +141,22 @@
                 ss.forEach(obj => {
                     if (obj.id === studentID) {
                         document.querySelector('.preview__content ul').insertAdjacentHTML('beforeend', `
-                            <li>NAME: ${''.concat(obj.last_name, obj.first_name, obj.other_name)}</li>
-                            <li>ADM NO: ${obj.admission_no}}</li>
+                            <li>NAME: ${''.concat(obj.last_name, ' ', obj.first_name, ' ', obj.other_name)}</li>
+                            <li>ADM NO: ${obj.admission_no}</li>
                             <li>GENDER: ${obj.gender}</li>
                             <li>DOB: ${obj.dob}</li>
+                            <li>ADM YR: ${obj.admission_year}</li>
                             <li>ADDR: ${obj.home_address}</li>
                             <li>EMAIL: ${obj.email}</li>
                             <li>PWD: ${obj.password}</li>
                             <li>NAT: ${obj.nationality}</li>
                             <li>STA: ${obj.state}</li>
-                            <li>ADM YR: ${obj.admission_year}</li>
+                            <li>LGA: ${obj.lga}</li>
+                            <li>REL: ${obj.religion}</li>
+                            <li>FATHER: ${obj.father_name}</li>
+                            <li>PHONE: ${obj.father_phone}</li>
+                            <li>MOTHER: ${obj.mother_name}</li>
+                            <li>PHONE: ${obj.mother_phone}</li>
                         `)
                     }
                     return;
