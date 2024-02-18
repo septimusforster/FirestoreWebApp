@@ -1,6 +1,6 @@
 import { initializeApp, deleteApp } from "firebase/app"
 import {
-    getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp
+    getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp, setDoc
 } from "firebase/firestore"
 import pk from "../src/JSON/upass.json" assert {type: 'json'};
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
@@ -32,6 +32,10 @@ function chooseConfig(num) {
 // collection ref
 var colRef = '';
 const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
+// store user ID from url or sessionStorage snapshot
+let url = new URL(location.href);
+let params = new URLSearchParams(url.search);
+let uid = params.get('uid') || JSON.parse(sessionStorage.snapshot).id;
 
 if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
     await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)))
@@ -170,6 +174,7 @@ async function setColRef(arg) {
             // }
         //})
 };
+let num;
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
@@ -177,7 +182,7 @@ topNavAnchors.forEach((a, i, anchors) => {
         myIframe.contentDocument.querySelector('.content div:first-child').innerHTML = '';
         myIframe.contentDocument.querySelector('table').style.display = 'none';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
-        const num = Object.keys(classrooms).indexOf(e.target.textContent);
+        num = Object.keys(classrooms).indexOf(e.target.textContent);
         chooseConfig(num);
         setColRef(e.target.textContent);
     })
@@ -193,9 +198,16 @@ fm_createStudent.addEventListener('submit', (e) => {
         studentDoc[e.target[i].name] = e.target[i].value;
     }
     addDoc(colRef, {...studentDoc, photo_src: "", createdAt: serverTimestamp()})
-    .then(() => {
+    .then(async (data) => {
+        const operation = 'Create';
+        const action = {
+            person: studentDoc.last_name.concat(' ', studentDoc.first_name, ' ', studentDoc.other_name),
+            id: data.id,
+        }
         let col = myIframe.contentDocument.querySelector('h3').textContent;
         // numInClass++;
+        await updateDoc(doc(db, "students", data.id), {id: data.id})
+        await logger(operation, action, uid)
         fm_createStudent.reset()
         document.querySelectorAll('dialog')[1].querySelector('.msg'). textContent = "Student Created.";
         document.querySelectorAll('dialog')[1].showModal();
@@ -204,7 +216,6 @@ fm_createStudent.addEventListener('submit', (e) => {
         setColRef(col)
         document.querySelector('.side-panel').scroll({top:0,left:0,behavior:"smooth"});
     })
-    console.log("edit form")
 })
 //edit doc
 const sidePanelBtns = document.querySelectorAll('.side-panel-toggle');
@@ -265,14 +276,15 @@ function collectDataForUpdate() {
     })
     document.querySelectorAll('dialog')[2].querySelector('form').addEventListener('submit', (e) => {
         e.preventDefault();
+        const operation = 'Change';
         const collectionName = "students";
         const documentId = sidePanelBtns[2].value;
         const docRef = doc(db, collectionName, documentId);
         updateDoc(docRef, fields)
-            .then(() => {
+            .then(async () => {
+                await logger(operation, fields, uid)
                 window.alert("Update successful.")
                 resetEditForm();
-                //
             })
     })
 }
@@ -285,15 +297,19 @@ function resetEditForm() {
 //delete doc
 const yesBtn = document.querySelector('dialog button');
 yesBtn.onclick = function() {
+    const operation = 'destroy';
+    const action = document.querySelector('dialog p.msg').textContent;
+    const targetID = document.querySelectorAll('.side-panel-toggle')[1].value;
     const msgDialog = document.querySelectorAll('dialog');
     msgDialog[0].close();
-    let col = myIframe.contentDocument.querySelector('h3').textContent;
-    const docRef = doc(db, col, document.querySelectorAll('.side-panel-toggle')[1].value);
+    let col = "students";
+    const docRef = doc(db, col, targetID);
     deleteDoc(docRef)
-    .then(() => {
+    .then( async () => {
+        await logger(operation, action, uid);
         msgDialog[1].querySelector('p').textContent = "Deletion Complete.";
             msgDialog[1].showModal();
-            setColRef(col);
+            // setColRef(col);
         })
 }
 /*
@@ -301,3 +317,16 @@ yesBtn.onclick = function() {
 document.querySelector('#myIframe').contentDocument.querySelector('ol li:first-child span').id
 document.querySelector('#myIframe').contentDocument.querySelector('ol li:nth-of-type(1) span').id
 */
+async function logger(operation, action, uid) {
+    // first init FirebasePro configuration
+    chooseConfig(6)
+    const logRef = collection(db, "log");
+    await addDoc(logRef, {
+        operation,
+        action,
+        uid,
+        timestamp: serverTimestamp()
+    })
+    // re-init class configuration
+    chooseConfig(num)
+}

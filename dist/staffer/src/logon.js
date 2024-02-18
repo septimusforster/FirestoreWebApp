@@ -196,9 +196,13 @@ loginForm2.addEventListener('submit', async (e) => {
         e.submitter.disabled = false;
         e.submitter.style.cursor = 'pointer';
     } else {
-        // querySnapshot.docs.forEach(doc => sessionStorage.setItem('snapshotId', doc.id));
+        let uid;
+        querySnapshot.docs.forEach(doc => {
+            uid = doc.id;
+            sessionStorage.setItem('snapshot', JSON.stringify({id: uid, data: doc.data()}));
+        });
         loginForm2.reset();
-        location.href = '../../USADEYZHluYW1heAib.html';
+        location.href = '../../USADEYZHluYW1heAib.html'.concat('?uid=',uid);
     }
 })
 
