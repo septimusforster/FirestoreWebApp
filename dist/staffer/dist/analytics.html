@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics</title>
+</head>
+<body>
+    <main>
+
+    </main>
+    <script>
+        let db;
+        const req = indexedDB.open('userID', 3);
+        req.onupgradeneeded = (e) => {
+            db = e.target.result;
+            console.log('old version', e.oldVersion, 'new version', e.newVersion)
+            if (!db.ObjectStoreNames.contains("destroy")) {
+                const objectStore = db.createObjectStore('destroy', { keyPath: unique })
+            }
+        }
+        req.onsuccess = (e) => {
+            db = e.target.result;
+        }
+        req.onerror = (err) => {
+            console.log(err)
+        }
+        let tx = db.transaction('destroy', 'readwrite');
+        tx.oncomplete = (e) => {
+            console.log("Complete tx fired successfully.")
+        }
+        tx.onerror = (err) => {
+            console.log("Tx warning error: ", err)
+        }
+        let store = tx.objectStore('destroy');
+        let req = store.add()
+    </script>
+</body>
+</html>
