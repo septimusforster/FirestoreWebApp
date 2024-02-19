@@ -30,6 +30,9 @@
                 <div class="section__div">
                     <button type="button" id="class-btn" onclick="displayModal(this, '#class-dialog')"></button><span>Manage <em>Staff Classes</em></span>
                 </div>
+                <div class="section__div">
+                    <button type="button" id="class-btn" onclick="displayModal(this, '#mOF-dialog')"></button><span>Manage <em>Master of Form</em></span>
+                </div>
                 <div id="view-div">
                     <button id="view-changes">View Changes</button>
                 </div>
@@ -145,6 +148,21 @@
             </div>
         </form>
     </dialog>
+    <dialog id="mOF-dialog">
+        <form name="mOFForm" id="master-form" class="dialog-fm">
+            <div>
+                <input type="text" name="username" class="txt" placeholder="username or email" autocomplete="off"/>
+            </div>
+            <div>
+                <input type="text" list="cls" name="cls" class="abbr" placeholder="class" autocomplete="off"/>
+                <input type="text" list="arms" name="arm" class="txt" placeholder="choose arm" autocomplete="off"/>
+                <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+            </div>
+            <div class="footer">
+                <button type="reset" title="reset">&rtimes;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="add">Add</button><button class="delete-btn" id="remove">Remove</button>
+            </div>
+        </form>
+    </dialog>
     <datalist id="abbr">
     </datalist>
     <datalist id="fulltxt">
@@ -156,6 +174,8 @@
         <option name="SSS 1" value="SSS 1"></option>
         <option name="SSS 2" value="SSS 2"></option>
         <option name="SSS 3" value="SSS 3"></option>
+    </datalist>
+    <datalist id="arms">
     </datalist>
     <script type="module" src="../src/reserved_bundle.js"></script>
     <script>

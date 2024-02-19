@@ -55,6 +55,7 @@ const armArray = JSON.parse(sessionStorage.getItem('arm'));
 //load Jnr subs into <datalist>
 const abbrDatalist = document.querySelector('datalist#abbr');
 const fullTxtDatalist = document.querySelector('datalist#fulltxt');
+const armsDatalist = document.querySelector('datalist#arms');
 const uls = document.querySelectorAll('.aside__content ul');
 
 function loadSubjectsIntoUls(entries, list) {
@@ -71,6 +72,8 @@ function loadSubjectsIntoUls(entries, list) {
     if (list.startsWith('a')) {
         entries.forEach((ent, ind) => {
             uls[2].insertAdjacentHTML('beforeend', `<li>${ind + 1}. ${ent}</li>`)
+            // load datalist#arms as well
+            armsDatalist.insertAdjacentHTML('beforeend', `<option value="${ent}"></option>`)
         })
     }
 }
@@ -337,4 +340,32 @@ classForm.addEventListener('submit', async (e) => {
         formStatus(e);
     }
 })
+const mOFForm = document.forms.mOFForm;
+mOFForm.addEventListener('submit', async (e) => {
+    formStatus(e, 'enabled');
+    const formData = new FormData(mOFForm);
+    const user = formData.get('username');
+    const cls = formData.get('cls');
+    const arm = formData.get('arm');
 
+    const q = query(collection(db, "staffCollection"), where("username", "==", user))
+    const queryShot = await getDocs(q);
+    if (queryShot.empty) return window.alert("This user does not exist.")/* && formStatus(e)*/
+
+    if (e.submitter.id === 'add') {
+        queryShot.docs.forEach(async d => {
+            await updateDoc(doc(db, "staffCollection", d.id), {
+                masterOfForm: { [cls]: arm },
+            })
+            window.alert(`'${d.data().fullName}'  has been declared 'Master of Form'.`)
+        })
+    } else {
+        queryShot.docs.forEach(async d => {
+            await updateDoc(doc(db, "staffCollection", d.id), {
+                masterOfForm: deleteField(),
+            })
+            window.alert(`'${d.data().fullName}'  has been undeclared 'Master of Form'.`)
+        })
+    }
+    formStatus(e);
+})
