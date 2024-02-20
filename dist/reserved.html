@@ -122,7 +122,7 @@
     <dialog id="subject-dialog">
         <form name="subjectForm" id="subject-form" class="dialog-fm">
             <div>
-                <input type="text" name="username" class="txt" placeholder="username or email" autocomplete="off"/>
+                <input type="text" list="staff" name="uid" class="txt" placeholder="username or email" autocomplete="off"/>
             </div>
             <div>
                 <input type="text" list="abbr" name="abbr" class="abbr" placeholder="abbr" autocomplete="off"/>
@@ -137,7 +137,7 @@
     <dialog id="class-dialog">
         <form name="classForm" class="dialog-fm" id="class-form">
             <div>
-                <input type="text" name="username" class="txt" placeholder="username or email" autocomplete="off"/>
+                <input type="text" list="staff" name="uid" class="txt" placeholder="username or email" autocomplete="off"/>
             </div>
             <div>
                 <input type="text" list="cls" name="classesTaught" class="class" placeholder="class" autocomplete="off"/>
@@ -151,15 +151,15 @@
     <dialog id="mOF-dialog">
         <form name="mOFForm" id="master-form" class="dialog-fm">
             <div>
-                <input type="text" name="username" class="txt" placeholder="username or email" autocomplete="off"/>
+                <input type="text" list="staff" name="uid" class="txt" placeholder="username or email" autocomplete="off"/>
             </div>
             <div>
-                <input type="text" list="cls" name="cls" class="abbr" placeholder="class" autocomplete="off"/>
+                <input type="text" list="cls" name="cls" class="class" placeholder="class" autocomplete="off"/>
                 <input type="text" list="arms" name="arm" class="txt" placeholder="choose arm" autocomplete="off"/>
-                <button class="minus" onclick="deleteField(this)" type="button">&minus;</button>
+                <!-- <button class="minus" onclick="deleteField(this)" type="button">&minus;</button> -->
             </div>
             <div class="footer">
-                <button type="reset" title="reset">&rtimes;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="add">Add</button><button class="delete-btn" id="remove">Remove</button>
+                <button type="reset" title="Clear">&rtimes;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="add">Add</button><button class="delete-btn" id="remove">Remove</button>
             </div>
         </form>
     </dialog>
@@ -177,17 +177,10 @@
     </datalist>
     <datalist id="arms">
     </datalist>
+    <datalist id="staff">
+    </datalist>
     <script type="module" src="../src/reserved_bundle.js"></script>
     <script>
-        // const juniorBtn = document.querySelector('button#junior-btn');
-        // const seniorBtn = document.querySelector('button#senior-btn');
-        // const armBtn = document.querySelector('button#arm-btn');
-        // const subjectBtn = document.querySelector('button#subject-btn');
-        // const juniorDialog = document.querySelector('dialog#junior-dialog');
-        // const seniorDialog = document.querySelector('dialog#senior-dialog');
-        // const armDialog = document.querySelector('dialog#arm-dialog');
-        // const subjectDialog = document.querySelector('dialog#subject-dialog');
-
         function displayModal(elem, query) {
             const topOffset = elem.offsetTop + 50;
             const leftOffset = elem.offsetLeft;

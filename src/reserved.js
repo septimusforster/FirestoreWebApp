@@ -20,10 +20,11 @@ db = getFirestore()
 const jnrRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
 const snrRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
 const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
+const staffRef = collection(db, "staffCollection");
 
 let i;
 //Loop twice and store docs in sessionStorage
-for(i = 0; i < 3; i++) {
+for(i = 0; i < 4; i++) {
     switch (i) {
         case 0:
             if(sessionStorage.hasOwnProperty('jnr_sub')) {
@@ -46,40 +47,60 @@ for(i = 0; i < 3; i++) {
             await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)))
             console.log('From server')
             break;
+        case 3:
+            if(sessionStorage.hasOwnProperty('staffers')) {
+                continue;
+            }
+            let data = {}
+            await getDocs(staffRef).then(doc => doc.forEach(uname => {
+                data[uname.id] = uname.data().username;
+                // data.push({[uname.id] : uname.data().username});
+            }))
+            sessionStorage.setItem('staffers', JSON.stringify(data));
+            console.log('From server');
+            break;
     }
 }
 const jnrArray = Object.entries(JSON.parse(sessionStorage.getItem('jnr_sub'))).sort();
 const snrArray = Object.entries(JSON.parse(sessionStorage.getItem('snr_sub'))).sort();
 const armArray = JSON.parse(sessionStorage.getItem('arm'));
+const staffArray = Object.entries(JSON.parse(sessionStorage.getItem('staffers')));
 
-//load Jnr subs into <datalist>
+// load Jnr subs into <datalist>
 const abbrDatalist = document.querySelector('datalist#abbr');
 const fullTxtDatalist = document.querySelector('datalist#fulltxt');
 const armsDatalist = document.querySelector('datalist#arms');
+const staffDatalist = document.querySelector('datalist#staff');
 const uls = document.querySelectorAll('.aside__content ul');
 
 function loadSubjectsIntoUls(entries, list) {
-    if (list.startsWith('j')) {
+    if (list.startsWith('jun')) {
         entries.forEach((ent, ind) => {
             uls[0].insertAdjacentHTML('beforeend', `<li>${ind + 1}. ${ent[0]} - ${ent[1]}</li>`)
         })
     }
-    if (list.startsWith('s')) {
+    if (list.startsWith('sen')) {
         entries.forEach((ent, ind) => {
             uls[1].insertAdjacentHTML('beforeend', `<li>${ind + 1}. ${ent[0]} - ${ent[1]}</li>`)
         })
     }
-    if (list.startsWith('a')) {
+    if (list.startsWith('arm')) {
         entries.forEach((ent, ind) => {
             uls[2].insertAdjacentHTML('beforeend', `<li>${ind + 1}. ${ent}</li>`)
             // load datalist#arms as well
             armsDatalist.insertAdjacentHTML('beforeend', `<option value="${ent}"></option>`)
         })
     }
+    if (list.startsWith('staff')) {
+        entries.forEach(ent => {
+            staffDatalist.insertAdjacentHTML('beforeend', `<option value='${ent[0]}'>${ent[1]}</option>`)
+        })
+    }
 }
 loadSubjectsIntoUls(jnrArray, "juniors");
 loadSubjectsIntoUls(snrArray, "seniors");
 loadSubjectsIntoUls(armArray, "arms");
+loadSubjectsIntoUls(staffArray, "staffers");
 
 const myobjects = [JSON.parse(sessionStorage.getItem('jnr_sub')),JSON.parse(sessionStorage.getItem('snr_sub'))];
 function mergeObjects(objs) {
@@ -246,32 +267,16 @@ const subjectForm = document.forms.subjectForm;
 subjectForm.addEventListener('submit', async (e) => {
     formStatus(e, 'enabled');
     const formData = new FormData(subjectForm);
-    let user = formData.get('username');
-    if (!user.trim().length) {
-        window.alert("Enter your current username.");
-        formStatus(e);
-        return;
-    }
-    const q = query(collection(db, "staffCollection"), where("username", "==", user), limit(1))
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
-        window.alert("Username does not exist.");
-        formStatus(e);
-        return;
-    }
-    let userID;
-    querySnapshot.docs.forEach(doc => {
-        userID = doc.id;
-    })
-    let abbr = formData.getAll('abbr')
-    let txt = formData.getAll('txt')
+    let uid = formData.get('uid');
+    let abbr = formData.getAll('abbr');
+    let txt = formData.getAll('txt');
     
     if (e.submitter.id === 'add') {
         const promises = 
             abbr.map( async (a,i) => {
                 let obj = {};
                 obj[a] = txt[i];
-                await updateDoc(doc(db, "staffCollection", userID), {
+                await updateDoc(doc(db, "staffCollection", uid), {
                     subjectsTaught: arrayUnion(obj),
                 })
             });
@@ -284,7 +289,7 @@ subjectForm.addEventListener('submit', async (e) => {
             abbr.map( async (a,i) => {
                 let obj = {};
                 obj[a] = txt[i];
-                await updateDoc(doc(db, "staffCollection", userID), {
+                await updateDoc(doc(db, "staffCollection", uid), {
                     subjectsTaught: arrayRemove(obj),
                 })
             });
@@ -298,29 +303,13 @@ const classForm = document.forms.classForm;
 classForm.addEventListener('submit', async (e) => {
     formStatus(e, 'enabled');
     const formData = new FormData(classForm);
-    let user = formData.get('username');
-    if (!user.trim().length) {
-        window.alert("Enter your current username.");
-        formStatus(e);
-        return;
-    }
-    const q = query(collection(db, "staffCollection"), where("username", "==", user), limit(1))
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
-        window.alert("Username does not exist.");
-        formStatus(e);
-        return;
-    }
-    let userID;
-    querySnapshot.docs.forEach(doc => {
-        userID = doc.id;
-    })
+    let uid = formData.get('uid');
     let abbr = formData.getAll('classesTaught')
     
     if (e.submitter.id === 'register') {
         const promises = 
             abbr.map( async (a) => {
-                await updateDoc(doc(db, "staffCollection", userID), {
+                await updateDoc(doc(db, "staffCollection", uid), {
                     classroomsTaught: arrayUnion(a),
                 })
             });
@@ -330,11 +319,10 @@ classForm.addEventListener('submit', async (e) => {
     } else {
         const promises = 
             abbr.map( async (a) => {
-                await updateDoc(doc(db, "staffCollection", userID), {
+                await updateDoc(doc(db, "staffCollection", uid), {
                     classroomsTaught: arrayRemove(a),
                 })
             });
-
         await Promise.all(promises)
         window.alert("Subject(s) removed.");
         formStatus(e);
@@ -344,28 +332,20 @@ const mOFForm = document.forms.mOFForm;
 mOFForm.addEventListener('submit', async (e) => {
     formStatus(e, 'enabled');
     const formData = new FormData(mOFForm);
-    const user = formData.get('username');
+    const uid = formData.get('uid');
     const cls = formData.get('cls');
     const arm = formData.get('arm');
 
-    const q = query(collection(db, "staffCollection"), where("username", "==", user))
-    const queryShot = await getDocs(q);
-    if (queryShot.empty) return window.alert("This user does not exist.")/* && formStatus(e)*/
-
     if (e.submitter.id === 'add') {
-        queryShot.docs.forEach(async d => {
-            await updateDoc(doc(db, "staffCollection", d.id), {
-                masterOfForm: { [cls]: arm },
-            })
-            window.alert(`'${d.data().fullName}'  has been declared 'Master of Form'.`)
+        await updateDoc(doc(db, "staffCollection", uid), {
+            masterOfForm: { [cls]: arm },
         })
+        window.alert("User has been declared 'Master of Form'.")
     } else {
-        queryShot.docs.forEach(async d => {
-            await updateDoc(doc(db, "staffCollection", d.id), {
-                masterOfForm: deleteField(),
-            })
-            window.alert(`'${d.data().fullName}'  has been undeclared 'Master of Form'.`)
+        await updateDoc(doc(db, "staffCollection", uid), {
+            masterOfForm: deleteField(),
         })
+        window.alert("User has been undeclared 'Master of Form'.")
     }
     formStatus(e);
 })
