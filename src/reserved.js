@@ -53,8 +53,7 @@ for(i = 0; i < 4; i++) {
             }
             let data = {}
             await getDocs(staffRef).then(doc => doc.forEach(uname => {
-                data[uname.id] = uname.data().username;
-                // data.push({[uname.id] : uname.data().username});
+                data[uname.id] = uname.data().fullName;
             }))
             sessionStorage.setItem('staffers', JSON.stringify(data));
             console.log('From server');
