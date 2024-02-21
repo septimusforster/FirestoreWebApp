@@ -134,7 +134,6 @@ signUpForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const dialogNotice = document.querySelector('#dialog-notice');
     const dialogSuccess = document.querySelector('#dialog-success');
-    // dialogDiv ? dialogDiv.remove() : false;
     if (cfp && code) {
         e.submitter.disabled = true;
         e.submitter.style.cursor = 'not-allowed';
