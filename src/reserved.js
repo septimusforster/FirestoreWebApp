@@ -51,8 +51,9 @@ for(i = 0; i < 4; i++) {
             if(sessionStorage.hasOwnProperty('staffers')) {
                 continue;
             }
+            const q = query(staffRef, where("code", "!=", "USADEY"))
             let data = {}
-            await getDocs(staffRef).then(doc => doc.forEach(uname => {
+            await getDocs(q).then(doc => doc.forEach(uname => {
                 data[uname.id] = uname.data().fullName;
             }))
             sessionStorage.setItem('staffers', JSON.stringify(data));

@@ -2,9 +2,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBT - Create</title>
+    <title>Test</title>
+    <style>
+        html, body, * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background-color: rgb(42,7,75);
+            color: #ffffff;
+            font-size: 18px;
+            font-family: 'Poppins', sans-serif;
+        }
+        header, section, main {
+            padding: 40px;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            position: sticky;
+            top: 0;
+            background-color: rgb(42,7,75);
+        }
+        header img {
+            width: 30px;
+        }
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 3em;
+            background-color: rgba(0,0,0,.2);
+            position: relative;
+        }
+        section > h2 {
+            flex-basis: 100%;
+        }
+        section h2 {
+            text-align: center;
+            font-weight: 100;
+        }
+        section > div {
+            max-width: 25%;
+            text-align: justify;
+        }
+        .times {
+            position: absolute;
+            right: 100px;
+            top: 30px;
+            font-size: 2em;
+            padding: 0px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all .3s;
+        }
+        .times:hover {
+            background-color: rgba(255,255,255,.3);
+        }
+        main {
+            display: flex;
+        }
+        iframe {
+            /* border: 1px solid red; */
+            flex: 3;
+        }
+        ::-webkit-scrollbar {
+            width: 0.7em;
+        }
+        ::-webkit-scrollbar-track {
+            color: rebeccapurple;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #fff;
+            border-radius: 7px;
+        }
+        aside {
+            flex: 2;
+        }
+    </style>
 </head>
 <body>
-    
+    <header>
+        <img src="../img/9035117_person_icon.png" alt="Student photo">
+        <span>Jacob Murphy Aaron Gordon</span>
+        <img src="../img/1737368_comment_description_outline_problem_task_icon.png" alt="Subject">
+        <span>Catering Craft Practice</span>
+        <img src="../img/185095_settings_icon.png" alt="Timer">
+        <span id="timer">09 : 00</span>
+    </header>
+    <section>
+        <h2>Instructions</h2>
+        <div>
+            <h2>01</h2>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore vel dolorem, ullam, a repellendus</p>
+        </div>
+        <div>
+            <h2>02</h2>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore vel dolorem, ullam, a repellendus</p>
+        </div>
+        <span class="times">&times;</span>
+    </section>
+    <main>
+        <iframe src="../src/Getting started with OneDrive.pdf#toolbar=0" frameborder="0" width="400" height="800"></iframe>
+        <aside>
+            <div class="aside__header">
+                Answer paper
+            </div>
+            <form class="aside__form">
+                <div class="opt">
+                    <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
+                </div>
+                <div class="aside__footer">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </aside>
+    </main>
+    <script>
+        const times = document.querySelectorAll('.times');
+        times.forEach(time => {
+            time.addEventListener('click', (e) => {
+                time.parentElement.remove();
+            })
+        })
+
+        const iframe = document.querySelector('iframe').contentDocument;
+        iframe.querySelector('head').insertAdjacentHTML('beforeend', `
+            <style>
+                ::-webkit-scrollbar {
+                    width: 0.7em;
+                }
+                ::-webkit-scrollbar-track {
+                    color: rebeccapurple;
+                }
+                ::-webkit-scrollbar-thumb {
+                    background-color: #fff;
+                    border-radius: 7px;
+                }
+            </style>
+        `)
+    </script>
 </body>
 </html>
