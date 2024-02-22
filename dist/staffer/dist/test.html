@@ -1,0 +1,162 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Provider</title>
+    <link rel="stylesheet" href="../style/test.css">
+</head>
+<body>
+    <header>
+        <div>DN</div>
+        <div>
+            <strong>1 - Upload PDF</strong><strong>2 - Preview PDF</strong><strong>3 - Other settings</strong>
+        </div>
+    </header>
+    <main>
+        <datalist id="subject">
+        </datalist>
+        <datalist id="cls">
+            <option value="JSS 1"></option>
+            <option value="JSS 2"></option>
+            <option value="JSS 3"></option>
+            <option value="SSS 1"></option>
+            <option value="SSS 2"></option>
+            <option value="SSS 3"></option>
+        </datalist>
+        <form class="aside__form" name="pdfForm">
+            <label for="file">Choose PDF <strong>&plus;</strong></label>
+            <input type="file" name="file" id="file" accept=".pdf">
+            <label for="questions">How many questions are in this test?</label>
+            <input type="number" min="0" name="questions" id="questions" placeholder="Number of questions">
+            <label for="questions">What is the multiple number of choices allowed?</label>
+            <select id="choices" required>
+                <option value="3">3-choice questions</option>
+                <option value="4">4-choice questions</option>
+                <option value="5">5-choice questions</option>
+            </select>
+            <button type="button" class="gen__btn" id="generate">Generate Answer Sheet</button>
+            <hr>
+            <table>
+                <tbody>
+                    
+                </tbody>
+            </table>           
+            <div class="aside__footer">
+                <button id="clear-btn" class="sub__action" type="button">Clear</button><button class="sub__action" type="submit">Done</button>
+            </div>
+        </form>
+        <iframe frameborder="0" width="400"></iframe>
+        <aside>
+            <form class="aside__form" name="quizForm">
+                <label for="subject">What is the name of the subject?</label>
+                <input type="text" name="subject" id="subject" placeholder="Select subject" list="subject" />
+                <label for="cls">What is the name of the class?</label>
+                <input type="text" name="cls" id="cls" list="cls" placeholder="Select class"/>
+                <label for="testNum">This is C.A. test...?</label>
+                <input type="text" name="testNum" id="testNum" list="numOfTest">
+                <datalist id="numOfTest">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4"></option>
+                </datalist>
+                <label for="total">This test will be scored over...?</label>
+                <input type="number" name="total" id="total" min="0"/>
+                <label for="duration">What is the duration?</label>
+                <input type="number" list="dur" name="duration" id="duration" placeholder="(in mins)"/>
+                <datalist id="dur">
+                    <option value="35"></option>
+                    <option value="45"></option>
+                    <option value="50"></option>
+                </datalist>
+                <div id="instructions">
+                    <label>What are the instructions?</label>
+                    <div>
+                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                        <button type="button" class="btn__action" id="minus" onclick="minuse(this)">&times;</button>
+                    </div>
+                    <button type="button" class="btn__action" id="plus" onclick="pluse(this)">&plus;</button>
+                </div>
+                <label for="time">What is the time for the test?</label>
+                <input type="time" name="time" id="time">
+                <label for="code">Enter test code</label>
+                <input type="text" />
+                <div class="aside__footer">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </aside>
+    </main>
+    <footer>
+
+    </footer>
+    <script type="module" src="../src/test_bundle.js"></script>
+    <script>
+        const iframe = document.querySelector('iframe');
+        // load srcdoc
+        iframe.srcdoc = `
+            <div style="margin:300px auto;padding:10px;width:300px;font-family:tahoma;font-size:16px;text-align:center;border-bottom:1px solid #777;color:#777;">
+                After choosing a PDF,<br/>its preview will be displayed here.    
+            </div>
+        `;
+        const file = document.querySelector("input[type='file']");
+        file.onchange = (e) => {
+            const fs = new FileReader()
+            // console.log(e.target.files[0].size)
+            fs.onload = function () {
+                iframe.removeAttribute('srcdoc');
+                iframe.src = fs.result+"#toolbar=0";
+            }
+            fs.readAsDataURL(e.target.files[0])
+        }
+
+        const plusBtn = document.getElementById('plus');
+
+        function pluse(e) {
+            plusBtn.insertAdjacentHTML('beforebegin', `
+                ${e.previousElementSibling.outerHTML}
+            `)
+        }
+        function minuse(e) {
+            e.parentElement.remove()
+        }
+
+        const questions = document.getElementById('questions');
+        const choices = document.getElementById('choices');
+        const tbody = document.querySelector('tbody');
+        const generateBtn = document.querySelector('#generate');
+
+        generateBtn.onclick = (e) => {
+            e.target.disabled = true;
+            e.target.style.cursor = 'not-allowed';
+            let qtn = questions.value;
+            let chs = choices.value;
+            
+            for (i = 0; i < qtn; i++) {
+                let td = '';
+                for (j = 0; j < chs; j++) {
+                    td += `
+                        <td>
+                            <input type="radio" name="${i}" id="rd${chs*i+j}" value="${j+1}">
+                            <label for="rd${chs*i+j}">${String.fromCharCode(65 + j)}</label>
+                        </td>` 
+                }
+                
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td>${i+1}.</td>
+                        ${td}
+                    </tr>
+                `)
+            }
+        }
+
+        const clearBtn = document.querySelector('#clear-btn');
+        clearBtn.onclick = function () {
+            tbody.innerHTML = '';
+            generateBtn.disabled = false;
+            generateBtn.style.cursor = 'pointer';
+        }
+    </script>
+</body>
+</html>
