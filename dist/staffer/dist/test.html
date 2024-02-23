@@ -16,12 +16,12 @@
         <datalist id="subject">
         </datalist>
         <datalist id="cls">
-            <option value="JSS 1"></option>
-            <option value="JSS 2"></option>
-            <option value="JSS 3"></option>
-            <option value="SSS 1"></option>
-            <option value="SSS 2"></option>
-            <option value="SSS 3"></option>
+            <option data-id="0" id="JSS 1" value="JSS 1"></option>
+            <option data-id="1" id="JSS 2" value="JSS 2"></option>
+            <option data-id="2" id="JSS 3" value="JSS 3"></option>
+            <option data-id="3" id="SSS 1" value="SSS 1"></option>
+            <option data-id="4" id="SSS 2" value="SSS 2"></option>
+            <option data-id="5" id="SSS 3" value="SSS 3"></option>
         </datalist>
         <form class="aside__form" name="pdfForm">
             <label for="file">Choose PDF <strong>&plus;</strong></label>
@@ -29,7 +29,7 @@
             <label for="questions">How many questions are in this test?</label>
             <input type="number" min="0" name="questions" id="questions" placeholder="Number of questions">
             <label for="questions">What is the multiple number of choices allowed?</label>
-            <select id="choices" required>
+            <select name="choices" id="choices" required>
                 <option value="3">3-choice questions</option>
                 <option value="4">4-choice questions</option>
                 <option value="5">5-choice questions</option>
@@ -60,8 +60,8 @@
                     <option value="3"></option>
                     <option value="4"></option>
                 </datalist>
-                <label for="total">This test will be scored over...?</label>
-                <input type="number" name="total" id="total" min="0"/>
+                <label for="rating">This test will be scored over...?</label>
+                <input type="number" name="rating" id="rating" min="0"/>
                 <label for="duration">What is the duration?</label>
                 <input type="number" list="dur" name="duration" id="duration" placeholder="(in mins)"/>
                 <datalist id="dur">
@@ -72,15 +72,15 @@
                 <div id="instructions">
                     <label>What are the instructions?</label>
                     <div>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                        <textarea name="instr" cols="30" rows="5"></textarea>
                         <button type="button" class="btn__action" id="minus" onclick="minuse(this)">&times;</button>
                     </div>
                     <button type="button" class="btn__action" id="plus" onclick="pluse(this)">&plus;</button>
                 </div>
-                <label for="time">What is the time for the test?</label>
-                <input type="time" name="time" id="time">
+                <label for="startTime">What is the time for the test?</label>
+                <input type="time" name="startTime" id="startTime">
                 <label for="code">Enter test code</label>
-                <input type="text" />
+                <input type="text" name="code"/>
                 <div class="aside__footer">
                     <button type="submit">Submit</button>
                 </div>
