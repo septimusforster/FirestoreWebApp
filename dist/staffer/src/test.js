@@ -56,10 +56,13 @@ pdfForm.addEventListener('submit', (e) => {
     const formData = new FormData(pdfForm);
     pdfFormVar = Array.from(formData.values());
     [fe, qe, ch, ...ce] = pdfFormVar;
-    window.alert("Done with phases 1 and 2.")/*
+    document.body.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+    })
     dialogNotice.querySelector('output').textContent = "Phase 1 and 2: CHECKED.";
-    dialogNotice.style.display = 'flex';
-    dialogNotice.showModal();*/
+    dialogNotice.showModal();
 });
 
 // let quizFormVar;
@@ -79,7 +82,6 @@ quizForm.addEventListener('submit', (e) => {
     let timestamp = Intl.DateTimeFormat('en-us', {dateStyle: "medium"}).format(new Date());
     // reset config
     let num = Number(clsDatalist.options.namedItem(cls).dataset.id)
-    // console.log(num)
     chooseConfig(num)
     // send file to storage
     const storage = getStorage();
@@ -115,10 +117,13 @@ quizForm.addEventListener('submit', (e) => {
                     `;
                     pdfForm.reset();
                     quizForm.reset();
-                    window.alert("Test uploaded successfully.");/*
                     dialogNotice.querySelector('output').textContent = "Test has been uploaded successfully.";
-                    dialogNotice.style.display = 'flex';
-                    dialogNotice.showModal();*/
+                    dialogNotice.showModal();
+                    document.body.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth',
+                    })
                     /*
                     await updateDoc(doc(db, "staffCollection", ss.id), {
                         [subPath]: arrayUnion({

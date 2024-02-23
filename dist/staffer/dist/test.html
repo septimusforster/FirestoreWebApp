@@ -79,21 +79,21 @@
                 </div>
                 <label for="startTime">What is the time for the test?</label>
                 <input type="time" name="startTime" id="startTime">
-                <label for="code">Enter test code</label>
-                <input type="text" name="code"/>
+                <label for="code">Specify code of your choice</label>
+                <input type="text" name="code" autocomplete="off"/>
                 <div class="aside__footer">
                     <button type="submit">Submit</button>
                 </div>
             </form>
         </aside>
-        <dialog id="notice">
-            <output></output>
-            <button type="button" onclick="document.querySelector('dialog#notice').style.display = 'none'">OKAY</button>
-        </dialog>
     </main>
     <footer>
-
+        
     </footer>
+    <dialog id="notice">
+        <output></output>
+        <button type="button" onclick="this.parentElement.close()">OKAY</button>
+    </dialog>
     <script type="module" src="../src/test_bundle.js"></script>
     <script>
         const iframe = document.querySelector('iframe');
