@@ -70,6 +70,9 @@ const clsDatalist = document.querySelector('datalist#cls');
 const quizForm = document.forms.quizForm;
 quizForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
+
     const formData = new FormData(quizForm);
     const cls = formData.get('cls');
     const sub = formData.get('subject');
@@ -119,6 +122,8 @@ quizForm.addEventListener('submit', (e) => {
                     quizForm.reset();
                     dialogNotice.querySelector('output').textContent = "Test has been uploaded successfully.";
                     dialogNotice.showModal();
+                    e.submitter.disabled = false;
+                    e.submitter.style.cursor = 'pointer';
                     document.body.scrollTo({
                         top: 0,
                         left: 0,
