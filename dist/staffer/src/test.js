@@ -47,6 +47,7 @@ function loadSubs() {
         subDatalist.insertAdjacentHTML('beforeend', `<option value='${e[0]}'>${e[1]}</option>`)
     })
 }
+const dialogNotice = document.querySelector('dialog#notice');
 
 let pdfFormVar, fe, qe, ch, ce;
 const pdfForm = document.forms.pdfForm;
@@ -55,7 +56,10 @@ pdfForm.addEventListener('submit', (e) => {
     const formData = new FormData(pdfForm);
     pdfFormVar = Array.from(formData.values());
     [fe, qe, ch, ...ce] = pdfFormVar;
-    console.log('DONE !!!')
+    window.alert("Done with phases 1 and 2.")/*
+    dialogNotice.querySelector('output').textContent = "Phase 1 and 2: CHECKED.";
+    dialogNotice.style.display = 'flex';
+    dialogNotice.showModal();*/
 });
 
 // let quizFormVar;
@@ -72,6 +76,7 @@ quizForm.addEventListener('submit', (e) => {
     const instr = formData.getAll('instr');
     const startTime = formData.get('startTime');
     const code = formData.get('code');
+    let timestamp = Intl.DateTimeFormat('en-us', {dateStyle: "medium"}).format(new Date());
     // reset config
     let num = Number(clsDatalist.options.namedItem(cls).dataset.id)
     // console.log(num)
@@ -96,12 +101,24 @@ quizForm.addEventListener('submit', (e) => {
                     duration,
                     instr,
                     startTime,
-                    timestamp: serverTimestamp(),
+                    code,
+                    timestamp,
                 })
                 .then(async snapDoc => {                    
                     //send URL to teacher's doc
                     chooseConfig(6);
-                    console.log("Finished.")
+                    clearSheet();
+                    iframe.srcdoc = `
+                        <div style="margin:300px auto;padding:10px;width:300px;font-family:tahoma;font-size:16px;text-align:center;border-bottom:1px solid #777;color:#777;">
+                            After choosing a PDF,<br/>its preview should be displayed here.    
+                        </div>
+                    `;
+                    pdfForm.reset();
+                    quizForm.reset();
+                    window.alert("Test uploaded successfully.");/*
+                    dialogNotice.querySelector('output').textContent = "Test has been uploaded successfully.";
+                    dialogNotice.style.display = 'flex';
+                    dialogNotice.showModal();*/
                     /*
                     await updateDoc(doc(db, "staffCollection", ss.id), {
                         [subPath]: arrayUnion({

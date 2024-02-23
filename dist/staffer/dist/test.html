@@ -42,7 +42,7 @@
                 </tbody>
             </table>           
             <div class="aside__footer">
-                <button id="clear-btn" class="sub__action" type="button">Clear</button><button class="sub__action" type="submit">Done</button>
+                <button id="clear-btn" class="sub__action" type="button" onclick="clearSheet()">Clear</button><button class="sub__action" type="submit">Done</button>
             </div>
         </form>
         <iframe frameborder="0" width="400"></iframe>
@@ -86,6 +86,10 @@
                 </div>
             </form>
         </aside>
+        <dialog id="notice">
+            <output></output>
+            <button type="button" onclick="document.querySelector('dialog#notice').style.display = 'none'">OKAY</button>
+        </dialog>
     </main>
     <footer>
 
@@ -96,7 +100,7 @@
         // load srcdoc
         iframe.srcdoc = `
             <div style="margin:300px auto;padding:10px;width:300px;font-family:tahoma;font-size:16px;text-align:center;border-bottom:1px solid #777;color:#777;">
-                After choosing a PDF,<br/>its preview will be displayed here.    
+                After choosing a PDF,<br/>its preview should be displayed here.    
             </div>
         `;
         const file = document.querySelector("input[type='file']");
@@ -151,8 +155,8 @@
             }
         }
 
-        const clearBtn = document.querySelector('#clear-btn');
-        clearBtn.onclick = function () {
+        // const clearBtn = document.querySelector('#clear-btn');
+        function clearSheet() {
             tbody.innerHTML = '';
             generateBtn.disabled = false;
             generateBtn.style.cursor = 'pointer';

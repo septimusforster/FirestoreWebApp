@@ -139,8 +139,8 @@ async function getDocuments(category, subject) {
             <input type="checkbox" class="accordion__input" id="cb${counter+1}"/>
             <label for="cb${counter+1}" class="accordion__label" title="${title}">#${counter+1} ${title}</label>
             <div class="accordion__content">
-                <p>${data.info ? data.info : "No messages."}</p>
-                ${title != "No topic" ? `<a href="${data.dest}" download="${title}">Download ${data.catPath}</a>` : ""}    
+                <p>${data.info || data.instr[0] || "No messages."}</p>
+                ${title != "No topic" ? `<a href="${data.dest || './test.html?uid=0'}" ${category === 'test' ? '' : 'download='+title}>Download ${data.catPath || 'test'}</a>` : ""}    
             </div>
         </div>
         `)
