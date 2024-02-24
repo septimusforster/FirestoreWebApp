@@ -129,24 +129,26 @@ async function getDocuments(category, subject) {
     if (querySnapshot.empty) return timelineBar.innerHTML = 'There are no tasks to perform.';
     timelineBar.innerHTML = '';
     let counter = 0;
+    let payload = [];
     querySnapshot.forEach((doc, i) => {
-        // console.log(counter, doc.id, ' => ', doc.data());        
         let data = doc.data();
         let docName = doc.data().name;
         let title = docName.slice(0,docName.lastIndexOf('.'));
+        if (category === 'test') payload.push(data)
         timelineBar.insertAdjacentHTML('beforeend', `
         <div class="timeline-content">
             <input type="checkbox" class="accordion__input" id="cb${counter+1}"/>
-            <label for="cb${counter+1}" class="accordion__label" title="${title}">#${counter+1} ${title}</label>
+            <label for="cb${counter+1}" class="accordion__label" title="${title}">#${data.catNo || counter+1} ${title}</label>
             <div class="accordion__content">
                 <p>${data.info || data.instr[0] || "No messages."}</p>
-                ${title != "No topic" ? `<a href="${data.dest || './test.html?uid=0'}" ${category === 'test' ? '' : 'download='+title}>Download ${data.catPath || 'test'}</a>` : ""}    
+                ${title != "No topic" ? `<a href="${data.dest || `./test.html?uid=${ss.id}`}" ${category === 'test' ? '' : 'download='+title}>Download ${data.catPath || 'test'}</a>` : ""}    
             </div>
         </div>
         `)
         document.querySelectorAll('.timeline-content')[counter].style.setProperty('--beforeContent',`"${data.timestamp}"`);
         counter++;
     });
+    if (payload.length) sessionStorage.setItem('testPayload', JSON.stringify(payload))
 };
 const subjectNav = document.querySelector('#subject-navs .inner:last-child');
 subjectNav.addEventListener('click', (e) => {
@@ -160,11 +162,16 @@ subjectNav.addEventListener('click', (e) => {
             }
         })
         e.target.classList.add('active');
+    }
+    if (ctx === "test" && sessionStorage.hasOwnProperty('testPayload')) {
+        // use testPayload, which is an array of the objects, to setup the test links
+    } else {
+        // get document from server and store it in 'testPayload' sessionStorage
         getDocuments(ctx, e.target.id);
     }
 })
 // getDocuments();
-const dialog = document.querySelector('dialog#photo-dialog');
+// const dialog = document.querySelector('dialog#photo-dialog');
 /*
 headerParagraph.addEventListener('click', (e) => {
     if (ss.ue) {

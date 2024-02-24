@@ -48,6 +48,7 @@
         <iframe frameborder="0" width="400"></iframe>
         <aside>
             <form class="aside__form" name="quizForm">
+                <button type="button" id="code-btn">Generate Entry Code <code>&lt;/&gt;</code></button>
                 <label for="subject">What is the name of the subject?</label>
                 <input type="text" name="subject" id="subject" placeholder="Select subject" list="subject" />
                 <label for="cls">What is the name of the class?</label>
@@ -65,9 +66,9 @@
                 <label for="duration">What is the duration?</label>
                 <input type="number" list="dur" name="duration" id="duration" placeholder="(in mins)"/>
                 <datalist id="dur">
-                    <option value="35"></option>
-                    <option value="45"></option>
-                    <option value="50"></option>
+                    <option value="20"></option>
+                    <option value="25"></option>
+                    <option value="30"></option>
                 </datalist>
                 <div id="instructions">
                     <label>What are the instructions?</label>
@@ -77,10 +78,13 @@
                     </div>
                     <button type="button" class="btn__action" id="plus" onclick="pluse(this)">&plus;</button>
                 </div>
-                <label for="startTime">What is the time for the test?</label>
-                <input type="time" name="startTime" id="startTime">
-                <label for="code">Specify code of your choice</label>
-                <input type="text" name="code" autocomplete="off"/>
+                <div>
+                    <label for="startTime">What is the time for the test?</label>
+                    <input type="time" name="startTime" id="startTime" min="07:30" max="15:00" pattern="[0-9]{2}:[0-9]{2}" required/><span class="validity"></span>
+                </div>
+                <!-- <label for="code">Generate entry code</label> -->
+                <!-- <input type="text" name="code" autocomplete="off"/> -->
+                <input type="hidden" name="code" value="">
                 <div class="aside__footer">
                     <button type="submit">Submit</button>
                 </div>
@@ -93,6 +97,12 @@
     <dialog id="notice">
         <output></output>
         <button type="button" onclick="this.parentElement.close()">OKAY</button>
+    </dialog>
+    <dialog id="code-dialog">
+        <p>This code gives access to the test. Copy and paste it in a safe location for later retrieval.</p>
+        <strong></strong>
+        <button type="button" id="copy-btn">Copy</button>
+        <button type="button" onclick="okay(this)">OKAY</button>
     </dialog>
     <script type="module" src="../src/test_bundle.js"></script>
     <script>
@@ -145,7 +155,6 @@
                             <label for="rd${chs*i+j}">${String.fromCharCode(65 + j)}</label>
                         </td>` 
                 }
-                
                 tbody.insertAdjacentHTML('beforeend', `
                     <tr>
                         <td>${i+1}.</td>
@@ -160,6 +169,13 @@
             tbody.innerHTML = '';
             generateBtn.disabled = false;
             generateBtn.style.cursor = 'pointer';
+        }
+
+        const copyBtn = document.querySelector('#copy-btn');
+        function okay(e) {
+            e.parentElement.close();
+            copyBtn.textContent = 'Copy';
+            copyBtn.classList.remove('copied');
         }
     </script>
 </body>

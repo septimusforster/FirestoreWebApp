@@ -3,6 +3,7 @@ import {
     getFirestore, arrayUnion, arrayRemove, collection, getDoc, getDocs, setDoc, addDoc, deleteDoc, doc, serverTimestamp} from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import  configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
+import entryCode from "./JSON/test.json" assert {type: 'json'};
 
 // initialize firebase app
 var app = initializeApp(configs[6])
@@ -43,8 +44,8 @@ if (sessionStorage.getItem("subs") === null) {
 }
 function loadSubs() {
     const subArray = Object.entries(JSON.parse(sessionStorage.getItem('subs')));
-    subArray.forEach(e => {
-        subDatalist.insertAdjacentHTML('beforeend', `<option value='${e[0]}'>${e[1]}</option>`)
+    subArray.forEach((e, i) => {
+        subDatalist.insertAdjacentHTML('beforeend', `<option data-id='${i}' value='${e[0]}'>${e[1]}</option>`)
     })
 }
 const dialogNotice = document.querySelector('dialog#notice');
@@ -142,3 +143,24 @@ quizForm.addEventListener('submit', (e) => {
     // const myRef = doc(db, "students", cls)
 })
 
+const hiddenInput = document.querySelector('input[type="hidden"]');
+const dialogCode = document.querySelector('#code-dialog');
+const codeBtn = document.querySelector('#code-btn');
+codeBtn.addEventListener('click', (e) => {
+    //generate code
+    let randy = parseInt(Math.random()*1000);
+    //add code to hidden input..
+    dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy];
+    dialogCode.showModal();
+})
+const copyBtn = document.querySelector('#copy-btn');
+copyBtn.addEventListener('click', async (e) => {
+    await navigator.clipboard.writeText(dialogCode.querySelector('strong').textContent)
+        .then(() => {
+            e.target.textContent = 'Copied!';
+            e.target.classList.add('copied')
+        })
+        .catch(err => {
+            console.log(err)
+        })
+})
