@@ -141,7 +141,7 @@ async function getDocuments(category, subject) {
             <label for="cb${counter+1}" class="accordion__label" title="${title}">#${data.catNo || counter+1} ${title}</label>
             <div class="accordion__content">
                 <p>${data.info || data.instr[0] || "No messages."}</p>
-                ${title != "No topic" ? `<a href="${data.dest || `./test.html?uid=${ss.id}`}" ${category === 'test' ? '' : 'download='+title}>Download ${data.catPath || 'test'}</a>` : ""}    
+                ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}`}" ${category === 'test' ? '' : 'download='+title}>Download ${data.catPath || 'test'}</a>` : ""}    
             </div>
         </div>
         `)

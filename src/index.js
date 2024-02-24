@@ -71,6 +71,7 @@ async function setIframeAttr(para1) {
                 <td>${index + 1}</td>
                 <td>${student.admission_no}</td>
                 <td>${student.last_name} ${student.first_name} ${student.other_name}</td>
+                <td>${student.password}</td>
             </tr>
         `);
     })

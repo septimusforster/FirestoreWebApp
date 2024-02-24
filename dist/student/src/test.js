@@ -18,6 +18,8 @@ var db = getFirestore();
 //     // collection refs
 // })
 
+const ss = JSON.parse(sessionStorage.getItem('testPayload'))
+
 let buffer = new ArrayBuffer(3);
 let dv = new DataView(buffer);
 const uid = "7XURg1CwKZyjkDLSBiG8";

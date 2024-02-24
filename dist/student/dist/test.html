@@ -7,16 +7,10 @@
     <script type="module" src="../src/test_bundle.js" defer></script>
 </head>
 <body>
-    <script defer>
-        document.body.style.display = 'none';
-        // document.querySelector('body header').classList.add('disp');
-        // document.querySelector('body section').classList.add('disp');
-        // document.querySelector('body main').classList.add('disp');
-    </script>
     <dialog id="accDialog">
         <form action="#" name="accForm">
-            <input type="text" name="acc" id="acc" placeholder="Enter access code"/>
-            <button type="submit">Check</button>
+            <input type="text" name="acc" id="acc" class="in-blk" placeholder="Enter access code"/>
+            <input type="submit" class="in-blk" value="Check"/>
         </form>
     </dialog>
     <header class="disp">
@@ -106,11 +100,18 @@
                 </table>
                 <div class="aside__footer">
                     <!-- <input type="submit" value="Submit"> -->
-                    <button type="submit">Submit</button>
+                    <input type="submit" value="Submit" />
                 </div>
             </form>
         </aside>
     </main>
+    <script defer>
+        // document.body.style.display = 'none';
+        document.querySelector('#accDialog').showModal();
+        // document.querySelector('body header').classList.add('disp');
+        // document.querySelector('body section').classList.add('disp');
+        // document.querySelector('body main').classList.add('disp');
+    </script>
     <script>
         const times = document.querySelectorAll('.times');
         times.forEach(time => {
