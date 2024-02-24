@@ -32,8 +32,7 @@ label {
     padding: 10px 0;
 }
 label[for='file'],
-.gen__btn,
-#code-btn {
+.gen__btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,7 +44,8 @@ label[for='file'],
     gap: 1em;
     cursor: pointer;
 }
-dialog#notice button {
+dialog#notice button,
+#code-btn {
     background-color: #0095;
     color: #fff;
     border-radius: 8px;
@@ -53,6 +53,9 @@ dialog#notice button {
     font-size: 16px;
     gap: 1em;
     cursor: pointer;
+}
+#code-btn {
+    width: 100%;
 }
 label[for='file']:hover,
 .gen__btn:hover,
@@ -194,7 +197,7 @@ dialog {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    width: 300px;
+    width: 350px;
     padding: 20px;
     border-radius: 5px;
     border: none;
@@ -202,7 +205,7 @@ dialog {
 }
 output {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 #code-dialog strong {
     display: block;
@@ -221,6 +224,14 @@ output {
 #code-dialog button:last-child {
     background-color: #0099;
     color: #fff;
+}
+#code-dialog p {
+    text-align: left;
+    padding-left: 10px;
+}
+#code-dialog p span:first-child {
+    display: inline-block;
+    width: 25%;
 }
 input[type="time"] {
     width: 85%;

@@ -48,7 +48,6 @@
         <iframe frameborder="0" width="400"></iframe>
         <aside>
             <form class="aside__form" name="quizForm">
-                <button type="button" id="code-btn">Generate Entry Code <code>&lt;/&gt;</code></button>
                 <label for="subject">What is the name of the subject?</label>
                 <input type="text" name="subject" id="subject" placeholder="Select subject" list="subject" />
                 <label for="cls">What is the name of the class?</label>
@@ -86,7 +85,8 @@
                 <!-- <input type="text" name="code" autocomplete="off"/> -->
                 <input type="hidden" name="code" value="">
                 <div class="aside__footer">
-                    <button type="submit">Submit</button>
+                    <button type="button" id="code-btn">Generate Access Code <code>&lt;/&gt;</code></button>
+                    <!-- <button type="submit">Submit</button> -->
                 </div>
             </form>
         </aside>
@@ -99,10 +99,13 @@
         <button type="button" onclick="this.parentElement.close()">OKAY</button>
     </dialog>
     <dialog id="code-dialog">
-        <p>This code gives access to the test. Copy and paste it in a safe location for later retrieval.</p>
+        <output>Before submitting, screenshot and/or copy the code below to access the test.</output>
+        <p><span>CLASS:</span><span id="span-class"></span></p>
+        <p><span>SUBJECT:</span><span id="span-sub"></span></p>
         <strong></strong>
-        <button type="button" id="copy-btn">Copy</button>
-        <button type="button" onclick="okay(this)">OKAY</button>
+        <button type="button" id="cancel-btn" onclick="okay(this)">CANCEL</button>
+        <button type="button" id="copy-btn">COPY</button>
+        <button type="button" id="submit-btn">SUBMIT</button>
     </dialog>
     <script type="module" src="../src/test_bundle.js"></script>
     <script>
@@ -174,9 +177,10 @@
         const copyBtn = document.querySelector('#copy-btn');
         function okay(e) {
             e.parentElement.close();
-            copyBtn.textContent = 'Copy';
+            copyBtn.textContent = 'COPY';
             copyBtn.classList.remove('copied');
         }
+        
     </script>
 </body>
 </html>
