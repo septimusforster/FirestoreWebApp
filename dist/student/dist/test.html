@@ -7,7 +7,19 @@
     <script type="module" src="../src/test_bundle.js" defer></script>
 </head>
 <body>
-    <header>
+    <script defer>
+        document.body.style.display = 'none';
+        // document.querySelector('body header').classList.add('disp');
+        // document.querySelector('body section').classList.add('disp');
+        // document.querySelector('body main').classList.add('disp');
+    </script>
+    <dialog id="accDialog">
+        <form action="#" name="accForm">
+            <input type="text" name="acc" id="acc" placeholder="Enter access code"/>
+            <button type="submit">Check</button>
+        </form>
+    </dialog>
+    <header class="disp">
         <img src="../img/9035117_person_icon.png" alt="Student photo">
         <span>Jacob Murphy Aaron Gordon</span>
         <img src="../img/1737368_comment_description_outline_problem_task_icon.png" alt="Subject">
@@ -15,7 +27,7 @@
         <!-- <img src="../img/185095_settings_icon.png" alt="Timer"> -->
         <span id="timer">09 : 00</span>
     </header>
-    <section>
+    <section class="disp">
         <h2>Instructions</h2>
         <div>
             <h2>01</h2>
@@ -27,7 +39,7 @@
         </div>
         <span class="times">&times;</span>
     </section>
-    <main>
+    <main class="disp">
         <!-- <iframe src="../src/Getting started with OneDrive.pdf#toolbar=0" frameborder="0" width="400" height="800"></iframe> -->
         <aside>
             <div class="aside__header">

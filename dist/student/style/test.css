@@ -9,6 +9,12 @@ body {
     font-size: 18px;
     font-family: 'Poppins', sans-serif;
 }
+header.disp,
+section.disp,
+main.disp {
+    display: none;
+    pointer-events: none;
+}
 header, section, main {
     padding: 40px;
 }
@@ -152,4 +158,15 @@ button::after {
     /* border-radius: 5px 0 0 0; */
     transform: skewX(-30deg);
     opacity: .1;
+}
+dialog {
+    position: absolute;
+    border: none;
+}
+#accDialog {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgb(42,7,75);
 }

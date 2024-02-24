@@ -61,7 +61,8 @@ label[for='file']:hover,
 .gen__btn:hover,
 .sub__action:hover,
 dialog#notice button:hover,
-#code-btn:hover {
+#code-btn:hover,
+#copy-btn.copied {
     background-color: #0099;
     color: #fff;
 }
@@ -86,6 +87,8 @@ form, aside {
     display: flex;
     flex-direction: column;
     gap: .7em;
+}
+form {
     padding: 20px 40px;
 }
 iframe {
@@ -113,10 +116,12 @@ textarea {
     align-items: center;
     gap: 1em;
 }
-button[type='submit'] {
+button[type='submit'],
+#code-dialog button:last-child {
     padding: 12px 20px;
     border-radius: 5px;
     background-color: #009578;
+    color: #fff;
 }
 div#instructions div {
     position: relative;
@@ -213,17 +218,9 @@ output {
     letter-spacing: 10px;
     margin: 20px 0;
 }
-#copy-btn.copied {
-    background-color: #009578;
-    color: #fff;
-}
 #code-dialog button {
     padding: 12px 24px;
     border-radius: 5px;
-}
-#code-dialog button:last-child {
-    background-color: #0099;
-    color: #fff;
 }
 #code-dialog p {
     text-align: left;
@@ -233,7 +230,8 @@ output {
     display: inline-block;
     width: 25%;
 }
-input[type="time"] {
+input[type="time"],
+input[type="date"] {
     width: 85%;
 }
 .validity {

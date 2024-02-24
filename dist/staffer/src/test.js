@@ -83,8 +83,8 @@ submitBtn.addEventListener('click', (e) => {
     const duration = Number(formData.get('duration'));
     const instr = formData.getAll('instr');
     const startTime = formData.get('startTime');
+    const startDate = formData.get('startDate');
     const code = formData.get('code');
-    let timestamp = Intl.DateTimeFormat('en-us', {dateStyle: "medium"}).format(new Date());
     // reset config
     let num = Number(clsDatalist.options.namedItem(cls).dataset.id)
     chooseConfig(num)
@@ -108,8 +108,8 @@ submitBtn.addEventListener('click', (e) => {
                     duration,
                     instr,
                     startTime,
+                    startDate,
                     code,
-                    timestamp,
                 })
                 .then(async snapDoc => {                    
                     //send URL to teacher's doc
