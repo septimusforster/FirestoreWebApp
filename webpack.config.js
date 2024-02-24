@@ -1,6 +1,6 @@
 const path = require("path");
 //ROOT index.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/index.js",
@@ -10,7 +10,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT hacks.js
 /*
 module.exports = {
@@ -84,7 +84,7 @@ module.exports = {
 }
 */
 //STUDENT index.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/index.js",
@@ -94,7 +94,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STUDENT logon.js
 /*
 module.exports = {

@@ -17,6 +17,8 @@ var db = getFirestore();
 //     db = getFirestore()
 //     // collection refs
 // })
+// lksHjPA7
+// jsVQb8ew
 
 const ss = JSON.parse(sessionStorage.getItem('testPayload'))
 

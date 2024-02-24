@@ -18,6 +18,7 @@
             <button type="button" class="active"><img src="../img/9035117_person_icon.png" alt="Profile"></button>
             <button type="button"><img src="../img/1737368_comment_description_outline_problem_task_icon.png" alt="Tasks"/><!--span class="material-symbols-outlined">assignment</span--></button>
             <button type="button"><img src="../img/4213412_compose_document_edit_pen_pencil_icon.png" alt="Edit"></button>
+            <button type="button" id="logout-btn"><img src="../img/1564506_close_exit_logout_power_icon.png" alt="Log out"></button>
             <!-- <button type="button"><img src="../img/3669170_home_ic_icon.png" alt="Home"></button> -->
             <!-- <button type="button">collection</button> -->
         </aside>
@@ -138,6 +139,13 @@
             outerDiv.style.justifyContent = 'flex-start';
             innerDivs[0].classList.add('opened');
             innerDivs[1].classList.remove('opened');
+        }
+
+        const logoutBtn = document.querySelector('#logout-btn');
+        logoutBtn.onclick = (e) => {
+            window.sessionStorage.clear();
+            window.location.replace("./logon.html");
+            // window.history.replaceState(null, '', "./logon.html");
         }
     </script>
 </body>

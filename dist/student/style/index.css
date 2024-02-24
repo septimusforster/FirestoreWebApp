@@ -456,3 +456,7 @@ h1 {
     border-color: white white transparent transparent;
     /* transform: rotate(180deg); */
 }
+button#logout-btn {
+    margin-top: 50vh;
+    margin-top: 50dvh;
+}

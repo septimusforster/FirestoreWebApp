@@ -145,10 +145,10 @@ async function getDocuments(category, subject) {
             </div>
         </div>
         `)
-        document.querySelectorAll('.timeline-content')[counter].style.setProperty('--beforeContent',`"${data.timestamp}"`);
+        document.querySelectorAll('.timeline-content')[counter].style.setProperty('--beforeContent',`"${data.timestamp || data.startDate}"`);
         counter++;
     });
-    if (payload.length) sessionStorage.setItem('testPayload', JSON.stringify(payload))
+    if (payload.length) sessionStorage.setItem(subject, JSON.stringify(payload))
 };
 const subjectNav = document.querySelector('#subject-navs .inner:last-child');
 subjectNav.addEventListener('click', (e) => {
@@ -163,8 +163,25 @@ subjectNav.addEventListener('click', (e) => {
         })
         e.target.classList.add('active');
     }
-    if (ctx === "test" && sessionStorage.hasOwnProperty('testPayload')) {
+    if (ctx === "test" && sessionStorage.hasOwnProperty(e.target.id)) {
         // use testPayload, which is an array of the objects, to setup the test links
+        timelineBar.innerHTML = '';
+        const doc = JSON.parse(sessionStorage.getItem(e.target.id));
+        doc.forEach((data, i) => {
+            let docName = data.name;
+            let title = docName.slice(0,docName.lastIndexOf('.'));
+            timelineBar.insertAdjacentHTML('beforeend', `
+            <div class="timeline-content">
+                <input type="checkbox" class="accordion__input" id="cb${i+1}"/>
+                <label for="cb${i+1}" class="accordion__label" title="${title}">#${data.catNo} ${title}</label>
+                <div class="accordion__content">
+                    <p>${data.instr[0] || "No instructions."}</p>
+                    ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}`}">Download test</a>` : ""}    
+                </div>
+            </div>
+            `)
+            document.querySelectorAll('.timeline-content')[i].style.setProperty('--beforeContent',`"${data.startDate}"`);
+        })
     } else {
         // get document from server and store it in 'testPayload' sessionStorage
         getDocuments(ctx, e.target.id);
