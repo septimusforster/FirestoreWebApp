@@ -9,13 +9,16 @@ body {
     font-size: 18px;
     font-family: 'Poppins', sans-serif;
 }
+#timer {
+    font-size: 3em;
+}
 header.disp,
 section.disp,
 main.disp {
     display: none;
     pointer-events: none;
 }
-header, section, main {
+section, main {
     padding: 40px;
 }
 header {
@@ -66,7 +69,7 @@ main {
     display: flex;
 }
 iframe {
-    /* border: 1px solid red; */
+    border: none;
     flex: 3;
 }
 ::-webkit-scrollbar {
@@ -125,7 +128,8 @@ td:not(:first-child) label {
     text-align: center;
     margin-top: 50px;
 }
-input[type='submit'] {
+input[type='submit'],
+dialog #okay {
     border: none;
     outline: none;
     font-size: 18px;
@@ -136,7 +140,8 @@ input[type='submit'] {
     position: relative;
     transition: all .1s ease-in-out;
 }
-input[type='submit']:hover {
+input[type='submit']:hover,
+dialog #okay:focus {
     background-color: #009578;
 }
 /*
@@ -167,6 +172,9 @@ dialog {
     left: 50%;
     transform: translate(-50%, -50%);
     border: none;
+    background-color: transparent;
+    color: #fff;
+    text-align: center;
     /* overflow: hidden; */
 }
 input#acc {
@@ -177,12 +185,33 @@ input#acc {
     outline: none;
 }
 #accDialog {
-    background-color: transparent;
     width: 250px;
-    text-align: center;
 }
 .in-blk {
-    width: 100%;
+    width: 70%;
     display: block;
-    margin: 30px 0;
+    margin: 30px auto;
+}
+output {
+    display: block;
+    line-height: 2;
+    padding: 8px 18px;
+    background-color: #333;
+    color: #f3f3f3;
+    border-radius: 7px;
+}
+/* output::after {
+    content: 'gotcha !';
+    position: absolute;
+    top: -32px;
+    left: 0;
+    padding: 8px 18px;
+    background-color: #333;
+    color: #f3f3f3;
+    border-radius: 7px;
+    opacity: 0;
+    transition: opacity .2s ease-in-out;
+} */
+output:hover > output::after {
+    opacity: 1;
 }

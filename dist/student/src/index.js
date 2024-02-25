@@ -130,6 +130,7 @@ async function getDocuments(category, subject) {
     timelineBar.innerHTML = '';
     let counter = 0;
     let payload = [];
+    let sb = btoa(subject);
     querySnapshot.forEach((doc, i) => {
         let data = doc.data();
         let docName = doc.data().name;
@@ -141,7 +142,7 @@ async function getDocuments(category, subject) {
             <label for="cb${counter+1}" class="accordion__label" title="${title}">#${data.catNo || counter+1} ${title}</label>
             <div class="accordion__content">
                 <p>${data.info || data.instr[0] || "No messages."}</p>
-                ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}`}" ${category === 'test' ? '' : 'download='+title}>Download ${data.catPath || 'test'}</a>` : ""}    
+                ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}&sb=${sb}`}" ${category === 'test' ? '' : 'download='+title}>Download ${data.catPath || 'test'}</a>` : ""}    
             </div>
         </div>
         `)
@@ -167,6 +168,7 @@ subjectNav.addEventListener('click', (e) => {
         // use testPayload, which is an array of the objects, to setup the test links
         timelineBar.innerHTML = '';
         const doc = JSON.parse(sessionStorage.getItem(e.target.id));
+        let sb = btoa(e.target.id);
         doc.forEach((data, i) => {
             let docName = data.name;
             let title = docName.slice(0,docName.lastIndexOf('.'));
@@ -176,7 +178,7 @@ subjectNav.addEventListener('click', (e) => {
                 <label for="cb${i+1}" class="accordion__label" title="${title}">#${data.catNo} ${title}</label>
                 <div class="accordion__content">
                     <p>${data.instr[0] || "No instructions."}</p>
-                    ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}`}">Download test</a>` : ""}    
+                    ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}&sb=${sb}`}">Download test</a>` : ""}    
                 </div>
             </div>
             `)

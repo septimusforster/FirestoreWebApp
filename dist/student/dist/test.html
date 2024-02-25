@@ -7,34 +7,33 @@
     <script type="module" src="../src/test_bundle.js" defer></script>
 </head>
 <body>
+    <dialog id="chkDateDialog">
+        <output></output>
+        <button type="button" id="okay" class="in-blk" onclick="dialogOKAY()">OKAY</button>
+    </dialog>
     <dialog id="accDialog">
         <form action="#" name="accForm">
-            <input type="text" name="acc" id="acc" class="in-blk" placeholder="Enter access code"/>
+            <input type="text" name="acc" id="acc" class="in-blk" placeholder="Enter access token" spellcheck="false" autocomplete="off"/>
             <input type="submit" class="in-blk" value="Check"/>
         </form>
     </dialog>
-    <header class="disp">
+    <dialog id="msgDialog">
+        <output></output>
+    </dialog>
+    <header style="display:none;" class="disp">
         <img src="../img/9035117_person_icon.png" alt="Student photo">
-        <span>Jacob Murphy Aaron Gordon</span>
+        <span id="person"></span>
         <img src="../img/1737368_comment_description_outline_problem_task_icon.png" alt="Subject">
-        <span>Catering Craft Practice</span>
+        <span id="task"></span>
         <!-- <img src="../img/185095_settings_icon.png" alt="Timer"> -->
-        <span id="timer">09 : 00</span>
+        <div><span id="timer"></span><small>mins</small></div>
     </header>
-    <section class="disp">
+    <section style="display:none;" class="disp">
         <h2>Instructions</h2>
-        <div>
-            <h2>01</h2>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore vel dolorem, ullam, a repellendus</p>
-        </div>
-        <div>
-            <h2>02</h2>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore vel dolorem, ullam, a repellendus</p>
-        </div>
-        <span class="times">&times;</span>
+        <span class="times sectionX">&times;</span>
     </section>
-    <main class="disp">
-        <!-- <iframe src="../src/Getting started with OneDrive.pdf#toolbar=0" frameborder="0" width="400" height="800"></iframe> -->
+    <main style="display:none;" class="disp">
+        <iframe src="" width="400" height="800" name="docFrame"></iframe>
         <aside>
             <div class="aside__header">
                 Answer Sheet
@@ -42,60 +41,7 @@
             <form class="aside__form" name="quizForm">
                 <table>
                     <tbody>
-                        <tr>
-                            <td>
-                                <label>1</label>
-                                <!-- <input type="radio" name="rd" id="rd1"> -->
-                            </td>
-                            <td>
-                                <input type="radio" name="0" id="rd2" value="1">
-                                <label for="rd2">A</label>
-                            </td>
-                            <td>
-                                <input type="radio" name="0" id="rd3" value="2">
-                                <label for="rd3">B</label>
-                            </td>
-                            <td>
-                                <input type="radio" name="0" id="rd4" value="3">
-                                <label for="rd4">C</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>2</label>
-                                <!-- <input type="radio" name="rd" id="rd1"> -->
-                            </td>
-                            <td>
-                                <input type="radio" name="1" id="rd5" value="1">
-                                <label for="rd5">A</label>
-                            </td>
-                            <td>
-                                <input type="radio" name="1" id="rd6" value="2">
-                                <label for="rd6">B</label>
-                            </td>
-                            <td>
-                                <input type="radio" name="1" id="rd7" value="3">
-                                <label for="rd7">C</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>3</label>
-                                <!-- <input type="radio" name="rd" id="rd1"> -->
-                            </td>
-                            <td>
-                                <input type="radio" name="2" id="rd8" value="1">
-                                <label for="rd8">A</label>
-                            </td>
-                            <td>
-                                <input type="radio" name="2" id="rd9" value="2">
-                                <label for="rd9">B</label>
-                            </td>
-                            <td>
-                                <input type="radio" name="2" id="rd10" value="3">
-                                <label for="rd10">C</label>
-                            </td>
-                        </tr>
+                        
                     </tbody>
                 </table>
                 <div class="aside__footer">
@@ -107,7 +53,7 @@
     </main>
     <script defer>
         // document.body.style.display = 'none';
-        document.querySelector('#accDialog').showModal();
+        // document.querySelector('#accDialog').showModal();
         // document.querySelector('body header').classList.add('disp');
         // document.querySelector('body section').classList.add('disp');
         // document.querySelector('body main').classList.add('disp');
@@ -119,6 +65,11 @@
                 time.parentElement.remove();
             })
         })
+        // const okayBtn = document.querySelector('dialog#okay-btn');
+        function dialogOKAY() {
+            // window.sessionStorage.remove();
+            window.location.replace("./index.html");
+        }
     </script>
 </body>
 </html>

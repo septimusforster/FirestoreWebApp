@@ -84,7 +84,7 @@ module.exports = {
 }
 */
 //STUDENT index.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/index.js",
@@ -94,7 +94,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STUDENT logon.js
 /*
 module.exports = {
@@ -132,7 +132,7 @@ module.exports = {
 }
 */
 //STUDENT test.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/test.js",
@@ -142,4 +142,3 @@ module.exports = {
     },
     watch: true
 }
-*/

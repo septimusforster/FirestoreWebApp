@@ -2,11 +2,153 @@ import { initializeApp, deleteApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, setDoc, query, where, and, or, updateDoc } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
+const params = atob(new URL(location.href).searchParams.get('sb'))
+const ct = parseInt(new URL(location.href).searchParams.get('ct'));
+
+const subby = JSON.parse(sessionStorage.getItem(params));
+const snappy = JSON.parse(sessionStorage.getItem('snapshot'));
+const cat = subby.length < ct ? ct - 2 : ct;
+
+const testAbbr = params;
+const testNum = ct - 1;
+const chosen = subby[cat].chosen;
+const choice = subby[cat].choice;
+const questions = subby[cat].questions;
+const rating = subby[cat].rating;
+const instr = subby[cat].instr;
+const code = subby[cat].code;
+const link = subby[cat].link + '#toolbar=0';
+
+const accDialog = document.querySelector('#accDialog');
+const chkDateDialog = document.querySelector('#chkDateDialog');
+const header = document.querySelector('header');
+const section = document.querySelector('section');
+const main = document.querySelector('main');
+// const dt = subby[cat].startDate;
+const startDate = new Date(subby[cat].startDate);
+const startTime = subby[cat].startTime;
+const duration = subby[cat].duration;
+
+// settingn up startTime
+/*
+const parts = startTime.split(':');
+const hr = parseInt(parts[0]);
+const mm = parseInt(parts[1]);
+var currentTime = new Date();
+currentTime.setHours(hr);
+currentTime.setMinutes(mm);
+currentTime.setMinutes(currentTime.getMinutes() + duration);
+var formattedTime = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0');
+*/
+
+async function chkDate() {
+    if (startDate < Date.now()/* || startDate > Date.now()*/) {
+        chkDateDialog.querySelector('output').innerHTML = 'This test is yet to come or is past writing.<br>Tender any inquiries to your teacher.';
+        chkDateDialog.showModal();
+        return;
+    } else {
+        // display accDialog
+        accDialog.showModal();
+    }
+}
+await chkDate();
+
+var timer = document.getElementById('timer');
+function displayHeader() {
+    //display header resources
+    document.getElementById('person').textContent = `${snappy.last_name + ' ' + snappy.first_name + ' ' + snappy.other_name}`;
+    document.getElementById('task').textContent = snappy.offered[testAbbr];
+    timer.textContent = duration;
+    header.style.display = 'flex';
+    header.classList.remove('disp');
+}
+function displaySection() {
+    //display section resources
+    const times = document.querySelector('.sectionX');
+    instr.forEach((ins, i) => {
+        times.insertAdjacentHTML('beforebegin', `
+            <div>
+                <h2>0${i+1}</h2>
+                <p>${ins}</p>
+            </div>
+        `)
+    })
+    section.style.display = 'flex';
+    section.classList.remove('disp');
+}
+const tbody = document.querySelector('tbody');
+function displayMain() {
+    // populate answer sheet
+    let counter = 1;
+    let i, j;
+    for (i = 0; i < questions; i++) {
+        tbody.insertAdjacentHTML('beforeend', `
+            <tr>
+                <td>
+                    <label>${i+1}</label>
+                </td>
+            </tr>
+        `)
+        for (j = 0; j < choice; j++) {
+            tbody.lastElementChild.insertAdjacentHTML('beforeend', `
+                <td>
+                    <input type="radio" name="${i}" id="rd${counter}" value="${j+1}">
+                    <label for="rd${counter}">${String.fromCharCode(65+j)}</label>
+                </td>
+            `)
+            counter++;
+        }
+    }
+    main.style.display = 'flex';
+    main.classList.remove('disp');
+
+    // insert link into iframe
+    document.querySelector('iframe').src = link;
+}
+
+const iframe = document.querySelector('iframe');
+let intervalID;
+iframe.addEventListener('load', function () {
+    // console.log('Iframe has finished loading. Now start timer.')
+    // start timer
+    intervalID = setInterval(countDown, 1 * 60 * 1000)
+})
+function countDown () {
+    if (timer.textContent == 0) {
+        clearInterval(intervalID);
+        submitBtn.click();
+    } else {
+        timer.textContent -= 1;
+    }
+}
+
+const accForm = document.forms.accForm;
+accForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const acc = accForm.acc.value;
+    if (acc === code) {
+        document.documentElement.requestFullscreen();
+        await displayHeader();
+        await displaySection();
+        await displayMain();
+        accDialog.close();
+    } else {
+        window.alert("Invalid access token.")
+    }
+    // console.log(subby[testNum - 1].code)
+})
+
+document.addEventListener('fullscreenchange', (e) => {
+    if (document.fullscreenElement === null) {
+        submitBtn.click();
+    }
+})
+const classIndex = configs[7].indexOf(snappy.class);
+
 // initial firebase app, assuming for SSS 3
-var app = initializeApp(configs[5]);
+var app = initializeApp(configs[classIndex]);
 // init services
 var db = getFirestore();
-
 
 // const selectElt = document.querySelector('select#classroom');
 // selectElt.addEventListener('change', (e) => {
@@ -19,55 +161,61 @@ var db = getFirestore();
 // })
 // lksHjPA7
 // jsVQb8ew
+// new Date(JSON.parse(sessionStorage.LIT)[0].startDate) > Date.now()
+// JSON.parse(sessionStorage.LIT)[0].link
 
-const ss = JSON.parse(sessionStorage.getItem('testPayload'))
+// load options
+const uid = snappy.id;
 
-let buffer = new ArrayBuffer(3);
+let buffer = new ArrayBuffer(questions);
 let dv = new DataView(buffer);
-const uid = "7XURg1CwKZyjkDLSBiG8";
-const testSubject = "BSC";
-const testNum = 1;
-const chosen = [2,3,1];
 let updateVal = [null, null, null, null];
 
-const quizForm = document.forms.quizForm;
-quizForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(quizForm);
-    let score = 0;
-    // const choice = Array.from(formData.values());
-    let i;
-    for (i = 0; i < chosen.length; i++) {
-        if (chosen[i] === dv.getInt8(i)) {
+const submitBtn = document.querySelector('.aside__footer input[type="submit"]');
+submitBtn.addEventListener('click', async (e) => {
+    e.target.disabled = true;
+    e.target.style.cursor = 'not-allowed';
+    clearInterval(intervalID);
+
+    let i, score = 0;
+    for (i = 0; i < questions; i++) {
+        // console.log(dv.getInt8(i));
+        if (chosen[i] == dv.getInt8(i)) {
             score++;
         }
     }
     const scoreRef = doc(db, "scores", uid)
     await getDoc(scoreRef).then( async res => {
-        if (res.data()?.[testSubject] === undefined) {
-            updateVal.splice(testNum, 1, score/3*15)
-            await updateDoc(scoreRef, {
-                [testSubject]: updateVal,
+        if (res.data()?.[testAbbr] === undefined) {
+            updateVal.splice(testNum, 1, Number((score/questions*rating).toFixed(1)))
+            await setDoc(scoreRef, {
+                [testAbbr]: updateVal,
             })
-            console.log("Test updated.")
+            console.log("Test updated 1.")
         } else {
-            if (res.data()[testSubject][testNum] != null) return window.alert("You've already taken this test.");
-            let arr = res.data()[testSubject];
+            if (res.data()[testAbbr][testNum] != null) return window.alert("You've already taken this test.");
+            let arr = res.data()[testAbbr];
             arr.forEach((element, index) => {
                 updateVal.splice(index, 1, element)
             });
-            // updateVal = res.data()[testSubject];
-            updateVal[testNum] = score/3*15;
+            // updateVal = res.data()[testAbbr];
+            updateVal[testNum] = Number((score/questions*rating).toFixed(1));
             console.log("This is the updateVal: ", updateVal, '.')
     
             await setDoc(scoreRef, {
-                [testSubject]: updateVal,
+                [testAbbr]: updateVal,
             })
-            console.log('Test updated.')
+            console.log('Test updated 2.')
         }
     })
+
 })
 
+const quizForm = document.forms.quizForm;
+// quizForm.addEventListener('submit', async (e) => {
+
+// })
 quizForm.addEventListener('change', (e) => {
     dv.setInt8(e.target.name, e.target.value)
+    // console.log(e.target.value)
 })
