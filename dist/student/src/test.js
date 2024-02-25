@@ -7,7 +7,7 @@ const ct = parseInt(new URL(location.href).searchParams.get('ct'));
 
 const subby = JSON.parse(sessionStorage.getItem(params));
 const snappy = JSON.parse(sessionStorage.getItem('snapshot'));
-const cat = subby.length < ct ? ct - 2 : ct;
+const cat = subby.length < ct - 1 ? subby.length - ct : subby.length - 1;
 
 const testAbbr = params;
 const testNum = ct - 1;
@@ -43,7 +43,7 @@ var formattedTime = currentTime.getHours().toString().padStart(2, '0') + ':' + c
 
 async function chkDate() {
     if (startDate < Date.now()/* || startDate > Date.now()*/) {
-        chkDateDialog.querySelector('output').innerHTML = 'This test is yet to come or is past writing.<br>Tender any inquiries to your teacher.';
+        chkDateDialog.querySelector('output').innerHTML = 'This test has expired.<br>Tender any inquiries to your teacher.';
         chkDateDialog.showModal();
         return;
     } else {
