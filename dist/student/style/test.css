@@ -8,6 +8,7 @@ body {
     color: #ffffff;
     font-size: 18px;
     font-family: 'Poppins', sans-serif;
+    user-select: none;
 }
 #timer {
     font-size: 3em;
@@ -129,7 +130,7 @@ td:not(:first-child) label {
     margin-top: 50px;
 }
 input[type='submit'],
-dialog #okay {
+dialog .okay {
     border: none;
     outline: none;
     font-size: 18px;
@@ -141,7 +142,7 @@ dialog #okay {
     transition: all .1s ease-in-out;
 }
 input[type='submit']:hover,
-dialog #okay:focus {
+dialog .okay:focus {
     background-color: #009578;
 }
 /*
@@ -175,6 +176,7 @@ dialog {
     background-color: transparent;
     color: #fff;
     text-align: center;
+    width: 200px;
     /* overflow: hidden; */
 }
 input#acc {
@@ -185,12 +187,15 @@ input#acc {
     outline: none;
 }
 #accDialog {
-    width: 250px;
+    width: 350px;
+}
+#msgDialog::backdrop {
+    background-color: rgba(42,7,75,.3);
 }
 .in-blk {
     width: 70%;
     display: block;
-    margin: 30px auto;
+    margin: 30px;
 }
 output {
     display: block;

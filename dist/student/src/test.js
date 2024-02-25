@@ -116,7 +116,8 @@ iframe.addEventListener('load', function () {
 function countDown () {
     if (timer.textContent == 0) {
         clearInterval(intervalID);
-        submitBtn.click();
+        submission();
+        // submitBtn.click();
     } else {
         timer.textContent -= 1;
     }
@@ -138,9 +139,10 @@ accForm.addEventListener('submit', async (e) => {
     // console.log(subby[testNum - 1].code)
 })
 
-document.addEventListener('fullscreenchange', (e) => {
+document.addEventListener('fullscreenchange', () => {
     if (document.fullscreenElement === null) {
-        submitBtn.click();
+        submission();
+        // submitBtn.click();
     }
 })
 const classIndex = configs[7].indexOf(snappy.class);
@@ -170,46 +172,59 @@ const uid = snappy.id;
 let buffer = new ArrayBuffer(questions);
 let dv = new DataView(buffer);
 let updateVal = [null, null, null, null];
-
+const msgDialog = document.querySelector('dialog#msgDialog');
 const submitBtn = document.querySelector('.aside__footer input[type="submit"]');
-submitBtn.addEventListener('click', async (e) => {
-    e.target.disabled = true;
-    e.target.style.cursor = 'not-allowed';
-    clearInterval(intervalID);
+submitBtn.addEventListener('click', submission);
 
-    let i, score = 0;
-    for (i = 0; i < questions; i++) {
-        // console.log(dv.getInt8(i));
-        if (chosen[i] == dv.getInt8(i)) {
-            score++;
-        }
-    }
-    const scoreRef = doc(db, "scores", uid)
-    await getDoc(scoreRef).then( async res => {
-        if (res.data()?.[testAbbr] === undefined) {
-            updateVal.splice(testNum, 1, Number((score/questions*rating).toFixed(1)))
-            await setDoc(scoreRef, {
-                [testAbbr]: updateVal,
-            })
-            console.log("Test updated 1.")
-        } else {
-            if (res.data()[testAbbr][testNum] != null) return window.alert("You've already taken this test.");
-            let arr = res.data()[testAbbr];
-            arr.forEach((element, index) => {
-                updateVal.splice(index, 1, element)
-            });
-            // updateVal = res.data()[testAbbr];
-            updateVal[testNum] = Number((score/questions*rating).toFixed(1));
-            console.log("This is the updateVal: ", updateVal, '.')
+async function submission() {
+    // submitBtn.addEventListener('click', async (e) => {
+        submitBtn.disabled = true;
+        submitBtn.style.cursor = 'not-allowed';
+        console.log(intervalID);
+        clearInterval(intervalID);
     
-            await setDoc(scoreRef, {
-                [testAbbr]: updateVal,
-            })
-            console.log('Test updated 2.')
+        let i, score = 0;
+        for (i = 0; i < questions; i++) {
+            if (chosen[i] == dv.getInt8(i)) {
+                score++;
+            }
         }
-    })
-
-})
+        const scoreRef = doc(db, "scores", uid)
+        await getDoc(scoreRef).then( async res => {
+            if (res.data()?.[testAbbr] === undefined) {
+                updateVal.splice(testNum, 1, Number((score/questions*rating).toFixed(1)))
+                await setDoc(scoreRef, {
+                    [testAbbr]: updateVal,
+                }, { merge: true })
+                // console.log("Test updated 1.")
+                msgDialog.querySelector('output').innerHTML = `
+                    Your score:<br><large>${score} out of ${questions}</large>
+                `;
+                msgDialog.showModal();
+                tbody.style.pointerEvents = 'none';
+            } else {
+                if (res.data()[testAbbr][testNum] != null) return window.alert("You've already taken this test.");
+                let arr = res.data()[testAbbr];
+                arr.forEach((element, index) => {
+                    updateVal.splice(index, 1, element)
+                });
+                // updateVal = res.data()[testAbbr];
+                updateVal[testNum] = Number((score/questions*rating).toFixed(1));
+                console.log("This is the updateVal: ", updateVal, '.')
+        
+                await setDoc(scoreRef, {
+                    [testAbbr]: updateVal,
+                }, { merge: true })
+                msgDialog.querySelector('output').innerHTML = `
+                    Your score:<br><large>${score} out of ${questions}</large>
+                `;
+                msgDialog.showModal();
+                tbody.style.pointerEvents = 'none';
+            }
+        })
+    
+    // })
+}
 
 const quizForm = document.forms.quizForm;
 // quizForm.addEventListener('submit', async (e) => {
