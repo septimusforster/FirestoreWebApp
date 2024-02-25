@@ -4,10 +4,18 @@ import configs from "../../../src/JSON/configurations.json" assert {type: 'json'
 
 const params = atob(new URL(location.href).searchParams.get('sb'))
 const ct = parseInt(new URL(location.href).searchParams.get('ct'));
+let cat;
 
 const subby = JSON.parse(sessionStorage.getItem(params));
 const snappy = JSON.parse(sessionStorage.getItem('snapshot'));
-const cat = subby.length < ct - 1 ? subby.length - ct : subby.length - 1;
+subby.forEach((sb, n) => {
+    if (sb.catNo == ct) {
+        cat = n;
+        // console.log(cat)
+        return;
+    }
+})
+// const cat = subby.length < ct - 1 ? subby.length - ct : subby.length - 1;
 
 const testAbbr = params;
 const testNum = ct - 1;
@@ -180,7 +188,6 @@ async function submission() {
     // submitBtn.addEventListener('click', async (e) => {
         submitBtn.disabled = true;
         submitBtn.style.cursor = 'not-allowed';
-        console.log(intervalID);
         clearInterval(intervalID);
     
         let i, score = 0;
@@ -210,7 +217,6 @@ async function submission() {
                 });
                 // updateVal = res.data()[testAbbr];
                 updateVal[testNum] = Number((score/questions*rating).toFixed(1));
-                console.log("This is the updateVal: ", updateVal, '.')
         
                 await setDoc(scoreRef, {
                     [testAbbr]: updateVal,
@@ -227,10 +233,6 @@ async function submission() {
 }
 
 const quizForm = document.forms.quizForm;
-// quizForm.addEventListener('submit', async (e) => {
-
-// })
 quizForm.addEventListener('change', (e) => {
-    dv.setInt8(e.target.name, e.target.value)
-    // console.log(e.target.value)
+    dv.setInt8(e.target.name, e.target.value);
 })
