@@ -25,7 +25,8 @@ const questions = subby[cat].questions;
 const rating = subby[cat].rating;
 const instr = subby[cat].instr;
 const code = subby[cat].code;
-const link = subby[cat].link + '&igu=1#toolbar=0';
+const link = subby[cat].link + '&igu=1';
+console.log(link);
 
 const accDialog = document.querySelector('#accDialog');
 const chkDateDialog = document.querySelector('#chkDateDialog');
