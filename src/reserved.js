@@ -1,6 +1,6 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import {
-    getFirestore, arrayUnion, arrayRemove, collection, getDoc, getDocs, setDoc, addDoc, deleteDoc, deleteField, doc, query, where, limit, updateDoc
+    getFirestore, arrayUnion, arrayRemove, collection, getDoc, getDocs, setDoc, addDoc, deleteDoc, deleteField, doc, query, and, where, limit, updateDoc
 } from "firebase/firestore";
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
@@ -263,6 +263,44 @@ cOSForm.addEventListener('submit', async (e) => {
     chooseConfig(6);
     formStatus(e);
 })
+
+const mulEntForm = document.forms.mulEntForm;
+mulEntForm.addEventListener('submit', async (e) => {
+    formStatus(e, 'enabled');
+    const cls = mulEntForm.cls.value.trim();
+    const lname = mulEntForm.lname.value.trim();
+    const fname = mulEntForm.fname.value.trim();
+    const oname = mulEntForm.oname.value.trim();
+    const repetitions = mulEntForm.repetitions.value;
+
+    const classIndex = configs[7].indexOf(cls);
+    chooseConfig(classIndex);
+
+    const q = query(collection(db, "students"), and(where("last_name","==", lname), where("first_name","==", fname), where("other_name", "==", oname)), limit(repetitions));
+    const docSnap = await getDocs(q);
+    if (docSnap.empty) return window.alert("Oops! No student could be found in that class.");
+    let size = docSnap.size;
+    // console.log(size, ' was found and removed.')
+    
+    var IDs = [];
+    docSnap.forEach(doc => {
+        IDs.push(doc.id)
+    })
+    const promises = IDs.map(async id => {
+        await deleteDoc(doc(db, "students", id));
+    })
+    await Promise.all(promises);
+    if (size < 40 && size > 1) {
+        window.alert(size + ' students were found and removed.');
+    } else if (size == 1) {
+        window.alert(size + ' was found and removed.');
+    } else {
+        window.alert('Whew! What a tremendous task. ' + size + ' students were found and removed.');
+    }
+    mulEntForm.reset();
+    formStatus(e);
+})
+
 const subjectForm = document.forms.subjectForm;
 subjectForm.addEventListener('submit', async (e) => {
     formStatus(e, 'enabled');

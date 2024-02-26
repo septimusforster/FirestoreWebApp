@@ -69,7 +69,8 @@ section > div {
 main {
     display: flex;
 }
-iframe {
+iframe,
+embed {
     border: none;
     flex: 3;
 }

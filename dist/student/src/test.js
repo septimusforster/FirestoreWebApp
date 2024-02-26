@@ -50,7 +50,7 @@ var formattedTime = currentTime.getHours().toString().padStart(2, '0') + ':' + c
 */
 
 async function chkDate() {
-    if (startDate < Date.now()/* || startDate > Date.now()*/) {
+    if (startDate < Date.now()) {
         chkDateDialog.querySelector('output').innerHTML = 'This test has expired.<br>Tender any inquiries to your teacher.';
         chkDateDialog.showModal();
         return;
@@ -84,6 +84,7 @@ function displaySection() {
     section.style.display = 'flex';
     section.classList.remove('disp');
 }
+const iframe = document.querySelector('iframe');
 const tbody = document.querySelector('tbody');
 function displayMain() {
     // populate answer sheet
@@ -111,10 +112,10 @@ function displayMain() {
     main.classList.remove('disp');
 
     // insert link into iframe
-    document.querySelector('iframe').src = link;
+    // iframe.insertAdjacentHTML
+    iframe.src = link;
 }
 
-const iframe = document.querySelector('iframe');
 let intervalID;
 iframe.addEventListener('load', function () {
     // console.log('Iframe has finished loading. Now start timer.')

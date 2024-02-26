@@ -23,6 +23,9 @@
                 <div class="section__div">
                     <button type="button" id="cOS-btn" onclick="displayModal(this, '#cOS-dialog')"></button><span>Manage <em>Change of Subject</em></span>
                 </div>
+                <div class="section__div">
+                    <button type="button" id="mulEnt-btn" onclick="displayModal(this, '#mulEnt-dialog')"></button><span>Manage <em>Multiple Entries</em></span>
+                </div>
                 <hr>
                 <div class="section__div">
                     <button type="button" id="subject-btn" onclick="displayModal(this, '#subject-dialog')"></button><span>Manage <em>Staff Subjects</em></span>
@@ -119,6 +122,20 @@
             </div>
         </form>
     </dialog>
+    <dialog id="mulEnt-dialog">
+        <form name="mulEntForm" id="mulEnt-form" class="dialog-fm">
+            <div>
+                <input type="text" list="cls" name="cls" class="class" placeholder="class" autocomplete="off" required/><br/>
+                <input type="text" name="lname" class="txt" placeholder="Enter last name" autocomplete="off" required/><br/>
+                <input type="text" name="fname" class="txt" placeholder="Enter first name" autocomplete="off" required/><br/>
+                <input type="text" name="oname" class="txt" placeholder="Enter other name" autocomplete="off"/><br/>
+                <input type="number" name="repetitions" placeholder="repetitions" title="repetitions" class="abbr" min="0" max="50" step="10" required/>
+            </div>
+            <div class="footer">
+                <button type="reset" title="Clear">&rtimes;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><!--button id="add">Add</button--><button class="delete-btn" id="remove">Remove</button>
+            </div>
+        </form>
+    </dialog>
     <dialog id="subject-dialog">
         <form name="subjectForm" id="subject-form" class="dialog-fm">
             <div>
@@ -168,12 +185,12 @@
     <datalist id="fulltxt">
     </datalist>
     <datalist id="cls">
-        <option name="JSS 1" value="JSS 1"></option>
-        <option name="JSS 2" value="JSS 2"></option>
-        <option name="JSS 3" value="JSS 3"></option>
-        <option name="SSS 1" value="SSS 1"></option>
-        <option name="SSS 2" value="SSS 2"></option>
-        <option name="SSS 3" value="SSS 3"></option>
+        <option data-id="0" name="JSS 1" value="JSS 1"></option>
+        <option data-id="1" name="JSS 2" value="JSS 2"></option>
+        <option data-id="2" name="JSS 3" value="JSS 3"></option>
+        <option data-id="3" name="SSS 1" value="SSS 1"></option>
+        <option data-id="4" name="SSS 2" value="SSS 2"></option>
+        <option data-id="5" name="SSS 3" value="SSS 3"></option>
     </datalist>
     <datalist id="arms">
     </datalist>

@@ -69,6 +69,7 @@ async function setIframeAttr(para1) {
         myIframe.contentDocument.querySelector('tbody').insertAdjacentHTML('beforeend',`
             <tr onclick="deleteStudent('${student.id}',this.lastElementChild.textContent, this)">
                 <td>${index + 1}</td>
+                <td>${student.id}</td>
                 <td>${student.admission_no}</td>
                 <td>${student.last_name} ${student.first_name} ${student.other_name}</td>
                 <td>${student.password}</td>
