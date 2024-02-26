@@ -145,6 +145,10 @@ input[type='submit']:hover,
 dialog .okay:focus {
     background-color: #009578;
 }
+button {
+    outline: none;
+    cursor: pointer;
+}
 /*
 button::before {
     content: '';
@@ -176,8 +180,8 @@ dialog {
     background-color: transparent;
     color: #fff;
     text-align: center;
-    width: 200px;
-    /* overflow: hidden; */
+    /* width: 200px; */
+    overflow: hidden;
 }
 input#acc {
     font-size: 18px;
@@ -219,4 +223,15 @@ output {
 } */
 output:hover > output::after {
     opacity: 1;
+}
+#submitDialog button {
+    margin-top: 10px;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 7px;
+    background-color: orange;
+    transition: all .1s ease-in-out;
+}
+#yes:hover {
+    background-color: #009578;
 }

@@ -33,7 +33,7 @@ const header = document.querySelector('header');
 const section = document.querySelector('section');
 const main = document.querySelector('main');
 // const dt = subby[cat].startDate;
-const startDate = new Date(subby[cat].startDate);
+const startDate = new Date(subby[cat].startDate).setHours(24);
 const startTime = subby[cat].startTime;
 const duration = subby[cat].duration;
 
@@ -170,7 +170,8 @@ var db = getFirestore();
 //     // collection refs
 // })
 // lksHjPA7
-// jsVQb8ew
+// F79pWGRz
+// sKi3qxLu
 // new Date(JSON.parse(sessionStorage.LIT)[0].startDate) > Date.now()
 // JSON.parse(sessionStorage.LIT)[0].link
 
@@ -181,9 +182,24 @@ let buffer = new ArrayBuffer(questions);
 let dv = new DataView(buffer);
 let updateVal = [null, null, null, null];
 const msgDialog = document.querySelector('dialog#msgDialog');
+const submitDialog = document.querySelector('dialog#submitDialog');
 const submitBtn = document.querySelector('.aside__footer input[type="submit"]');
-submitBtn.addEventListener('click', submission);
-
+submitBtn.addEventListener('click', (e) => {
+    // display submitDialog
+    // submitDialog.showModal();
+    submission();
+});
+/*
+const yesBtn = document.querySelector('button#yes');
+yesBtn.addEventListener('click', (e) => {
+    submitDialog.querySelectorAll(button).forEach(btn => {
+        btn.disabled = true;
+        btn.style.cursor = 'not-allowed';
+    })
+    submission();
+    submitDialog.close();
+})
+*/
 async function submission() {
     // submitBtn.addEventListener('click', async (e) => {
         submitBtn.disabled = true;

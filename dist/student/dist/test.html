@@ -21,6 +21,11 @@
         <output></output>
         <button class="okay" onclick="dialogOKAY()">OKAY</button>
     </dialog>
+    <dialog id="submitDialog">
+        <output>You clicked SUBMIT.<br/>Are you sure?</output>
+        <button type="button" id="yes">YES</button>
+        <button type="button" onclick="this.parentElement.close()">NO</button>
+    </dialog>
     <header style="display:none;" class="disp">
         <img src="../img/9035117_person_icon.png" alt="Student photo">
         <span id="person"></span>
@@ -47,18 +52,11 @@
                 </table>
                 <div class="aside__footer">
                     <!-- <input type="submit" value="Submit"> -->
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="SUBMIT" />
                 </div>
             </form>
         </aside>
     </main>
-    <script defer>
-        // document.body.style.display = 'none';
-        // document.querySelector('#accDialog').showModal();
-        // document.querySelector('body header').classList.add('disp');
-        // document.querySelector('body section').classList.add('disp');
-        // document.querySelector('body main').classList.add('disp');
-    </script>
     <script>
         const times = document.querySelectorAll('.times');
         times.forEach(time => {
@@ -66,7 +64,7 @@
                 time.parentElement.remove();
             })
         })
-        // const okayBtn = document.querySelector('dialog#okay-btn');
+
         function dialogOKAY() {
             // window.sessionStorage.remove();
             window.location.replace("./index.html");
