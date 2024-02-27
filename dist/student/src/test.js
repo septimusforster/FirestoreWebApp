@@ -111,14 +111,19 @@ function displayMain() {
     main.style.display = 'flex';
     main.classList.remove('disp');
 
-    iframe.src = link;
+    // iframe.src = link;
+    const img = new Image();
+    img.onload = function () {
+        img.setAttribute('width', '100%');
+        iframe.contentDocument.body.appendChild(img);
+    }
+    img.src = link;
 }
 
 let intervalID;
 iframe.addEventListener('load', function () {
     // console.log('Iframe has finished loading. Now start timer.')
     // start timer
-    intervalID = setInterval(countDown, 1 * 60 * 1000)
 })
 function countDown () {
     if (timer.textContent == 0) {
@@ -140,6 +145,7 @@ accForm.addEventListener('submit', async (e) => {
         await displayHeader();
         await displaySection();
         await displayMain();
+        intervalID = setInterval(countDown, 1 * 60 * 1000);
     } else {
         window.alert("Invalid access token.")
     }
