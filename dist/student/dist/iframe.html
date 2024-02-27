@@ -11,8 +11,8 @@
     <embed src="" type="application/pdf">
     <script>
         window.addEventListener('message', (event) => {
-            if (event.origin !== location.origin) return document.querySelector('#output').innerHTML = 'Waiting...';
-            document.querySelector('embed').src = event.data;
+            if (event.origin !== location.origin) return;
+            window.open(event.data, '_self');
             // window.location.href = event.data;
         })
     </script>
