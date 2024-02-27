@@ -72,6 +72,9 @@ main {
 iframe {
     border: none;
     flex: 3;
+    background-color: #444;
+    padding: 40px 10px 10px;
+    border-radius: 8px;
 }
 ::-webkit-scrollbar {
     width: 0.7em;

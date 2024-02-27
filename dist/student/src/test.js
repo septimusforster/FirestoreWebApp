@@ -26,7 +26,6 @@ const rating = subby[cat].rating;
 const instr = subby[cat].instr;
 const code = subby[cat].code;
 const link = subby[cat].link + '#toolbar=0';
-console.log(link);
 
 const accDialog = document.querySelector('#accDialog');
 const chkDateDialog = document.querySelector('#chkDateDialog');
@@ -112,8 +111,6 @@ function displayMain() {
     main.style.display = 'flex';
     main.classList.remove('disp');
 
-    // insert link into iframe
-    // iframe.insertAdjacentHTML
     iframe.src = link;
 }
 
