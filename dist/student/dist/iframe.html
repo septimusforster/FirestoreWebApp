@@ -8,11 +8,12 @@
     </style>
 </head>
 <body>
-    <div id="output"></div>
+    <embed src="" type="application/pdf">
     <script>
         window.addEventListener('message', (event) => {
             if (event.origin !== location.origin) return document.querySelector('#output').innerHTML = 'Waiting...';
-            window.location.href = event.data;
+            document.querySelector('embed').src = event.data;
+            // window.location.href = event.data;
         })
     </script>
 </body>
