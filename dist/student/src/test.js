@@ -25,8 +25,6 @@ const questions = subby[cat].questions;
 const rating = subby[cat].rating;
 const instr = subby[cat].instr;
 const code = subby[cat].code;
-const link = subby[cat].link + '&igu=1';
-console.log(link);
 
 const accDialog = document.querySelector('#accDialog');
 const chkDateDialog = document.querySelector('#chkDateDialog');
@@ -113,8 +111,7 @@ function displayMain() {
     main.classList.remove('disp');
 
     // insert link into iframe
-    // iframe.insertAdjacentHTML
-    iframe.src = link;
+    // iframe.src = link;
 }
 
 let intervalID;
@@ -138,23 +135,22 @@ accForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const acc = accForm.acc.value;
     if (acc === code) {
-        document.documentElement.requestFullscreen();
+        accDialog.close();
+        // document.documentElement.requestFullscreen();
         await displayHeader();
         await displaySection();
         await displayMain();
-        accDialog.close();
     } else {
         window.alert("Invalid access token.")
     }
-    // console.log(subby[testNum - 1].code)
 })
-
+/*
 document.addEventListener('fullscreenchange', () => {
     if (document.fullscreenElement === null) {
         submission();
         // submitBtn.click();
     }
-})
+})*/
 const classIndex = configs[7].indexOf(snappy.class);
 
 // initial firebase app, assuming for SSS 3

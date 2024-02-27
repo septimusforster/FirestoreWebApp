@@ -1,0 +1,19 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe</title>
+    <style>
+        body {color: #fff}
+    </style>
+</head>
+<body>
+    <div id="output"></div>
+    <script>
+        window.addEventListener('message', (event) => {
+            if (event.origin !== location.origin) return document.querySelector('#output').innerHTML = 'Waiting...';
+            window.location.href = event.data;
+        })
+    </script>
+</body>
+</html>

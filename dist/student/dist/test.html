@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test</title>
     <link rel="stylesheet" href="../style/test.css">
-    <script type="module" src="../src/test_bundle.js" defer></script>
+    <!-- <script type="module" src="../src/test_bundle.js"></script> -->
 </head>
 <body>
     <dialog id="chkDateDialog">
@@ -39,7 +39,7 @@
         <span class="times sectionX">&times;</span>
     </section>
     <main style="display:none;" class="disp">
-        <iframe src="" width="400" height="800" name="docFrame" type="application/pdf"></iframe>
+        <iframe src="iframe.html" width="400" height="800" name="docFrame"></iframe>
         <!-- <embed src="" width="400" height="800" name="docFrame" type="application/pdf"/> -->
         <aside>
             <div class="aside__header">
@@ -70,6 +70,24 @@
             // window.sessionStorage.remove();
             window.location.replace("./index.html");
         }
+
+        const params = atob(new URL(location.href).searchParams.get('sb'));
+        const ct = parseInt(new URL(location.href).searchParams.get('ct'));
+        const subby = JSON.parse(sessionStorage.getItem(params));
+        let cat;
+        subby.forEach((sb, n) => {
+            if (sb.catNo == ct) {
+                cat = n;
+                return;
+            }
+        })
+        const link = subby[cat].link + '#toolbar=0';
+        var iframe = document.querySelector('[name="docFrame"]');
+
+        iframe.onload = function() {
+            iframe.contentWindow.postMessage(link, location.origin);
+        };
     </script>
+    <script type="module" src="../src/test_bundle.js" defer></script>
 </body>
 </html>
