@@ -12,7 +12,23 @@
     <script>
         window.addEventListener('message', (event) => {
             if (event.origin !== location.origin) return document.querySelector('#output').innerHTML = 'Waiting...';
-            document.querySelector('embed').src = event.data;
+            fetch(event.data, {
+                method: 'GET',
+                mode: 'no-cors',
+                headers: {
+                    'Content-type': 'application/pdf',
+                }
+            })
+            .then(res => {
+                return res.blob()
+            })
+            .then(blob => {
+                const fr = new FileReader();
+                fr.onloadend = function () {
+                    window.location.href = fr.result;
+                }
+                fr.readAsDataURL(blob);
+            })
             // window.location.href = event.data;
         })
     </script>
