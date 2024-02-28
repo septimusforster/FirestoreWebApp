@@ -1,0 +1,194 @@
+html, body, * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font: 16px 'Poppins', sans-serif;
+}
+button, input[type="submit"], label {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+input[type="radio"] {
+    display: none;
+    width: 100%;
+}
+input[type="radio"]:checked + label::after {
+    display: block;
+}
+input[type="radio"]:checked + label::before {
+    background-color: #009578;
+}
+/* input[type="radio"]:hover + label::before {
+    background-color: #00957877;
+} */
+label {
+    display: block;
+    padding: 12px 24px;
+    margin-left: 32px;
+    position: relative;
+    line-height: 1;
+}
+label::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -16px;
+    transform: translateY(-50%);
+    height: 24px;
+    width: 24px;
+    background-color: #ccc;
+}
+label::after {
+    content: '✓';
+    font-size: 1.2rem;
+    position: absolute;
+    top: 50%;
+    left: -12px;
+    transform: translateY(-50%);
+    color: #fff;
+    display: none;
+}
+header, footer {
+    height: 7vh;
+    height: 7dvh;
+}
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    z-index: 1;
+}
+main {
+    display: flex;
+    justify-content: center;
+    /* border: 1px solid #aaa; */
+}
+aside form {
+    position: relative;
+    height: 100%;
+}
+aside form .footer {
+    position: sticky;
+    top: 100%;
+    padding: 40px 0;
+    text-align: center;
+}
+.footer input[type="submit"] {
+    padding: 1rem 2rem;
+    border-radius: 7px;
+    /* background-color: #ccc; */
+    transition: all .1s linear;
+}
+.footer input[type="submit"]:hover {
+    background-color: #009578;
+    color: #fff;
+}
+/* .footer input[type="submit"]:focus {
+    background-color: #00957877;
+} */
+aside, section {
+    margin-top: 7vh;
+}
+main > aside {
+    flex: 1;
+    border-right: 1px solid gray;
+    position: fixed;
+    left: 0;
+    height: 93vh;
+    background-color: #fff;
+    z-index: 1;
+}
+main > section {
+    flex: 5;
+    margin-left: 300px;
+    /* position: relative; */
+}
+main > section > div{
+    margin: 0 100px;
+}
+main > section div:nth-child(1) {
+    padding: 200px 20px 20px;
+    position: relative;
+}
+main > section div:nth-child(2) {
+    border: 1px solid #aaa;
+    border-radius: 7px;
+}
+dialog {
+    padding: 20px;
+}
+#nb {
+    position: absolute;
+    top: 0;
+    margin: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    /* width: 700px; */
+    /* gap: 2em; */
+}
+#nb output {
+    display: flex;
+    align-items: center;
+}
+#nb output span {
+    margin: 0 2em;
+}
+#nb output span p {
+    font-size: .9rem;
+    padding: 7px;
+}
+.action-btn {
+    font-size: 30px;
+    padding: .3rem .7rem;
+    border-radius: 7px;
+    transition: all .1s linear;
+    /* border-radius: 50%; */
+}
+.action-btn:hover {
+    background-color: #ccc;
+}
+.h3 {
+    padding: 24px 32px;
+    border-bottom: 1px solid #aaa;
+    /* margin-bottom: 32px; */
+}
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    /* overflow: hidden; */
+    /* border-radius: 7px; */
+}
+thead {
+    background-color: #ddd;
+    /* border-radius: 7px; */
+}
+thead, tbody {
+    border: 1px solid #aaa;
+}
+tr th {
+    padding: 20px;
+}
+tr td {
+    text-align: center;
+}
+tr:hover > td:first-child {
+    color: #009578;
+}
+td:first-child {
+    text-align: left;
+    min-width: 400px;
+    padding-left: 32px;
+}
+td input[type="text"] {
+    border: none;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    /* border: 1px solid #aaa; */
+}
