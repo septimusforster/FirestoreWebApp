@@ -1,7 +1,7 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import {
-    getFirestore, arrayUnion, arrayRemove, collection, getDoc, getDocs, setDoc, addDoc, deleteDoc, doc, serverTimestamp} from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+    getFirestore, collection, getDoc, addDoc, doc} from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import  configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 import entryCode from "./JSON/test.json" assert {type: 'json'};
 

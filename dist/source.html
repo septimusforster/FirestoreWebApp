@@ -4,24 +4,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/source.css">
     <title>Source</title>
+    <script type="module" src="../src/source_bundle.js"></script>
 </head>
 <body>
     <header></header>
     <main>
+        <datalist id="class">
+            <option value="JSS 1"></option>
+            <option value="JSS 2"></option>
+            <option value="JSS 3"></option>
+            <option value="SSS 1"></option>
+            <option value="SSS 2"></option>
+            <option value="SSS 3"></option>
+        </datalist>
+        <datalist id="arm">
+        </datalist>
+        <datalist id="subject">
+            <option data-id="0" id="ENG" value="ENG">English Language</option>
+            <option data-id="1" id="LIT" value="LIT">Literature-in-English</option>
+        </datalist>
         <aside>
             <form name="subjectForm">
                 <h3 class="h3">Filter</h3>
                 <div>
-                    <input type="radio" name="rd" id="LIT" value="LIT" checked>
-                    <label for="LIT">Literature-in-Englisih</label>
-                    <input type="radio" name="rd" id="ENG" value="ENG">
-                    <label for="ENG">Englisih Language</label>
-                    <input type="radio" name="rd" id="BIO" value="BIO">
-                    <label for="BIO">Biology</label>
-                    <input type="radio" name="rd" id="MTH" value="MTH">
-                    <label for="MTH">Mathematics</label>
-                    <input type="radio" name="rd" id="CRS" value="CRS">
-                    <label for="CRS">Christian Religious Studies</label>
+                    <input type="text" name="class" list="class" placeholder="Select class" autocomplete="off" required>
+                    <input type="text" name="arm" list="arm" placeholder="Select arm" autocomplete="off" required>
+                    <input type="text" name="subject" list="subject" placeholder="Select subject" autocomplete="off" required>
                 </div>
                 <div class="footer">
                     <input type="submit" value="APPLY"/>
@@ -47,6 +55,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>No.</th>
                                 <th>Name</th>
                                 <th>CA1</th>
                                 <th>CA2</th>
@@ -55,125 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Abraham Lincoln Abraham Lincoln Abraham Lincoln</td>
-                                <td><input type="text" name="studentid" pattern="[0-9]" placeholder="null" autocomplete="off"/></td>
-                                <td><input type="text" name="studentid" pattern="[0-9]" placeholder="10" autocomplete="off"/></td>
-                                <td><input type="text" name="studentid" pattern="[0-9]" placeholder="10" autocomplete="off"/></td>
-                                <td><input type="text" name="studentid" pattern="[0-9]" placeholder="10" autocomplete="off"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Laboriel Snr.</td>
-                                <td><input type="text" name="studentids" pattern="[0-9]" placeholder="null"/></td>
-                                <td><input type="text" name="studentids" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentids" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentids" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
-                            <tr>
-                                <td>Abraham Jackson</td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                                <td><input type="text" name="studentidss" pattern="[0-9]" placeholder="10"/></td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                 </form>
@@ -182,17 +73,12 @@
     </main>
     <footer></footer>
     <script>
-        const subjectForm = document.forms.subjectForm;
-        subjectForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const fData = new FormData(subjectForm);
-            const rd = fData.get('rd');
-            document.querySelector('.sub__title').textContent = rd;
-            // console.log(subjectForm.rd.checked)
-        })
-
         function userAction(e) {
-            console.log(e.className)
+            if (e.className.includes('times')) {
+                e.offsetParent.parentElement.remove();
+                document.querySelector('section div:first-child').style.paddingTop = '0';
+            }
+            // console.log(typeof e.className)
         }
     </script>
 </body>
