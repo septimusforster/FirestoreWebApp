@@ -71,7 +71,7 @@ main {
 }
 iframe {
     border: none;
-    flex: 3;
+    flex: 5;
     background-color: #444;
     padding: 40px 10px 10px;
     border-radius: 8px;

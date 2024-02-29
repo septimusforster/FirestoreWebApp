@@ -78,13 +78,30 @@ main > section {
 main > section > div{
     margin: 0 100px;
 }
-main > section div:nth-child(1) {
+main > section > div:nth-child(1) {
     padding: 200px 20px 20px;
     position: relative;
 }
-main > section div:nth-child(2) {
+main > section > div:nth-child(2) {
     border: 1px solid #aaa;
     border-radius: 7px;
+}
+div#formBar {
+    display: flex;
+    align-items: center;
+}
+div#formBar button {
+    margin-left: auto;
+    padding: 12px 24px;
+    border-radius: 7px;
+    background-color: #7777ff;
+    color: #fff;
+}
+div#formBar i {
+    padding: 12px 24px;
+    font-size: 24px;
+    line-height: 1;
+    opacity: .3;
 }
 dialog {
     padding: 20px;
@@ -124,8 +141,10 @@ dialog {
 }
 .h3 {
     padding: 24px 32px;
-    border-bottom: 1px solid #aaa;
     /* margin-bottom: 32px; */
+}
+aside .h3 {
+    border-bottom: 1px solid #aaa;
 }
 table {
     border-collapse: collapse;
