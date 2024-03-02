@@ -135,21 +135,38 @@ function countDown () {
     }
 }
 
+// load options
+const uid = snappy.id;
+
+let buffer = new ArrayBuffer(questions);
+let dv = new DataView(buffer);
+let updateVal = [null, null, null, null];
+const msgDialog = document.querySelector('dialog#msgDialog');
+// const submitDialog = document.querySelector('dialog#submitDialog');
+const submitBtn = document.querySelector('.aside__footer input[type="submit"]');
+
 const accForm = document.forms.accForm;
 accForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const acc = accForm.acc.value;
-    if (acc === code) {
-        accDialog.close();
-        document.documentElement.requestFullscreen();
-        await displayHeader();
-        await displaySection();
-        await displayMain();
-        intervalID = setInterval(countDown, 1 * 60 * 1000);
-    } else {
-        window.alert("Invalid access token.")
-    }
-    // console.log(subby[testNum - 1].code)
+    // get test doc if available
+    const scoreRef = doc(db, "scores", uid);
+    await getDoc(scoreRef).then(res => {
+        if (res.data()[testAbbr][testNum] != null) {
+            window.alert("You've already taken this test.");
+            return;
+        }
+        if (acc === code) {
+            accDialog.close();
+            document.documentElement.requestFullscreen();
+            displayHeader();
+            displaySection();
+            displayMain();
+            intervalID = setInterval(countDown, 1 * 60 * 1000);
+        } else {
+            window.alert("Invalid access token.")
+        }
+    })
 })
 
 // document.addEventListener('fullscreenchange', () => {
@@ -180,16 +197,6 @@ var db = getFirestore();
 // sKi3qxLu
 // new Date(JSON.parse(sessionStorage.LIT)[0].startDate) > Date.now()
 // JSON.parse(sessionStorage.LIT)[0].link
-
-// load options
-const uid = snappy.id;
-
-let buffer = new ArrayBuffer(questions);
-let dv = new DataView(buffer);
-let updateVal = [null, null, null, null];
-const msgDialog = document.querySelector('dialog#msgDialog');
-const submitDialog = document.querySelector('dialog#submitDialog');
-const submitBtn = document.querySelector('.aside__footer input[type="submit"]');
 submitBtn.addEventListener('click', (e) => {
     // display submitDialog
     // submitDialog.showModal();
@@ -219,8 +226,8 @@ async function submission() {
             }
         }
         const scoreRef = doc(db, "scores", uid)
-        await getDoc(scoreRef).then( async res => {
-            if (res.data()?.[testAbbr] === undefined) {
+        // await getDoc(scoreRef).then( async res => {
+        //     if (res.data()?.[testAbbr] === undefined) {
                 updateVal.splice(testNum, 1, Number((score/questions*rating).toFixed(1)))
                 await setDoc(scoreRef, {
                     [testAbbr]: updateVal,
@@ -231,25 +238,24 @@ async function submission() {
                 `;
                 msgDialog.showModal();
                 tbody.style.pointerEvents = 'none';
-            } else {
-                if (res.data()[testAbbr][testNum] != null) return window.alert("You've already taken this test.");
-                let arr = res.data()[testAbbr];
-                arr.forEach((element, index) => {
-                    updateVal.splice(index, 1, element)
-                });
-                // updateVal = res.data()[testAbbr];
-                updateVal[testNum] = Number((score/questions*rating).toFixed(1));
+            // } else {
+            //     if (res.data()[testAbbr][testNum] != null) return window.alert("You've already taken this test.");
+                // let arr = res.data()[testAbbr];
+                // arr.forEach((element, index) => {
+                //     updateVal.splice(index, 1, element)
+                // });
+                // updateVal[testNum] = Number((score/questions*rating).toFixed(1));
         
-                await setDoc(scoreRef, {
-                    [testAbbr]: updateVal,
-                }, { merge: true })
-                msgDialog.querySelector('output').innerHTML = `
-                    Your score:<br><large>${score} out of ${questions}</large>
-                `;
-                msgDialog.showModal();
-                tbody.style.pointerEvents = 'none';
-            }
-        })
+                // await setDoc(scoreRef, {
+                //     [testAbbr]: updateVal,
+                // }, { merge: true })
+                // msgDialog.querySelector('output').innerHTML = `
+                //     Your score:<br><large>${score} out of ${questions}</large>
+                // `;
+                // msgDialog.showModal();
+                // tbody.style.pointerEvents = 'none';
+            // }
+        // })
     
     // })
 }
