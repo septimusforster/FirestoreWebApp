@@ -13,7 +13,17 @@ function chooseConfig(num) {
 }
 db = getFirestore()
 
+let eotDates;
+async function eot() {
+    const eotRef = doc(db, "reserved", "EOT");
+    await getDoc(eotRef).then((res) => {
+        // store dates in eotDates
+        eotDates = res.data();
+    })
+}
+eot();
 const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
+// if (eotDates)
 
 let clsIndex, armIndex, subIndex;
 const armDatalist = document.querySelector('datalist#arm');
@@ -75,6 +85,15 @@ subjectForm.addEventListener('submit', async (e) => {
     const cls = subjectForm.class.value;
     const arm = subjectForm.arm.value;
     sub = subjectForm.subject.value;
+    let dt = new Date(eotDates[cls]).setHours(24);
+    
+    if (dt < Date.now()) {
+        e.submitter.disabled = false;
+        dialogGreen.querySelector('.submit__icon').classList.remove('running');
+        dialogGreen.close();
+        window.alert("Oops! The date for entry of records is closed.");
+        return;
+    };
     
     // fetch student IDs and concatenation of their names
     const q = query(collection(db, "students"), where("arm", "==", arm), orderBy("last_name"));

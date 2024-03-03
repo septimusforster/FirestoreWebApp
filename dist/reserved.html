@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reserved</title>
     <link rel="stylesheet" href="../style/reserved.css">
 </head>
 <body>
@@ -34,7 +34,10 @@
                     <button type="button" id="class-btn" onclick="displayModal(this, '#class-dialog')"></button><span>Manage <em>Staff Classes</em></span>
                 </div>
                 <div class="section__div">
-                    <button type="button" id="class-btn" onclick="displayModal(this, '#mOF-dialog')"></button><span>Manage <em>Master of Form</em></span>
+                    <button type="button" id="mof-btn" onclick="displayModal(this, '#mOF-dialog')"></button><span>Manage <em>Master of Form</em></span>
+                </div>
+                <div class="section__div">
+                    <button type="button" id="eOT-btn" onclick="displayModal(this, '#eOT-dialog')"></button><span>Set <em>Record Access Date (RAD)</em></span>
                 </div>
                 <div id="view-div">
                     <button id="view-changes">View Changes</button>
@@ -177,6 +180,17 @@
             </div>
             <div class="footer">
                 <button type="reset" title="Clear">&rtimes;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="add">Add</button><button class="delete-btn" id="remove">Remove</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="eOT-dialog">
+        <form name="eOTForm" id="eot-form" class="dialog-fm">
+            <div>
+                <input type="text" list="cls" name="cls" class="class" placeholder="class" autocomplete="off"/>
+                <input type="date" name="eot" class="txt"/>
+            </div>
+            <div class="footer">
+                <button type="reset" title="Clear">&rtimes;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button class="delete-btn" id="restrict">Restrict</button>
             </div>
         </form>
     </dialog>

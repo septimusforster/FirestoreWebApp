@@ -387,3 +387,18 @@ mOFForm.addEventListener('submit', async (e) => {
     }
     formStatus(e);
 })
+const eOTForm = document.forms.eOTForm;
+eOTForm.addEventListener('submit', async (e) => {
+    formStatus(e, 'enabled');
+    const cls = eOTForm.cls.value;
+    const eot = eOTForm.eot.value;
+
+    const eotRef = doc(db, "reserved", "EOT");
+    try {
+        await setDoc(eotRef, { [cls]: eot }, { merge: true });
+        window.alert('Record access has been restricted for ' + cls + '.')
+    } catch (error) {
+        window.alert(error)
+    }
+    formStatus(e);
+})
