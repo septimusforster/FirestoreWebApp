@@ -2,26 +2,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/source.css">
-    <title>Source</title>
-    <script type="module" src="../src/source_bundle.js"></script>
+    <link rel="stylesheet" href="../style/scores.css">
+    <title>Scores</title>
+    <script type="module" src="../src/scores_bundle.js"></script>
 </head>
 <body>
-    <header></header>
+    <header>
+        <button type="button" class="navbtn" onclick="history.go(-1)">Home</button>
+        <button type="button" class="navbtn afterward" onclick="location.reload()">Scores</button>
+    </header>
     <main>
         <datalist id="class">
-            <option value="JSS 1"></option>
-            <option value="JSS 2"></option>
-            <option value="JSS 3"></option>
-            <option value="SSS 1"></option>
-            <option value="SSS 2"></option>
-            <option value="SSS 3"></option>
         </datalist>
         <datalist id="arm">
         </datalist>
         <datalist id="subject">
-            <option data-id="0" id="ENG" value="ENG">English Language</option>
-            <option data-id="1" id="LIT" value="LIT">Literature-in-English</option>
         </datalist>
         <aside>
             <form name="subjectForm">
@@ -52,7 +47,7 @@
             <div>
                 <form name="scoreForm">
                     <div id="formBar">
-                        <h3 class="sub__title h3"></h3><button type="submit">Save Changes</button><i>&checkmark;</i>
+                        <h3 class="sub__title"></h3><button type="submit">Save Changes</button><i>&checkmark;</i>
                     </div>
                     <table>
                         <thead>
@@ -66,22 +61,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <tr id="RyOzgiF9GdwPWNc1zQsu">
-                                <td>1</td>
-                                <td>Elkanah Jozcefhs </td>
-                                <td><input type="text" name="RyOzgiF9GdwPWNc1zQsu" pattern="[0-9]{1,2}(.[0-9]{0,1})?" value="" autocomplete="off"></td>
-                                <td><input type="text" name="RyOzgiF9GdwPWNc1zQsu" pattern="[0-9]{1,2}(.[0-9]{0,1})?" value="0" autocomplete="off"></td>
-                                <td><input type="text" name="RyOzgiF9GdwPWNc1zQsu" pattern="[0-9]{1,2}(.[0-9]{0,1})?" value="" autocomplete="off"></td>
-                                <td><input type="text" name="RyOzgiF9GdwPWNc1zQsu" pattern="[0-9]{1,2}(.[0-9]{0,1})?" value="" autocomplete="off"></td>
-                            </tr>
-                            <tr id="O5fd8RITG8970XVdgLrg">
-                                <td>2</td>
-                                <td>Forster Septimus </td>
-                                <td><input type="text" name="O5fd8RITG8970XVdgLrg" pattern="[0-9]{1,2}(.[0-9]{0,1})?" value="" autocomplete="off"></td>
-                                <td><input type="text" name="O5fd8RITG8970XVdgLrg" pattern="[0-9]{1,2}(.[0-9]{0,1})?" value="5" autocomplete="off"></td>
-                                <td><input type="text" name="O5fd8RITG8970XVdgLrg" pattern="[0-9]{1,2}(.[0-9]{0,1})?" value="10" autocomplete="off"></td>
-                                <td><input type="text" name="O5fd8RITG8970XVdgLrg" pattern="[0-9]{1,2}(.[0-9]{0,1})?" value="" autocomplete="off"></td>
-                            </tr> -->
+                            
                         </tbody>
                     </table>
                 </form>
@@ -89,6 +69,13 @@
         </section>
     </main>
     <footer></footer>
+    <dialog id="green">
+        <div class="submit__icon"></div>
+    </dialog>
+    <dialog id="purple">
+        <div class="submit__icon"></div>
+        <button type="button" onclick="this.parentElement.close()">Changes Saved  &checkmark;</button>
+    </dialog>
     <script>
         function userAction(e) {
             if (e.className.includes('times')) {

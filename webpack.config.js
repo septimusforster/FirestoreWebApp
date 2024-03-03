@@ -35,18 +35,6 @@ module.exports = {
     watch: true
 }
 */
-//ROOT source.js
-
-module.exports = {
-    mode: "development",
-    entry: "./src/source.js",
-    output: {
-        path: path.resolve(__dirname, "src"),
-        filename: "source_bundle.js"
-    },
-    watch: true
-}
-
 //STAFFER index.js
 /*
 module.exports = {
@@ -95,6 +83,18 @@ module.exports = {
     watch: true
 }
 */
+// STAFFER scores.js
+
+module.exports = {
+    mode: "development",
+    entry: "./dist/staffer/src/scores.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/staffer/src"),
+        filename: "scores_bundle.js"
+    },
+    watch: true
+}
+
 //STUDENT index.js
 /*
 module.exports = {

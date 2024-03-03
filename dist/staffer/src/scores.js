@@ -1,6 +1,6 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import { collection, doc, getDoc, getDocs, setDoc, getFirestore, orderBy, query, where, increment } from "firebase/firestore";
-import  configs from "./JSON/configurations.json" assert {type: 'json'};
+import  configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 // initialize firebase app
 var app = initializeApp(configs[6])
@@ -13,10 +13,27 @@ function chooseConfig(num) {
 }
 db = getFirestore()
 
+const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
+
 let clsIndex, armIndex, subIndex;
 const armDatalist = document.querySelector('datalist#arm');
 const subDatalist = document.querySelector('datalist#subject');
-
+const classDatalist = document.querySelector('datalist#class');
+// establish classrooms taught
+const classes = ss.data.classroomsTaught.sort();
+classes.forEach(cls => {
+    classDatalist.insertAdjacentHTML('beforeend', `
+        <option value="${cls}"></option>
+    `)
+})
+// establish subjects taught
+const subjects = ss.data.subjectsTaught;
+subjects.forEach((sbs, idx) => {
+    let obj = Object.entries(sbs);
+    subDatalist.insertAdjacentHTML('beforeend', `
+        <option data-id="${idx}" id="${obj[0][0]}" value="${obj[0][0]}">${obj[0][1]}</option>
+    `)
+})
 // Arm yourselves
 const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 if(!sessionStorage.hasOwnProperty('arm')) {
@@ -54,7 +71,7 @@ subjectForm.addEventListener('submit', async (e) => {
     const arm = subjectForm.arm.value;
     sub = subjectForm.subject.value;
 
-    // fetch student IDs and concatenation of the their names
+    // fetch student IDs and concatenation of their names
     const q = query(collection(db, "students"), where("arm", "==", arm), orderBy("last_name"));
     const personDoc = await getDocs(q);
     if (personDoc.empty) return window.alert("No dice!")
@@ -72,7 +89,12 @@ subjectForm.addEventListener('submit', async (e) => {
     sessionStorage.setItem([clsIndex.toString() + armIndex], JSON.stringify(kvArray))
     // console.log(kvArray.length)
     
-    if (!kvArray.length) return window.alert("No student offers the selected subject.");
+    if (!kvArray.length) {
+        window.alert("No student offers the selected subject.");
+        e.submitter.disabled = false;
+        e.submitter.style.cursor = 'pointer';
+        return;
+    };
 
     let scores = [];
     const promises = kvArray.map(async arrVal => {
@@ -120,12 +142,22 @@ subjectForm.addEventListener('submit', async (e) => {
     console.log("Done !!")
 })
 
+const dialogPurple = document.querySelector('dialog#purple');
 const scoreForm = document.forms.scoreForm;
 scoreForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    e.submitter.disabled = true;
+    dialogPurple.querySelector('.submit__icon').classList.add('running');
+    dialogPurple.showModal();
     const formData = new FormData(scoreForm);
     let tr = document.body.querySelectorAll('tbody tr');
     let container = [];
+    setTimeout(() => {
+        dialogPurple.querySelector('.submit__icon').classList.add('borderless')
+    }, 2000)
+    /*
+    if (!tr.length) return window.alert("There is nothing to save.")
+
     tr.forEach(row => {
         let cells = formData.getAll(row.id).map(x => x == '' ? null : Number(x));
         container.push([row.id, cells])
@@ -137,17 +169,19 @@ scoreForm.addEventListener('submit', async (e) => {
             [sub]: cn[1]
         }, { merge: true })
     })
-    await Promise.allSettled(promises)
-        .then(results => {
-            results.forEach(result => {
-                if (result.status === 'fulfilled') {
-                    console.log(result.value)
-                } else {
-                    console.log(result.reason)
-                }
-            })
-            console.log("Finished setting doc!")
-        });
+    await Promise.allSettled(promises);
+    console.log("Finished recording.");*/
+    // await Promise.allSettled(promises)
+    //     .then(results => {
+    //         results.forEach(result => {
+    //             if (result.status === 'fulfilled') {
+    //                 console.log(result.value)
+    //             } else {
+    //                 console.log(result.reason)
+    //             }
+    //         })
+    //         console.log("Finished setting doc!")
+    //     });
 })
 /*
 const promise1 = new Promise((resolve, reject) => {

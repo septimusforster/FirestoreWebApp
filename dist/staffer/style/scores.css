@@ -21,13 +21,37 @@ header {
     width: 100%;
     top: 0;
     background-color: #fff;
-    border: 1px solid #aaa;
+    /* border: 1px solid #aaa; */
     z-index: 1;
+}
+.navbtn {
+    padding: 15px 30px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    /* border: 1px solid red; */
+    font-size: 1.1em;
+}
+.navbtn:hover {
+    color: #004d3d;
+}
+.navbtn.afterward::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px solid #004d3d;
+    width: 30%;
+    border-radius: 10px 10px 0 0;
+    transition: width .3s ease;
 }
 main {
     display: flex;
     justify-content: center;
-    /* border: 1px solid #aaa; */
+    margin-top: 50px;
 }
 aside form {
     position: relative;
@@ -40,8 +64,8 @@ aside form input[type="text"] {
     margin: 20px auto;
 }
 aside form .footer {
-    position: sticky;
-    top: 100%;
+    /* position: sticky;
+    top: 100%; */
     padding: 40px 0;
     text-align: center;
 }
@@ -60,7 +84,7 @@ aside, section {
 }
 main > aside {
     flex: 1;
-    border-right: 1px solid gray;
+    border: 1px solid gray;
     position: fixed;
     left: 0;
     height: 93vh;
@@ -102,6 +126,12 @@ div#formBar i {
     font-size: 24px;
     line-height: 1;
     opacity: .3;
+}
+h3.sub__title {
+    background: #f3f3f3;
+    padding: 12px 24px;
+    margin: 7px;
+    border-radius: 7px;
 }
 dialog {
     padding: 20px;
@@ -165,8 +195,14 @@ tr th {
 tr td {
     text-align: center;
 }
+tr {
+    transition: all .2s ease-in-out;
+}
 tr:hover > td:first-child {
     color: #009578;
+}
+tr:hover {
+    box-shadow: -3px 0 0 #009578;
 }
 td:nth-child(2), th:nth-child(2) {
     text-align: left;
@@ -182,3 +218,71 @@ td input[type="text"] {
     text-align: center;
     border-bottom: 1px solid #ccc;
 }
+dialog#green::backdrop {
+    background-color: #009578;
+    opacity: .2;
+}
+dialog#purple::backdrop {
+    background-color: #7777ff;
+    opacity: .2;
+}
+dialog#purple,
+dialog#green {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border: none;
+    padding: 12px;
+}
+dialog output {
+    padding: 12px;
+}
+dialog#green .submit__icon {
+    border-color: #009578 #fff #fff #fff;
+}
+dialog#purple .submit__icon {
+    border-color: #7777ff #fff #fff #fff;
+}
+dialog#purple button {
+    display: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 7px;
+    background-color: #7777ff;
+    color: #fff;
+}
+.submit__icon {
+    display: block;
+    margin: 10px auto;
+    height: 40px;
+    width: 40px;
+    border: 5px solid;
+    border-radius: 50%;
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+.submit__icon.running {
+    animation-name: spin;
+    animation-duration: 1s;
+    animation-iteration-count: infinite
+}
+.submit__icon.borderless {
+    animation: none;
+    display: none;
+}
+
+/* .submit__icon::before {
+    content: '';
+    position: absolute;
+    color: black;
+    left: 50%;
+    transform: translateX(-50%);
+} */
