@@ -1,0 +1,208 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <style>
+        html, body, * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font: 18px 'Trebuchet MS', sans-serif;
+        }
+        body {
+            background-color: #7777ff;
+            user-select: none;
+        }
+        button {
+            cursor: pointer;
+            outline: none;
+            border: none;
+        }
+        header {
+            height: 7vh;
+        }
+        main {
+            height: 80vh;
+            min-width: 700px;
+            width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-width: 50px 20px 20px;
+            border-style: solid;
+            border-color: #555;
+            border-radius: 7px 7px 0 0;
+            position: relative;
+        }
+        section {
+            margin: 20px;
+            padding: 20px;
+            box-shadow: 0 0 2px #aaa;
+        }
+        #section-header {
+            display: flex;
+            align-items: center;
+        }
+        #section-header div {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        #section-header img {
+            width: 100px;
+        }
+        #section-bio {
+            display: flex;
+            align-items: center;
+        }
+        .large {
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+        .small {
+            font-size: 14px;
+        }
+        #print-btn {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            background-color: transparent;
+            color: #fff;
+            transition: all .1s;
+        }
+        #print-btn:hover {
+            background-color: #777;
+            /* color: #555; */
+        }
+        #print-btn::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+            border: 1px dashed #fff;
+            margin: 10px auto;
+            /* height: 30px; */
+        }
+        table {
+            border-collapse: collapse;
+        }
+        #section-bio table:nth-child(2) {
+            margin-left: auto;
+            margin-right: auto;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+        }
+        #section-bio table:nth-child(2) tr {
+            margin: 0 50px;
+        }
+        section#section-bio table {
+            flex: 1;
+        }
+        tr {
+            display: block;
+            padding: 10px 0;
+            color: #555;
+        }
+        td {
+            font-size: 14px;
+        }
+        tr td:first-child {
+            color: green;
+        }
+        #section-bio table:nth-child(1) tbody > tr td:first-child {
+            width: 80px;
+        }
+        #section-bio table:nth-child(2) tbody > tr td:first-child {
+            width: 110px;
+        }
+        #section-bio table:nth-child(3) tbody > tr td:first-child {
+            width: 140px;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>Home</header>
+    <main>
+        <section id="section-header">
+            <img src="../img/pngtree-school-logo-png-image_6851480.png" alt="logo">
+            <div>
+                <p class="large">Destiny Christian Academy College</p>
+                <p class="small">Beside Old Federal Secretariat,<br/>Durumi District, AMAC,<br/>Area 1, FCT - Abuja.</p>
+            </div>
+            <img src="../img/9035117_person_icon.png" alt="photo">
+        </section>
+        <section id="section-bio">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Reg. No: </td>
+                        <td>DCA/24/0001</td>
+                    </tr>
+                    <tr>
+                        <td>Name: </td>
+                        <td>Giannis Antentoukoumpo Antentoukoumpo</td>
+                    </tr>
+                    <tr>
+                        <td>Gender: </td>
+                        <td>M</td>
+                    </tr>
+                    <tr>
+                        <td>Age: </td>
+                        <td>25</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Class: </td>
+                        <td>JSS 1 Distinction</td>
+                    </tr>
+                    <tr>
+                        <td>No. in Class: </td>
+                        <td>23</td>
+                    </tr>
+                    <tr>
+                        <td>Days Open: </td>
+                        <td>43</td>
+                    </tr>
+                    <tr>
+                        <td>Days Present: </td>
+                        <td>34</td>
+                    </tr>
+                    <tr>
+                        <td>Days Absent: </td>
+                        <td>9</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>This Term: </td>
+                        <td>2<sup>nd</sup></td>
+                    </tr>
+                    <tr>
+                        <td>This Session: </td>
+                        <td>2024/2025</td>
+                    </tr>
+                    <tr>
+                        <td>Next Term: </td>
+                        <td>2024-04-28</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section></section>
+        <section></section>
+        <button type="button" id="print-btn"></button>
+    </main>
+    <footer></footer>
+</body>
+</html>
