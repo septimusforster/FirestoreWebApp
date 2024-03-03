@@ -26,6 +26,7 @@ classes.forEach(cls => {
         <option value="${cls}"></option>
     `)
 })
+let abbr = {};
 // establish subjects taught
 const subjects = ss.data.subjectsTaught;
 subjects.forEach((sbs, idx) => {
@@ -33,7 +34,9 @@ subjects.forEach((sbs, idx) => {
     subDatalist.insertAdjacentHTML('beforeend', `
         <option data-id="${idx}" id="${obj[0][0]}" value="${obj[0][0]}">${obj[0][1]}</option>
     `)
+    abbr[obj[0][0]] = obj[0][1];
 })
+
 // Arm yourselves
 const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 if(!sessionStorage.hasOwnProperty('arm')) {
@@ -60,21 +63,28 @@ subjectForm.addEventListener('change', (e) => {
         }
     }
 })
+const dialogGreen = document.querySelector('dialog#green');
 let sub;
 const tbody = document.querySelector('tbody');
 subjectForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
-    e.submitter.style.cursor = 'not-allowed';
+    dialogGreen.querySelector('.submit__icon').classList.add('running');
+    dialogGreen.showModal();
     // const formData = new FormData(subjectForm);
     const cls = subjectForm.class.value;
     const arm = subjectForm.arm.value;
     sub = subjectForm.subject.value;
-
+    
     // fetch student IDs and concatenation of their names
     const q = query(collection(db, "students"), where("arm", "==", arm), orderBy("last_name"));
     const personDoc = await getDocs(q);
-    if (personDoc.empty) return window.alert("No dice!")
+    if (personDoc.empty) {
+        dialogGreen.querySelector('.submit__icon').classList.remove('running');
+        dialogGreen.close();
+        window.alert("No dice!");
+        return;
+    }
 
     let kvArray = [];
     personDoc.docs.forEach(doc => {
@@ -90,9 +100,10 @@ subjectForm.addEventListener('submit', async (e) => {
     // console.log(kvArray.length)
     
     if (!kvArray.length) {
+        dialogGreen.querySelector('.submit__icon').classList.remove('running');
+        dialogGreen.close();
         window.alert("No student offers the selected subject.");
         e.submitter.disabled = false;
-        e.submitter.style.cursor = 'pointer';
         return;
     };
 
@@ -135,14 +146,21 @@ subjectForm.addEventListener('submit', async (e) => {
         sn++;
     })
     // sessionStorage.setItem('scores', JSON.stringify(scores))
-
-    document.querySelector('.sub__title').textContent = `${sub} ~ ${cls} ~ ${arm}`;
+    document.querySelector('.sub__title').textContent = `${abbr[sub]} ~ ${cls} ~ ${arm}`;
+    dialogGreen.querySelector('.submit__icon').classList.remove('running');
+    dialogGreen.close();
     e.submitter.disabled = false;
-    e.submitter.style.cursor = 'pointer';
-    console.log("Done !!")
 })
 
 const dialogPurple = document.querySelector('dialog#purple');
+const dialogPurpleBtn = dialogPurple.querySelector('button');
+
+dialogPurpleBtn.addEventListener('click', (e) => {
+    e.target.parentElement.close();
+    dialogPurple.querySelector('.submit__icon').classList.remove('running');
+    dialogPurple.querySelector('.submit__icon').classList.remove('borderless');
+})
+
 const scoreForm = document.forms.scoreForm;
 scoreForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -152,11 +170,13 @@ scoreForm.addEventListener('submit', async (e) => {
     const formData = new FormData(scoreForm);
     let tr = document.body.querySelectorAll('tbody tr');
     let container = [];
-    setTimeout(() => {
-        dialogPurple.querySelector('.submit__icon').classList.add('borderless')
-    }, 2000)
-    /*
-    if (!tr.length) return window.alert("There is nothing to save.")
+        
+    if (!tr.length) {
+        dialogPurpleBtn.click();
+        window.alert("There is nothing to save.");
+        e.submitter.disabled = false;
+        return;
+    }
 
     tr.forEach(row => {
         let cells = formData.getAll(row.id).map(x => x == '' ? null : Number(x));
@@ -170,18 +190,10 @@ scoreForm.addEventListener('submit', async (e) => {
         }, { merge: true })
     })
     await Promise.allSettled(promises);
-    console.log("Finished recording.");*/
-    // await Promise.allSettled(promises)
-    //     .then(results => {
-    //         results.forEach(result => {
-    //             if (result.status === 'fulfilled') {
-    //                 console.log(result.value)
-    //             } else {
-    //                 console.log(result.reason)
-    //             }
-    //         })
-    //         console.log("Finished setting doc!")
-    //     });
+    dialogPurple.querySelector('.submit__icon').classList.add('borderless');
+    dialogPurpleBtn.innerHTML = 'Changes Saved  &checkmark;';
+    dialogPurpleBtn.style.display = 'block';
+    e.submitter.disabled = false;
 })
 /*
 const promise1 = new Promise((resolve, reject) => {

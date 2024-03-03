@@ -100,7 +100,7 @@ main > section {
     border: 1px solid #aaa;
 }
 main > section > div{
-    margin: 0 100px;
+    margin: 0 300px;
 }
 main > section > div:nth-child(1) {
     padding: 200px 20px 20px;
@@ -113,6 +113,7 @@ main > section > div:nth-child(2) {
 div#formBar {
     display: flex;
     align-items: center;
+    padding: 20px;
 }
 div#formBar button {
     margin-left: auto;
@@ -220,11 +221,11 @@ td input[type="text"] {
 }
 dialog#green::backdrop {
     background-color: #009578;
-    opacity: .2;
+    opacity: .5;
 }
 dialog#purple::backdrop {
     background-color: #7777ff;
-    opacity: .2;
+    opacity: .5;
 }
 dialog#purple,
 dialog#green {
