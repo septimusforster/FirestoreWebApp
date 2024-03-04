@@ -256,9 +256,10 @@ async function logger(operation, action, uid) {
 }
 const printBtn = document.querySelectorAll('.side-panel-toggle')[3];
 printBtn.onclick = function () {
-    const cls = document.querySelector('h3#students').textContent;
+    const cls = myIframe.contentDocument.querySelector('h3#students').textContent;
     const preview = JSON.parse(sessionStorage.getItem('preview'));
-    const row = Number(document.querySelector('iframe').contentDocument.querySelector('table tr.active td:first-child').textContent);
+    const row = Number(myIframe.contentDocument.querySelector('table tr.active td:first-child').textContent);
     sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls}));
-    location.href = 'result.html#topical';
+    window.open('result.html#topical', '_blank');
+    // location.href = 'result.html#topical';
 }
