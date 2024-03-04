@@ -3,128 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Result</title>
-    <style>
-        html, body, * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font: 18px 'Trebuchet MS', sans-serif;
-        }
-        body {
-            background-color: #7777ff;
-            user-select: none;
-        }
-        button {
-            cursor: pointer;
-            outline: none;
-            border: none;
-        }
-        header {
-            height: 7vh;
-        }
-        main {
-            height: 80vh;
-            min-width: 700px;
-            width: 1200px;
-            margin: 0 auto;
-            background-color: #fff;
-            border-width: 50px 20px 20px;
-            border-style: solid;
-            border-color: #555;
-            border-radius: 7px 7px 0 0;
-            position: relative;
-        }
-        section {
-            margin: 20px;
-            padding: 20px;
-            box-shadow: 0 0 2px #aaa;
-        }
-        #section-header {
-            display: flex;
-            align-items: center;
-        }
-        #section-header div {
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-        }
-        #section-header img {
-            width: 100px;
-        }
-        #section-bio {
-            display: flex;
-            align-items: center;
-        }
-        .large {
-            font-size: 24px;
-            text-transform: uppercase;
-        }
-        .small {
-            font-size: 14px;
-        }
-        #print-btn {
-            position: absolute;
-            top: -45px;
-            right: 0;
-            height: 40px;
-            width: 40px;
-            border-radius: 50%;
-            background-color: transparent;
-            color: #fff;
-            transition: all .1s;
-        }
-        #print-btn:hover {
-            background-color: #777;
-            /* color: #555; */
-        }
-        #print-btn::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 0;
-            bottom: 0;
-            border: 1px dashed #fff;
-            margin: 10px auto;
-            /* height: 30px; */
-        }
-        table {
-            border-collapse: collapse;
-        }
-        #section-bio table:nth-child(2) {
-            margin-left: auto;
-            margin-right: auto;
-            border-left: 1px solid #ccc;
-            border-right: 1px solid #ccc;
-        }
-        #section-bio table:nth-child(2) tr {
-            margin: 0 50px;
-        }
-        section#section-bio table {
-            flex: 1;
-        }
-        tr {
-            display: block;
-            padding: 10px 0;
-            color: #555;
-        }
-        td {
-            font-size: 14px;
-        }
-        tr td:first-child {
-            color: green;
-        }
-        #section-bio table:nth-child(1) tbody > tr td:first-child {
-            width: 80px;
-        }
-        #section-bio table:nth-child(2) tbody > tr td:first-child {
-            width: 110px;
-        }
-        #section-bio table:nth-child(3) tbody > tr td:first-child {
-            width: 140px;
-            padding-left: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="../style/result.css">
 </head>
 <body>
     <header>Home</header>
@@ -199,7 +78,203 @@
                 </tbody>
             </table>
         </section>
-        <section></section>
+        <section id="section-grade">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>CA1</th>
+                        <th>CA2</th>
+                        <th>CA3</th>
+                        <th>EXM</th>
+                        <th>GRA</th>
+                        <th>REM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>Mathematics</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>15</td>
+                        <td>60</td>
+                        <td>A+</td>
+                        <td>Excellent</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>1st</th>
+                        <th>2nd</th>
+                        <th>3rd</th>
+                        <th>AVE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>90</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
         <section></section>
         <button type="button" id="print-btn"></button>
     </main>

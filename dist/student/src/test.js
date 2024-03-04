@@ -152,10 +152,11 @@ accForm.addEventListener('submit', async (e) => {
     // get test doc if available
     const scoreRef = doc(db, "scores", uid);
     await getDoc(scoreRef).then(res => {
+        /*
         if (res.data()[testAbbr][testNum] != null) {
             window.alert("You've already taken this test.");
             return;
-        }
+        }*/
         if (acc === code) {
             accDialog.close();
             document.documentElement.requestFullscreen();

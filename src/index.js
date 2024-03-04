@@ -49,7 +49,6 @@ armArray.forEach(arm => {
     `)
 }) // EOF
 const hiddenElems = document.querySelectorAll("input[type='hidden'");
-// const preview = JSON.parse(sessionStorage.getItem('preview'))
 async function setIframeAttr(para1) {
     //there are two hidden elems: the second one holds upass value
     myIframe.setAttribute('data-class-arm', para1);
@@ -79,61 +78,7 @@ async function setIframeAttr(para1) {
     myIframe.contentDocument.querySelector('table').style.display = 'block';
     // })
 }
-/*
-function addDataIDB() {
-    let idb, armStore, data = [];
-    const reqOpen = window.indexedDB.open('SSS 3', 1);
-    reqOpen.onupgradeneeded = async (event) => {
-        idb = event.target.result;
-        if ( !idb.objectStoreNames.contains('Perfection') ) {
-            //create arm store if does not exist
-            armStore = idb.createObjectStore('Perfection', {keyPath: 'id'})
-            const q = query(colRef, where("arm", "==", myIframe.getAttribute('data-class-arm')), orderBy("first_name"), limit(5))
-            await getDocs(q).then(docs => {
-                //run indexedDB function to add data to IDB
-                console.log('metadata from cache?: ', docs.metadata.fromCache)
-                docs.forEach(doc => {
-                    data.push(doc.data());
-                })
-            })
-        }
-    }
-    reqOpen.onsuccess = (event) => {
-        idb = event.target.result;
-        // making a transaction
-        let tx = idb.transaction('Perfection', 'readwrite');
-        let arm = tx.objectStore('Perfection');
-        console.log(data)
-        data.forEach(obj => {
-            arm.add(obj)
-        })
-        tx.oncomplete = (event) => {
-            console.log('complete tx: ', event)
-        }
-        tx.onerror = (err) => {
-            console.warn('tx:', err)
-        }
-        // req.onsuccess = (event) => {
-        //     console.log('Added successfully.')
-        // }
-        // req.onerror = (err) => {
-        //     console.warn('Failed to add data.')
-        // }
-    }
-    // idb.onerror = (err) => {
-    //     console.log('idb error:', err);
-    // }
-    reqOpen.onerror = (event) => {
-        console.error('req error:', event.target.errorCode);
-    }
-}
-function makeTX (armName, mode) {
-    let tx = idb.transaction(armName, mode);
-    tx.onerror = (err) => {
-        console.warn('tx:', err)
-    }
-    return tx;
-}*/
+
 const leftNavAnchors = document.querySelectorAll('.left-nav a');
 leftNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
@@ -157,24 +102,6 @@ async function setColRef(arg) {
             hiddenElems[1].value = newPassword;
         })
     }
-    //get and count documents in chosen collection
-/*    const snapshot = await getCountFromServer(colRef);
-    const numOfDocs = snapshot.data().count;
-    // hiddenElems[1].value = classrooms[para1][numOfDocs];
-    console.log(numOfDocs) */
-        // .then((snapshot) => {
-        //     numInClass = snapshot.size;
-        //     // console.log(numInClass, ": this is numInClass.")
-        //     snapshot.docs.forEach(doc => {
-        //         data.push(doc.data().password)
-        //     })
-            // for (const k of classrooms[para1]) {
-            //     if(!data.includes(k)) {
-            //         hiddenElems[1].value = k;
-            //         return;
-            //     }
-            // }
-        //})
 };
 let num;
 const topNavAnchors = document.querySelectorAll('.top-nav a');
@@ -314,11 +241,6 @@ yesBtn.onclick = function() {
             // setColRef(col);
         })
 }
-/*
-//code to resolve
-document.querySelector('#myIframe').contentDocument.querySelector('ol li:first-child span').id
-document.querySelector('#myIframe').contentDocument.querySelector('ol li:nth-of-type(1) span').id
-*/
 async function logger(operation, action, uid) {
     // first init FirebasePro configuration
     chooseConfig(6)
@@ -331,4 +253,12 @@ async function logger(operation, action, uid) {
     })
     // re-init class configuration
     chooseConfig(num)
+}
+const printBtn = document.querySelectorAll('.side-panel-toggle')[3];
+printBtn.onclick = function () {
+    const cls = document.querySelector('h3#students').textContent;
+    const preview = JSON.parse(sessionStorage.getItem('preview'));
+    const row = Number(document.querySelector('iframe').contentDocument.querySelector('table tr.active td:first-child').textContent);
+    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls}));
+    location.href = 'result.html#topical';
 }

@@ -1,0 +1,152 @@
+html, body, * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font: 18px 'Trebuchet MS', sans-serif;
+}
+body {
+    background-color: #7777ff;
+    user-select: none;
+}
+button {
+    cursor: pointer;
+    outline: none;
+    border: none;
+}
+header {
+    height: 7vh;
+}
+main {
+    /* height: 80vh; */
+    min-width: 700px;
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-width: 50px 20px 20px;
+    border-style: solid;
+    border-color: #555;
+    border-radius: 7px 7px 0 0;
+    position: relative;
+}
+section {
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 0 2px #aaa;
+}
+#section-header {
+    display: flex;
+    align-items: center;
+}
+#section-header div {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+#section-header img {
+    width: 100px;
+}
+#section-bio {
+    display: flex;
+    align-items: center;
+}
+#section-grade {
+    display: flex;
+    align-items: flex-start;
+    gap: 10em;
+}
+.large {
+    font-size: 24px;
+    text-transform: uppercase;
+}
+.small {
+    font-size: 14px;
+}
+#print-btn {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #fff;
+    transition: all .1s;
+}
+#print-btn:hover {
+    background-color: #777;
+    /* color: #555; */
+}
+#print-btn::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    border: 1px dashed #fff;
+    margin: 10px auto;
+    /* height: 30px; */
+}
+table {
+    border-collapse: collapse;
+}
+#section-bio table:nth-child(2) {
+    margin-left: auto;
+    margin-right: auto;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+#section-bio table:nth-child(2) tr {
+    margin: 0 50px;
+}
+#section-bio table {
+    flex: 1;
+}
+#section-grade table:nth-child(1) {
+    flex: 2;
+}
+#section-grade table:nth-child(2) {
+    flex: 1;
+}
+#section-grade table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+#section-grade table tbody tr td, th {
+    padding: 10px;
+    text-align: center;
+}
+#section-grade table:nth-of-type(1) tbody tr td:nth-of-type(1) {
+    text-align: left;
+}
+th {
+    color: #fff;
+}
+#section-bio tr {
+    display: block;
+    padding: 10px 0;
+    color: #555;
+}
+td {
+    font-size: 14px;
+}
+thead {
+    background-color: #009578;
+}
+#section-grade table {
+    border: 1px solid #aaa;
+    border-radius: 7px 7px 0 0;
+    overflow: hidden;
+}
+#section-bio tr td:first-child {
+    color: green;
+}
+#section-bio table:nth-child(1) tbody > tr td:first-child {
+    width: 80px;
+}
+#section-bio table:nth-child(2) tbody > tr td:first-child {
+    width: 110px;
+}
+#section-bio table:nth-child(3) tbody > tr td:first-child {
+    width: 140px;
+    padding-left: 20px;
+}
