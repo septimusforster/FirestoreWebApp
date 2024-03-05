@@ -79,7 +79,7 @@
                 </tbody>
             </table>
         </section>
-        <section target="topical" id="section-grade">
+        <section id="section-grade">
             <table>
                 <thead>
                     <tr>
@@ -106,18 +106,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td>90</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    
                 </tbody>
             </table>
         </section>
         <section></section>
-        <button type="button" id="print-btn"></button>
+        <button type="button" id="menu-btn"></button>
+        <div class="menu">
+            <button type="button" id="print-btn">Print</button>
+        </div>
     </main>
     <footer></footer>
+    <script>
+        const printBtn = document.querySelector('#print-btn');
+        printBtn.onclick = function () {
+            console.log("Print button")
+        }
+    </script>
 </body>
 </html>

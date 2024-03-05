@@ -259,7 +259,7 @@ printBtn.onclick = function () {
     const cls = myIframe.contentDocument.querySelector('h3#students').textContent;
     const preview = JSON.parse(sessionStorage.getItem('preview'));
     const row = Number(myIframe.contentDocument.querySelector('table tr.active td:first-child').textContent);
-    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls}));
+    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size: preview.length}));
     window.open('result.html#topical', '_blank');
     // location.href = 'result.html#topical';
 }

@@ -63,7 +63,7 @@ section {
 .small {
     font-size: 14px;
 }
-#print-btn {
+#menu-btn {
     position: absolute;
     top: -45px;
     right: 0;
@@ -74,11 +74,11 @@ section {
     color: #fff;
     transition: all .1s;
 }
-#print-btn:hover {
+#menu-btn:hover {
     background-color: #777;
     /* color: #555; */
 }
-#print-btn::after {
+#menu-btn::before {
     content: '';
     position: absolute;
     left: 50%;
@@ -88,6 +88,30 @@ section {
     border: 1px dashed #fff;
     margin: 10px auto;
     /* height: 30px; */
+}
+#menu-btn:focus + .menu button:focus + .menu {
+    opacity: 1;
+    pointer-events: all;
+}
+.menu {
+    width: 150px;
+    padding: 5px 0;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    position: absolute;
+    top: -20px;
+    right: 0;
+    border-radius: 7px;
+    opacity: 0;
+    pointer-events: none;
+}
+.menu button {
+    width: 100%;
+    padding: 7px 15px;
+    transition: all .1s;
+}
+.menu button:hover {
+    background-color: #aaa;
 }
 table {
     border-collapse: collapse;
