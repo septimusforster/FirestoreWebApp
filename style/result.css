@@ -71,10 +71,12 @@ section {
     width: 40px;
     border-radius: 50%;
     background-color: transparent;
+    transform: scale(.5);
     color: #fff;
     transition: all .1s;
 }
 #menu-btn:hover {
+    transform: scale(1);
     background-color: #777;
     /* color: #555; */
 }
@@ -89,9 +91,9 @@ section {
     margin: 10px auto;
     /* height: 30px; */
 }
-#menu-btn:focus + .menu button:focus + .menu {
+#menu-btn:focus + .menu {
     opacity: 1;
-    pointer-events: all;
+    pointer-events: auto;
 }
 .menu {
     width: 150px;

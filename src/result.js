@@ -37,28 +37,28 @@ async function eot() {
         const className = `${ss.cls} ${ss.arm}`;
         const classSize = ss.size;
         const offered = ss.offered;
-        const daysPresent = ss.days_present || 35;
+        const daysPresent = ss.days_present || 0;
         const daysAbsent = daysOpen - daysPresent;
 
         const dob = new Date(ss.dob);
         const compareDate = new Date(eotData[ss.cls]);
         const diff = Math.abs(compareDate - dob);
-        const age = diff / (1000 * 60 * 60 * 24 * 7 * 52);
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 7 * 52));
 
         //load photo
         document.images[1].src = photo || "../img/9035117_person_icon.png";
 
-        function bioTable(a, b, c, d, tb, idx = 0) {
+        function bioTable(a, b, c, d, e, tb, idx = 0) {
             for (const arg of arguments) {
-                if (idx > 2 && tb === 3 || idx > 3) break;
+                if (idx > 3 && tb === 1 || idx > 4 && tb === 2 || idx > 2 && tb === 3) break;
                 // if (idx > 3) break;
                 document.querySelectorAll(`#section-bio table:nth-child(${tb}) tr td:nth-child(2)`)[idx].textContent = arg;
                 idx++;
             }
         }
-        bioTable(regNo, fullName, gender, age, 1);
-        bioTable(className, classSize, daysOpen, daysPresent, 2);
-        bioTable(thisTerm, nextTerm, session, null, 3);
+        bioTable(regNo, fullName, gender, age, null, 1);
+        bioTable(className, classSize, daysOpen, daysPresent, daysAbsent, 2);
+        bioTable(thisTerm, nextTerm, session, null, false, 3);
 
         // load section grade table 1: subjects
         let num = configs[7].indexOf(ss.cls);
