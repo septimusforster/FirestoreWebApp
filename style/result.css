@@ -29,7 +29,7 @@ main {
     position: relative;
 }
 section {
-    margin: 20px;
+    /* margin: 20px; */
     padding: 20px;
     box-shadow: 0 0 2px #aaa;
 }
@@ -61,7 +61,7 @@ section {
     text-transform: uppercase;
 }
 .small {
-    font-size: 14px;
+    font-size: 15px;
 }
 #menu-btn {
     position: absolute;
@@ -146,7 +146,7 @@ table {
 #section-grade table:nth-of-type(1) tbody tr td:nth-of-type(1) {
     text-align: left;
 }
-th {
+#section-grade th {
     color: #fff;
 }
 #section-bio tr {
@@ -157,8 +157,8 @@ th {
 td {
     font-size: 14px;
 }
-thead {
-    background-color: #009578;
+#section-grade thead {
+    background-color: #777;
 }
 #section-grade table {
     border: 1px solid #aaa;
@@ -177,4 +177,73 @@ thead {
 #section-bio table:nth-child(3) tbody > tr td:first-child {
     width: 140px;
     padding-left: 20px;
+}
+#section-footer {
+    display: flex;
+    align-items: center;
+    gap: 10em;
+}
+#section-footer > div:first-child {
+    flex: 2;
+}
+#section-footer > div:last-child {
+    flex: 1;
+    text-align: center;
+}
+#section-footer > div > div {
+    padding: 7px 30px;
+    border-radius: 7px 7px 0 0;
+    margin-bottom: 16px;
+    color: #555;
+    /* border: 1px solid #aaa; */
+    position: relative;
+}
+blockquote {
+    padding: 10px 20px;
+    border-top: 1px solid #aaa;
+}
+blockquote::before {
+    content: '"';
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #777;
+    font: italic 30px tahoma;
+}
+#mr-btn {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    color: #777;
+}
+#section-footer > div {
+    position: relative;
+}
+#mr-span {
+    position: absolute;
+    bottom: 45px;
+    left: 0;
+    opacity: 0;
+}
+#mr-btn:focus {
+    background-color: #555;
+    color: #fff;
+}
+#mr-btn:focus + #mr-span {
+    opacity: 1;
+}
+#section-footer table {
+    width: 300px;
+    background-color: #555;
+    color: #fff;
+    border-radius: 7px;
+}
+#section-footer tbody tr td{
+    padding: 7px 14px;
+}
+img[alt="stamp"] {
+    width: 200px;
+}
+p#percent {
+    font-size: xxx-large;
 }
