@@ -243,6 +243,7 @@ blockquote::before {
 }
 img[alt="stamp"] {
     width: 200px;
+    transform: rotate(-20deg);
 }
 p#percent {
     font-size: xxx-large;

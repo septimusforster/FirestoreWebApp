@@ -1,0 +1,101 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIN Stripe</title>
+    <link rel="stylesheet" href="../style/pinstripe.css">
+    <script type="module" src="../src/pinstripe_bundle.js"></script>
+</head>
+<body>
+    <header></header>
+    <main>
+        <h3>My Class</h3>
+        <div>
+            <div class="tabs">
+                <input type="radio" name="tab" id="pinned" checked/>
+                <label for="pinned">PINNED</label>
+                <input type="radio" name="tab" id="unpinned"/>
+                <label for="unpinned">UNPINNED</label>
+            </div>
+            <div id="tab-contents">
+                <table class="tab__contents active">
+                    <thead>
+                        <tr>
+                            <th>ADMISSION NO.</th>
+                            <th>NAME</th>
+                            <th>PIN</th>
+                            <th>USED</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <form name="pinForm">
+                <table class="tab__contents">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>ADMISSION NO.</th>
+                            <th>NAME</th>
+                            <th>PIN</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <div id="form-footer">
+                        <!-- <button type="button" class="foot__btns">POPULATE PIN</button> -->
+                        <input type="submit" value="POPULATE & SAVE PIN" class="foot__btns"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div></div>
+    </main>
+    <footer>
+        <datalist id="cls">
+            <option name="JSS 1" value="JSS 1"></option>
+            <option name="JSS 2" value="JSS 2"></option>
+            <option value="JSS 3"></option>
+            <option value="SSS 1"></option>
+            <option value="SSS 2"></option>
+            <option value="SSS 3"></option>
+        </datalist>
+        <datalist id="arm">
+        </datalist>
+        <form name="getForm" id="getForm">
+            <input type="text" name="cls" id="cls" list="cls" placeholder="Enter class" required/>
+            <input type="text" name="arm" id="arm" list="arm" placeholder="Enter arm" required/>
+            <input type="submit" value="OPEN CLASS"/>
+        </form>
+    </footer>
+    <button type="button" id="down-up-btn">&DownArrowUpArrow;</button>
+    <script>
+        const radios = document.querySelectorAll('input[type="radio"]');
+        const tabContents = document.querySelectorAll('.tab__contents');
+        radios.forEach((radio, index) => {
+            radio.addEventListener('click', (e) => {
+                tabContents.forEach(tab => tab.classList.remove('active'))
+                if (radio.checked) tabContents[index].classList.add('active');
+                if (radio.id === 'pinned') {
+                    document.querySelectorAll('.foot__btns').forEach(btn => btn.style.visibility = 'hidden');
+                } else {
+                    document.querySelectorAll('.foot__btns').forEach(btn => btn.style.visibility = 'visible');
+                }
+            })
+        })
+        const upDownBtn = document.querySelector('button#down-up-btn');
+        upDownBtn.onclick = function () {
+            document.querySelector('footer').classList.toggle('active');
+        }
+        // const range = document.createRange();
+        // const header = document.querySelector('header');
+        // const footer = document.querySelector('footer');
+        // range.setStart(header, 0);
+        // range.setEnd(footer, 0);
+        // console.log(range.startContainer)
+    </script>
+</body>
+</html>

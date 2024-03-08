@@ -1,0 +1,190 @@
+html, body, * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font: 14px Verdana, sans-serif;
+}
+body {
+    background-color: #7777ff;
+    position: relative;
+}
+button, input[type="submit"] {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+main {
+    margin: 0 300px;
+    border: 1px solid gray;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    background-color: #333;
+    /* align-items: center; */
+}
+main > h3 {
+    background-color: #555;
+    padding: 20px 20px 50px;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+main > div:nth-of-type(1) {
+    background-color: #333;
+    color: #fff;
+    height: 100%;
+}
+.tabs {
+    padding: 0 16px;
+    display: flex;
+    background-color: #555;
+    position: sticky;
+    top: 80px;
+    z-index: 1;
+}
+#tab-contents {
+    height: auto;
+    position: relative;
+}
+table.tab__contents {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    border-collapse: collapse;
+    margin: 0px 100px -70px;
+}
+th, td {
+    padding: 14px;
+    color: #fff;
+}
+tr:nth-of-type(even) {
+    background-color: rgba(0,0,0,.1);
+}
+.tabs > input[type="radio"] {
+    display: none;
+}
+table.tab__contents {
+    pointer-events: none;
+    opacity: 0;
+}
+table.tab__contents.active {
+    pointer-events: auto;
+    opacity: 1;
+    animation: move .2s ease-in;
+}
+@keyframes move {
+    from {transform: translateX(20px);}
+    to {transform: translateX(0px);}
+}
+label {
+    display: inline-block;
+    padding: 12px 16px;
+    background-color: rgba(0,0,0,.1);
+    cursor: pointer;
+    transition: all .1s;
+}
+input[type="radio"]:checked + label {
+    background-color: #333;
+    color: #7777ff;
+}
+footer {
+    position: sticky;
+    bottom: 0px;
+    height: 100px;
+    background-color: #555;
+    color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* opacity: 0; */
+    visibility: hidden;
+}
+footer.active {
+    visibility: visible;
+    /* opacity: 1; */
+    animation: show .2s ease-in;
+}
+@keyframes show {
+    from {transform: translateY(40px);}
+    to {transform: translateY(-50px);}
+}
+#getForm input {
+    margin: 0 10px;
+    padding: 12px 16px;
+    border: none;
+    outline: none;
+}
+#getForm input[type="text"] {
+    border: 1px solid #777;
+    background-color: transparent;
+    color: #fff;
+}
+input[type="submit"] {
+    background-color: #7777ff;
+    color: #fff;
+    min-width: 100px;
+}
+td > label {
+    padding: 8px;
+    margin: 10px 20px;
+    background-color: #aaa;
+    position: relative;
+    /* z-index: 1; */
+}
+td > input[type="checkbox"] {
+    display: none;
+    width: 100%;
+}
+td > label::before {
+    content: '';
+    position: absolute;
+    /* bottom: 0; */
+    /* left: -50%; */
+    transform: translate(-50%, -50%);
+    /* transform: scale3d(0,0,0); */
+    height: 45px;
+    width: 45px;
+    background-color: #777;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all .2s ease-out;
+    isolation: isolate;
+}
+td > input[type="checkbox"]:hover + label::before,
+td > input[type="checkbox"]:checked + label::before {
+    /* transform: scale3d(1,1,1); */
+    opacity: .3;
+}
+td > input[type="checkbox"]:checked + label {
+    background-color: #7777ff;
+    box-shadow: 0 0 2px #fff;
+}
+div#form-footer {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+}
+.foot__btns {
+    margin: 0 20px;
+    padding: 12px 24px;
+    visibility: hidden;
+}
+button#down-up-btn {
+    position: fixed;
+    right: 0;
+    bottom: 0px;
+    margin: 25px;
+    padding: 5px 15px;
+    font-size: 2rem;
+    background: #555;
+    color: #fff;
+    transition: all .1s ease-in-out;
+}
+button#down-up-btn:hover {
+    /* background-color: #333; */
+    box-shadow: 0 0 5px #333;
+}

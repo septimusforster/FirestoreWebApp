@@ -36,13 +36,25 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
     output: {
         path: path.resolve(__dirname, "src"),
         filename: "result_bundle.js"
+    },
+    watch: true
+}
+*/
+//ROOT pinstripe.js
+
+module.exports = {
+    mode: "development",
+    entry: "./src/pinstripe.js",
+    output: {
+        path: path.resolve(__dirname, "src"),
+        filename: "pinstripe_bundle.js"
     },
     watch: true
 }
