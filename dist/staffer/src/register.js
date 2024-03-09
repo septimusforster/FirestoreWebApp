@@ -48,6 +48,8 @@ for (const [k, v] of master_of_form) {
                     <td>${doc.data().gender}</td>
                     <td>${doc.data().email}</td>
                     <td>${doc.data().password}</td>
+                    <td><input type="number" name="dp" min="0" max="99" pattern="[0-9]{1,2}"/></td>
+                    <td><input type="text" name="comm" id="${doc.id}"/></td>
                 </tr>
             `)
             i++;
@@ -57,3 +59,13 @@ for (const [k, v] of master_of_form) {
     document.querySelector('#load-icon').classList.remove('running');
     table.style.display = 'block';
 }
+const formRegister = document.forms.formRegister;
+formRegister.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(formRegister);
+    const dp = formData.getAll('dp');
+    const comm = formData.getAll('comm');
+
+    console.log(dp)
+    console.log(comm)
+})

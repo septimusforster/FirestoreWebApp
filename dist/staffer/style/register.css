@@ -50,6 +50,8 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    padding-bottom: 100px;
 }
 .body > div {
     display: flex;
@@ -111,4 +113,37 @@ tbody tr:last-of-type {
 tr th:nth-of-type(2),
 tr td:nth-of-type(2) {
     text-align: left;
+}
+button,
+input[type="submit"] {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+input[type="submit"] {
+    padding: 12px 24px;
+    color: #fff;
+    background-color: #009578;
+    border-radius: 5px;
+    transition: all .15s;
+}
+input[type="submit"]:hover {
+    background-color: #004d3d;
+}
+input[type="text"],
+input[type="number"] {
+    padding: 8px 18px;
+    outline: none;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+.table__footer {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+}
+form#formRegister {
+    position: relative;
+    padding-bottom: 100px;
 }

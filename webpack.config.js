@@ -48,7 +48,7 @@ module.exports = {
 }
 */
 //ROOT pinstripe.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/pinstripe.js",
@@ -58,7 +58,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STAFFER index.js
 /*
 module.exports = {
@@ -83,8 +83,8 @@ module.exports = {
     watch: true
 }
 */
-//STAFFER logon.js
-/*
+//STAFFER register.js
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/register.js",
@@ -94,7 +94,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STAFFER test.js
 /*
 module.exports = {
