@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, collection, getDoc, doc, query, where } from "firebase/firestore"
+import { getFirestore, collection, getDoc, doc, query, where, getDocs } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 // initialize firebase app
@@ -14,9 +14,82 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
+const ss = JSON.parse(sessionStorage.getItem('student'));
+const offered = ss.offered;
 
+var n;
+n = configs[7].indexOf(ss.cls);
+chooseConfig(n);
+
+const studentsRef = collection(db, "students");
+const studentsQuery = query(studentsRef, where("arm", "==", ss.arm));
+const studentsSnapshot = await getDocs(studentsQuery);
+
+let studentIDs = [], studentScores = [];
+studentsSnapshot.docs.forEach(result => {
+    studentIDs.push(result.id);
+})
+
+const scorePromises = studentIDs.map(async sid => {
+    await getDoc(doc(db, "scores", sid)).then((res) => {
+        studentScores.push({sid, ...res.data()})
+    });
+})
+
+await Promise.allSettled(scorePromises);
+// console.log(studentScores.length);
+const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort();
+// console.log(ME);
+
+var td = '';
+let i;
+for (i = 0; i < ME.length - 1; i++) {
+    let [a,b,c,d] = ME[i][1];
+    td += `
+        <td>${offered[ME[i][0]]}</td>
+        <td>${a}</td>
+        <td>${b}</td>
+        <td>${c}</td>
+        <td>${d}</td>
+    `;
+    let subtotal = a + b + c + d;
+    switch (true) {
+        case subtotal > 79:
+            td += '<td>A</td><td>Excellent</td>';
+            break;
+        case subtotal > 64:
+            td += '<td>B</td><td>Very Good</td>';
+            break;
+        case subtotal > 49:
+            td += '<td>C</td><td>Good</td>';
+            break;
+        case subtotal > 39:
+            td += '<td>D</td><td>Satisfactory</td>';
+            break;
+        case subtotal > 29:
+            td += '<td>E</td><td>Pass</td>';
+            break;
+        case subtotal <= 29:
+            td += '<td>F</td><td>Fail</td>';
+            break;
+    }
+    let summation = [];
+    for (let j = 0; j < studentScores.length; j++) {
+        let [w,x,y,z] = studentScores[j][ME[i][0]] || [null, null, null, null];
+        summation.push(w+x+y+z);
+    };
+    // console.log(summation)
+    
+    let max = summation.reduce((x,y) => Math.max(x,y));
+    let min = summation.reduce((x,y) => Math.min(x,y));
+    td += `
+        <td>${max}</td>
+        <td>${min}</td>
+    `;
+}
+console.log(td)
 // get EOT data
-
+/*
 let eotData;
 async function eot() {
     const eotRef = doc(db, "reserved", "EOT");
@@ -27,8 +100,8 @@ async function eot() {
         const nextTerm = eotData.next_term;
         const session = eotData.session;
         const daysOpen = eotData.days_open;
+        const vp = eotData.vp;
         
-        const ss = JSON.parse(sessionStorage.getItem('student'));
         const uid = ss.id;
         const photo = ss.photo_src;
         const regNo = ss.admission_no;
@@ -43,7 +116,7 @@ async function eot() {
         const dob = new Date(ss.dob);
         const compareDate = new Date(eotData[ss.cls]);
         const diff = Math.abs(compareDate - dob);
-        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 7 * 52));
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 7 * 52)) || '';
 
         //load photo
         document.images[1].src = photo || "../img/9035117_person_icon.png";
@@ -71,7 +144,7 @@ async function eot() {
             const tbodyTerm = document.querySelector('#section-grade table:nth-child(2) tbody');
             let term = ["First", "Second", "Third"].indexOf(thisTerm);
             // console.log("Term tab: ", term)
-            let total = 0;
+            let total = 0, myAverage;
             
             scores.forEach(s => {
                 let subtotal = s[1].reduce((prev, curr) => prev + curr);
@@ -117,15 +190,46 @@ async function eot() {
                 `)
             })
             // console.log("Total: ", total)
+            const vpDiv = document.getElementById('vp');
+            vpDiv.querySelector('p').textContent = vp.name;
+            const percent = document.getElementById('percent');
+            myAverage = ((total * 100) / (scores.length * 100)).toFixed();
+            switch (true) {
+                case myAverage > 79:
+                    vpDiv.querySelector('blockquote').textContent = vp.commA;
+                    percent.textContent = 'A';
+                    break;
+                case myAverage > 64:
+                    vpDiv.querySelector('blockquote').textContent = vp.commB;
+                    percent.textContent = 'B';
+                    break;
+                case myAverage > 49:
+                    vpDiv.querySelector('blockquote').textContent = vp.commC;
+                    percent.textContent = 'C';
+                    break;
+                case myAverage > 39:
+                    vpDiv.querySelector('blockquote').textContent = vp.commD;
+                    percent.textContent = 'D';
+                    break;
+                case myAverage > 29:
+                    vpDiv.querySelector('blockquote').textContent = vp.commE;
+                    percent.textContent = 'E';
+                    break;
+                case myAverage <= 29:
+                    vpDiv.querySelector('blockquote').textContent = vp.commF;
+                    percent.textContent = 'F';
+                    break;
+            }
         })
         /*
         offered.forEach((arr, ind) => {
             document.querySelectorAll('#section-grade table:nth-child(1) tr td:first-child')[ind].textContent = arr[1];
         })
-        */
+        
     })
 }
 eot();
+*/
 /*
 // Dates
 var date1 = new Date('2024-03-03');
