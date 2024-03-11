@@ -14,8 +14,14 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
+
 const ss = JSON.parse(sessionStorage.getItem('student'));
 const offered = ss.offered;
+
+let eotData;
+let thisTerm;
+await eot();
+const principal = eotData.principal;
 
 var n;
 n = configs[7].indexOf(ss.cls);
@@ -40,10 +46,14 @@ await Promise.allSettled(scorePromises);
 // console.log(studentScores.length);
 const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort();
 // console.log(ME);
-
-var td = '';
+const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
+const tbodyTerm = document.querySelector('#section-grade table:nth-child(2) tbody');
+let overall = 0;
+let total = 0;
 let i;
+
 for (i = 0; i < ME.length - 1; i++) {
+    var td = '';
     let [a,b,c,d] = ME[i][1];
     td += `
         <td>${offered[ME[i][0]]}</td>
@@ -73,12 +83,15 @@ for (i = 0; i < ME.length - 1; i++) {
             td += '<td>F</td><td>Fail</td>';
             break;
     }
+    total += subtotal;
+
     let summation = [];
     for (let j = 0; j < studentScores.length; j++) {
         let [w,x,y,z] = studentScores[j][ME[i][0]] || [null, null, null, null];
         summation.push(w+x+y+z);
     };
     // console.log(summation)
+    overall += summation.reduce((acc, cur) => acc + cur);
     
     let max = summation.reduce((x,y) => Math.max(x,y));
     let min = summation.reduce((x,y) => Math.min(x,y));
@@ -86,32 +99,89 @@ for (i = 0; i < ME.length - 1; i++) {
         <td>${max}</td>
         <td>${min}</td>
     `;
+    tbodyScores.insertAdjacentHTML('beforeend', `
+        <tr>${td}</tr>
+    `);
+    
+    let term = ["First", "Second", "Third"].indexOf(thisTerm);  
+    tbodyTerm.insertAdjacentHTML('beforeend', `
+        <tr>
+            <td>${term === 0 ? subtotal : ''}</td>
+            <td>${term === 1 ? subtotal : ''}</td>
+            <td>${term === 2 ? subtotal : ''}</td>
+            <td></td>
+        </tr>
+    `)
 }
-console.log(td)
-// get EOT data
-/*
-let eotData;
+
+const ME_AVERAGE = (total / (ME.length - 1)).toFixed();
+// console.log(total);
+console.log("Child's average:", ME_AVERAGE);
+console.log("Overall:", overall);
+// get principal data
+const princDiv = document.getElementById('principal');
+princDiv.querySelector('p').textContent = principal.name;
+const percent = document.getElementById('percent');
+// ME_AVERAGE = ((total * 100) / (scores.length * 100)).toFixed();
+switch (true) {
+    case ME_AVERAGE > 79:
+        princDiv.querySelector('blockquote').textContent = principal.Acomm;
+        percent.textContent = 'A';
+        break;
+    case ME_AVERAGE > 64:
+        princDiv.querySelector('blockquote').textContent = principal.Bcomm;
+        percent.textContent = 'B';
+        break;
+    case ME_AVERAGE > 49:
+        princDiv.querySelector('blockquote').textContent = principal.Ccomm;
+        percent.textContent = 'C';
+        break;
+    case ME_AVERAGE > 39:
+        princDiv.querySelector('blockquote').textContent = principal.Dcomm;
+        percent.textContent = 'D';
+        break;
+    case ME_AVERAGE > 29:
+        princDiv.querySelector('blockquote').textContent = principal.Ecomm;
+        percent.textContent = 'E';
+        break;
+    case ME_AVERAGE <= 29:
+        princDiv.querySelector('blockquote').textContent = principal.Fcomm;
+        percent.textContent = 'F';
+        break;
+}
+
+const overStats = document.querySelectorAll('.overstats');
+function overstats(sTot, sAve, cAve) {
+    let counter = 0;
+    let prefix = ["Student Total: ","Student Average: ","Class Average: "];
+    for (let stats of arguments) {
+        overStats[counter].innerHTML = prefix[counter] + stats;
+        counter++;
+    }
+}
+overstats(total, ME_AVERAGE, overall);
+
 async function eot() {
+    let teacherDiv = document.getElementById('teacher');
+    
     const eotRef = doc(db, "reserved", "EOT");
     await getDoc(eotRef).then(async (res) => {
         // store dates in eotDates
         eotData = res.data();
-        const thisTerm = eotData.this_term;
+        thisTerm = eotData.this_term;
         const nextTerm = eotData.next_term;
         const session = eotData.session;
         const daysOpen = eotData.days_open;
-        const vp = eotData.vp;
         
-        const uid = ss.id;
         const photo = ss.photo_src;
         const regNo = ss.admission_no;
         const fullName = ss.last_name.concat(' ', ss.first_name, ' ', ss.other_name);
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
         const className = `${ss.cls} ${ss.arm}`;
         const classSize = ss.size;
-        const offered = ss.offered;
         const daysPresent = ss.days_present || 0;
         const daysAbsent = daysOpen - daysPresent;
+        const teacherName = ss.formMaster;
 
         const dob = new Date(ss.dob);
         const compareDate = new Date(eotData[ss.cls]);
@@ -124,15 +194,17 @@ async function eot() {
         function bioTable(a, b, c, d, e, tb, idx = 0) {
             for (const arg of arguments) {
                 if (idx > 3 && tb === 1 || idx > 4 && tb === 2 || idx > 2 && tb === 3) break;
-                // if (idx > 3) break;
                 document.querySelectorAll(`#section-bio table:nth-child(${tb}) tr td:nth-child(2)`)[idx].textContent = arg;
                 idx++;
             }
         }
         bioTable(regNo, fullName, gender, age, null, 1);
         bioTable(className, classSize, daysOpen, daysPresent, daysAbsent, 2);
-        bioTable(thisTerm, nextTerm, session, null, false, 3);
-
+        bioTable(thisTerm, nextTerm, session, null, null, 3);        
+        
+        // set teacher's name
+        teacherDiv.querySelector('p').textContent = teacherName;
+/*
         // load section grade table 1: subjects
         let num = configs[7].indexOf(ss.cls);
         chooseConfig(num);
@@ -140,9 +212,6 @@ async function eot() {
         await getDoc(docRef).then(res => {
             if (!res.exists) return window.alert("The records for this student do not exist.")
             const scores = Object.entries(res.data()).sort();
-            const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
-            const tbodyTerm = document.querySelector('#section-grade table:nth-child(2) tbody');
-            let term = ["First", "Second", "Third"].indexOf(thisTerm);
             // console.log("Term tab: ", term)
             let total = 0, myAverage;
             
@@ -177,17 +246,6 @@ async function eot() {
                 total += subtotal;
                 // console.log(reducer);
                 
-                tbodyScores.insertAdjacentHTML('beforeend', `
-                    <tr>${reducer}</tr>
-                `)
-                tbodyTerm.insertAdjacentHTML('beforeend', `
-                    <tr>
-                        <td>${term === 0 ? subtotal : ''}</td>
-                        <td>${term === 1 ? subtotal : ''}</td>
-                        <td>${term === 2 ? subtotal : ''}</td>
-                        <td></td>
-                    </tr>
-                `)
             })
             // console.log("Total: ", total)
             const vpDiv = document.getElementById('vp');
@@ -220,16 +278,14 @@ async function eot() {
                     percent.textContent = 'F';
                     break;
             }
-        })
+        })*/
         /*
         offered.forEach((arr, ind) => {
             document.querySelectorAll('#section-grade table:nth-child(1) tr td:first-child')[ind].textContent = arr[1];
-        })
+        })*/
         
     })
 }
-eot();
-*/
 /*
 // Dates
 var date1 = new Date('2024-03-03');

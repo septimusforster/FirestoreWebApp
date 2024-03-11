@@ -1,6 +1,6 @@
 import { initializeApp, deleteApp } from "firebase/app"
 import {
-    getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp, setDoc
+    getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp, setDoc, getDocsFromCache
 } from "firebase/firestore"
 import pk from "../src/JSON/upass.json" assert {type: 'json'};
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
@@ -255,11 +255,23 @@ async function logger(operation, action, uid) {
     chooseConfig(num)
 }
 const printBtn = document.querySelectorAll('.side-panel-toggle')[3];
-printBtn.onclick = function () {
+printBtn.onclick = async function () {
     const cls = myIframe.contentDocument.querySelector('h3#students').textContent;
     const preview = JSON.parse(sessionStorage.getItem('preview'));
     const row = Number(myIframe.contentDocument.querySelector('table tr.active td:first-child').textContent);
-    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size: preview.length}));
-    window.open('result.html#topical', '_blank');
+    const arm = preview[row - 1].arm;
+
+    chooseConfig(6);
+    let formMaster = "masterOfForm." + cls;
+    
+    const q = query(collection(db, "staffCollection"), where(formMaster, "==", arm));
+    const snapped = await getDocs(q);
+    if (snapped.empty) return window.alert("This class has no form master. You can appoint one on the Reserved page.");
+    snapped.docs.forEach(snap => {
+        formMaster = snap.get('fullName');
+        // console.log(snap.id)
+    })
+    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size: preview.length, formMaster}));
+    window.open('result.html', '_blank');
     // location.href = 'result.html#topical';
 }
