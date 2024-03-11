@@ -65,17 +65,27 @@ const formRegister = document.forms.formRegister;
 //         id = e.target.name;
 //         inputs = [...{[id]: val}];
 // })
-formRegister.addEventListener('submit', (e) => {
+formRegister.addEventListener('submit', async (e) => {
     e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.opacity = '.5';
     const formData = new FormData(formRegister);
-    // const comm = formData.getAll();
-    const entries = formData.entries();
     let inputs = {};
     
-    for (const pair of entries) {
+    for (const pair of formData.entries()) {
         if (!pair[1]) continue;
         inputs[pair[0]] = formData.getAll(pair[0]);
     }
-    
-    console.log("Inputs:", inputs);
+    const entries = Object.entries(inputs);
+    // console.log("Entries:", entries);
+    const promises = entries.map(async cb => {
+        await updateDoc(doc(db, "students", cb[0]), {
+            days_present: Number(cb[1][0]),
+            comment: cb[1][1]
+        })
+    })
+    await Promise.allSettled(promises);
+    window.alert("Success!");
+    e.submitter.disabled = false;
+    e.submitter.style.opacity = '1';
 })
