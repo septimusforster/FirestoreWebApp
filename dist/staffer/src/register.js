@@ -48,8 +48,8 @@ for (const [k, v] of master_of_form) {
                     <td>${doc.data().gender}</td>
                     <td>${doc.data().email}</td>
                     <td>${doc.data().password}</td>
-                    <td><input type="number" data-dpn="${i}" name="dp" min="0" max="99" pattern="[0-9]{1,2}"/></td>
-                    <td><input type="text" data-commn="${i}" name="comm" id="${doc.id}" autocomplete="off"/></td>
+                    <td><input type="number" name="${doc.id}" min="0" max="99" pattern="[0-9]{1,2}"/></td>
+                    <td><input type="text" name="${doc.id}" autocomplete="off"/></td>
                 </tr>
             `)
             i++;
@@ -59,18 +59,23 @@ for (const [k, v] of master_of_form) {
     document.querySelector('#load-icon').classList.remove('running');
     table.style.display = 'block';
 }
-const inputs = document.querySelectorAll('input:not(input[type="submit"]');
 const formRegister = document.forms.formRegister;
+// formRegister.addEventListener('change', (e) => {
+//     let val = e.target.value,
+//         id = e.target.name;
+//         inputs = [...{[id]: val}];
+// })
 formRegister.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(formRegister);
-    const dp = formData.getAll('dp');
-    const comm = formData.getAll('comm');
-    const IDs = inputs.map(inp => {
-        if (inp.value) return inp.id;
-    })
-
-    console.log(dp);
-    console.log(comm);
-    console.log(IDs);
+    // const comm = formData.getAll();
+    const entries = formData.entries();
+    let inputs = {};
+    
+    for (const pair of entries) {
+        if (!pair[1]) continue;
+        inputs[pair[0]] = formData.getAll(pair[0]);
+    }
+    
+    console.log("Inputs:", inputs);
 })
