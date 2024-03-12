@@ -160,7 +160,7 @@ function overstats(sTot, sAve, cAve) {
         counter++;
     }
 }
-const CLS_AVERAGE = (overall/classSize).toFixed(1);
+const CLS_AVERAGE = (overall/(classSize*studentScores.length)).toFixed(1);
 overstats(total, ME_AVERAGE, CLS_AVERAGE);
 
 async function eot() {
@@ -193,7 +193,6 @@ async function eot() {
 
         //load photo
         document.images[1].src = photo || "../img/7503204_user_profile_account_person_avatar_icon.png";
-        // document.images[1].src = photo || "../img/9035117_person_icon.png";
 
         function bioTable(a, b, c, d, e, tb, idx = 0) {
             for (const arg of arguments) {

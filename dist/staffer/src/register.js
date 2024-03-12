@@ -44,7 +44,7 @@ for (const [k, v] of master_of_form) {
                 <tr>
                     <td>${i}</td>
                     <td>${doc.data().last_name +' '+ doc.data().first_name +' '+ doc.data().other_name}</td>
-                    <td>${doc.data().admission_no}</td>
+                    <td><input type="text" name="${doc.id}" class="${doc.id}" autocomplete="off" placeholder="${doc.data().admission_no}"/></td>
                     <td>${doc.data().gender}</td>
                     <td>${doc.data().email}</td>
                     <td>${doc.data().password}</td>
@@ -79,14 +79,19 @@ formRegister.addEventListener('submit', async (e) => {
     }
     const entries = Object.entries(inputs);
     // console.log("Entries:", entries);
+    
     const promises = entries.map(async cb => {
         await updateDoc(doc(db, "students", cb[0]), {
-            days_present: Number(cb[1][0]),
-            comment: cb[1][1]
+            admission_no: cb[1][0],
+            days_present: Number(cb[1][1]),
+            comment: cb[1][2],
         })
     })
     await Promise.allSettled(promises);
+    location.reload();
+    /*
     window.alert("Success!");
     e.submitter.disabled = false;
     e.submitter.style.opacity = '1';
+    */
 })
