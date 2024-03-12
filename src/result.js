@@ -17,6 +17,7 @@ function chooseConfig(num) {
 
 const ss = JSON.parse(sessionStorage.getItem('student'));
 const offered = ss.offered;
+const classSize = ss.size;
 
 let eotData;
 let thisTerm;
@@ -114,7 +115,7 @@ for (i = 0; i < ME.length - 1; i++) {
     `)
 }
 
-const ME_AVERAGE = (total / (ME.length - 1)).toFixed();
+const ME_AVERAGE = (total / (ME.length - 1)).toFixed(1);
 // console.log(total);
 console.log("Child's average:", ME_AVERAGE);
 console.log("Overall:", overall);
@@ -159,7 +160,8 @@ function overstats(sTot, sAve, cAve) {
         counter++;
     }
 }
-overstats(total, ME_AVERAGE, overall);
+const CLS_AVERAGE = (overall/classSize).toFixed(1);
+overstats(total, ME_AVERAGE, CLS_AVERAGE);
 
 async function eot() {
     let teacherDiv = document.getElementById('teacher');
@@ -178,10 +180,11 @@ async function eot() {
         const fullName = ss.last_name.concat(' ', ss.first_name, ' ', ss.other_name);
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
         const className = `${ss.cls} ${ss.arm}`;
-        const classSize = ss.size;
+        // const classSize = ss.size;
         const daysPresent = ss.days_present || 0;
         const daysAbsent = daysOpen - daysPresent;
         const teacherName = ss.formMaster;
+        const comment = ss.comment || '';
 
         const dob = new Date(ss.dob);
         const compareDate = new Date(eotData[ss.cls]);
@@ -189,7 +192,8 @@ async function eot() {
         const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 7 * 52)) || '';
 
         //load photo
-        document.images[1].src = photo || "../img/9035117_person_icon.png";
+        document.images[1].src = photo || "../img/7503204_user_profile_account_person_avatar_icon.png";
+        // document.images[1].src = photo || "../img/9035117_person_icon.png";
 
         function bioTable(a, b, c, d, e, tb, idx = 0) {
             for (const arg of arguments) {
@@ -201,9 +205,10 @@ async function eot() {
         bioTable(regNo, fullName, gender, age, null, 1);
         bioTable(className, classSize, daysOpen, daysPresent, daysAbsent, 2);
         bioTable(thisTerm, nextTerm, session, null, null, 3);        
-        
-        // set teacher's name
+
+        // set teacher's name and comment
         teacherDiv.querySelector('p').textContent = teacherName;
+        teacherDiv.querySelector('blockquote').textContent = comment;
 /*
         // load section grade table 1: subjects
         let num = configs[7].indexOf(ss.cls);

@@ -36,7 +36,7 @@ for (const [k, v] of master_of_form) {
     const q = query(collection(db, "students"), where("arm", "==", v));
     const snapDoc = await getDocs(q);
     if (snapDoc.empty) {
-        console.log('snapdoc is empty')
+        window.alert('This class is empty.');
     } else {
         let i = 1;
         snapDoc.forEach((doc) => {
@@ -48,8 +48,8 @@ for (const [k, v] of master_of_form) {
                     <td>${doc.data().gender}</td>
                     <td>${doc.data().email}</td>
                     <td>${doc.data().password}</td>
-                    <td><input type="number" name="${doc.id}" min="0" max="99" pattern="[0-9]{1,2}"/></td>
-                    <td><input type="text" name="${doc.id}" autocomplete="off"/></td>
+                    <td><input type="number" name="${doc.id}" class="${doc.id}" min="0" max="99" pattern="[0-9]{1,2}" placeholder="${doc.data().days_present || 0}"/></td>
+                    <td><input type="text" name="${doc.id}" class="${doc.id}" autocomplete="off" placeholder="${doc.data().comment || ''}"/></td>
                 </tr>
             `)
             i++;
@@ -60,11 +60,12 @@ for (const [k, v] of master_of_form) {
     table.style.display = 'block';
 }
 const formRegister = document.forms.formRegister;
-// formRegister.addEventListener('change', (e) => {
-//     let val = e.target.value,
-//         id = e.target.name;
-//         inputs = [...{[id]: val}];
-// })
+formRegister.addEventListener('change', (e) => {
+    let inputs = document.getElementsByClassName(e.target.name);
+    for (const a of inputs) {
+        if (a.value == '') a.value = a.placeholder;
+    }
+})
 formRegister.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
