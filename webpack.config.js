@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT pinstripe.js
 /*
 module.exports = {
@@ -179,3 +179,14 @@ module.exports = {
     watch: true
 }
 */
+//STUDENT result.js
+
+module.exports = {
+    mode: "development",
+    entry: "./dist/student/src/result.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/student/src"),
+        filename: "result_bundle.js"
+    },
+    watch: true
+}

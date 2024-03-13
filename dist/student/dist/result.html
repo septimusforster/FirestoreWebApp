@@ -3,19 +3,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Result Checker</title>
+    <script type="module" src="../src/result_bundle.js"></script>
+    <link rel="stylesheet" href="../style/result.css">
 </head>
 <body>
     <header></header>
     <main>
-        <form action="">
-            <input type="text" name="adm-num" id="adm-num" placeholder="Enter Your Admission Number" required/>
+        <form name="formResult" id="formResult">
+            <div id="logo">
+                <img src="../../staffer/img/DCA LOGO.png" alt="logo">
+            </div>
+            <input type="text" name="adm" id="adm" placeholder="Enter Your Admission Number" autocomplete="off" required/>
             <select name="cls" id="cls" required>
                 <option value="">Choose Your Class</option>
+                <option value="JSS 1">JSS 1</option>
+                <option value="JSS 2">JSS 2</option>
+                <option value="JSS 3">JSS 3</option>
+                <option value="SSS 1">SSS 1</option>
+                <option value="SSS 2">SSS 2</option>
+                <option value="SSS 3">SSS 3</option>
             </select>
-            <input type="text" name="pin" id="pin" placeholder="Enter Your PIN"/>
-            <input type="submit" value="Check Result">
+            <input type="text" name="pin" id="pin" placeholder="Enter Your PIN" autocomplete="off" required/>
+            <input type="submit" value="Submit">
         </form>
     </main>
     <footer></footer>
+    <dialog id="dlog-checker">
+        <p><strong>Hold On</strong><br>The result checker is underway.</p>
+        <output>Initializing</output>
+        <output>Looking up...</output>
+        <output>Done.</output>
+    </dialog>
+    <dialog id="dlog-oops">
+        <img src="../img/oops-sticky-paper.png" alt="oops">
+        <output></output>
+    </dialog>
 </body>
 </html>
