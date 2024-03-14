@@ -174,6 +174,7 @@ async function eot() {
         const nextTerm = eotData.next_term;
         const session = eotData.session;
         const daysOpen = parseInt(eotData.days_open);
+        const stamp = eotData.stamp;
         
         const photo = ss.photo_src;
         const regNo = ss.admission_no;
@@ -208,6 +209,9 @@ async function eot() {
         // set teacher's name and comment
         teacherDiv.querySelector('p').textContent = teacherName;
         teacherDiv.querySelector('blockquote').textContent = comment;
+
+        // load stamp
+        document.querySelector("img[alt='stamp']").src = stamp;
 /*
         // load section grade table 1: subjects
         let num = configs[7].indexOf(ss.cls);

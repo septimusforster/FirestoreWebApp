@@ -441,11 +441,13 @@ stampForm.addEventListener('submit', async (e) => {
     const file = stamp.files[0];
     const fileName = file.name;
 
-    console.log(fileName);
     const storage = getStorage();
     const dest = ref(storage, "img/" + fileName);
     await uploadBytes(dest, file).then(async res => {
-        await getDownloadURL(res.ref).then(url => console.log(url))
+        await getDownloadURL(res.ref).then(async url => {
+            await updateDoc(doc(db, "reserved", "EOT"), { stamp: url });
+            window.alert("Stamp upload successful.")
+        })
     })
     formStatus(e);
 })
