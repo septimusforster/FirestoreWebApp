@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staffers</title>
+    <style>
+        html, body, * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        body {
+            background-color: #009578;
+            color: #fff;
+        }
+        main {
+            padding: 100px;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        thead {
+            background-color: #004d3d;
+        }
+        th {
+            text-align: left;
+        }
+        th, td {
+            padding: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header></header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th title="Username">USR</th>
+                    <th title="Password">PWD</th>
+                    <!-- <th title="Master of Form">MOF</th> -->
+                    <th title="Classes Taught">CT</th>
+                    <!-- <th title="Subjects Taught">ST</th> -->
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </main>
+    <footer></footer>
+    <script>
+        const tbody = document.querySelector('table tbody');
+        const ss = JSON.parse(sessionStorage.getItem('staffDetails'));
+        const arr = Object.entries(ss);
+
+        let td = 1;
+        for (const val of arr) {
+            tbody.insertAdjacentHTML('beforeend', `
+                <td>${td}</td>
+                <td>${val[1].fullName}</td>
+                <td>${val[1].username}</td>
+                <td>${val[1].password}</td>
+                <td>${val[1].classroomsTaught}</td>
+            `);
+            td++;
+        }
+    </script>
+</body>
+</html>

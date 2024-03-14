@@ -53,11 +53,13 @@ for(i = 0; i < 4; i++) {
                 continue;
             }
             const q = query(staffRef, where("code", "!=", "USADEY"))
-            let data = {}
+            let data = {}, details = [];
             await getDocs(q).then(doc => doc.forEach(uname => {
                 data[uname.id] = uname.data().fullName;
+                details.push(uname.data());
             }))
             sessionStorage.setItem('staffers', JSON.stringify(data));
+            sessionStorage.setItem('staffDetails', JSON.stringify(details));
             console.log('From server');
             break;
     }
@@ -450,4 +452,13 @@ stampForm.addEventListener('submit', async (e) => {
         })
     })
     formStatus(e);
+})
+const viewStaffers = document.querySelector('button#view-staffers');
+viewStaffers.addEventListener('click', function () {
+    if (sessionStorage.hasOwnProperty('staffDetails')) {
+        // visit staffers.html
+        location.href = './staffers.html';
+    } else {
+        window.alert("Server is not ready yet.");
+    }
 })

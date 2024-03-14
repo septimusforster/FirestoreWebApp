@@ -57,6 +57,7 @@ for (i = 0; i < ME.length - 1; i++) {
     var td = '';
     let [a,b,c,d] = ME[i][1];
     td += `
+        <td>${i+1}</td>
         <td>${offered[ME[i][0]]}</td>
         <td>${a || ''}</td>
         <td>${b || ''}</td>

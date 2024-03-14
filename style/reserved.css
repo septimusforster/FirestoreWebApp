@@ -245,3 +245,12 @@ label.delete-btn {
 img[alt="stamp"] {
     margin: 10px;
 }
+button#view-staffers {
+    margin: 0 20px;
+    padding: 14px 24px;
+    border-radius: 7px;
+}
+button#view-staffers:focus {
+    background-color: #004d3d;
+    color: #fff;
+}

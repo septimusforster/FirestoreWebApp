@@ -144,6 +144,7 @@
                 document.querySelector('.preview__content ul').innerHTML = '';
                 ss.forEach(obj => {
                     if (obj.id === studentID) {
+                        let subs = Object.values(obj.offered).sort().reduce((acc, cur) => `${acc}<br>`+ cur);
                         document.querySelector('.preview__content ul').insertAdjacentHTML('beforeend', `
                             <li>NAME: ${''.concat(obj.last_name, ' ', obj.first_name, ' ', obj.other_name)}</li>
                             <li>ADM NO: ${obj.admission_no}</li>
@@ -153,6 +154,7 @@
                             <li>ADDR: ${obj.home_address}</li>
                             <li>EMAIL: ${obj.email}</li>
                             <li>PWD: ${obj.password}</li>
+                            <li>SUBJ: ${subs}</li>
                             <li>NAT: ${obj.nationality}</li>
                             <li>STA: ${obj.state}</li>
                             <li>LGA: ${obj.lga}</li>
