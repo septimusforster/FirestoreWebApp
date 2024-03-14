@@ -24,7 +24,7 @@ module.exports = {
 }
 */
 //ROOT reserved.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/reserved.js",
@@ -34,7 +34,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT result.js
 /*
 module.exports = {
@@ -180,7 +180,7 @@ module.exports = {
 }
 */
 //STUDENT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/result.js",
@@ -190,3 +190,4 @@ module.exports = {
     },
     watch: true
 }
+*/

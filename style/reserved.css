@@ -222,3 +222,26 @@ button#submit:hover, button#add:hover {
     background-color: #004d3d;
     color: #fff;
 }
+form#ext-form > div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+form#ext-form > div:first-child input {
+    width: 100%;
+}
+hr {
+    width: 10px;
+    margin: 20px auto;
+}
+input#stamp {
+    opacity: 0;
+    width: 0;
+}
+label.delete-btn {
+    padding: 12px 24px;
+    font-family: system-ui;
+}
+img[alt="stamp"] {
+    margin: 10px;
+}

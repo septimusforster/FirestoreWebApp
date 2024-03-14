@@ -39,6 +39,12 @@
                 <div class="section__div">
                     <button type="button" id="eOT-btn" onclick="displayModal(this, '#eOT-dialog')"></button><span>Set <em>Record Access Date (RAD)</em></span>
                 </div>
+                <div class="section__div">
+                    <button type="button" id="eot-ext-btn" onclick="displayModal(this, '#ext-dialog')"></button><span>Set <em>End of Term Resources</em></span>
+                </div>
+                <div class="section__div">
+                    <button type="button" id="stamp-btn" onclick="displayModal(this, '#stamp-dialog')"></button><span>Set <em>Stamp</em></span>
+                </div>
                 <div id="view-div">
                     <button id="view-changes">View Changes</button>
                 </div>
@@ -194,6 +200,48 @@
             </div>
         </form>
     </dialog>
+    <dialog id="ext-dialog">
+        <form name="extForm" id="ext-form" class="dialog-fm">
+            <div>
+                <input type="text" list="terms" name="this_term" class="class" placeholder="Term" autocomplete="off"/>
+                <input type="text" list="sessions" name="session" class="class" placeholder="Session" autocomplete="off"/>
+                <input type="date" name="next_term" class="class" title="Resumption Date" autocomplete="off"/>
+                <input type="number" name="days_open" class="class" placeholder="Days Open" autocomplete="off"/><hr/>
+                <input type="text" name="principal" class="class" placeholder="Principal" autocomplete="off"/>
+                <input type="text" name="Acomm" class="class" placeholder="Comment for A" autocomplete="off"/>
+                <input type="text" name="Bcomm" class="class" placeholder="Comment for B" autocomplete="off"/>
+                <input type="text" name="Ccomm" class="class" placeholder="Comment for C" autocomplete="off"/>
+                <input type="text" name="Dcomm" class="class" placeholder="Comment for D" autocomplete="off"/>
+                <input type="text" name="Ecomm" class="class" placeholder="Comment for E" autocomplete="off"/>
+                <input type="text" name="Fcomm" class="class" placeholder="Comment for F" autocomplete="off"/><hr/>
+            </div>
+            <div class="footer">
+                <button type="reset" title="Clear">&rtimes;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button class="" id="submit">SUBMIT</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="stamp-dialog">
+        <form name="stampForm" id="stamp-form" class="dialog-fm">
+            <div>
+                <img src="" alt="stamp" width="100">
+                <input type="file" name="stamp" id="stamp" required/>
+                <label for="stamp" class="delete-btn">Upload Stamp</label>
+            </div>
+            <div class="footer">
+                <button type="reset" title="Clear">&rtimes;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button id="submit">SUBMIT</button>
+            </div>
+        </form>
+    </dialog>
+    <datalist id="terms">
+        <option value="First"></option>
+        <option value="Second"></option>
+        <option value="Third"></option>
+    </datalist>
+    <datalist id="sessions">
+        <option value="2023/2024"></option>
+        <option value="2024/2025"></option>
+        <option value="2025/2026"></option>
+    </datalist>
     <datalist id="abbr">
     </datalist>
     <datalist id="fulltxt">

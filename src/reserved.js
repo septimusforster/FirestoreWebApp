@@ -2,6 +2,7 @@ import { initializeApp, deleteApp } from "firebase/app";
 import {
     getFirestore, arrayUnion, arrayRemove, collection, getDoc, getDocs, setDoc, addDoc, deleteDoc, deleteField, doc, query, and, where, limit, updateDoc
 } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 // initial firebase app
@@ -400,5 +401,51 @@ eOTForm.addEventListener('submit', async (e) => {
     } catch (error) {
         window.alert(error)
     }
+    formStatus(e);
+})
+const extForm = document.forms.extForm;
+extForm.addEventListener('submit', async (e) => {
+    formStatus(e, 'enabled');
+    const formData = new FormData(extForm);
+    let data = {};
+    for (const pair of formData.entries()) {
+        if (!pair[1]) continue;
+        if (pair[0].endsWith('comm')) {
+            data["principal."+pair[0]] = pair[1];
+        } else if (pair[0].endsWith('principal')) {
+            data[pair[0]+".name"] = pair[1];
+        } else {
+            data[pair[0]] = pair[1];
+        }
+    }
+    // console.log(data);
+    const reference = doc(db, "reserved", "EOT");
+    await updateDoc(reference, data);
+    window.alert("EOT resources successfully set.");
+    formStatus(e);
+})
+const imgStamp = document.querySelector('img[alt="stamp"]');
+const stamp = document.querySelector('#stamp');
+stamp.addEventListener('change', (e) => {
+    const fr = new FileReader();
+    fr.onload = function () {
+        imgStamp.src = fr.result;
+        // console.log(fr.result)
+    }
+    fr.readAsDataURL(e.target.files[0]);
+})
+const stampForm = document.forms.stampForm;
+stampForm.addEventListener('submit', async (e) => {
+    formStatus(e, 'enabled');
+    chooseConfig(6);
+    const file = stamp.files[0];
+    const fileName = file.name;
+
+    console.log(fileName);
+    const storage = getStorage();
+    const dest = ref(storage, "img/" + fileName);
+    await uploadBytes(dest, file).then(async res => {
+        await getDownloadURL(res.ref).then(url => console.log(url))
+    })
     formStatus(e);
 })

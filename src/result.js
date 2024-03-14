@@ -58,10 +58,10 @@ for (i = 0; i < ME.length - 1; i++) {
     let [a,b,c,d] = ME[i][1];
     td += `
         <td>${offered[ME[i][0]]}</td>
-        <td>${a}</td>
-        <td>${b}</td>
-        <td>${c}</td>
-        <td>${d}</td>
+        <td>${a || ''}</td>
+        <td>${b || ''}</td>
+        <td>${c || ''}</td>
+        <td>${d || ''}</td>
     `;
     let subtotal = a + b + c + d;
     switch (true) {
@@ -173,7 +173,7 @@ async function eot() {
         thisTerm = eotData.this_term;
         const nextTerm = eotData.next_term;
         const session = eotData.session;
-        const daysOpen = eotData.days_open;
+        const daysOpen = parseInt(eotData.days_open);
         
         const photo = ss.photo_src;
         const regNo = ss.admission_no;
