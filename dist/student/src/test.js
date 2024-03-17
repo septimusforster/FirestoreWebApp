@@ -168,12 +168,13 @@ accForm.addEventListener('submit', async (e) => {
     })
 })
 
-// document.addEventListener('fullscreenchange', () => {
-//     if (document.fullscreenElement === null) {
-//         submission();
-//         // submitBtn.click();
-//     }
-// })
+document.addEventListener('fullscreenchange', () => {
+    if (document.fullscreenElement === null) {
+        // document.documentElement.requestFullscreen();
+        // submitBtn.click();
+        submission();
+    }
+})
 
 const classIndex = configs[7].indexOf(snappy.class);
 
@@ -182,36 +183,22 @@ var app = initializeApp(configs[classIndex]);
 // init services
 var db = getFirestore();
 
-// const selectElt = document.querySelector('select#classroom');
-// selectElt.addEventListener('change', (e) => {
-//     deleteApp(app);
-//     let optIndex = e.target.selectedIndex - 1;
-//     app = initializeApp(configs[optIndex]);
-//     // init services
-//     db = getFirestore()
-//     // collection refs
-// })
-// lksHjPA7
-// F79pWGRz
-// sKi3qxLu
-// new Date(JSON.parse(sessionStorage.LIT)[0].startDate) > Date.now()
-// JSON.parse(sessionStorage.LIT)[0].link
 submitBtn.addEventListener('click', (e) => {
-    // display submitDialog
-    // submitDialog.showModal();
-    submission();
+    e.preventDefault();
+    submitDialog.showModal();
+    // submission();
 });
-/*
+
 const yesBtn = document.querySelector('button#yes');
 yesBtn.addEventListener('click', (e) => {
-    submitDialog.querySelectorAll(button).forEach(btn => {
+    submitDialog.querySelectorAll("button").forEach(btn => {
         btn.disabled = true;
         btn.style.cursor = 'not-allowed';
     })
     submission();
     submitDialog.close();
 })
-*/
+
 async function submission() {
     // submitBtn.addEventListener('click', async (e) => {
         submitBtn.disabled = true;
