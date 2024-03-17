@@ -34,7 +34,7 @@ const main = document.querySelector('main');
 // const dt = subby[cat].startDate;
 const startDate = new Date(subby[cat].startDate).setHours(24);
 const startTime = subby[cat].startTime;
-const duration = subby[cat].duration;
+var duration = subby[cat].duration;
 
 // settingn up startTime
 /*
@@ -65,6 +65,7 @@ function displayHeader() {
     //display header resources
     document.getElementById('person').textContent = `${snappy.last_name + ' ' + snappy.first_name + ' ' + snappy.other_name}`;
     document.getElementById('task').textContent = snappy.offered[testAbbr];
+    // timer.textContent = duration + '.00';
     timer.textContent = duration;
     header.style.display = 'flex';
     header.classList.remove('disp');
@@ -124,13 +125,20 @@ iframe.addEventListener('load', function () {
     // console.log('Iframe has finished loading. Now start timer.')
     // start timer
 })
+let sec = 60;
 function countDown () {
+    // sec--;
     if (timer.textContent == 0) {
         clearInterval(intervalID);
         submission();
         // submitBtn.click();
     } else {
-        timer.textContent -= 1;
+        timer.textContent -= 1;/*
+        if (sec == 0) {
+            duration--;
+            sec = 60; //reset sec
+        }
+        timer.textContent = duration + '.' + String(sec).padStart(2,0);*/
     }
 }
 
@@ -139,9 +147,9 @@ const uid = snappy.id;
 
 let buffer = new ArrayBuffer(questions);
 let dv = new DataView(buffer);
-let updateVal = [null, null, null, null];
+let updateVal;
 const msgDialog = document.querySelector('dialog#msgDialog');
-// const submitDialog = document.querySelector('dialog#submitDialog');
+const submitDialog = document.querySelector('dialog#submitDialog');
 const submitBtn = document.querySelector('.aside__footer input[type="submit"]');
 
 const accForm = document.forms.accForm;
@@ -155,6 +163,7 @@ accForm.addEventListener('submit', async (e) => {
             window.alert("You've already taken this test.");
             return;
         }
+        updateVal = res.get(testAbbr) || [null, null, null, null];
         if (acc === code) {
             accDialog.close();
             document.documentElement.requestFullscreen();
