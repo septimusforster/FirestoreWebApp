@@ -250,3 +250,20 @@ const quizForm = document.forms.quizForm;
 quizForm.addEventListener('change', (e) => {
     dv.setInt8(e.target.name, e.target.value);
 })
+
+let answerPad = document.querySelector('.switch')
+
+function openpad () {
+    answerPad.classList.add('open-aside')
+}
+function closepad () {
+    answerPad.classList.remove('open-aside')
+}
+const iframeWindow = iframe.contentWindow;
+iframeWindow.addEventListener('click', function(){
+    if (answerPad.classList.contains('open-aside')) {
+        closepad();
+    } else {
+        openpad()
+    }
+})
