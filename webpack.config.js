@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT pinstripe.js
 /*
 module.exports = {
@@ -168,7 +168,7 @@ module.exports = {
 }
 */
 //STUDENT test.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/test.js",
@@ -178,7 +178,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STUDENT result.js
 /*
 module.exports = {

@@ -15,7 +15,6 @@ subby.forEach((sb, n) => {
         return;
     }
 })
-// const cat = subby.length < ct - 1 ? subby.length - ct : subby.length - 1;
 
 const testAbbr = params;
 const testNum = ct - 1;
@@ -152,11 +151,10 @@ accForm.addEventListener('submit', async (e) => {
     // get test doc if available
     const scoreRef = doc(db, "scores", uid);
     await getDoc(scoreRef).then(res => {
-        /*
-        if (res.data()[testAbbr][testNum] != null) {
+        if (res.get(testAbbr) && res.get(testAbbr)[testNum] != null) {
             window.alert("You've already taken this test.");
             return;
-        }*/
+        }
         if (acc === code) {
             accDialog.close();
             document.documentElement.requestFullscreen();

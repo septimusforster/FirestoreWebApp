@@ -145,7 +145,6 @@ submitBtn.addEventListener('click', (e) => {
                 })
             })
         })
-    // const myRef = doc(db, "students", cls)
 })
 
 const hiddenInput = document.querySelector('input[type="hidden"]');

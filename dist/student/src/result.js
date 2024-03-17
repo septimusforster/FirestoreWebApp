@@ -51,7 +51,15 @@ formResult.addEventListener('submit', async (e) => {
     };
     outputs[0].classList.add('active');
     snapShot.docs.forEach(val => {
-        data = val.data();
+        // check pin used
+        if (val.data().pin_used >= 5) {
+            dlogOops.querySelector('output').textContent = "Your PIN quota has been used up. Click here to purchase a new PIN.";
+            createButton('oops');
+            dlogOops.showModal();
+            return;
+        } else {
+            data = val.data();
+        }
     });
     // console.log(data.arm)
     const sizeQuery = query(collection(db, "students"), where("arm", "==", data.arm));
