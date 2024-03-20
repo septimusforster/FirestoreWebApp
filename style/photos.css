@@ -1,0 +1,98 @@
+html, body, * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font: 18px system-ui;
+}
+button,
+input[type="submit"] {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    display: block;
+    border-radius: 5px;
+    padding: 12px 24px;
+    background-color: #009578;
+    color: #fff;
+}
+input[type="file"] {
+    display: none;
+}
+label {
+    margin: 7px;
+    padding: 7px;
+    border-radius: 5px;
+    background-color: #7777ff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+label > span {
+    color: #fff;
+}
+main {
+    margin: 50px auto;
+    padding: 20px;
+    /* border: 1px solid gray; */
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    /* gap: 3em; */
+    /* align-items: center; */
+}
+main > div {
+    border: none;
+    /* border: 1px solid gray; */
+}
+main > div:nth-child(1) {
+    height: 80vh;
+    height: 80dvh;
+    overflow-y: scroll;
+}
+main > div:nth-child(1)::-webkit-scrollbar {
+    width: 10px;
+}
+main > div:nth-child(1)::-webkit-scrollbar-thumb {
+    /* border-radius: 5px; */
+    background-color: #aaa;
+}
+main > div:nth-child(2) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+}
+div#imageViewer {
+    border: 1px solid #aaa;
+    height: 180px;
+    width: 180px;
+    position: sticky;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+table {
+    border-collapse: collapse;
+}
+thead {
+    background-color: #555;
+    color: #fff;
+}
+th, td {
+    padding: 12px 24px;
+}
+tbody > tr {
+    border: 1px solid #e3e3e3;
+    cursor: pointer;
+    transition: all .1s ease-in-out;
+}
+/* tbody > tr:nth-of-type(odd) {
+    background-color: #e3e3e3;
+
+} */
+tbody > tr:hover,
+tbody > tr.active {
+    background-color: #f1f1f9;  
+}

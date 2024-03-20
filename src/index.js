@@ -256,10 +256,10 @@ async function logger(operation, action, uid) {
 }
 const printBtn = document.querySelectorAll('.side-panel-toggle')[3];
 printBtn.onclick = async function () {
-    const cls = myIframe.contentDocument.querySelector('h3#students').textContent;
-    const preview = JSON.parse(sessionStorage.getItem('preview'));
     const row = Number(myIframe.contentDocument.querySelector('table tr.active td:first-child').textContent);
-    const arm = preview[row - 1].arm;
+    const preview = JSON.parse(sessionStorage.getItem('preview'));
+    let cls = myIframe.contentDocument.querySelector('h3#students').textContent;
+    let arm = preview[row - 1].arm;
 
     chooseConfig(6);
     let formMaster = "masterOfForm." + cls;
@@ -274,4 +274,11 @@ printBtn.onclick = async function () {
     sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size: preview.length, formMaster}));
     window.open('result.html', '_blank');
     // location.href = 'result.html#topical';
+}
+const photoBtn = document.querySelectorAll('.side-panel-toggle')[4];
+photoBtn.onclick = function () {
+    const preview = JSON.parse(sessionStorage.getItem('preview'));
+    let cls = myIframe.contentDocument.querySelector('h3#students').textContent;
+    let arm = preview[0].arm;
+    location.href = `photos.html?cls=${cls}&arm=${arm}`;
 }

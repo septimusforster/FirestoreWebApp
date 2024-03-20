@@ -47,6 +47,18 @@ module.exports = {
     watch: true
 }
 */
+//ROOT photos.js
+
+module.exports = {
+    mode: "development",
+    entry: "./src/photos.js",
+    output: {
+        path: path.resolve(__dirname, "src"),
+        filename: "photos_bundle.js"
+    },
+    watch: true
+}
+
 //ROOT pinstripe.js
 /*
 module.exports = {
@@ -168,7 +180,7 @@ module.exports = {
 }
 */
 //STUDENT test.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/test.js",
@@ -178,7 +190,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STUDENT result.js
 /*
 module.exports = {

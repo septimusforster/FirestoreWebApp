@@ -194,7 +194,7 @@ async function eot() {
         const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 7 * 52)) || '';
 
         //load photo
-        document.images[1].src = photo || "../img/7503204_user_profile_account_person_avatar_icon.png";
+        document.images[1].src = photo || "../img/user.png";
 
         function bioTable(a, b, c, d, e, tb, idx = 0) {
             for (const arg of arguments) {

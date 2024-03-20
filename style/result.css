@@ -45,7 +45,8 @@ section {
     width: 150px;
 }
 #section-header img[alt="photo"] {
-    height: 150px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
 }
 #section-bio {
@@ -144,10 +145,8 @@ table {
     padding: 5px;
     text-align: center;
 }
-#section-grade table tbody tr td:nth-of-type(2) {
-    text-align: left;
-}
-#section-grade table:nth-of-type(1) tbody tr td:nth-of-type(1) {
+#section-grade table:nth-of-type(1) tbody tr td:nth-of-type(1),
+#section-grade table:nth-of-type(1) tbody tr td:nth-of-type(2) {
     text-align: left;
 }
 #section-grade th {
