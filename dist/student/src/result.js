@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, collection, getDoc, doc, query, where, getDocs, getCountFromServer } from "firebase/firestore"
+import { getFirestore, collection, getDoc, doc, query, where, getDocs, getCountFromServer, updateDoc, increment } from "firebase/firestore"
 import  configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 // initialize firebase app
@@ -14,13 +14,14 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
+let uid, pinConfig;
 const dlogChecker = document.querySelector('#dlog-checker');
 const dlogOops = document.querySelector('#dlog-oops');
 const outputs = dlogChecker.querySelectorAll('#dlog-checker output');
 const formResult = document.forms.formResult;
 formResult.addEventListener('change', (e) => {
     if (e.target.name === 'cls') {
-        let index = configs[7].indexOf(e.target.value);
+        let index = pinConfig = configs[7].indexOf(e.target.value);
         chooseConfig(index);
     }
 })
@@ -51,9 +52,10 @@ formResult.addEventListener('submit', async (e) => {
     };
     outputs[0].classList.add('active');
     snapShot.docs.forEach(val => {
+        uid = val.id;
         // check pin used
-        if (val.data().pin_used >= 5) {
-            dlogOops.querySelector('output').textContent = "Your PIN quota has been used up. Click here to purchase a new PIN.";
+        if (val.data().pin_used > 5) {
+            dlogOops.querySelector('output').textContent = "Your PIN quota has been used up."; //Click here to purchase a new PIN.
             createButton('oops');
             dlogOops.showModal();
             return;
@@ -108,8 +110,10 @@ function createButton(dlog) {
         // formResult.reset();
     } else {
         button.textContent = "View Result";
-        button.onclick = function () {
+        button.onclick = async function () {
             // this button should first submit PIN_USED taken from the sessionStorage to the backend
+            chooseConfig(pinConfig);
+            await updateDoc(doc(db, "students", uid), { pin_used: increment(1) });
             location.href = '../../result.html';
         }
         // append to dialog

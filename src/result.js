@@ -37,19 +37,20 @@ studentsSnapshot.docs.forEach(result => {
     studentIDs.push(result.id);
 })
 
+let overall = [];
 const scorePromises = studentIDs.map(async sid => {
     await getDoc(doc(db, "scores", sid)).then((res) => {
-        studentScores.push({sid, ...res.data()})
+        studentScores.push({sid, ...res.data()});
+        overall.push(Object.entries(res.data()));
     });
 })
 
 await Promise.allSettled(scorePromises);
-// console.log(studentScores.length);
+// console.log(studentScores);
 const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort();
 // console.log(ME);
 const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
 const tbodyTerm = document.querySelector('#section-grade table:nth-child(2) tbody');
-let overall = 0;
 let total = 0;
 let i;
 
@@ -93,7 +94,7 @@ for (i = 0; i < ME.length - 1; i++) {
         summation.push(w+x+y+z);
     };
     // console.log(summation)
-    overall += summation.reduce((acc, cur) => acc + cur);
+    // overall += summation.reduce((acc, cur) => acc + cur);
     
     let max = summation.reduce((x,y) => Math.max(x,y));
     let min = summation.reduce((x,y) => Math.min(x,y));
@@ -119,7 +120,18 @@ for (i = 0; i < ME.length - 1; i++) {
 const ME_AVERAGE = (total / (ME.length - 1)).toFixed(1);
 // console.log(total);
 console.log("Child's average:", ME_AVERAGE);
-console.log("Overall:", overall);
+let subAverage = [];
+overall.forEach(ov => {
+    let elem = 0, factor = 0;
+    for (const x of ov) {
+        const [a,b,c,d] = x[1];
+        elem += a + b + c + d;
+        factor++;
+    }
+    subAverage.push(elem/factor);
+});
+const CLS_AVERAGE = (subAverage.reduce((acc, cur) => acc + cur)/classSize).toFixed();
+// console.log("subAverage:", subAverage);
 // get principal data
 const princDiv = document.getElementById('principal');
 princDiv.querySelector('p').textContent = principal.name;
@@ -161,7 +173,7 @@ function overstats(sTot, sAve, cAve) {
         counter++;
     }
 }
-const CLS_AVERAGE = (overall/(classSize*studentScores.length)).toFixed(1);
+
 overstats(total, ME_AVERAGE, CLS_AVERAGE);
 
 async function eot() {
@@ -182,7 +194,6 @@ async function eot() {
         const fullName = ss.last_name.concat(' ', ss.first_name, ' ', ss.other_name);
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
         const className = `${ss.cls} ${ss.arm}`;
-        // const classSize = ss.size;
         const daysPresent = ss.days_present || 0;
         const daysAbsent = daysOpen - daysPresent;
         const teacherName = ss.formMaster;
@@ -213,86 +224,6 @@ async function eot() {
 
         // load stamp
         document.querySelector("img[alt='stamp']").src = stamp;
-/*
-        // load section grade table 1: subjects
-        let num = configs[7].indexOf(ss.cls);
-        chooseConfig(num);
-        const docRef = doc(db, "scores", uid);
-        await getDoc(docRef).then(res => {
-            if (!res.exists) return window.alert("The records for this student do not exist.")
-            const scores = Object.entries(res.data()).sort();
-            // console.log("Term tab: ", term)
-            let total = 0, myAverage;
-            
-            scores.forEach(s => {
-                let subtotal = s[1].reduce((prev, curr) => prev + curr);
-                let td = `<td>${offered[s[0]]}</td>`;
-                let reducer = s[1].reduce((acc, cur) => {
-                    td += `<td>${cur}</td>`;
-                    return td;
-                }, td);
-                
-                switch (true) {
-                    case subtotal > 79:
-                        reducer += '<td>A</td><td>Excellent</td>';
-                        break;
-                    case subtotal > 64:
-                        reducer += '<td>B</td><td>Very Good</td>';
-                        break;
-                    case subtotal > 49:
-                        reducer += '<td>C</td><td>Good</td>';
-                        break;
-                    case subtotal > 39:
-                        reducer += '<td>D</td><td>Satisfactory</td>';
-                        break;
-                    case subtotal > 29:
-                        reducer += '<td>E</td><td>Pass</td>';
-                        break;
-                    case subtotal <= 29:
-                        reducer += '<td>F</td><td>Fail</td>';
-                        break;
-                }
-                total += subtotal;
-                // console.log(reducer);
-                
-            })
-            // console.log("Total: ", total)
-            const vpDiv = document.getElementById('vp');
-            vpDiv.querySelector('p').textContent = vp.name;
-            const percent = document.getElementById('percent');
-            myAverage = ((total * 100) / (scores.length * 100)).toFixed();
-            switch (true) {
-                case myAverage > 79:
-                    vpDiv.querySelector('blockquote').textContent = vp.commA;
-                    percent.textContent = 'A';
-                    break;
-                case myAverage > 64:
-                    vpDiv.querySelector('blockquote').textContent = vp.commB;
-                    percent.textContent = 'B';
-                    break;
-                case myAverage > 49:
-                    vpDiv.querySelector('blockquote').textContent = vp.commC;
-                    percent.textContent = 'C';
-                    break;
-                case myAverage > 39:
-                    vpDiv.querySelector('blockquote').textContent = vp.commD;
-                    percent.textContent = 'D';
-                    break;
-                case myAverage > 29:
-                    vpDiv.querySelector('blockquote').textContent = vp.commE;
-                    percent.textContent = 'E';
-                    break;
-                case myAverage <= 29:
-                    vpDiv.querySelector('blockquote').textContent = vp.commF;
-                    percent.textContent = 'F';
-                    break;
-            }
-        })*/
-        /*
-        offered.forEach((arr, ind) => {
-            document.querySelectorAll('#section-grade table:nth-child(1) tr td:first-child')[ind].textContent = arr[1];
-        })*/
-        
     })
 }
 /*
