@@ -118,8 +118,6 @@ for (i = 0; i < ME.length - 1; i++) {
 }
 
 const ME_AVERAGE = (total / (ME.length - 1)).toFixed(1);
-// console.log(total);
-console.log("Child's average:", ME_AVERAGE);
 let subAverage = [];
 overall.forEach(ov => {
     let elem = 0, factor = 0;

@@ -51,48 +51,50 @@ formResult.addEventListener('submit', async (e) => {
         return;
     };
     outputs[0].classList.add('active');
-    snapShot.docs.forEach(val => {
+    snapShot.docs.forEach(async val => {
         uid = val.id;
         // check pin used
         if (val.data().pin_used > 5) {
+            dlogChecker.close();
             dlogOops.querySelector('output').textContent = "Your PIN quota has been used up."; //Click here to purchase a new PIN.
             createButton('oops');
             dlogOops.showModal();
             return;
         } else {
             data = val.data();
+
+            // console.log(data.arm)
+            const sizeQuery = query(collection(db, "students"), where("arm", "==", data.arm));
+            const snapQuery = await getCountFromServer(sizeQuery);
+            const totalCount = snapQuery.data().count;
+            data["size"] = totalCount;
+            data["cls"] = cls;
+            outputs[1].classList.add('active');
+            
+            // console.log(data)
+            chooseConfig(6);
+            let formMaster = "masterOfForm." + cls;
+            const q2 = query(collection(db, "staffCollection"), where(formMaster, "==", data.arm));
+            const snapped = await getDocs(q2);
+            if (snapped.empty) {
+                dlogChecker.close();
+                dlogOops.querySelector('output').textContent = "No form master has been declared for this class. Please contact the school's admin.";
+                createButton('oops');
+                dlogOops.showModal();
+                return;
+            };
+            snapped.docs.forEach(snap => {
+                data["formMaster"] = snap.get('fullName');
+            })
+            outputs[2].classList.add('active');
+            sessionStorage.setItem("student", JSON.stringify(data));
+            // sessionStorage.setItem("pinUsed", JSON.stringify(data));
+            createButton('checker');
+        
+            e.submitter.disabled = false;
+            e.submitter.style.opacity = '1';
         }
     });
-    // console.log(data.arm)
-    const sizeQuery = query(collection(db, "students"), where("arm", "==", data.arm));
-    const snapQuery = await getCountFromServer(sizeQuery);
-    const totalCount = snapQuery.data().count;
-    data["size"] = totalCount;
-    data["cls"] = cls;
-    outputs[1].classList.add('active');
-    
-    // console.log(data)
-    chooseConfig(6);
-    let formMaster = "masterOfForm." + cls;
-    const q2 = query(collection(db, "staffCollection"), where(formMaster, "==", data.arm));
-    const snapped = await getDocs(q2);
-    if (snapped.empty) {
-        dlogChecker.close();
-        dlogOops.querySelector('output').textContent = "No form master has been declared for this class. Please contact the school's admin.";
-        createButton('oops');
-        dlogOops.showModal();
-        return;
-    };
-    snapped.docs.forEach(snap => {
-        data["formMaster"] = snap.get('fullName');
-    })
-    outputs[2].classList.add('active');
-    sessionStorage.setItem("student", JSON.stringify(data));
-    // sessionStorage.setItem("pinUsed", JSON.stringify(data));
-    createButton('checker');
-
-    e.submitter.disabled = false;
-    e.submitter.style.opacity = '1';
 })
 
 function createButton(dlog) {
@@ -112,6 +114,8 @@ function createButton(dlog) {
         button.textContent = "View Result";
         button.onclick = async function () {
             // this button should first submit PIN_USED taken from the sessionStorage to the backend
+            dlogChecker.querySelector('button').disabled = true;
+            dlogChecker.querySelector('button').style.cursor = 'not-allowed';
             chooseConfig(pinConfig);
             await updateDoc(doc(db, "students", uid), { pin_used: increment(1) });
             location.href = '../../result.html';
