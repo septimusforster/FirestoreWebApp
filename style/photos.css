@@ -64,14 +64,28 @@ main > div:nth-child(2) {
     align-items: center;
     gap: 2em;
 }
+div#imageHeading {
+    width: 400px;
+    padding: 12px;
+    text-align: center;
+    background: #f1f1f9;
+    border: 1px solid #e3e3e3;
+}
 div#imageViewer {
-    border: 1px solid #aaa;
+    border: 1px solid #ccc;
     height: 180px;
     width: 180px;
     position: sticky;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+}
+input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    top: 150px;
+    left: 120px;
+    width: 40%;
 }
 table {
     border-collapse: collapse;

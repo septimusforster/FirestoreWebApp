@@ -32,16 +32,21 @@ let tableData = '';
     tbody.innerHTML = tableData;
 // })
 let rowIndex = 0;
+const imageHeading = document.getElementById('imageHeading');
 const imageViewer = document.getElementById('imageViewer');
 let tableRow = tbody.querySelectorAll('tr');
 tableRow.forEach(tr => {
     tr.onclick = function () {
+        // reset photoForm to clear any previously selected file input
+        photoForm.reset();
         for (const row of tableRow) {
             if (row.classList.contains('active')) {
                 row.classList.remove('active');
             }
         }
         tr.classList.add('active');
+        // set imageHeading
+        imageHeading.textContent = tr.querySelector('td:nth-child(3)').textContent;
         imageViewer.style.backgroundImage = 'none';
         if (tr.dataset.imgUrl) {
             imageViewer.style.backgroundImage = `url(${tr.dataset.imgUrl})`;
