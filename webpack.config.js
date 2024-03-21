@@ -48,7 +48,7 @@ module.exports = {
 }
 */
 //ROOT photos.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/photos.js",
@@ -58,7 +58,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT pinstripe.js
 /*
 module.exports = {
@@ -108,7 +108,7 @@ module.exports = {
 }
 */
 //STAFFER test.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/test.js",
@@ -118,7 +118,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 // STAFFER scores.js
 /*
 module.exports = {

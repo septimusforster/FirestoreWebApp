@@ -1,7 +1,7 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import {
-    getFirestore, collection, getDoc, addDoc, doc} from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+    getFirestore, collection, getDoc, getDocs, addDoc, doc, query, where, deleteDoc} from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import  configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 import entryCode from "./JSON/test.json" assert {type: 'json'};
 
@@ -150,17 +150,78 @@ submitBtn.addEventListener('click', (e) => {
 const hiddenInput = document.querySelector('input[type="hidden"]');
 const dialogCode = document.querySelector('#code-dialog');
 const codeBtn = document.querySelector('#code-btn');
+
 codeBtn.addEventListener('click', (e) => {
-    let sub = document.querySelector('input[name="subject"]')
-    let cls = document.querySelector('input[name="cls"]')
-    document.querySelector('#span-sub').textContent = sub.value;
-    document.querySelector('#span-class').textContent = cls.value;
-    //generate code
-    let randy = parseInt(Math.random()*1000);
-    //add code to hidden input..
-    dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy].toUpperCase();
-    dialogCode.showModal();
+    e.target.disabled = true;
+    e.target.style.cursor = 'not-allowed';
+    dialogNotice.querySelector('output').textContent = "Removing older files, if any.";
+    dialogNotice.querySelector('button').style.display = 'none';
+    dialogNotice.showModal();
+
+    const timeoutID = setTimeout(async () => {
+
+        let sub = document.querySelector('input[name="subject"]').value;
+        let cls = document.querySelector('input[name="cls"]').value;
+        const catNo = Number(document.getElementById('testNum').value);
+    
+        chooseConfig(configs[7].indexOf(cls));
+        
+        const colStorageRef = collection(db, "activities", `test/${sub}`);
+        const q = query(colStorageRef, where("catNo", "==", catNo));
+        const docSnap = await getDocs(q);
+        if (!docSnap.empty) {
+            let links = [];
+            let docID = [];
+            const re = new RegExp(/\/files.+\?/);
+            docSnap.docs.forEach(arr => {
+                let link = arr.get('link');
+                let oldFileRef = decodeURIComponent(re.exec(link)[0]).slice(0,-1);
+                links.push(oldFileRef);
+                docID.push(arr.id)
+            });
+            // delete from storage
+            const storage = getStorage();
+            const p1 = links.map(async lnk => {
+                let refr = ref(storage, lnk);
+                deleteObject(refr).catch(err => {
+                    console.log("(Storage/object-not-found)")
+                });
+                // await 
+            });
+            await Promise.allSettled(p1);
+            console.log("Files deleted.");
+    
+            // delete doc from firebase
+            const p2 = docID.map(async did => {
+                await deleteDoc(doc(db, "activities"+`/test/${sub}`, did))
+            });
+            await Promise.allSettled(p2);
+            console.log("docID deleted.")
+            dialogNotice.close();
+    
+            document.querySelector('#span-sub').textContent = sub;
+            document.querySelector('#span-class').textContent = cls;
+            //generate code
+            let randy = parseInt(Math.random()*1000);
+            //add code to hidden input..
+            dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy].toUpperCase();
+            dialogCode.showModal();
+        } else {
+            dialogNotice.close();
+            document.querySelector('#span-sub').textContent = sub;
+            document.querySelector('#span-class').textContent = cls;
+            //generate code
+            let randy = parseInt(Math.random()*1000);
+            //add code to hidden input..
+            dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy].toUpperCase();
+            dialogCode.showModal();
+        }
+        e.target.disabled = false;
+        e.target.style.cursor = 'pointer';
+        clearTimeout(timeoutID);
+    }, 3000)
 })
+
 const copyBtn = document.querySelector('#copy-btn');
 copyBtn.addEventListener('click', async (e) => {
     await navigator.clipboard.writeText(dialogCode.querySelector('strong').textContent)
@@ -172,106 +233,3 @@ copyBtn.addEventListener('click', async (e) => {
             console.log(err)
         })
 })
-
-
-/*
-
-// let quizFormVar;
-const clsDatalist = document.querySelector('datalist#cls');
-const quizForm = document.forms.quizForm;
-quizForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    e.submitter.disabled = true;
-    e.submitter.style.cursor = 'not-allowed';
-
-    const formData = new FormData(quizForm);
-    const cls = formData.get('cls');
-    const sub = formData.get('subject');
-    const catNo = Number(formData.get('testNum'));
-    const rating = Number(formData.get('rating'));
-    const duration = Number(formData.get('duration'));
-    const instr = formData.getAll('instr');
-    const startTime = formData.get('startTime');
-    const code = formData.get('code');
-    let timestamp = Intl.DateTimeFormat('en-us', {dateStyle: "medium"}).format(new Date());
-    // reset config
-    let num = Number(clsDatalist.options.namedItem(cls).dataset.id)
-    chooseConfig(num)
-    // send file to storage
-    const storage = getStorage();
-    const rootPath = ref(storage, `files/test/${sub}`);
-    const _filename = ref(rootPath, fe.name)
-
-    uploadBytes(_filename, fe)
-        .then(async (snapshot) => {
-            await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
-                const testRef = collection(db, "activities");
-                await addDoc(collection(testRef, "test", sub), {
-                    name: fe.name,
-                    link: downloadURL,
-                    questions: Number(qe),
-                    choice: Number(ch),
-                    chosen: ce,
-                    catNo,
-                    rating,
-                    duration,
-                    instr,
-                    startTime,
-                    code,
-                    timestamp,
-                })
-                .then(async snapDoc => {                    
-                    //send URL to teacher's doc
-                    chooseConfig(6);
-                    clearSheet();
-                    iframe.srcdoc = `
-                        <div style="margin:300px auto;padding:10px;width:300px;font-family:tahoma;font-size:16px;text-align:center;border-bottom:1px solid #777;color:#777;">
-                            After choosing a PDF,<br/>its preview should be displayed here.    
-                        </div>
-                    `;
-                    pdfForm.reset();
-                    quizForm.reset();
-                    dialogNotice.querySelector('output').textContent = "Test has been uploaded successfully.";
-                    dialogNotice.showModal();
-                    e.submitter.disabled = false;
-                    e.submitter.style.cursor = 'pointer';
-                    document.body.scrollTo({
-                        top: 0,
-                        left: 0,
-                        behavior: 'smooth',
-                    })
-                    /*
-                    await updateDoc(doc(db, "staffCollection", ss.id), {
-                        [subPath]: arrayUnion({
-                            [file.name]: downloadURL,
-                            fileID: snapDoc.id,
-                        })
-                    })
-                })
-            })
-        })
-    // const myRef = doc(db, "students", cls)
-})
-
-const hiddenInput = document.querySelector('input[type="hidden"]');
-const dialogCode = document.querySelector('#code-dialog');
-const codeBtn = document.querySelector('#code-btn');
-codeBtn.addEventListener('click', (e) => {
-    //generate code
-    let randy = parseInt(Math.random()*1000);
-    //add code to hidden input..
-    dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy];
-    dialogCode.showModal();
-})
-const copyBtn = document.querySelector('#copy-btn');
-copyBtn.addEventListener('click', async (e) => {
-    await navigator.clipboard.writeText(dialogCode.querySelector('strong').textContent)
-        .then(() => {
-            e.target.textContent = 'Copied!';
-            e.target.classList.add('copied')
-        })
-        .catch(err => {
-            console.log(err)
-        })
-})
-*/
