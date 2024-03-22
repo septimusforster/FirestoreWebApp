@@ -154,7 +154,7 @@ const codeBtn = document.querySelector('#code-btn');
 codeBtn.addEventListener('click', (e) => {
     e.target.disabled = true;
     e.target.style.cursor = 'not-allowed';
-    dialogNotice.querySelector('output').textContent = "Removing older files, if any.";
+    dialogNotice.querySelector('output').textContent = "Searching for and removing older files, if any.";
     dialogNotice.querySelector('button').style.display = 'none';
     dialogNotice.showModal();
 

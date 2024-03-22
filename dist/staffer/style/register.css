@@ -121,6 +121,7 @@ input[type="submit"] {
     cursor: pointer;
 }
 input[type="submit"] {
+    display: none;
     padding: 12px 24px;
     color: #fff;
     background-color: #009578;

@@ -1,9 +1,7 @@
 import { initializeApp, deleteApp } from "firebase/app";
 // import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, query, where, onSnapshot, updateDoc, arrayUnion, getDocFromServer, arrayRemove, getDocs } from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc, query, where, updateDoc, getDocs } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
-
-
 
 //declare all const and var
 const classArray = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
@@ -38,21 +36,38 @@ for (const [k, v] of master_of_form) {
     if (snapDoc.empty) {
         window.alert('This class is empty.');
     } else {
-        let i = 1;
-        snapDoc.forEach((doc) => {
+        let scores = [];
+        const prom = snapDoc.docs.map(async sd => {
+            await getDoc(doc(db, "scores", sd.id)).then((res) => {
+                let st = Object.values(res.data());
+                let ph = 0;
+                for (const dt of st) {
+                    // ph.concat(dt);
+                    ph += dt.reduce((acc, cur) => acc + cur)
+                }
+                scores.push((ph/st.length).toFixed());
+            })
+        })
+        await Promise.allSettled(prom);
+        document.querySelector("input[type='submit']").style.display = 'initial';
+        // console.log(scores);
+        
+        // let i = 1;
+        snapDoc.docs.forEach((sd, ix) => {
             tbody.insertAdjacentHTML('beforeend', `
                 <tr>
-                    <td>${i}</td>
-                    <td>${doc.data().last_name +' '+ doc.data().first_name +' '+ doc.data().other_name}</td>
-                    <td><input type="text" name="${doc.id}" class="${doc.id}" autocomplete="off" placeholder="${doc.data().admission_no}"/></td>
-                    <td>${doc.data().gender}</td>
-                    <td>${doc.data().email}</td>
-                    <td>${doc.data().password}</td>
-                    <td><input type="number" name="${doc.id}" class="${doc.id}" min="0" max="99" pattern="[0-9]{1,2}" placeholder="${doc.data().days_present || 0}"/></td>
-                    <td><input type="text" name="${doc.id}" class="${doc.id}" autocomplete="off" placeholder="${doc.data().comment || ''}"/></td>
+                    <td>${ix+1}</td>
+                    <td>${sd.data().last_name +' '+ sd.data().first_name +' '+ sd.data().other_name}</td>
+                    <td><input type="text" name="${sd.id}" class="${sd.id}" autocomplete="off" placeholder="${sd.data().admission_no}"/></td>
+                    <td>${sd.data().gender}</td>
+                    <td>${sd.data().email}</td>
+                    <td>${sd.data().password}</td>
+                    <td><input type="number" name="${sd.id}" class="${sd.id}" min="0" max="99" pattern="[0-9]{1,2}" placeholder="${sd.data().days_present || 0}"/></td>
+                    <td><input type="text" name="${sd.id}" class="${sd.id}" autocomplete="off" placeholder="${sd.data().comment || ''}"/></td>
+                    <td>${scores[ix]}</td>
                 </tr>
             `)
-            i++;
+            // i++;
         })
     }
     bodyDiv.style.display = 'none';

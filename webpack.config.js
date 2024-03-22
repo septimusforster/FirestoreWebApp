@@ -96,7 +96,7 @@ module.exports = {
 }
 */
 //STAFFER register.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/register.js",
@@ -106,9 +106,9 @@ module.exports = {
     },
     watch: true
 }
-*/
-//STAFFER test.js
 
+//STAFFER test.js
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/test.js",
@@ -118,7 +118,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 // STAFFER scores.js
 /*
 module.exports = {
