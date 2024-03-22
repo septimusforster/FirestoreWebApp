@@ -66,6 +66,10 @@ dialog#notice button:hover,
     background-color: #0099;
     color: #fff;
 }
+#clear-btn:hover {
+    background-color: #ff3333;
+    color: #fff;
+}
 .gen__btn {
     margin-top: 50px;
 }

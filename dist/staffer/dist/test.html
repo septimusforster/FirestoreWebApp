@@ -9,7 +9,7 @@
     <header>
         <div>AN</div>
         <div>
-            <strong>1 - Upload PDF</strong><strong>2 - Preview PDF</strong><strong>3 - Other settings</strong>
+            <strong>1 - Upload file</strong><strong>2 - Preview file</strong><strong>3 - Other settings</strong>
         </div>
     </header>
     <main>
@@ -24,7 +24,7 @@
             <option data-id="5" id="SSS 3" value="SSS 3"></option>
         </datalist>
         <form class="aside__form" name="pdfForm">
-            <label for="file">Choose PDF <strong>&plus;</strong></label>
+            <label for="file">Choose file <strong>&plus;</strong></label>
             <input type="file" name="file" id="file" accept="image/png,image/jpeg,image/jpg">
             <label for="questions">How many questions are in this test?</label>
             <input type="number" min="0" name="questions" id="questions" placeholder="Number of questions">
@@ -52,7 +52,7 @@
                 <input type="text" name="subject" id="subject" placeholder="Select subject" list="subject" />
                 <label for="cls">What is the name of the class?</label>
                 <input type="text" name="cls" id="cls" list="cls" placeholder="Select class"/>
-                <label for="testNum">This is C.A. test...?</label>
+                <label for="testNum">This is Test No...?</label>
                 <input type="text" name="testNum" id="testNum" list="numOfTest">
                 <datalist id="numOfTest">
                     <option value="1"></option>
@@ -119,7 +119,7 @@
         // load srcdoc
         iframe.srcdoc = `
             <div style="margin:300px auto;padding:10px;width:300px;font-family:tahoma;font-size:16px;text-align:center;border-bottom:1px solid #777;color:#777;">
-                After choosing a PDF,<br/>its preview should be displayed here.    
+                After choosing a file,<br/>its preview should be displayed here.    
             </div>
         `;
         const file = document.querySelector("input[type='file']");

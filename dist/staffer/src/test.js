@@ -196,8 +196,9 @@ codeBtn.addEventListener('click', (e) => {
                 await deleteDoc(doc(db, "activities"+`/test/${sub}`, did))
             });
             await Promise.allSettled(p2);
-            console.log("docID deleted.")
+            console.log("docID deleted.");
             dialogNotice.close();
+            dialogNotice.querySelector('button').style.display = 'initial';
     
             document.querySelector('#span-sub').textContent = sub;
             document.querySelector('#span-class').textContent = cls;
@@ -208,6 +209,7 @@ codeBtn.addEventListener('click', (e) => {
             dialogCode.showModal();
         } else {
             dialogNotice.close();
+            dialogNotice.querySelector('button').style.display = 'initial';
             document.querySelector('#span-sub').textContent = sub;
             document.querySelector('#span-class').textContent = cls;
             //generate code
