@@ -7,7 +7,9 @@
     <script type="module" src="../src/result_bundle.js"></script>
 </head>
 <body>
-    <header></header>
+    <header>
+        <button type="button" id="pdf-btn">Download PDF</button>
+    </header>
     <main>
         <section id="section-header">
             <img src="../dist/staffer/img/DCA LOGO.png" alt="logo">
@@ -186,11 +188,6 @@
         </div> -->
     </main>
     <footer></footer>
-    <script>
-        // const printBtn = document.querySelector('#print-btn');
-        // printBtn.onclick = function () {
-        //     console.log("Print button")
-        // }
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>

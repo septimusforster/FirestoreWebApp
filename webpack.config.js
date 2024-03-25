@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT photos.js
 /*
 module.exports = {
@@ -96,7 +96,7 @@ module.exports = {
 }
 */
 //STAFFER register.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/register.js",
@@ -106,7 +106,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STAFFER test.js
 /*
 module.exports = {

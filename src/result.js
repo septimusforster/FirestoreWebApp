@@ -185,9 +185,9 @@ async function eot() {
         const nextTerm = eotData.next_term;
         const session = eotData.session;
         const daysOpen = parseInt(eotData.days_open);
-        const stamp = eotData.stamp;
+        const stamp = '../img/received-stamp-design-template-bd8ef2fd5b4b34ddaf2c56e8d1d10368_screen.jpg' || eotData.stamp;
         
-        const photo = ss.photo_src;
+        const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
         const regNo = ss.admission_no;
         const fullName = ss.last_name.concat(' ', ss.first_name, ' ', ss.other_name);
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
@@ -203,7 +203,7 @@ async function eot() {
         const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 7 * 52)) || '';
 
         //load photo
-        document.images[1].src = photo || "../img/user.png";
+        document.images[1].src = photo;
 
         function bioTable(a, b, c, d, e, tb, idx = 0) {
             for (const arg of arguments) {
@@ -224,6 +224,20 @@ async function eot() {
         document.querySelector("img[alt='stamp']").src = stamp;
     })
 }
+const pdfBtn = document.getElementById('pdf-btn');
+function generatePDF () {
+    const main = document.querySelector('main');
+    var opt = {
+        margin: 1,
+        filename: 'file01.pdf',
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'px', format: [1200, 1200], orientation: 'portrait', hotfixes: ['px_scaling'] }
+    }
+
+    html2pdf().set(opt).from(main).save();
+}
+
+pdfBtn.addEventListener('click', generatePDF);
 /*
 // Dates
 var date1 = new Date('2024-03-03');

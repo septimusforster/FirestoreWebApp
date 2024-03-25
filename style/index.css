@@ -189,9 +189,6 @@ input[type="submit"] {
 .content li:hover {
     color: #007960;
 }
-
-
-
 #main-container form {
     display: flex;
     justify-content: space-around;
@@ -203,4 +200,21 @@ input[type="submit"] {
 #main-container form > div:last-child {
     flex: 1;
     border: 1px solid white;
+}
+button[title="PIN"] {
+    position: relative;
+}
+button[title="PIN"]:hover::after {
+    content: attr(data-online-status);
+    position: absolute;
+    top: 0;
+    left: 50px;
+    margin: 20px;
+    padding: 10px;
+    background-color: #009578;
+    color: #fff;
+    border-radius: 7px;
+    width: 100px;
+    text-align: left;
+    font-size: 16px;
 }
