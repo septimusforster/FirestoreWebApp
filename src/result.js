@@ -117,7 +117,7 @@ for (i = 0; i < ME.length - 1; i++) {
     `)
 }
 
-const ME_AVERAGE = (total / (ME.length - 1)).toFixed(1);
+const ME_AVERAGE = (total / (ME.length - 1)).toFixed();
 let subAverage = [];
 overall.forEach(ov => {
     let elem = 0, factor = 0;
@@ -172,7 +172,7 @@ function overstats(sTot, sAve, cAve) {
     }
 }
 
-overstats(total, ME_AVERAGE, CLS_AVERAGE);
+overstats(total.toFixed(), ME_AVERAGE, CLS_AVERAGE);
 
 async function eot() {
     let teacherDiv = document.getElementById('teacher');
