@@ -178,7 +178,8 @@ td {
     overflow: hidden;
 }
 #section-bio tr td:first-child {
-    color: green;
+    font-weight: 600;
+    /* color: green; */
 }
 #section-bio table:nth-child(1) tbody > tr td:first-child {
     width: 80px;

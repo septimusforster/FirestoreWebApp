@@ -185,7 +185,7 @@ async function eot() {
         const nextTerm = eotData.next_term;
         const session = eotData.session;
         const daysOpen = parseInt(eotData.days_open);
-        const stamp = '../img/received-stamp-design-template-bd8ef2fd5b4b34ddaf2c56e8d1d10368_screen.jpg' || eotData.stamp;
+        const stamp = '../img/DCA STAMP_2024.png' || eotData.stamp;
         
         // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
         const photo = "../img/user.png" || ss.photo_src;
