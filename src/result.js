@@ -187,9 +187,10 @@ async function eot() {
         const daysOpen = parseInt(eotData.days_open);
         const stamp = '../img/received-stamp-design-template-bd8ef2fd5b4b34ddaf2c56e8d1d10368_screen.jpg' || eotData.stamp;
         
-        const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
+        // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
+        const photo = "../img/user.png" || ss.photo_src;
         const regNo = ss.admission_no;
-        const fullName = ss.last_name.concat(' ', ss.first_name, ' ', ss.other_name);
+        const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
         const className = `${ss.cls} ${ss.arm}`;
         const daysPresent = ss.days_present || 0;
