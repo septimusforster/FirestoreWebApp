@@ -57,6 +57,7 @@ let i;
 for (i = 0; i < ME.length - 1; i++) {
     var td = '';
     let [a,b,c,d] = ME[i][1];
+    let subtotal = a + b + c + d;
     td += `
         <td>${i+1}</td>
         <td>${offered[ME[i][0]]}</td>
@@ -64,8 +65,8 @@ for (i = 0; i < ME.length - 1; i++) {
         <td>${b || ''}</td>
         <td>${c || ''}</td>
         <td>${d || ''}</td>
+        <td>${subtotal}</td>
     `;
-    let subtotal = a + b + c + d;
     switch (true) {
         case subtotal > 79:
             td += '<td>A</td><td>Excellent</td>';
@@ -93,8 +94,6 @@ for (i = 0; i < ME.length - 1; i++) {
         let [w,x,y,z] = studentScores[j][ME[i][0]] || [null, null, null, null];
         summation.push(w+x+y+z);
     };
-    // console.log(summation)
-    // overall += summation.reduce((acc, cur) => acc + cur);
     
     let max = summation.reduce((x,y) => Math.max(x,y));
     let min = summation.reduce((x,y) => Math.min(x,y));
@@ -172,7 +171,7 @@ function overstats(sTot, sAve, cAve) {
     }
 }
 
-overstats(total.toFixed(), ME_AVERAGE, CLS_AVERAGE);
+overstats(total, ME_AVERAGE, CLS_AVERAGE);    // total.toFixed()
 
 async function eot() {
     let teacherDiv = document.getElementById('teacher');
@@ -215,7 +214,7 @@ async function eot() {
         }
         bioTable(regNo, fullName, gender, age, null, 1);
         bioTable(className, classSize, daysOpen, daysPresent, daysAbsent, 2);
-        bioTable(thisTerm, nextTerm, session, null, null, 3);        
+        bioTable(thisTerm, session, nextTerm, null, null, 3);        
 
         // set teacher's name and comment
         teacherDiv.querySelector('p').textContent = teacherName;
@@ -228,11 +227,13 @@ async function eot() {
 const pdfBtn = document.getElementById('pdf-btn');
 function generatePDF () {
     const main = document.querySelector('main');
+    const dw = main.clientLeft * 4 + main.clientWidth;
+    const dh = main.clientTop * 4 + main.clientHeight;
     var opt = {
         margin: 1,
         filename: 'file01.pdf',
         html2canvas: { scale: 2 },
-        jsPDF: { unit: 'px', format: [1200, 1200], orientation: 'portrait', hotfixes: ['px_scaling'] }
+        jsPDF: { unit: 'px', format: [dw, dh], orientation: 'portrait', hotfixes: ['px_scaling'] }
     }
 
     html2pdf().set(opt).from(main).save();

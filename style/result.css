@@ -30,7 +30,8 @@ main {
     width: 1200px;
     margin: 0 auto;
     background-color: #fff;
-    border-width: 50px 20px 20px;
+    border-width: 10px;
+    /* border-width: 50px 20px 20px; */
     border-style: solid;
     border-color: #555;
     border-radius: 7px 7px 0 0;
@@ -206,14 +207,13 @@ td {
 #section-footer > div > div {
     padding: 7px 30px;
     border-radius: 7px 7px 0 0;
-    /* margin-bottom: 16px; */
+    margin-bottom: 16px;
     color: #555;
-    /* border: 1px solid #aaa; */
     position: relative;
 }
 blockquote {
     padding: 10px 20px;
-    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
 }
 blockquote::before {
     content: '"';
@@ -292,4 +292,11 @@ p#percent::after {
 .overstats {
     text-align: left;
     /* padding: 5px; */
+}
+p.small {
+    text-align: right;
+    text-transform: uppercase;
+}
+.float__right {
+    float: right;
 }
