@@ -293,10 +293,7 @@ p#percent::after {
     text-align: left;
     /* padding: 5px; */
 }
-p.small {
-    text-align: right;
-    text-transform: uppercase;
-}
 .float__right {
     float: right;
+    text-align: right;
 }
