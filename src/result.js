@@ -18,6 +18,7 @@ function chooseConfig(num) {
 const ss = JSON.parse(sessionStorage.getItem('student'));
 const offered = ss.offered;
 const classSize = ss.size;
+const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
 
 let eotData;
 let thisTerm;
@@ -57,7 +58,7 @@ let i;
 for (i = 0; i < ME.length - 1; i++) {
     var td = '';
     let [a,b,c,d] = ME[i][1];
-    let subtotal = a + b + c + d;
+    let subtotal = Number((a + b + c + d).toFixed(1));
     td += `
         <td>${i+1}</td>
         <td>${offered[ME[i][0]]}</td>
@@ -92,7 +93,8 @@ for (i = 0; i < ME.length - 1; i++) {
     let summation = [];
     for (let j = 0; j < studentScores.length; j++) {
         let [w,x,y,z] = studentScores[j][ME[i][0]] || [null, null, null, null];
-        summation.push(w+x+y+z);
+        let precision = Number((w + x + y + z).toFixed(1));
+        summation.push(precision);
     };
     
     let max = summation.reduce((x,y) => Math.max(x,y));
@@ -189,7 +191,6 @@ async function eot() {
         // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
         const photo = "../img/user.png" || ss.photo_src;
         const regNo = ss.admission_no;
-        const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
         const className = `${ss.cls} ${ss.arm}`;
         const daysPresent = ss.days_present || 0;
@@ -231,9 +232,9 @@ function generatePDF () {
     const dh = main.clientTop * 4 + main.clientHeight;
     var opt = {
         margin: 1,
-        filename: 'file01.pdf',
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'px', format: [dw, dh], orientation: 'portrait', hotfixes: ['px_scaling'] }
+        filename: fullName + '.pdf',
+        html2canvas: { scale: 3 },
+        jsPDF: { unit: 'px', format: [dw, dh], orientation: 'landscape', hotfixes: ['px_scaling'] }
     }
 
     html2pdf().set(opt).from(main).save();
