@@ -100,6 +100,9 @@
             tr td:nth-of-type(3) {
                 text-align: left;
             }
+            .rowIndex__hidden {
+                display: none;
+            }
         </style>
     </head>
     <body>
@@ -131,19 +134,22 @@
                 </ul>
             </div>
         </div>
+        <div class="rowIndex__hidden"></div>
         <script>
             // document.querySelector('#myIframe').src = './ruler.html'
             function deleteStudent(studentID, studentName, e) {
+                const ri = document.querySelector('.rowIndex__hidden');
                 const ss = JSON.parse(sessionStorage.preview);
                 //first set active class on <tr>
                 document.querySelectorAll('tbody tr').forEach(tr => {
                     if (tr.classList.contains('active')) return tr.classList.remove('active')
                 })
                 e.classList.toggle('active');
+                ri.textContent = e.rowIndex;
                 //display data in preview pane
                 document.querySelector('.preview__content ul').innerHTML = '';
                 ss.forEach(obj => {
-                    if (obj.id === studentID) {
+                    if (obj.id === studentID && obj.offered) {
                         let subs = Object.values(obj.offered).sort().reduce((acc, cur) => `${acc}<br>`+ cur);
                         document.querySelector('.preview__content ul').insertAdjacentHTML('beforeend', `
                             <li>NAME: ${''.concat(obj.last_name, ' ', obj.first_name, ' ', obj.other_name)}</li>

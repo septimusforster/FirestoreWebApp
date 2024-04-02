@@ -1,0 +1,146 @@
+html, body, * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+    background-color: #f3f3f3;
+    color: #222;
+}
+.section h2 {
+    font-size: 2em;
+    font-weight: 200;
+    text-align: center;
+}
+.section__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+/* @media (min-width: 780px) {
+    .section__content {
+        flex-wrap: wrap;
+    }
+} */
+.section__content > div {
+    /* border: 1px solid; */
+    flex: 1;
+}
+.section__content div h4 {
+    font-weight: 500;
+    font-size: 1.5em;
+    text-align: center;
+}
+.section__content div p {
+    font-size: 1.5em;
+}
+.section__content div h4,
+.section__content div p {
+    padding: 10px;
+}
+.section hr {
+    border: 1px solid #e7e7e7;
+}
+.slider__wrapper {
+    position: relative;
+    /* border: 1px solid greenyellow; */
+    max-width: 50em;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* .slider img {
+    width: 200px;
+    height: 200px;
+} */
+.slider {
+    width: 200px;
+    display: flex;
+    /* aspect-ratio: 16/9; */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+}
+.slider::-webkit-scrollbar {
+    width: 0;
+}
+.slider img {
+   flex: 1 0 100%;
+   width: 200px;
+   height: 200px;
+   scroll-snap-align: start;
+   object-fit: cover;
+   cursor: pointer;
+}
+.nav__dots {
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    /* background-color: #222; */
+}
+.dots {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #555;
+    opacity: .75;
+    /* transform: scale(1.15); */
+    transition: all ease 250ms;
+}
+.dots:hover {
+    opacity: 1;
+    transform: scale(1.5);
+}
+dialog {
+    border: none;
+    outline: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    min-width: 800px;
+    max-width: 900px;
+    /* background-color: rgba(0,0,0,.5); */
+}
+dialog div:nth-of-type(1) {
+    direction: rtl;
+    padding: 30px 50px;
+}
+dialog div:nth-of-type(2) {
+    padding: 0 100px;
+    /* text-align: center; */
+}
+dialog div:nth-of-type(2) output {
+    display: block;
+}
+span.times {
+    color: #555;
+    cursor: pointer;
+    font-size: 2rem;
+    transition: color ease 150ms;
+}
+span.times:hover {
+    color: #222;
+}
+details {
+    margin: 20px;
+}
+details summary,
+details p {
+    padding: 7px;
+}
+details summary {
+    cursor: pointer;
+}
+details p {
+    background: #f3f3f3;
+    padding-left: 25px;
+    border-radius: 5px;
+}

@@ -66,7 +66,7 @@ async function setIframeAttr(para1) {
     myIframe.contentDocument.querySelector('tbody').innerHTML = '';
     data.forEach((student, index) => {
         myIframe.contentDocument.querySelector('tbody').insertAdjacentHTML('beforeend',`
-            <tr onclick="deleteStudent('${student.id}',this.lastElementChild.textContent, this)">
+            <tr onclick="deleteStudent('${student.id}',this.children[3].textContent, this)">
                 <td>${index + 1}</td>
                 <td>${student.id}</td>
                 <td>${student.admission_no}</td>
@@ -226,6 +226,7 @@ function resetEditForm() {
 //delete doc
 const yesBtn = document.querySelector('dialog button');
 yesBtn.onclick = function() {
+    const ri = parseInt(document.querySelector('iframe').contentDocument.querySelector('.rowIndex__hidden').textContent);
     const operation = 'destroy';
     const action = document.querySelector('dialog p.msg').textContent;
     const targetID = document.querySelectorAll('.side-panel-toggle')[1].value;
@@ -238,6 +239,7 @@ yesBtn.onclick = function() {
         await logger(operation, action, uid);
         msgDialog[1].querySelector('p').textContent = "Deletion Complete.";
             msgDialog[1].showModal();
+            document.querySelector('iframe').contentDocument.querySelectorAll('tr')[ri].style.visibility = 'collapse';
             // setColRef(col);
         })
 }
