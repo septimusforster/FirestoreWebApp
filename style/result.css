@@ -195,7 +195,6 @@ td {
 #section-footer {
     display: flex;
     align-items: center;
-    gap: 10em;
 }
 #section-footer > div:first-child {
     flex: 2;
