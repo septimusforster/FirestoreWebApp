@@ -296,3 +296,6 @@ p#percent::after {
     float: right;
     text-align: right;
 }
+p#status {
+    font-size: .7rem;
+}
