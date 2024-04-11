@@ -26,6 +26,9 @@
                 <div class="section__div">
                     <button type="button" id="mulEnt-btn" onclick="displayModal(this, '#mulEnt-dialog')"></button><span>Manage <em>Multiple Entries</em></span>
                 </div>
+                <div class="section__div">
+                    <button type="button" id="cOE-btn" onclick="displayModal(this, '#cOE-dialog')"></button><span>Manage <em>Test/Examination Date</em></span>
+                </div>
                 <hr>
                 <div class="section__div">
                     <button type="button" id="subject-btn" onclick="displayModal(this, '#subject-dialog')"></button><span>Manage <em>Staff Subjects</em></span>
@@ -146,6 +149,23 @@
             </div>
         </form>
     </dialog>
+    <dialog id="cOE-dialog">
+        <form name="cOEForm" id="cOE-form" class="dialog-fm">
+            <div>
+                <input type="text" list="catList" name="catNo" id="catNo" placeholder="Choose test" autocomplete="off"/>
+                <input type="text" list="cls" name="abbr" style="width:100%"  class="class" placeholder="class" autocomplete="off" required/>
+                <!-- <input type="text" name="adm" class="txt" placeholder="Enter admission number" autocomplete="off" required/> -->
+            </div>
+            <div>
+                <input type="text" list="abbr" name="coe" class="txt" placeholder="Subject to change" autocomplete="off" required/>
+                <input type="date" name="doe" id="doe" title="Date of Examination">
+                <!-- <button class="minus" onclick="deleteField(this)" type="button">&minus;</button> -->
+            </div>
+            <div class="footer">
+                <button type="reset" title="Clear">&rtimes;</button><button onclick="closeGrandParent(this);" id="cancel-btn" type="button">Cancel</button><button type="submit" id="upd">Update</button>
+            </div>
+        </form>
+    </dialog>
     <dialog id="subject-dialog">
         <form name="subjectForm" id="subject-form" class="dialog-fm">
             <div>
@@ -258,6 +278,12 @@
     <datalist id="arms">
     </datalist>
     <datalist id="staff">
+    </datalist>
+    <datalist id="catList">
+        <option data-id="0" name="C.A. 1" value="1"></option>
+        <option data-id="1" name="C.A. 2" value="2"></option>
+        <option data-id="2" name="C.A. 3" value="3"></option>
+        <option data-id="3" name="EXAM" value="4"></option>
     </datalist>
     <script type="module" src="../src/reserved_bundle.js"></script>
     <script>

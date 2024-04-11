@@ -462,3 +462,30 @@ viewStaffers.addEventListener('click', function () {
         window.alert("Server is not ready yet.");
     }
 })
+const cOEForm = document.forms.cOEForm;
+cOEForm.addEventListener("submit", async (e) => {
+    formStatus(e, "enabled");
+    const formData = new FormData(cOEForm);
+    const cls = formData.get("abbr");
+    const sub = formData.get("coe");
+    const startDate = formData.get("doe");
+    const catNo = parseInt(formData.get("catNo"));
+    let testID;
+
+    // console.log(cls, sub, date, catNo);
+    const classIndex = configs[7].indexOf(cls);
+    chooseConfig(classIndex);
+
+    const q = query(collection(db, "activities", "/test/" + sub), where("catNo", "==", catNo));
+    // const exmReference = collection(db, "activities", "test" + sub );
+    const docSnap = await getDocs(q);
+    if (docSnap.empty) return window.alert("No such test/exam could be found.");
+    docSnap.docs.forEach(test => {
+        testID = test.id;
+    })
+
+    console.log(testID);
+    await updateDoc(doc(db, "activities/test/" + sub, testID), { startDate });
+    window.alert("Test/Exam has been updated.");
+    formStatus(e);
+})
