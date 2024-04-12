@@ -69,19 +69,19 @@ for (i = 0; i < ME.length - 1; i++) {
         <td>${subtotal}</td>
     `;
     switch (true) {
-        case subtotal > 79:
+        case subtotal >= 80:
             td += '<td>A</td><td>Excellent</td>';
             break;
-        case subtotal > 64:
+        case subtotal >= 65:
             td += '<td>B</td><td>Very Good</td>';
             break;
-        case subtotal > 49:
+        case subtotal >= 50:
             td += '<td>C</td><td>Good</td>';
             break;
-        case subtotal > 39:
+        case subtotal >= 40:
             td += '<td>D</td><td>Satisfactory</td>';
             break;
-        case subtotal > 29:
+        case subtotal >= 30:
             td += '<td>E</td><td>Pass</td>';
             break;
         case subtotal <= 29:
