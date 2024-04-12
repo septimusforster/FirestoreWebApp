@@ -93,6 +93,7 @@ for (i = 0; i < ME.length - 1; i++) {
     let summation = [];
     for (let j = 0; j < studentScores.length; j++) {
         let [w,x,y,z] = studentScores[j][ME[i][0]] || [null, null, null, null];
+        if (w + x + y + z == 0) continue;
         let precision = Number((w + x + y + z).toFixed(1));
         summation.push(precision);
     };
