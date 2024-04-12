@@ -84,7 +84,7 @@ for (i = 0; i < ME.length - 1; i++) {
         case subtotal >= 30:
             td += '<td>E</td><td>Pass</td>';
             break;
-        case subtotal <= 29:
+        case subtotal >= 0:
             td += '<td>F</td><td>Fail</td>';
             break;
     }
@@ -157,7 +157,7 @@ switch (true) {
         princDiv.querySelector('blockquote').textContent = principal.Ecomm;
         percent.textContent = 'E';
         break;
-    case ME_AVERAGE <= 29:
+    case ME_AVERAGE >= 0:
         princDiv.querySelector('blockquote').textContent = principal.Fcomm;
         percent.textContent = 'F';
         break;
