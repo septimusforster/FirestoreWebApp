@@ -137,23 +137,23 @@ princDiv.querySelector('p').textContent = principal.name;
 const percent = document.getElementById('percent');
 // ME_AVERAGE = ((total * 100) / (scores.length * 100)).toFixed();
 switch (true) {
-    case ME_AVERAGE > 79:
+    case ME_AVERAGE >= 80:
         princDiv.querySelector('blockquote').textContent = principal.Acomm;
         percent.textContent = 'A';
         break;
-    case ME_AVERAGE > 64:
+    case ME_AVERAGE >= 65:
         princDiv.querySelector('blockquote').textContent = principal.Bcomm;
         percent.textContent = 'B';
         break;
-    case ME_AVERAGE > 49:
+    case ME_AVERAGE >= 50:
         princDiv.querySelector('blockquote').textContent = principal.Ccomm;
         percent.textContent = 'C';
         break;
-    case ME_AVERAGE > 39:
+    case ME_AVERAGE >= 40:
         princDiv.querySelector('blockquote').textContent = principal.Dcomm;
         percent.textContent = 'D';
         break;
-    case ME_AVERAGE > 29:
+    case ME_AVERAGE >= 30:
         princDiv.querySelector('blockquote').textContent = principal.Ecomm;
         percent.textContent = 'E';
         break;
