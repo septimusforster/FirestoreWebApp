@@ -128,11 +128,16 @@ div#formBar i {
     line-height: 1;
     opacity: .3;
 }
-h3.sub__title {
+h3.sub__title,
+div#formBar > span {
     background: #f3f3f3;
+    color: #555;
     padding: 12px 24px;
     margin: 7px;
     border-radius: 7px;
+}
+div#formBar > span > b {
+    font-weight: bold;
 }
 dialog {
     padding: 20px;

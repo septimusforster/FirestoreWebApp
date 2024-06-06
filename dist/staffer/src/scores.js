@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { collection, doc, getDoc, getDocs, setDoc, getFirestore, orderBy, query, where, increment } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc, getFirestore, orderBy, query, where, increment, updateDoc } from "firebase/firestore";
 import  configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 // initialize firebase app
@@ -13,17 +13,19 @@ function chooseConfig(num) {
 }
 db = getFirestore()
 
-let eotDates;
+let eotDates, term;
 async function eot() {
     const eotRef = doc(db, "reserved", "EOT");
     await getDoc(eotRef).then((res) => {
         // store dates in eotDates
+        const formBarH3 = document.querySelector('div#formBar > h3');
+        formBarH3.insertAdjacentHTML('afterend', `<span>Working on: <b>${res.data().this_term} Term</b></span>`);
         eotDates = res.data();
+        term = ['First','Second','Third'].indexOf(res.data().this_term);
     })
 }
 eot();
 const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
-// if (eotDates)
 
 let clsIndex, armIndex, subIndex;
 const armDatalist = document.querySelector('datalist#arm');
@@ -86,7 +88,7 @@ subjectForm.addEventListener('submit', async (e) => {
     const arm = subjectForm.arm.value;
     sub = subjectForm.subject.value;
     let dt = new Date(eotDates[cls]).setHours(24);
-    
+
     if (dt < Date.now()) {
         e.submitter.disabled = false;
         dialogGreen.querySelector('.submit__icon').classList.remove('running');
@@ -128,6 +130,7 @@ subjectForm.addEventListener('submit', async (e) => {
 
     let scores = [];
     const promises = kvArray.map(async arrVal => {
+        //USE THE TERM-DEFINER TO PICK THE RIGHT SET OF SCORES TO BE EDITED
         await getDoc(doc(db, "scores", arrVal[0])).then((doc) => scores.push(doc.data()));
     })
     await Promise.all(promises);
@@ -144,10 +147,10 @@ subjectForm.addEventListener('submit', async (e) => {
                 <tr id="${id}">
                     <td>${sn}</td>
                     <td>${nm}</td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" value="${scores[ind][sub][0] == null ? '' : scores[ind][sub][0]}" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" value="${scores[ind][sub][1] == null ? '' : scores[ind][sub][1]}" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" value="${scores[ind][sub][2] == null ? '' : scores[ind][sub][2]}" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" value="${scores[ind][sub][3] == null ? '' : scores[ind][sub][3]}" autocomplete="off"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][0] == null ? '' : scores[ind][sub][term][0]}" autocomplete="off"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][1] == null ? '' : scores[ind][sub][term][1]}" autocomplete="off"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][2] == null ? '' : scores[ind][sub][term][2]}" autocomplete="off"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][3] == null ? '' : scores[ind][sub][term][3]}" autocomplete="off"/></td>
                 </tr>
             `)
         } else {
@@ -155,10 +158,10 @@ subjectForm.addEventListener('submit', async (e) => {
                 <tr id="${id}">
                     <td>${sn}</td>
                     <td>${nm}</td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" value="" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" value="" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" value="" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" value="" autocomplete="off"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" autocomplete="off"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" autocomplete="off"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" autocomplete="off"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" autocomplete="off"/></td>
                 </tr>
             `)
         }
@@ -198,14 +201,20 @@ scoreForm.addEventListener('submit', async (e) => {
     }
 
     tr.forEach(row => {
-        let cells = formData.getAll(row.id).map(x => x == '' ? null : Number(x));
-        container.push([row.id, cells])
+        const inputs = row.querySelectorAll('td > input');
+        let cells = [];
+        inputs.forEach(inp => {
+            cells.push(Number(inp.value) || Number(inp.placeholder) || null);
+        });
+        const nulls = cells.every(n => n === null);
+        if (nulls) return;
+        container.push([row.id, cells]);
     })
-    // console.log(container);
+
     const promises = container.map(async cn => {
         const docRef = doc(db, "scores", cn[0]);
         await setDoc(docRef, {
-            [sub]: cn[1]
+            [sub]: {[term]: cn[1]}
         }, { merge: true })
     })
     await Promise.allSettled(promises);
@@ -213,6 +222,7 @@ scoreForm.addEventListener('submit', async (e) => {
     dialogPurpleBtn.innerHTML = 'Changes Saved  &checkmark;';
     dialogPurpleBtn.style.display = 'block';
     e.submitter.disabled = false;
+
 })
 /*
 const promise1 = new Promise((resolve, reject) => {

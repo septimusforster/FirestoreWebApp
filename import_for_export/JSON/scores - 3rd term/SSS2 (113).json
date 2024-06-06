@@ -1,0 +1,7210 @@
+[
+    {
+        "0nZN742UB3bUGkF8jbfX": {
+            "CHE": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "0vRXCRKCxnQ0qojf5Rzb": {
+            "GOV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                2.5,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                5.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "2loDKZq2J8wjAh9lXaCH": {
+            "CCP": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                5.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "59rgt3a17dR5T81bIWkq": {
+            "MKT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                2,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "5XfM2uCyhaeNSupq3fdA": {
+            "FMAT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "6BiUwgFiIJGuyfXPoaRV": {
+            "CIV": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                6.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "6bh2OAkSfmSfzUX6tHB8": {
+            "MTH": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "79hls3icTAe46F7iJNlW": {
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "7HClmOYFVK42k7POUsGd": {
+            "F&N": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "7QAcXrRWxBP2e9mU1ews": {
+            "VIS": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                2.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "7vDqtSLQ7hzBrivx9gh5": {
+            "CCP": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "8XXeMvFcUzugqLeTqUXz": {
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "9frC6QcIqqDFRIXxybSZ": {
+            "ECO": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "9nLAZR6M1BglMKEnr0R9": {
+            "LIT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "AVu2Vvu9C1vvPOLxfAG1": {
+            "COM": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ACCT": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "AWiihrH1wK3hp4wajuZW": {
+            "CHE": [
+                10,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ACCT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "AiNz8ICjhcVJKBAxHPsP": {
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "B7g9tYOY3EcBXYOPwxCu": {
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                10,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "BqyzDY1DFhqVRWcdCyFE": {
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "CUIALsESFSH1vRzYMnJD": {
+            "CHE": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                6.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "DHv25sOM79rDHQzsUqFl": {
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "EZafxZMv6eGLH4DJMWBC": {
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                2.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "Ei5LYYvd7Dqw6s9KVjle": {
+            "CRS": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "FJQc3cSd18AcUEODUwHu": {
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "FSbdxZLIHTPRQ3dvxDrA": {
+            "ECO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "GPyiaog9s9LbvEhtoRWB": {
+            "COM": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "H7QolOAt4UfAikh9EMWH": {
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "HE4D63ypI0XBeUZOzS9R": {
+            "TD": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "HKGFjzzGpnW0iL16cOzg": {
+            "MTH": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                9.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "I2vUM2vyYmxskDSmHg5r": {
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                2,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "FSH": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "IgagLZDWeGVBW9wvD4OG": {
+            "MKT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "IoJxXuZWsdlvICuPwGwB": {
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ACCT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                2,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "KKLoPpAKGMkU0lONHYc1": {
+            "MTH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "FSH": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "KsKC8Nja4JTIaJJQQpBe": {
+            "CHE": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "L33vBIu1WzuPGym7GsXc": {
+            "CCP": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                10,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "LBpi7psOMx6bYPm2mF76": {
+            "MTH": [
+                2,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "LCCQ8RIxHLVxeEJNRs5q": {
+            "ECO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                4,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "LRlJOG5z239ssGVxZU2C": {
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                1,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "LWwXzwEoo56965soTDo5": {
+            "MTH": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "MWQF5uWYq341CIepwgSx": {
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "MaEMgayjBvnL49N1EQ2T": {
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "MgAgoPPDXuzLiHm6WM3d": {
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "NYddTOQiXaikbqAnLmrW": {
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "Nbpc7Kk98ecKbVWo901N": {
+            "AGR": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                2.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "O6u8hOPNipju8Sr1OLwR": {
+            "CHE": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                6.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "OAJUbWklzquOxOym39As": {
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "OyL5hDmHIunOK7YNjTim": {
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                9.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "P7yet0wLaMXN5w06uy9P": {
+            "ECO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ACCT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "PrHjuQ4uaPd9udc0j7B7": {
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "QBhK0yT3bZxyRHl09CM4": {
+            "FRE": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "QRpw9mTMMtBXM4RJrkey": {
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "Sio7T8mlJ0VY1gRyO2T1": {
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                2,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "T2PDBLGIDapQ4dNHENou": {
+            "GEO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                2.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "TJlMBubbM7F0XvSRVwXC": {
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                8.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "UJA2i19pXsmRVkjdiWPk": {
+            "PHY": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                1.5,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "UL7S532TOQyUUSRXFpbr": {
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "UYj8sCVDDqBfsbsBsZhT": {
+            "PHY": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "W4Nph7feWjkmJXEbFP0a": {
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "Wph6SzYoXOhRT9LdTqOa": {
+            "ECO": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "WvF7UwjiIpi0UwTrNo3R": {
+            "MTH": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "XCyngTcWQPCY4LXgTOAT": {
+            "FMAT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "XllDXvbRko07wb1it0Mk": {
+            "F&N": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "XyqPfasNRyRrpoExVsTE": {
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                9,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "ZnhAiE2EorvqfG8Qa4bf": {
+            "CHE": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "blHcCoJOLcaKCtaRH1H7": {
+            "GEO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "bzqJmCNujN625uA70SQ4": {
+            "CRS": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                4,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "c357O22txWm4lQmsQ4g3": {
+            "CIV": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "d0VlIScx2umqjrCLhL4J": {
+            "CHE": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                4,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "dVA2erVqnLMktKS9g6zb": {
+            "LIT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "FSH": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                4.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "e0OPhOMudpoXful3Vrc7": {
+            "FSH": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "eBO551NpwVJS9OrzUC7E": {
+            "PHY": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "eHr6IvxaFTIMieiKE2o8": {
+            "ECO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "ekDWwlPr82EheCJH6aR6": {
+            "FMAT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "fLeXjSQuKYeg6Ea6mFml": {
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "fTesTt5159TPIJo57GY6": {
+            "MTH": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "fgKfG0UdBE8fdsKiJA0Q": {
+            "ICT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "fubjEEHWkSLuhPN1y8eJ": {
+            "FMAT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "FSH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                4.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "gRjJfIeP74VetIzB3S5p": {
+            "ECO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "gzDID8Mn3hmlJ6zy8fiq": {
+            "ECO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ACCT": [
+                3,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "hFIi9Ji6TahYYGVG1pVp": {
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "hiMatueglpZqcQlfQ9q4": {
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                2,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "iI9yjfyILickG4x6UP46": {
+            "CCP": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                6,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "iTxqXA5mv29aVCmd0XZP": {
+            "ENG": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "FSH": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                2,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "jIUJhEgvxH90Z0a2IrbP": {
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "k3iV73cSyOjSMYlr8vSc": {
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "kslVyiKn3ZNrKfOrzrgL": {
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                4,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "lHLdH3gt53oTFcD1iZYl": {
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "lbz9pnDmGlj6UwF8e99T": {
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "FSH": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "lxfrcShTk8TLQdJewh6d": {
+            "LIT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "mIsImpNkLbfGjaOEZKzY": {
+            "ENG": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "FSH": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "mWieekfN68NKw2fOWn9E": {
+            "ENG": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "mfIZl0TXLs4MKOg5AAQZ": {
+            "CRS": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "nZPIV4MWnNhPZ7R2AzUO": {
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                8,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "p7isoH1pRvTMhs50Mrd7": {
+            "FRE": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                4.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "pnVq1g3wj5mgbCchijFH": {
+            "GOV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                6.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "qAwT3UjEcIsOBOWlzNLU": {
+            "FMAT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "FSH": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                3.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "r6If67RYB6M01GCxdo8R": {
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ACCT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "rDU8Uel8zkra9vZ0cv31": {
+            "GEO": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "rIPchJF9TzXbEwCfJSIi": {
+            "ECO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "VIS": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "rl52FKPVOgUHgp8YC2yl": {
+            "CHE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                9,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "s7HtqVxaCbYuVP4yD8wA": {
+            "ICT": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "COM": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                null,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "svFxJjjJafDglmnVJP86": {
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                2.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                6,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "tMkbnB3m8dekmVJolEZX": {
+            "GOV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ACCT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "MKT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "tZDqdeDU6tjp1tKlOHJg": {
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "uJ6lzYMrlfPHNdLxNQWN": {
+            "MKT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "uLFAuZcd6asBVnQ56miN": {
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                10,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "wEH9fkjuKWQQWGDsXqKq": {
+            "ECO": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "wXxXp4KKXIchFsVoTkQR": {
+            "ENG": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                2.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                6,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                7.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "xD0j2dKnewr5xhEj056D": {
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                9,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "yFXZ0UCBZrvkoln9rARu": {
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CRS": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "ECO": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "FRE": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "GOV": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "LIT": [
+                7,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "yXjxgSkhHbrouLNjCNTX": {
+            "CHE": [
+                6.5,
+                null,
+                null,
+                null
+            ],
+            "CCP": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "TD": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                4.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "yrkYxIhJVeA0aWPRsSLH": {
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "CHE": [
+                5,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                4,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                10,
+                null,
+                null,
+                null
+            ],
+            "AGR": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                5.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                7,
+                null,
+                null,
+                null
+            ],
+            "FMAT": [
+                4.5,
+                null,
+                null,
+                null
+            ]
+        }
+    },
+    {
+        "zIB0aMxR4fwJY72Ha7bX": {
+            "CHE": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "F&N": [
+                9,
+                null,
+                null,
+                null
+            ],
+            "BIO": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "ENG": [
+                7.5,
+                null,
+                null,
+                null
+            ],
+            "PHY": [
+                4.5,
+                null,
+                null,
+                null
+            ],
+            "TOU": [
+                9.5,
+                null,
+                null,
+                null
+            ],
+            "ICT": [
+                3.5,
+                null,
+                null,
+                null
+            ],
+            "CIV": [
+                8,
+                null,
+                null,
+                null
+            ],
+            "GEO": [
+                8.5,
+                null,
+                null,
+                null
+            ],
+            "MTH": [
+                3,
+                null,
+                null,
+                null
+            ]
+        }
+    }
+]

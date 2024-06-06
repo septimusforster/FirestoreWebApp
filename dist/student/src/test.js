@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, doc, getDoc, setDoc, query, where, and, or, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 const params = atob(new URL(location.href).searchParams.get('sb'))
@@ -47,6 +47,26 @@ currentTime.setMinutes(mm);
 currentTime.setMinutes(currentTime.getMinutes() + duration);
 var formattedTime = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0');
 */
+const classIndex = configs[7].indexOf(snappy.class);
+
+// initial firebase app
+var app = initializeApp(configs[6]);
+// init services
+var db = getFirestore();
+
+let eotDates, term;
+async function eot() {
+    const eotRef = doc(db, "reserved", "EOT");
+    await getDoc(eotRef).then((res) => {
+        // store dates in eotDates
+        eotDates = res.data();
+        term = ['First','Second','Third'].indexOf(res.data().this_term);
+        deleteApp(app);
+        app = initializeApp(configs[classIndex]);
+        db = getFirestore();
+    })
+}
+eot();
 
 async function chkDate() {
     if (startDate < Date.now()) {
@@ -54,7 +74,6 @@ async function chkDate() {
         chkDateDialog.showModal();
         return;
     } else {
-        // display accDialog
         accDialog.showModal();
     }
 }
@@ -65,7 +84,6 @@ function displayHeader() {
     //display header resources
     document.getElementById('person').textContent = `${snappy.last_name + ' ' + snappy.first_name + ' ' + snappy.other_name}`;
     document.getElementById('task').textContent = snappy.offered[testAbbr];
-    // timer.textContent = duration + '.00';
     timer.textContent = duration + ".00";
     header.style.display = 'flex';
     header.classList.remove('disp');
@@ -158,11 +176,11 @@ accForm.addEventListener('submit', async (e) => {
     // get test doc if available
     const scoreRef = doc(db, "scores", uid);
     await getDoc(scoreRef).then(res => {
-        if (res.get(testAbbr) && res.get(testAbbr)[testNum] != null) {
+        if (res.get(testAbbr) && res.get(testAbbr)[term][testNum] != null) {
             window.alert("You've already taken this test.");
             return;
         }
-        updateVal = res.get(testAbbr) || [null, null, null, null];
+        updateVal = res.get(testAbbr)[term] || [null, null, null, null];
         if (acc === code) {
             accDialog.close();
             document.documentElement.requestFullscreen();
@@ -184,17 +202,9 @@ accForm.addEventListener('submit', async (e) => {
 //     }
 // })
 
-const classIndex = configs[7].indexOf(snappy.class);
-
-// initial firebase app, assuming for SSS 3
-var app = initializeApp(configs[classIndex]);
-// init services
-var db = getFirestore();
-
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
     submitDialog.showModal();
-    // submission();
 });
 
 const yesBtn = document.querySelector('button#yes');
@@ -208,50 +218,26 @@ yesBtn.addEventListener('click', (e) => {
 })
 
 async function submission() {
-    // submitBtn.addEventListener('click', async (e) => {
-        submitBtn.disabled = true;
-        submitBtn.style.cursor = 'not-allowed';
-        clearInterval(intervalID);
-    
-        let i, score = 0;
-        for (i = 0; i < questions; i++) {
-            if (chosen[i] == dv.getInt8(i)) {
-                score++;
-            }
+    submitBtn.disabled = true;
+    submitBtn.style.cursor = 'not-allowed';
+    clearInterval(intervalID);
+
+    let i, score = 0;
+    for (i = 0; i < questions; i++) {
+        if (chosen[i] == dv.getInt8(i)) {
+            score++;
         }
-        const scoreRef = doc(db, "scores", uid)
-        // await getDoc(scoreRef).then( async res => {
-        //     if (res.data()?.[testAbbr] === undefined) {
-                updateVal.splice(testNum, 1, Number((score/questions*rating).toFixed(1)))
-                await setDoc(scoreRef, {
-                    [testAbbr]: updateVal,
-                }, { merge: true })
-                // console.log("Test updated 1.")
-                msgDialog.querySelector('output').innerHTML = `
-                    Your score:<br><large>${score} out of ${questions}</large>
-                `;
-                msgDialog.showModal();
-                tbody.style.pointerEvents = 'none';
-            // } else {
-            //     if (res.data()[testAbbr][testNum] != null) return window.alert("You've already taken this test.");
-                // let arr = res.data()[testAbbr];
-                // arr.forEach((element, index) => {
-                //     updateVal.splice(index, 1, element)
-                // });
-                // updateVal[testNum] = Number((score/questions*rating).toFixed(1));
-        
-                // await setDoc(scoreRef, {
-                //     [testAbbr]: updateVal,
-                // }, { merge: true })
-                // msgDialog.querySelector('output').innerHTML = `
-                //     Your score:<br><large>${score} out of ${questions}</large>
-                // `;
-                // msgDialog.showModal();
-                // tbody.style.pointerEvents = 'none';
-            // }
-        // })
-    
-    // })
+    }
+    const scoreRef = doc(db, "scores", uid)
+    updateVal.splice(testNum, 1, Number((score/questions*rating).toFixed(1)));
+    await setDoc(scoreRef, {
+        [testAbbr]: {[term]: updateVal},
+    }, { merge: true });
+    msgDialog.querySelector('output').innerHTML = `
+        Your score:<br><large>${score} out of ${questions}</large>
+    `;
+    msgDialog.showModal();
+    tbody.style.pointerEvents = 'none';
 }
 
 const quizForm = document.forms.quizForm;
