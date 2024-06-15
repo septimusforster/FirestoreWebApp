@@ -1,6 +1,7 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
+import { update } from "firebase/database";
 
 const params = atob(new URL(location.href).searchParams.get('sb'))
 const ct = parseInt(new URL(location.href).searchParams.get('ct'));
@@ -175,12 +176,23 @@ accForm.addEventListener('submit', async (e) => {
     const acc = accForm.acc.value;
     // get test doc if available
     const scoreRef = doc(db, "scores", uid);
-    await getDoc(scoreRef).then(res => {
+    await getDoc(scoreRef).then(async res => {
         if (res.get(testAbbr) && res.get(testAbbr)[term][testNum] != null) {
             window.alert("You've already taken this test.");
             return;
         }
-        updateVal = res.get(testAbbr)[term] || [null, null, null, null];
+        if (!res.exists || res.get(testAbbr) == undefined) {
+            await setDoc(scoreRef, {
+                [testAbbr]: {
+                    0: [null, null, null, null],
+                    1: [null, null, null, null],
+                    2: [null, null, null, null]
+                }
+            }, { merge: true });
+            updateVal = [null, null, null, null];
+        } else {
+            updateVal = res.get(testAbbr)[term];
+        }
         if (acc === code) {
             accDialog.close();
             document.documentElement.requestFullscreen();

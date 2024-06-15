@@ -42,22 +42,24 @@ let overall = [];
 const scorePromises = studentIDs.map(async sid => {
     await getDoc(doc(db, "scores", sid)).then((res) => {
         studentScores.push({sid, ...res.data()});
-        overall.push(Object.entries(res.data()));
+        // overall.push(Object.entries(res.data()));
+        overall.push(res.data());
     });
-})
+});
 
 await Promise.allSettled(scorePromises);
+// console.log(overall)
 // console.log(studentScores);
-const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort();
-// console.log(ME);
+const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort(); //[0] retrieves only the first sid match by filter
+ME.length = ME.length - 1; // excludes sid from iteration, leaving only subs
 const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
 const tbodyTerm = document.querySelector('#section-grade table:nth-child(2) tbody');
 let total = 0;
 let i;
-
-for (i = 0; i < ME.length - 1; i++) {
+let term = ["First", "Second", "Third"].indexOf(thisTerm);
+for (i = 0; i < ME.length; i++) {
     var td = '';
-    let [a,b,c,d] = ME[i][1];
+    let [a,b,c,d] = ME[i][1][term];
     let subtotal = Number((a + b + c + d).toFixed(1));
     td += `
         <td>${i+1}</td>
@@ -92,14 +94,16 @@ for (i = 0; i < ME.length - 1; i++) {
 
     let summation = [];
     for (let j = 0; j < studentScores.length; j++) {
-        let [w,x,y,z] = studentScores[j][ME[i][0]] || [null, null, null, null];
+        if (studentScores[j][ME[i][0]] === undefined) continue;
+        let [w,x,y,z] = studentScores[j][ME[i][0]][term];
+
         if (w + x + y + z == 0) continue;
         let precision = Number((w + x + y + z).toFixed(1));
         summation.push(precision);
     };
-    
-    let max = summation.reduce((x,y) => Math.max(x,y));
-    let min = summation.reduce((x,y) => Math.min(x,y));
+
+    let max = Math.max(...summation);
+    let min = Math.min(...summation);
     td += `
         <td>${max}</td>
         <td>${min}</td>
@@ -107,20 +111,24 @@ for (i = 0; i < ME.length - 1; i++) {
     tbodyScores.insertAdjacentHTML('beforeend', `
         <tr>${td}</tr>
     `);
-    
-    let term = ["First", "Second", "Third"].indexOf(thisTerm);  
-    tbodyTerm.insertAdjacentHTML('beforeend', `
-        <tr>
-            <td>${term === 0 ? subtotal : ''}</td>
-            <td>${term === 1 ? subtotal : ''}</td>
-            <td>${term === 2 ? subtotal : ''}</td>
-            <td></td>
-        </tr>
-    `)
+    for (let q = 0; ME[i][1].length; q++) {
+        const [m, n, o, p] = ME[i][1][q][0];
+        const [q, r, s, t] = ME[i][1][q][1];
+        const [u, v, w, x] = ME[i][1][q][2];
+        tbodyTerm.insertAdjacentHTML('beforeend', `
+            <tr>
+                <td>${m + n + o + p || ''}</td>
+                <td>${q + r + s + t || ''}</td>
+                <td>${u + v + w + x || ''}</td>
+                <td></td>
+            </tr>
+        `)
+    }
 }
 
 const ME_AVERAGE = (total / (ME.length - 1)).toFixed(1);
 let subAverage = [];
+/*
 overall.forEach(ov => {
     let elem = 0, factor = 0;
     for (const x of ov) {
@@ -131,6 +139,7 @@ overall.forEach(ov => {
     subAverage.push(elem/factor);
 });
 const CLS_AVERAGE = (subAverage.reduce((acc, cur) => acc + cur)/classSize).toFixed(1);
+*/
 // console.log("subAverage:", subAverage);
 // get principal data
 const princDiv = document.getElementById('principal');
@@ -174,7 +183,7 @@ function overstats(sTot, sAve, cAve) {
     }
 }
 
-overstats(total.toFixed(1), ME_AVERAGE, CLS_AVERAGE);    // total.toFixed()
+// overstats(total.toFixed(1), ME_AVERAGE, CLS_AVERAGE);    // total.toFixed()
 
 async function eot() {
     let teacherDiv = document.getElementById('teacher');

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broad Sheet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .opq {
+            opacity: 1;
+        }
+        main {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        div.container {
+            width: 300px;
+            margin: auto;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>header</header>
+    <main>
+        <div class="container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>NAME</th>
+                        <th>MTH</th>
+                        <th>ENG</th>
+                        <th>TOT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Jorg Demus</td>
+                        <td>88</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Ewa Poblocka</td>
+                        <td>100</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </main>
+    <script type="module">
+        import { sassy } from '../../../import_for_export/JSON/scores - 2nd term/SSS2 (112).json' assert {type: 'json'};
+        window.addEventListener('load', (e) => {
+            document.querySelector('main').classList.add('opq');
+        });
+        const first_student = s2[0];
+        console.log(first_student);
+    </script>
+</body>
+</html>
