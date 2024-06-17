@@ -37,17 +37,6 @@ const startDate = new Date(subby[cat].startDate).setHours(24);
 const startTime = subby[cat].startTime;
 var duration = subby[cat].duration;
 
-// settingn up startTime
-/*
-const parts = startTime.split(':');
-const hr = parseInt(parts[0]);
-const mm = parseInt(parts[1]);
-var currentTime = new Date();
-currentTime.setHours(hr);
-currentTime.setMinutes(mm);
-currentTime.setMinutes(currentTime.getMinutes() + duration);
-var formattedTime = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0');
-*/
 const classIndex = configs[7].indexOf(snappy.class);
 
 // initial firebase app

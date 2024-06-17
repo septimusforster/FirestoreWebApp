@@ -22,7 +22,7 @@ const spanClass = document.querySelector('header span');
 const spanArm = document.querySelector('header span:last-child');
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#load-icon').classList.add('running');
-})
+});
 
 const tbody = document.querySelector('tbody');
 const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
@@ -50,8 +50,11 @@ for (const [k, v] of master_of_form) {
         })
         await Promise.allSettled(prom);
         document.querySelector("input[type='submit']").style.display = 'initial';
-        // console.log(scores);
-        
+        //provide all scores and student docs for broadsheet
+        let all_scores = scores, all_students = snapDoc;
+        sessionStorage.setItem('all_scores', all_scores);
+        sessionStorage.setItem('all_students', all_students);
+
         // let i = 1;
         snapDoc.docs.forEach((sd, ix) => {
             tbody.insertAdjacentHTML('beforeend', `

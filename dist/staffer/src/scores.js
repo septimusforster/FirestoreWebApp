@@ -147,10 +147,14 @@ subjectForm.addEventListener('submit', async (e) => {
                 <tr id="${id}">
                     <td>${sn}</td>
                     <td>${nm}</td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][0] == null ? '' : scores[ind][sub][term][0]}" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][1] == null ? '' : scores[ind][sub][term][1]}" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][2] == null ? '' : scores[ind][sub][term][2]}" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][3] == null ? '' : scores[ind][sub][term][3]}" autocomplete="off"/></td>
+                    <td>${scores[ind][sub][term][0] == null ? '' : scores[ind][sub][term][0]}</td>
+                    <td>${scores[ind][sub][term][1] == null ? '' : scores[ind][sub][term][1]}</td>
+                    <input type="hidden" name="${id}" value="${scores[ind][sub][term][0] == null ? '' : scores[ind][sub][term][0]}"/>
+                    <input type="hidden" name="${id}" value="${scores[ind][sub][term][1] == null ? '' : scores[ind][sub][term][1]}"/>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][2] == null ? '' : scores[ind][sub][term][2]}"/></td>
+                    <input type="hidden" name="${id}" value="${scores[ind][sub][term][3] == null ? '' : scores[ind][sub][term][3]}"/>
+                    <td>${scores[ind][sub][term][3] == null ? '' : scores[ind][sub][term][3]}</td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][4] == null ? '' : scores[ind][sub][term][4]}"/></td>
                 </tr>
             `)
         } else {
@@ -158,10 +162,11 @@ subjectForm.addEventListener('submit', async (e) => {
                 <tr id="${id}">
                     <td>${sn}</td>
                     <td>${nm}</td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" autocomplete="off"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" autocomplete="off"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
                 </tr>
             `)
         }
@@ -201,16 +206,17 @@ scoreForm.addEventListener('submit', async (e) => {
     }
 
     tr.forEach(row => {
+        let bool = false; //must be set to 0
         const inputs = row.querySelectorAll('td > input');
-        let cells = [];
         inputs.forEach(inp => {
-            cells.push(Number(inp.value) || Number(inp.placeholder) || null);
+            if (inp.type == 'text' && inp.value) {
+                return bool = true;
+            }
         });
-        const nulls = cells.every(n => n === null);
-        if (nulls) return;
+        if (!bool) return;
+        let cells = formData.getAll(row.id).map(x => x == '' ? null : Number(x));
         container.push([row.id, cells]);
-    })
-
+    })  
     const promises = container.map(async cn => {
         const docRef = doc(db, "scores", cn[0]);
         await setDoc(docRef, {

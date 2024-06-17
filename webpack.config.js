@@ -120,7 +120,7 @@ module.exports = {
 }
 */
 // STAFFER scores.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/scores.js",
@@ -130,7 +130,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STUDENT index.js
 /*
 module.exports = {
@@ -180,7 +180,7 @@ module.exports = {
 }
 */
 //STUDENT test.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/test.js",
@@ -190,7 +190,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STUDENT result.js
 /*
 module.exports = {

@@ -10,6 +10,24 @@
             padding: 0;
             box-sizing: border-box;
         }
+        html, body {
+            font: 16px sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 7px;
+            background-color: transparent;
+        }
+        ::-webkit-scrollbar-track {
+            border: 1px solid;
+            border-color: #ccc transparent #ccc #eee;
+        }
+        div.container::-webkit-scrollbar-button {
+            /* background-color: #009578; */
+            height: 48px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #555;
+        }
         .opq {
             opacity: 1;
         }
@@ -18,9 +36,119 @@
             transition: opacity 1s ease;
         }
         div.container {
-            width: 300px;
+            width: fit-content;
+            /* width: 300px; */
+            max-height: 95vh;
+            /* overflow-x: hidden; */
+            overflow-y: scroll;
             margin: auto;
             border: 1px solid #ccc;
+            border-radius: 10px 10px 0 0;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        tbody tr > td:nth-child(2) {
+            border-right: 1px solid #ccc;
+            color: #009578;
+            font-weight: 600;
+            text-align: left;
+        }
+        thead tr > th:nth-child(2) {
+            text-align: left;
+        }
+        tr > td:nth-child(1) {
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f3f4f4;
+        }
+        tr:nth-child(odd) {
+            background-color: #fff;
+        }
+        th, td {
+            padding: 15px;
+        }
+        thead {
+            background-color: #fff;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 1px #ccc;
+            z-index: 1;
+        }
+        thead tr {
+            color: #555;
+        }
+        /* tbody {
+        } */
+        tbody tr {
+            text-align: center;
+            color: #555;
+            /* position: relative; */
+        }
+        tfoot {
+            position: sticky;
+            bottom: 0;
+            background-color: #fff;
+            color: #555;
+            box-shadow: 0 -1px #ccc;
+        }
+        tfoot td {
+            text-align: center;
+        }
+        @media screen and (max-width: 667px) {
+            ::-webkit-scrollbar {
+                width: 0;
+            }
+            html, body {
+                font: 12px sans-serif;
+            }
+            div.container {
+                width: 100%;
+            }
+            tbody tr {
+                position: relative;
+            }
+            tbody tr > td:nth-child(1),
+            thead tr > th:nth-child(1) {
+                position: sticky;
+                left: 0;
+                height: 100%;
+                width: 50px;
+            }
+            tbody tr > td:nth-child(1):nth-of-type(even),
+            thead tr > th:nth-child(1) {
+                background-color: inherit;
+            }
+            tbody tr > td:nth-child(1):nth-of-type(odd) {
+                background-color: inherit;
+            }
+            tbody tr > td:nth-child(2),
+            thead tr > th:nth-child(2) {
+                position: sticky;
+                left: 40px;
+                height: 100%;
+                width: 100px;
+                box-shadow: 1px 0 #ccc;
+                border-right: 0;
+                display: block;
+            }
+            tbody tr > td:nth-child(2):nth-of-type(even),
+            thead tr > th:nth-child(2) {
+                background-color: inherit;
+            }
+            tbody tr > td:nth-child(2):nth-of-type(odd) {
+                background-color: inherit;
+            }
+            tbody tr > td:nth-child(11),
+            thead tr > th:nth-child(11),
+            tbody tr > td:nth-child(12),
+            thead tr > th:nth-child(12),
+            tbody tr > td:nth-child(13),
+            thead tr > th:nth-child(13) {
+                display: table-column;
+            }
         }
     </style>
 </head>
@@ -29,20 +157,18 @@
     <main>
         <div class="container">
             <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>NAME</th>
-                        <th>MTH</th>
-                        <th>ENG</th>
-                        <th>TOT</th>
-                    </tr>
-                </thead>
+                <thead><tr></tr></thead>
                 <tbody>
                     <tr>
                         <td>1</td>
                         <td>Jorg Demus</td>
                         <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
                         <td>97</td>
                     </tr>
                     <tr>
@@ -50,25 +176,322 @@
                         <td>Ewa Poblocka</td>
                         <td>100</td>
                         <td>97</td>
+                        <td>97</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
                     </tr>
                     <tr>
                         <td>3</td>
                         <td>Franz Schubert</td>
                         <td>100</td>
                         <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Jorg Demus</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Ewa Poblocka</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Jorg Demus</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Ewa Poblocka</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Jorg Demus</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Ewa Poblocka</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>Jorg Demus</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Ewa Poblocka</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>Jorg Demus</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>88</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>Ewa Poblocka</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>100</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                        <td>97</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>99</td>
+                        <td>Franz Schubert</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
+                        <td>100</td>
                     </tr>
                 </tbody>
-                <tfoot></tfoot>
+                <tfoot>
+                    <tr>
+                        <td>Broad sheet</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </main>
-    <script type="module">
-        import { sassy } from '../../../import_for_export/JSON/scores - 2nd term/SSS2 (112).json' assert {type: 'json'};
-        window.addEventListener('load', (e) => {
-            document.querySelector('main').classList.add('opq');
-        });
-        const first_student = s2[0];
-        console.log(first_student);
-    </script>
+    <script type="module" src="../src/broadsheet.js"></script>
 </body>
 </html>
