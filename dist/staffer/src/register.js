@@ -36,26 +36,28 @@ for (const [k, v] of master_of_form) {
     if (snapDoc.empty) {
         window.alert('This class is empty.');
     } else {
-        let scores = [];
+        // snapDoc.docs.sort()
+        let scores = [], term = 2;
         const prom = snapDoc.docs.map(async sd => {
             await getDoc(doc(db, "scores", sd.id)).then((res) => {
+                if (!res.exists()) return scores.push('0');
                 let st = Object.values(res.data());
                 let ph = 0;
                 for (const dt of st) {
-                    // ph.concat(dt);
-                    ph += dt.reduce((acc, cur) => acc + cur)
+                    // let a;
+                    // for (const x of Object.values(dt)) console.log(x) //for cumulative
+                    ph += dt[term].reduce((acc, cur) => acc + cur)
                 }
                 scores.push((ph/st.length).toFixed());
-            })
-        })
+            });
+        });
         await Promise.allSettled(prom);
         document.querySelector("input[type='submit']").style.display = 'initial';
         //provide all scores and student docs for broadsheet
         let all_scores = scores, all_students = snapDoc;
         sessionStorage.setItem('all_scores', all_scores);
         sessionStorage.setItem('all_students', all_students);
-
-        // let i = 1;
+        
         snapDoc.docs.forEach((sd, ix) => {
             tbody.insertAdjacentHTML('beforeend', `
                 <tr>
@@ -71,7 +73,8 @@ for (const [k, v] of master_of_form) {
                 </tr>
             `)
             // i++;
-        })
+        });
+        
     }
     bodyDiv.style.display = 'none';
     document.querySelector('#load-icon').classList.remove('running');

@@ -148,9 +148,8 @@ subjectForm.addEventListener('submit', async (e) => {
                     <td>${sn}</td>
                     <td>${nm}</td>
                     <td>${scores[ind][sub][term][0] == null ? '' : scores[ind][sub][term][0]}</td>
-                    <td>${scores[ind][sub][term][1] == null ? '' : scores[ind][sub][term][1]}</td>
                     <input type="hidden" name="${id}" value="${scores[ind][sub][term][0] == null ? '' : scores[ind][sub][term][0]}"/>
-                    <input type="hidden" name="${id}" value="${scores[ind][sub][term][1] == null ? '' : scores[ind][sub][term][1]}"/>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][1] == null ? '' : scores[ind][sub][term][1]}"/></td>
                     <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][2] == null ? '' : scores[ind][sub][term][2]}"/></td>
                     <input type="hidden" name="${id}" value="${scores[ind][sub][term][3] == null ? '' : scores[ind][sub][term][3]}"/>
                     <td>${scores[ind][sub][term][3] == null ? '' : scores[ind][sub][term][3]}</td>

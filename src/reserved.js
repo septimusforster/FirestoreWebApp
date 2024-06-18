@@ -489,3 +489,5 @@ cOEForm.addEventListener("submit", async (e) => {
     window.alert("Test/Exam has been updated.");
     formStatus(e);
 })
+
+// const delRef = await updateDoc(doc(db, "scores", ))
