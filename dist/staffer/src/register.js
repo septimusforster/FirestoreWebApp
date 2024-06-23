@@ -1,16 +1,20 @@
 import { initializeApp, deleteApp } from "firebase/app";
 // import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { getFirestore, collection, doc, getDoc, query, where, updateDoc, getDocs } from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc, query, where, updateDoc, getDocs, setDoc } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 //declare all const and var
 const classArray = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
 
 // initialize firebase app
-var app = initializeApp(configs[0]);
+var app = initializeApp(configs[6]);
 // init services
-var db;
-
+var db = getFirestore(app);
+let term;
+const eotRef = doc(db, "reserved", "EOT");
+await getDoc(eotRef).then((res) => {
+    term = ['First','Second','Third'].indexOf(res.data().this_term);
+});
 function chooseConfig(projNum) {
     deleteApp(app);
     app = initializeApp(configs[projNum]);
@@ -37,15 +41,13 @@ for (const [k, v] of master_of_form) {
         window.alert('This class is empty.');
     } else {
         // snapDoc.docs.sort()
-        let scores = [], term = 2;
+        let scores = [];
         const prom = snapDoc.docs.map(async sd => {
             await getDoc(doc(db, "scores", sd.id)).then((res) => {
                 if (!res.exists()) return scores.push('0');
                 let st = Object.values(res.data());
                 let ph = 0;
                 for (const dt of st) {
-                    // let a;
-                    // for (const x of Object.values(dt)) console.log(x) //for cumulative
                     ph += dt[term].reduce((acc, cur) => acc + cur)
                 }
                 scores.push((ph/st.length).toFixed());
@@ -68,7 +70,7 @@ for (const [k, v] of master_of_form) {
                     <td>${sd.data().email}</td>
                     <td>${sd.data().password}</td>
                     <td><input type="number" name="${sd.id}" class="${sd.id}" min="0" max="99" pattern="[0-9]{1,2}" placeholder="${sd.data().days_present || 0}"/></td>
-                    <td><input type="text" name="${sd.id}" class="${sd.id}" autocomplete="off" placeholder="${sd.data().comment || ''}"/></td>
+                    <td><input type="text" name="${sd.id}" class="${sd.id}" autocomplete="off" placeholder="${sd.data().comment?.[term] || ''}"/></td>
                     <td>${scores[ix]}</td>
                 </tr>
             `)
@@ -102,11 +104,11 @@ formRegister.addEventListener('submit', async (e) => {
     // console.log("Entries:", entries);
     
     const promises = entries.map(async cb => {
-        await updateDoc(doc(db, "students", cb[0]), {
+        await setDoc(doc(db, "students", cb[0]), {
             admission_no: cb[1][0],
             days_present: Number(cb[1][1]),
-            comment: cb[1][2],
-        })
+            comment: { [term]: cb[1][2] },
+        }, { merge: true });
     })
     await Promise.allSettled(promises);
     location.reload();

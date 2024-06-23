@@ -134,9 +134,6 @@ subjectForm.addEventListener('submit', async (e) => {
         await getDoc(doc(db, "scores", arrVal[0])).then((doc) => scores.push(doc.data()));
     })
     await Promise.all(promises);
-    // console.log(scores)
-    
-    // console.log(kvArray)
     // clear tbody for new arrivals
     tbody.innerHTML = '';
     // create scoresheet of names and scores

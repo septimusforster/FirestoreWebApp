@@ -22,6 +22,7 @@ const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
 
 let eotData;
 let thisTerm;
+let term;
 await eot();
 const principal = eotData.principal;
 
@@ -53,10 +54,11 @@ await Promise.allSettled(scorePromises);
 const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort(); //[0] retrieves only the first sid match by filter
 ME.length = ME.length - 1; // excludes sid from iteration, leaving only subs
 const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
+const tfootTerm = document.querySelector('#section-grade table:nth-child(1) tfoot');
 const tbodyTerm = document.querySelector('#section-grade table:nth-child(2) tbody');
+const tfootCumm = document.querySelector('#section-grade table:nth-child(2) tfoot');
 let total = 0;
 let i;
-let term = ["First", "Second", "Third"].indexOf(thisTerm);
 for (i = 0; i < ME.length; i++) {
     var td = '';
     let [a,b,c,d] = ME[i][1][term];
@@ -111,21 +113,20 @@ for (i = 0; i < ME.length; i++) {
     tbodyScores.insertAdjacentHTML('beforeend', `
         <tr>${td}</tr>
     `);
-    for (let q = 0; ME[i][1].length; q++) {
-        const [m, n, o, p] = ME[i][1][q][0];
-        const [q, r, s, t] = ME[i][1][q][1];
-        const [u, v, w, x] = ME[i][1][q][2];
-        tbodyTerm.insertAdjacentHTML('beforeend', `
-            <tr>
-                <td>${m + n + o + p || ''}</td>
-                <td>${q + r + s + t || ''}</td>
-                <td>${u + v + w + x || ''}</td>
-                <td></td>
-            </tr>
-        `)
+    let cumm_td = '', cumm = 0, count = 0;
+    for (const x of Object.values(ME[i][1])) {
+        let t = x.reduce((a, c) => a + c);
+        cumm += t;
+        if (t) count++;
+        cumm_td += `<td>${t || '-'}</td>`;
     }
+    tbodyTerm.insertAdjacentHTML('beforeend', `
+        <tr>
+            ${cumm_td}
+            <td>${(cumm/count).toFixed(1)}</td>
+        </tr>
+    `)
 }
-
 const ME_AVERAGE = (total / (ME.length - 1)).toFixed(1);
 let subAverage = [];
 /*
@@ -144,35 +145,62 @@ const CLS_AVERAGE = (subAverage.reduce((acc, cur) => acc + cur)/classSize).toFix
 // get principal data
 const princDiv = document.getElementById('principal');
 princDiv.querySelector('p').textContent = principal.name;
-const percent = document.getElementById('percent');
+// const percent = document.getElementById('percent');
+let term_grade, cumm_grade;
 // ME_AVERAGE = ((total * 100) / (scores.length * 100)).toFixed();
 switch (true) {
     case ME_AVERAGE >= 80:
         princDiv.querySelector('blockquote').textContent = principal.Acomm;
-        percent.textContent = 'A';
+        // percent.textContent = 'A';
+        term_grade = 'A';
         break;
     case ME_AVERAGE >= 65:
         princDiv.querySelector('blockquote').textContent = principal.Bcomm;
-        percent.textContent = 'B';
+        // percent.textContent = 'B';
+        term_grade = 'B';
         break;
     case ME_AVERAGE >= 50:
         princDiv.querySelector('blockquote').textContent = principal.Ccomm;
-        percent.textContent = 'C';
+        // percent.textContent = 'C';
+        term_grade = 'C';
         break;
     case ME_AVERAGE >= 40:
         princDiv.querySelector('blockquote').textContent = principal.Dcomm;
-        percent.textContent = 'D';
+        // percent.textContent = 'D';
+        term_grade = 'D';
         break;
     case ME_AVERAGE >= 30:
         princDiv.querySelector('blockquote').textContent = principal.Ecomm;
-        percent.textContent = 'E';
+        // percent.textContent = 'E';
+        term_grade = 'E';
         break;
     case ME_AVERAGE >= 0:
         princDiv.querySelector('blockquote').textContent = principal.Fcomm;
-        percent.textContent = 'F';
+        // percent.textContent = 'F';
+        term_grade = 'F';
         break;
 }
-
+//add term total and term grade
+const cspan = Number(tbodyScores.dataset.totHeader);
+tfootTerm.insertAdjacentHTML('beforeend', `
+    <tr>
+        <td colspan="${cspan}">Total/Grade</td>
+        <td>${total}</td>
+        <td>${term_grade}</td>
+    </tr>
+`);
+for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 cols in table 2
+    let ft = 0;
+    const tds = tbodyTerm.querySelectorAll(`tr td:nth-child(${colNum + 1}`);
+    tds.forEach(td => {
+        if(!(td.innerText == '-' || td.innerText == undefined)) ft += Number(td.innerText);
+    });
+    // console.log(tds);
+    // console.log(ft)
+    tfootCumm.querySelector('tr').insertAdjacentHTML('beforeend', `
+        <td>${colNum == 3 ? ft/studentScores.length : ft || ''}</td>
+    `);
+}
 const overStats = document.querySelectorAll('.overstats');
 function overstats(sTot, sAve, cAve) {
     let counter = 0;
@@ -193,10 +221,11 @@ async function eot() {
         // store dates in eotDates
         eotData = res.data();
         thisTerm = eotData.this_term;
+        term = ["First", "Second", "Third"].indexOf(thisTerm);
         const nextTerm = eotData.next_term;
         const session = eotData.session;
         const daysOpen = parseInt(eotData.days_open);
-        const stamp = '../img/DCA STAMP_2024.png' || eotData.stamp;
+        const stamp = [,,'../img/24_25/stmp_2.png'][term] || eotData.stamp;
         
         // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
         const photo = "../img/user.png" || ss.photo_src;
@@ -206,7 +235,7 @@ async function eot() {
         const daysPresent = ss.days_present || 0;
         const daysAbsent = daysOpen - daysPresent;
         const teacherName = ss.formMaster;
-        const comment = ss.comment || '';
+        const comment = ss.comment?.[term] || '';
 
         const dob = new Date(ss.dob);
         const compareDate = new Date(eotData[ss.cls]);
