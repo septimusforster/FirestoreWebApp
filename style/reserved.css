@@ -265,3 +265,11 @@ button#view-staffers:focus {
     background-color: #004d3d;
     color: #fff;
 }
+select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+}

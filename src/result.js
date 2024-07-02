@@ -20,10 +20,7 @@ const offered = ss.offered;
 const classSize = ss.size;
 const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
 
-let eotData;
-let thisTerm;
-let term;
-let percentile = 20;    //else, 100. In the future, percentile should be determined from the backend
+let eotData, thisTerm, term, percentile;
 await eot();
 const principal = eotData.principal;
 
@@ -232,6 +229,7 @@ async function eot() {
         eotData = res.data();
         thisTerm = eotData.this_term;
         term = ["First", "Second", "Third"].indexOf(eotData.this_term);
+        percentile = eotData.percentile;
         const nextTerm = percentile < 100 ? '' : eotData.next_term;
         const session = eotData.session;
         const daysOpen = parseInt(eotData.days_open);
