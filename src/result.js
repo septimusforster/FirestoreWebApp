@@ -23,6 +23,7 @@ const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
 let eotData;
 let thisTerm;
 let term;
+let percentile = 20;    //else, 100. In the future, percentile should be determined from the backend
 await eot();
 const principal = eotData.principal;
 
@@ -53,12 +54,22 @@ await Promise.allSettled(scorePromises);
 // console.log(studentScores);
 const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort(); //[0] retrieves only the first sid match by filter
 ME.length = ME.length - 1; // excludes sid from iteration, leaving only subs
+const theadFirstRow = document.querySelector("#section-grade table:nth-child(1) thead tr:first-child th");
+if (percentile < 100) theadFirstRow.innerText = "Mid-Term Report";
+
 const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
 const tfootTerm = document.querySelector('#section-grade table:nth-child(1) tfoot');
 const tbodyTerm = document.querySelector('#section-grade table:nth-child(2) tbody');
 const tfootCumm = document.querySelector('#section-grade table:nth-child(2) tfoot');
-let total = 0;
-let i;
+let total = 0, i;
+let graderObject = {
+    "A": 80/100*percentile, //consider using toFixed() to trim fractional part;
+    "B": 65/100*percentile, //but these grades are fine because they return integers
+    "C": 50/100*percentile,
+    "D": 40/100*percentile,
+    "E": 30/100*percentile,
+    "F": 0/100*percentile,
+}
 for (i = 0; i < ME.length; i++) {
     var td = '';
     let [a,b,c,d] = ME[i][1][term];
@@ -73,22 +84,22 @@ for (i = 0; i < ME.length; i++) {
         <td>${subtotal}</td>
     `;
     switch (true) {
-        case subtotal >= 80:
+        case subtotal >= graderObject.A:
             td += '<td>A</td><td>Excellent</td>';
             break;
-        case subtotal >= 65:
+        case subtotal >= graderObject.B:
             td += '<td>B</td><td>Very Good</td>';
             break;
-        case subtotal >= 50:
+        case subtotal >= graderObject.C:
             td += '<td>C</td><td>Good</td>';
             break;
-        case subtotal >= 40:
+        case subtotal >= graderObject.D:
             td += '<td>D</td><td>Satisfactory</td>';
             break;
-        case subtotal >= 30:
+        case subtotal >= graderObject.E:
             td += '<td>E</td><td>Pass</td>';
             break;
-        case subtotal >= 0:
+        case subtotal >= graderObject.F:
             td += '<td>F</td><td>Fail</td>';
             break;
     }
@@ -118,12 +129,12 @@ for (i = 0; i < ME.length; i++) {
         let t = x.reduce((a, c) => a + c);
         cumm += t;
         if (t) count++;
-        cumm_td += `<td>${t || '-'}</td>`;
+        cumm_td += `<td>${percentile < 100 ? '-' : t || '-'}</td>`;
     }
     tbodyTerm.insertAdjacentHTML('beforeend', `
         <tr>
             ${cumm_td}
-            <td>${(cumm/count).toFixed(1)}</td>
+            <td>${percentile < 100 ? '-' : (cumm/count).toFixed(1)}</td>
         </tr>
     `)
 }
@@ -145,38 +156,38 @@ const CLS_AVERAGE = (subAverage.reduce((acc, cur) => acc + cur)/classSize).toFix
 // get principal data
 const princDiv = document.getElementById('principal');
 princDiv.querySelector('p').textContent = principal.name;
-// const percent = document.getElementById('percent');
+const percent = document.getElementById('percent');
 let term_grade, cumm_grade;
 // ME_AVERAGE = ((total * 100) / (scores.length * 100)).toFixed();
 switch (true) {
-    case ME_AVERAGE >= 80:
+    case ME_AVERAGE >= graderObject.A:
         princDiv.querySelector('blockquote').textContent = principal.Acomm;
-        // percent.textContent = 'A';
+        percent.textContent = 'A';
         term_grade = 'A';
         break;
-    case ME_AVERAGE >= 65:
+    case ME_AVERAGE >= graderObject.B:
         princDiv.querySelector('blockquote').textContent = principal.Bcomm;
-        // percent.textContent = 'B';
+        percent.textContent = 'B';
         term_grade = 'B';
         break;
-    case ME_AVERAGE >= 50:
+    case ME_AVERAGE >= graderObject.C:
         princDiv.querySelector('blockquote').textContent = principal.Ccomm;
-        // percent.textContent = 'C';
+        percent.textContent = 'C';
         term_grade = 'C';
         break;
-    case ME_AVERAGE >= 40:
+    case ME_AVERAGE >= graderObject.D:
         princDiv.querySelector('blockquote').textContent = principal.Dcomm;
-        // percent.textContent = 'D';
+        percent.textContent = 'D';
         term_grade = 'D';
         break;
-    case ME_AVERAGE >= 30:
+    case ME_AVERAGE >= graderObject.E:
         princDiv.querySelector('blockquote').textContent = principal.Ecomm;
-        // percent.textContent = 'E';
+        percent.textContent = 'E';
         term_grade = 'E';
         break;
-    case ME_AVERAGE >= 0:
+    case ME_AVERAGE >= graderObject.F:
         princDiv.querySelector('blockquote').textContent = principal.Fcomm;
-        // percent.textContent = 'F';
+        percent.textContent = 'F';
         term_grade = 'F';
         break;
 }
@@ -185,7 +196,7 @@ const cspan = Number(tbodyScores.dataset.totHeader);
 tfootTerm.insertAdjacentHTML('beforeend', `
     <tr>
         <td colspan="${cspan}">Total/Grade</td>
-        <td>${total}</td>
+        <td>${total.toFixed()}</td>
         <td>${term_grade}</td>
     </tr>
 `);
@@ -198,7 +209,7 @@ for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 c
     // console.log(tds);
     // console.log(ft)
     tfootCumm.querySelector('tr').insertAdjacentHTML('beforeend', `
-        <td>${colNum == 3 ? ft/studentScores.length : ft || ''}</td>
+        <td>${colNum == 3 ? (ft/studentScores.length).toFixed() : ft.toFixed() || ''}</td>
     `);
 }
 const overStats = document.querySelectorAll('.overstats');
@@ -210,7 +221,6 @@ function overstats(sTot, sAve, cAve) {
         counter++;
     }
 }
-
 // overstats(total.toFixed(1), ME_AVERAGE, CLS_AVERAGE);    // total.toFixed()
 
 async function eot() {
@@ -221,12 +231,12 @@ async function eot() {
         // store dates in eotDates
         eotData = res.data();
         thisTerm = eotData.this_term;
-        term = ["First", "Second", "Third"].indexOf(thisTerm);
-        const nextTerm = eotData.next_term;
+        term = ["First", "Second", "Third"].indexOf(eotData.this_term);
+        const nextTerm = percentile < 100 ? '' : eotData.next_term;
         const session = eotData.session;
         const daysOpen = parseInt(eotData.days_open);
-        const stamp = [,,'../img/24_25/stmp_2.png'][term] || eotData.stamp;
-        
+        const stamp = eotData.stamp; // [,,'../img/24_25/stmp_2.png'][term] || eotData.stamp;
+
         // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
         const photo = "../img/user.png" || ss.photo_src;
         const regNo = ss.admission_no;
@@ -278,19 +288,4 @@ function generatePDF () {
 
     html2pdf().set(opt).from(main).save();
 }
-
 pdfBtn.addEventListener('click', generatePDF);
-/*
-// Dates
-var date1 = new Date('2024-03-03');
-var date2 = new Date('1990-04-15');
-
-// Calculate the difference in milliseconds
-var difference = Math.abs(date1 - date2);
-
-// Convert the difference to days
-var millisecondsPerDay = 1000 * 60 * 60 * 24 * 7 * 52;
-var age = Math.floor(difference / millisecondsPerDay);
-
-console.log('Difference in days:', age);
-*/

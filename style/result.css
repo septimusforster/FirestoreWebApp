@@ -14,7 +14,6 @@ button {
     border: none;
 }
 header {
-    /* height: 7vh; */
     padding: 20px;
     text-align: center;
 }
@@ -25,13 +24,11 @@ header {
     color: #fff;
 }
 main {
-    /* height: 80vh; */
     min-width: 700px;
     width: 1200px;
     margin: 0 auto;
     background-color: #fff;
     border-width: 10px;
-    /* border-width: 50px 20px 20px; */
     border-style: solid;
     border-color: #555;
     border-radius: 7px 7px 0 0;
@@ -55,7 +52,6 @@ section {
 }
 #section-header img[alt="photo"] {
     width: 120px;
-    /* height: 120px; */
     border-radius: 50%;
 }
 #section-bio {
@@ -89,7 +85,6 @@ section {
 #menu-btn:hover {
     transform: scale(1);
     background-color: #777;
-    /* color: #555; */
 }
 #menu-btn::before {
     content: '';
@@ -100,7 +95,6 @@ section {
     bottom: 0;
     border: 1px dashed #fff;
     margin: 10px auto;
-    /* height: 30px; */
 }
 #menu-btn:focus + .menu {
     opacity: 1;
@@ -154,29 +148,31 @@ table {
     padding: 5px;
     text-align: center;
 }
-#section-grade table:nth-of-type(1) tbody tr td:nth-of-type(1),
-#section-grade table:nth-of-type(1) tbody tr td:nth-of-type(2) {
+#section-grade table:nth-of-type(1) tbody tr td:nth-of-type(2),
+#section-grade table:nth-of-type(1) tbody tr td:nth-of-type(9),
+#section-grade table:nth-of-type(1) th:nth-child(2),
+th:nth-child(9) {
     text-align: left;
 }
 #section-grade th {
     color: #fff;
     font-size: .8rem;
 }
+#section-grade tr:first-child th {
+    text-transform: uppercase;
+}
 #section-bio tr {
     display: block;
-    /* padding: 10px 0; */
     color: #555;
 }
 td {
     font-size: 14px;
 }
 #section-grade thead {
-    background-color: #777;
+    background-color: #555;
 }
 #section-grade table {
     border: 1px solid #aaa;
-    /* border-radius: 7px 7px 0 0;
-    overflow: hidden; */
 }
 #section-grade tfoot {
     border-top: 1px solid #eee;
@@ -191,7 +187,6 @@ td {
 }
 #section-bio tr td:first-child {
     font-weight: 600;
-    /* color: green; */
 }
 #section-bio table:nth-child(1) tbody > tr td:first-child {
     width: 80px;
@@ -209,6 +204,15 @@ td {
 }
 #section-footer > div:first-child {
     flex: 2;
+}
+#section-footer > div:nth-child(2) {
+    width: 13%;
+}
+#section-footer > div:nth-child(2) table tr:first-child td,
+#section-grade tr:first-child th {
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
 }
 #section-footer > div:last-child {
     flex: 1;
@@ -256,7 +260,6 @@ blockquote::before {
     opacity: 1;
 }
 #section-footer table {
-    width: 300px;
     background-color: #555;
     color: #fff;
     border-radius: 7px;
@@ -266,7 +269,6 @@ blockquote::before {
 }
 img[alt="stamp"] {
     width: 170px;
-    /* margin: 10px; */
     transform: rotate(-20deg);
 }
 p#percent {
@@ -301,7 +303,6 @@ p#percent::after {
 }
 .overstats {
     text-align: left;
-    /* padding: 5px; */
 }
 .float__right {
     float: right;
