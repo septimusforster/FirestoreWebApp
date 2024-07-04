@@ -142,13 +142,18 @@ overall.forEach(ov => {
     if (ov) {
         let elem = 0, factor = 0;
         for (const x of Object.values(ov)) {
-            elem += x[term].reduce((acc, val) => acc + val);
+            let [a=null,b=null,c=null,d=null,e=null] = x[term];
+            // elem += x[term].reduce((acc, val) => acc + val);
+            elem += a + b + c + d + e;
             factor++;
         }
-        subAverage.push(elem/factor);
+        const yy = elem/factor;
+        yy ? subAverage.push(yy) : false;
+        // subAverage.push(elem/factor);
     }
 });
-const CLS_AVERAGE = (subAverage.reduce((acc, cur) => acc + cur)/classSize).toFixed(1);
+const xx = await subAverage.reduce((acc, cur) => acc + cur);
+const CLS_AVERAGE = (xx/classSize).toFixed(1);
 
 // console.log("subAverage:", subAverage);
 // get principal data
