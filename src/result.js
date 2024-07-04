@@ -137,18 +137,19 @@ for (i = 0; i < ME.length; i++) {
 }
 const ME_AVERAGE = (total / (ME.length - 1)).toFixed(1);
 let subAverage = [];
-/*
+
 overall.forEach(ov => {
-    let elem = 0, factor = 0;
-    for (const x of ov) {
-        const [a,b,c,d] = x[1];
-        elem += a + b + c + d;
-        factor++;
+    if (ov) {
+        let elem = 0, factor = 0;
+        for (const x of Object.values(ov)) {
+            elem += x[term].reduce((acc, val) => acc + val);
+            factor++;
+        }
+        subAverage.push(elem/factor);
     }
-    subAverage.push(elem/factor);
 });
 const CLS_AVERAGE = (subAverage.reduce((acc, cur) => acc + cur)/classSize).toFixed(1);
-*/
+
 // console.log("subAverage:", subAverage);
 // get principal data
 const princDiv = document.getElementById('principal');
@@ -218,7 +219,7 @@ function overstats(sTot, sAve, cAve) {
         counter++;
     }
 }
-// overstats(total.toFixed(1), ME_AVERAGE, CLS_AVERAGE);    // total.toFixed()
+overstats(total.toFixed(1), ME_AVERAGE, CLS_AVERAGE);    // total.toFixed()
 
 async function eot() {
     let teacherDiv = document.getElementById('teacher');
