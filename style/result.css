@@ -70,6 +70,9 @@ section {
 .small {
     font-size: 15px;
 }
+.small, .overstats {
+    font-weight: 500;
+}
 #menu-btn {
     position: absolute;
     top: -45px;
