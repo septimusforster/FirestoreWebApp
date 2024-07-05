@@ -249,7 +249,7 @@ async function eot() {
         const daysPresent = ss.days_present || 0;
         const daysAbsent = daysOpen - daysPresent;
         const teacherName = ss.formMaster;
-        const comment = Array.isArray(ss.comment) ? ss.comment?.[term] || '' : ss.comment;
+        const comment = typeof ss.comment == "object" ? ss.comment?.[term] || '' : ss.comment;
 
         const dob = new Date(ss.dob);
         const compareDate = new Date(eotData[ss.cls]);
