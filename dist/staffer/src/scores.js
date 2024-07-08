@@ -202,17 +202,13 @@ scoreForm.addEventListener('submit', async (e) => {
     }
 
     tr.forEach(row => {
-        let bool = false; //must be set to 0
-        const inputs = row.querySelectorAll('td > input');
-        inputs.forEach(inp => {
-            if (inp.type == 'text' && inp.value) {
-                return bool = true;
-            }
-        });
+        const inputs = row.querySelectorAll('input');
+        let bool = [...inputs].some(inp => inp.type == "text" && inp.value);
         if (!bool) return;
-        let cells = formData.getAll(row.id).map(x => x == '' ? null : Number(x));
+        let cells = [...inputs].map(x => Number(x.value || x.placeholder) || null);
         container.push([row.id, cells]);
-    })  
+    });
+    
     const promises = container.map(async cn => {
         const docRef = doc(db, "scores", cn[0]);
         await setDoc(docRef, {
@@ -224,7 +220,6 @@ scoreForm.addEventListener('submit', async (e) => {
     dialogPurpleBtn.innerHTML = 'Changes Saved  &checkmark;';
     dialogPurpleBtn.style.display = 'block';
     e.submitter.disabled = false;
-
 })
 /*
 const promise1 = new Promise((resolve, reject) => {
