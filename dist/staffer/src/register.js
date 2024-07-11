@@ -10,11 +10,12 @@ const classArray = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
 var app = initializeApp(configs[6]);
 // init services
 var db = getFirestore(app);
-let term;
+let eot, term;
+// let term;
 const eotRef = doc(db, "reserved", "EOT");
-await getDoc(eotRef).then((res) => {
-    term = ['First','Second','Third'].indexOf(res.data().this_term);
-});
+await getDoc(eotRef).then((res) => eot = res.data());
+term = ["First", "Second", "Third"].indexOf(eot.this_term);
+
 function chooseConfig(projNum) {
     deleteApp(app);
     app = initializeApp(configs[projNum]);
@@ -69,8 +70,9 @@ for (const [k, v] of master_of_form) {
                     <td>${sd.data().gender}</td>
                     <td>${sd.data().email}</td>
                     <td>${sd.data().password}</td>
-                    <td><input type="number" name="${sd.id}" class="${sd.id}" min="0" max="99" pattern="[0-9]{1,2}" placeholder="${sd.data().days_present || 0}"/></td>
+                    <td><input type="number" name="${sd.id}" class="${sd.id}" min="0" max="99" pattern="[0-9]{1,2}" placeholder="${sd.data().days_present?.[term] || 0}"/></td>
                     <td><input type="text" name="${sd.id}" class="${sd.id}" autocomplete="off" placeholder="${sd.data().comment?.[term] || ''}"/></td>
+                    <input type="hidden" value="[${sd.data().days_present || "0,0,0"}]">
                     <td>${scores[ix]}</td>
                 </tr>
             `)
@@ -88,6 +90,14 @@ formRegister.addEventListener('change', (e) => {
     for (const a of inputs) {
         if (a.value == '') a.value = a.placeholder;
     }
+    const hidden = e.target.parentElement.parentElement.children[8];    //children[8] is hidden <input>
+    hidden.setAttribute("name", e.target.name);
+    if (e.target.type == "number") {
+        let x = JSON.parse(hidden.getAttribute("value"));
+        x.splice(term, 1, Number(e.target.value));
+        // console.log(x);
+        hidden.value = JSON.stringify(x);
+    }
 })
 formRegister.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -98,23 +108,27 @@ formRegister.addEventListener('submit', async (e) => {
     
     for (const pair of formData.entries()) {
         if (!pair[1]) continue;
-        inputs[pair[0]] = formData.getAll(pair[0]);
+        const arr = formData.getAll(pair[0]);
+        let dp = Number(arr[1]);
+        let data = {
+            days_present: JSON.parse(arr[3]),
+            comment: {
+                [term]: arr[2]
+            }
+        };
+        inputs[pair[0]] = data;
     }
+    // console.log(inputs);
     const entries = Object.entries(inputs);
-    // console.log("Entries:", entries);
-    
+    console.log("Entries:", entries);
+
     const promises = entries.map(async cb => {
-        await setDoc(doc(db, "students", cb[0]), {
-            admission_no: cb[1][0],
-            days_present: Number(cb[1][1]),
-            comment: { [term]: cb[1][2] },
-        }, { merge: true });
+        await setDoc(doc(db, "students", cb[0]), cb[1], { merge: true });
     })
     await Promise.allSettled(promises);
-    location.reload();
-    /*
+    // location.reload();
+
     window.alert("Success!");
     e.submitter.disabled = false;
     e.submitter.style.opacity = '1';
-    */
-})
+});

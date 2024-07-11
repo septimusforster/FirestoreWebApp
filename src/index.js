@@ -36,12 +36,16 @@ const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 let url = new URL(location.href);
 let params = new URLSearchParams(url.search);
 let uid = params.get('uid') || JSON.parse(sessionStorage.snapshot).id;
+// let eotData
 let term = 0; //initialize term
 let size = 0;
-
+const eotRef = doc(db, "reserved", "EOT");
+    // await getDoc(eotRef).then(async (res) => {
+    //     // store dates in eotDates
+    //     eotData = res.data();
 if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
     await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)))
-    term = ["First","Second","Third"].indexOf(doc.data().this_term);
+    // term = ["First","Second","Third"].indexOf(doc.data().this_term);
     console.log('From server')
 }
 const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();

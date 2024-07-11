@@ -425,9 +425,9 @@ extForm.addEventListener('submit', async (e) => {
             data[pair[0]] = pair[1];
         }
     }
-    days_open.splice(term,0,Number(formData.get("days_open")));
+    days_open.splice(term,1,Number(formData.get("days_open")));
     data["days_open"] = days_open;
-    next_term.splice(term,0,formData.get("next_term"));
+    next_term.splice(term,1,formData.get("next_term"));
     data["next_term"] = next_term;
  
     const reference = doc(db, "reserved", "EOT");
