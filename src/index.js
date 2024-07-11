@@ -36,16 +36,15 @@ const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 let url = new URL(location.href);
 let params = new URLSearchParams(url.search);
 let uid = params.get('uid') || JSON.parse(sessionStorage.snapshot).id;
-// let eotData
-let term = 0; //initialize term
-let size = 0;
+let eotData, term = 0, size = 0;
 const eotRef = doc(db, "reserved", "EOT");
-    // await getDoc(eotRef).then(async (res) => {
-    //     // store dates in eotDates
-    //     eotData = res.data();
+await getDoc(eotRef).then(async (res) => { // load EOT
+    eotData = res.data();
+    term = ["First","Second","Third"].indexOf(eotData.this_term);
+});
+
 if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
-    await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)))
-    // term = ["First","Second","Third"].indexOf(doc.data().this_term);
+    await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)));
     console.log('From server')
 }
 const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
@@ -61,14 +60,20 @@ async function setIframeAttr(para1) {
     myIframe.setAttribute('data-class-arm', para1);
     hiddenElems[0].value = para1;
     if (sessionStorage.hasOwnProperty('preview')) sessionStorage.removeItem('preview')
-    let data = [];
+    let data = [], marked = 0;
+    console.log(term)
     const q = query(colRef, where("arm", "==", myIframe.getAttribute('data-class-arm')), orderBy("first_name"))
     await getDocs(q).then(docs => {
         docs.docs.forEach(obj => {
-            
             data.push(obj.data())
-        })
-        sessionStorage.setItem('preview', JSON.stringify(data))
+        });
+        data.forEach(({days_present}) => { // extract days_present from docs.data()
+            // console.log(days_present)
+            days_present?.[term] ? marked++ : false;
+        });
+        size = marked;
+        console.log(marked);
+        sessionStorage.setItem('preview', JSON.stringify(data));
         // console.log('Done.')
     })
     myIframe.contentDocument.querySelector('tbody').innerHTML = '';
@@ -220,7 +225,7 @@ function collectDataForUpdate() {
         updateDoc(docRef, fields)
             .then(async () => {
                 await logger(operation, fields, uid)
-                window.alert("Update successful.")
+                window.alert("Update successful.");
                 resetEditForm();
             })
     })
@@ -281,7 +286,7 @@ printBtn.onclick = async function () {
         formMaster = snap.get('fullName');
         // console.log(snap.id)
     })
-    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size: preview.length, formMaster}));
+    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size, formMaster}));
     window.open('result.html', '_blank');
     // location.href = 'result.html#topical';
 }

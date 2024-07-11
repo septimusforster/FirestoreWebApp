@@ -425,11 +425,16 @@ extForm.addEventListener('submit', async (e) => {
             data[pair[0]] = pair[1];
         }
     }
-    days_open.splice(term,1,Number(formData.get("days_open")));
-    data["days_open"] = days_open;
-    next_term.splice(term,1,formData.get("next_term"));
-    data["next_term"] = next_term;
- 
+    console.log("Does formData have days_open?", formData.has("days_open"));
+    if (formData.get("days_open")) {
+        days_open.splice(term,1,Number(formData.get("days_open")));
+        data["days_open"] = days_open;
+    }
+    if (formData.get("next_term")) {
+        next_term.splice(term,1,formData.get("next_term"));
+        data["next_term"] = next_term;
+    }
+
     const reference = doc(db, "reserved", "EOT");
     await updateDoc(reference, data);
     window.alert("EOT resources successfully set.");
