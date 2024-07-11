@@ -36,9 +36,12 @@ const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 let url = new URL(location.href);
 let params = new URLSearchParams(url.search);
 let uid = params.get('uid') || JSON.parse(sessionStorage.snapshot).id;
+let term = 0; //initialize term
+let size = 0;
 
 if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
     await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)))
+    term = ["First","Second","Third"].indexOf(doc.data().this_term);
     console.log('From server')
 }
 const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
@@ -58,6 +61,7 @@ async function setIframeAttr(para1) {
     const q = query(colRef, where("arm", "==", myIframe.getAttribute('data-class-arm')), orderBy("first_name"))
     await getDocs(q).then(docs => {
         docs.docs.forEach(obj => {
+            
             data.push(obj.data())
         })
         sessionStorage.setItem('preview', JSON.stringify(data))

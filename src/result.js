@@ -236,9 +236,9 @@ async function eot() {
         thisTerm = eotData.this_term;
         term = ["First", "Second", "Third"].indexOf(eotData.this_term);
         percentile = eotData.percentile;
-        const nextTerm = percentile < 100 ? '' : eotData.next_term;
+        const nextTerm = percentile < 100 ? '' : eotData.next_term[term];
         const session = eotData.session;
-        const daysOpen = parseInt(eotData.days_open);
+        const daysOpen = parseInt(eotData.days_open[term]);
         const stamp = eotData.stamp; // [,,'../img/24_25/stmp_2.png'][term] || eotData.stamp;
 
         // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
@@ -246,7 +246,7 @@ async function eot() {
         const regNo = ss.admission_no;
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
         const className = `${ss.cls} ${ss.arm}`;
-        const daysPresent = ss.days_present || 0;
+        const daysPresent = ss.days_present[term] || 0;
         const daysAbsent = daysOpen - daysPresent;
         const teacherName = ss.formMaster;
         const comment = typeof ss.comment == "object" ? ss.comment?.[term] || '' : ss.comment;

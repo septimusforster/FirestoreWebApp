@@ -17,6 +17,11 @@ function chooseConfig(num) {
 }
 
 db = getFirestore()
+let EOT, term, days_open, next_term;
+await getDoc(doc(db, "reserved", "EOT")).then(res => EOT = res.data());
+term = ["First", "Second", "Third"].indexOf(EOT?.this_term) || 0;
+days_open = EOT?.days_open || [0,0,0]; //the 3 elements of the array are for the three terms in a session
+next_term = EOT?.next_term || ['','',''];
 // collection ref
 const jnrRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
 const snrRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
@@ -420,7 +425,11 @@ extForm.addEventListener('submit', async (e) => {
             data[pair[0]] = pair[1];
         }
     }
-    // console.log(data);
+    days_open.splice(term,0,Number(formData.get("days_open")));
+    data["days_open"] = days_open;
+    next_term.splice(term,0,formData.get("next_term"));
+    data["next_term"] = next_term;
+ 
     const reference = doc(db, "reserved", "EOT");
     await updateDoc(reference, data);
     window.alert("EOT resources successfully set.");
