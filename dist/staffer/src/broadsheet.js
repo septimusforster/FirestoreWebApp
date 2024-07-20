@@ -161,5 +161,30 @@ names.forEach((n, i) => {
     `)
 });
 
-// const first_student = term_scores[0];
-// console.log(first_student);
+// compute total and average for each subject and store in td string
+console.log(scoresSnap.length);
+let aveStr = '', totStr = '';
+abbr.forEach((ab,ix) => {
+    if (!([0,1].includes(ix))) {
+        let td = [...document.querySelectorAll(`tbody tr > td:nth-child(${ix+1})`)];
+        let m = td.map(x => Number(x.innerText)).filter(y => Boolean(y));
+        // console.log(m);
+        let tc = m.reduce((a,c) => a + c, 0);
+        totStr += `<td>${tc.toFixed(1)}</td>`;
+        aveStr += `<td>${(tc/m.length).toFixed(1)}</td>`;
+    } else if (ix == 1) {
+        totStr += '<td></td><td>Total</td>';
+        aveStr += '<td></td><td>Average</td>';
+    }
+});
+
+// insert total and average in tfoot tr
+function insertFoot(a, t) {
+    for (const i of arguments) {
+        // console.log(i)
+        document.querySelector("tfoot").insertAdjacentHTML("afterbegin", `
+            <tr>${i}</tr>
+        `)
+    }
+}
+insertFoot(totStr, aveStr);
