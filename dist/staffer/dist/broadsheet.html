@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
         html, body {
-            font: 16px sans-serif;
+            font: 15px system-ui;
         }
         ::-webkit-scrollbar {
             width: 7px;
@@ -28,6 +28,38 @@
         ::-webkit-scrollbar-thumb {
             background-color: #555;
         }
+        header {
+            font-weight: bold;
+            text-align: center;
+            padding: .8em;
+            color: #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1em;
+        }
+        header > span {
+            height: .7em;
+            width: .7em;
+            border-radius: 50%;
+            outline: 0px solid #c9f5ec;
+            background-color: #009578;
+            animation-duration: 1500ms;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease;
+            animation-fill-mode: backwards;
+        }
+        @keyframes flasher {
+            from {
+                outline-width: 0px;
+            }
+            to {
+                outline-width: 10px;
+            }
+        }
+        header > span.flashing {
+            animation-name: flasher;
+        }
         .opq {
             opacity: 1;
         }
@@ -37,7 +69,6 @@
         }
         div.container {
             width: fit-content;
-            /* width: 300px; */
             max-height: 95vh;
             /* overflow-x: hidden; */
             overflow-y: scroll;
@@ -64,11 +95,11 @@
         tr:nth-child(even) {
             background-color: #f3f4f4;
         }
-        tr:nth-child(odd) {
-            background-color: #fff;
-        }
         th, td {
             padding: 15px;
+        }
+        td {
+            border-right: 1px solid #ccc;
         }
         thead {
             background-color: #fff;
@@ -80,12 +111,10 @@
         thead tr {
             color: #555;
         }
-        /* tbody {
-        } */
         tbody tr {
             text-align: center;
             color: #555;
-            /* position: relative; */
+            border-bottom: 1px solid #ccc;
         }
         tfoot {
             position: sticky;
@@ -136,10 +165,10 @@
             }
             tbody tr > td:nth-child(2):nth-of-type(even),
             thead tr > th:nth-child(2) {
-                background-color: inherit;
+                background-color: #f3f4f4;
             }
             tbody tr > td:nth-child(2):nth-of-type(odd) {
-                background-color: inherit;
+                background-color: #fff;
             }
             tbody tr > td:nth-child(11),
             thead tr > th:nth-child(11),
@@ -150,339 +179,19 @@
                 display: table-column;
             }
         }
+        @media print {
+            div.container {max-height: none;overflow-y: auto;}
+            thead, tfoot {position: initial}
+        }
     </style>
 </head>
 <body>
-    <header>header</header>
-    <main>
+    <header></header>
+    <main class="opq">
         <div class="container">
             <table>
                 <thead><tr></tr></thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Jorg Demus</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Ewa Poblocka</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Jorg Demus</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Ewa Poblocka</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>Jorg Demus</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td>Ewa Poblocka</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>Jorg Demus</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td>Ewa Poblocka</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>12</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>13</td>
-                        <td>Jorg Demus</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>14</td>
-                        <td>Ewa Poblocka</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>15</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>16</td>
-                        <td>Jorg Demus</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>88</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>17</td>
-                        <td>Ewa Poblocka</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>100</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                        <td>97</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>99</td>
-                        <td>Franz Schubert</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
                 </tbody>
                 <tfoot>
                     <tr>
@@ -492,6 +201,6 @@
             </table>
         </div>
     </main>
-    <script type="module" src="../src/broadsheet.js"></script>
+    <script type="module" src="../src/broadsheet_bundle.js"></script>
 </body>
 </html>

@@ -37,7 +37,10 @@ function chooseConfig(projNum) {
 // load member profile
 const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
 // load register button
-if (ss.data?.masterOfForm) document.getElementById('register-btn').style.display = 'inline';
+if (ss.data?.masterOfForm) {
+    document.getElementById('register-btn').style.display = 'inline';
+    document.getElementById('broadsheet-btn').style.display = 'inline';
+}
 // load profile pic
 if (ss.data.avatar) photo.src = ss.data.avatar;
 // load full name and alias

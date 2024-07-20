@@ -24,7 +24,7 @@ module.exports = {
 }
 */
 //ROOT reserved.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/reserved.js",
@@ -34,7 +34,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT result.js
 /*
 module.exports = {
@@ -131,6 +131,18 @@ module.exports = {
     watch: true
 }
 */
+// STAFFER broadsheet.js
+
+module.exports = {
+    mode: "development",
+    entry: "./dist/staffer/src/broadsheet.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/staffer/src"),
+        filename: "broadsheet_bundle.js"
+    },
+    watch: true
+}
+
 //STUDENT index.js
 /*
 module.exports = {
