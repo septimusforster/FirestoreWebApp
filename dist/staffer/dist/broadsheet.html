@@ -157,10 +157,12 @@
             color: #555;
             font-size: .8em;
             opacity: 0;
-            transition: opacity 250ms ease;
+            transform: translateY(10px);
+            transition: opacity 500ms ease, transform 500ms ease;
         }
         .ps.show {
-            opacity: 1
+            opacity: 1;
+            transform: translateY(0px);
         }
         @media screen and (max-width: 667px) {
             ::-webkit-scrollbar {
