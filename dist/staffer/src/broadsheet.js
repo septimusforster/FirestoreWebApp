@@ -162,7 +162,6 @@ names.forEach((n, i) => {
 });
 
 // compute total and average for each subject and store in td string
-console.log(scoresSnap.length);
 let aveStr = '', totStr = '';
 abbr.forEach((ab,ix) => {
     if (!([0,1].includes(ix))) {
@@ -171,7 +170,7 @@ abbr.forEach((ab,ix) => {
         // console.log(m);
         let tc = m.reduce((a,c) => a + c, 0);
         totStr += `<td>${tc.toFixed(1)}</td>`;
-        aveStr += `<td>${(tc/m.length).toFixed(1)}</td>`;
+        aveStr += `<td>${(tc/(m.length || 0.001)).toFixed(1)}</td>`;    //0.001 is to prevent 0 (tc) being divided by 0 (m.length), which give NaN
     } else if (ix == 1) {
         totStr += '<td></td><td>Total</td>';
         aveStr += '<td></td><td>Average</td>';
