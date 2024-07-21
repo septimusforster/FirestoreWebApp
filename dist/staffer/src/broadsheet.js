@@ -220,20 +220,20 @@ newLabel.htmlFor = "position";
 newInput.type = "checkbox";
 newInput.name = "position";
 newInput.id = "position";
-if (!computedPos) {
-    // compute pos and insert in DOM
-    let s = [...document.querySelectorAll(".snum")];
-    for (let i = 0; i < names.length; i++) {
-        const pos = positionArray.indexOf(Number(s[i].innerText));
-        document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(2) > div`).insertAdjacentHTML('beforeend', `
-            <div class="ps show">${pos+1}</div>
-        `)
-    }
-    computedPos = true;
-}
 newInput.addEventListener("change", (e) => {
     const chkState = e.target.checked;
-    document.querySelectorAll("div.ps").classList.toggle("show", chkState);
+    if (!computedPos) {
+        // compute pos and insert in DOM
+        let s = [...document.querySelectorAll(".snum")];
+        for (let i = 0; i < names.length; i++) {
+            const pos = positionArray.indexOf(Number(s[i].innerText));
+            document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(2) > div`).insertAdjacentHTML('beforeend', `
+                <div class="ps show">${pos+1}</div>
+            `)
+        }
+        computedPos = true;
+    }
+    document.querySelectorAll("div.ps").forEach(ps => ps.classList.toggle("show", chkState));
 });
 newLabel.append(newInput, labelTxt);
 document.querySelector("header").appendChild(newLabel);
