@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
         html, body {
-            font: 12px system-ui;
+            font: 14px system-ui;
         }
         ::-webkit-scrollbar {
             width: 7px;
@@ -134,12 +134,33 @@
             align-items: center;
             flex-wrap: wrap;
         }
-        span.snum {
+        td > div {
+            margin-left: auto;
+        }
+        div.snum {
             padding: 0 .5em;
             background-color: #777;
             color: #fff;
             border-radius: 5px;
-            margin-left: auto;
+        }
+        label > input {
+            margin-right: 1em;
+        }
+        label {
+            margin-left: 17em;
+            display: flex;
+            cursor: pointer;
+            font-weight: 400;
+        }
+        .ps {
+            text-align: center;
+            color: #555;
+            font-size: .8em;
+            opacity: 0;
+            transition: opacity 250ms ease;
+        }
+        .ps.show {
+            opacity: 1
         }
         @media screen and (max-width: 667px) {
             ::-webkit-scrollbar {

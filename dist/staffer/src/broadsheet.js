@@ -188,6 +188,7 @@ function insertFoot(a, t) {
 }
 insertFoot(totStr, aveStr);
 
+let positionArray = [];
 function studentTotal () {
     names.forEach((n, i) => {
         let x = [...document.querySelectorAll(`tbody tr:nth-child(${i+1}) td`)];
@@ -195,13 +196,45 @@ function studentTotal () {
         y.splice(0,2);
         let z = y.reduce((a,c) => a + c, 0);
 
-        const node = document.createElement('SPAN');
+        const wrapperDiv = document.createElement('DIV');
+        const childDiv = document.createElement('DIV');
         const txt = document.createTextNode(z.toFixed());
-        node.classList.add('snum');
-        node.append(txt);
+        positionArray.push(Number(z.toFixed()));
+        childDiv.classList.add('snum');
+        childDiv.append(txt);
+        wrapperDiv.append(childDiv)
 
-        // console.log(node)
-        document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(2)`).appendChild(node);
+        document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(2)`).appendChild(wrapperDiv);
     });
 }
 studentTotal();
+
+// calculate position according to positionArray
+positionArray.sort((a, b) => a - b).reverse();
+
+let computedPos = false;
+const newLabel = document.createElement("LABEL");
+const newInput = document.createElement("INPUT");
+const labelTxt = document.createTextNode("Hide/Reveal Position");
+newLabel.htmlFor = "position";
+newInput.type = "checkbox";
+newInput.name = "position";
+newInput.id = "position";
+if (!computedPos) {
+    // compute pos and insert in DOM
+    let s = [...document.querySelectorAll(".snum")];
+    for (let i = 0; i < names.length; i++) {
+        const pos = positionArray.indexOf(Number(s[i].innerText));
+        document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(2) > div`).insertAdjacentHTML('beforeend', `
+            <div class="ps show">${pos+1}</div>
+        `)
+    }
+    computedPos = true;
+}
+newInput.addEventListener("change", (e) => {
+    const chkState = e.target.checked;
+    document.querySelectorAll("div.ps").classList.toggle("show", chkState);
+});
+newLabel.append(newInput, labelTxt);
+document.querySelector("header").appendChild(newLabel);
+// document.querySelector("header").insertAdjacentHTML('beforeend','<label for="position"><input type="checkbox" name="position" id="position">Hide/Reveal Position</label>')
