@@ -187,3 +187,21 @@ function insertFoot(a, t) {
     }
 }
 insertFoot(totStr, aveStr);
+
+function studentTotal () {
+    names.forEach((n, i) => {
+        let x = [...document.querySelectorAll(`tbody tr:nth-child(${i+1}) td`)];
+        let y = x.map(f => Number(f.innerText));
+        y.splice(0,2);
+        let z = y.reduce((a,c) => a + c, 0);
+
+        const node = document.createElement('SPAN');
+        const txt = document.createTextNode(z.toFixed());
+        node.classList.add('snum');
+        node.append(txt);
+
+        // console.log(node)
+        document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(2)`).appendChild(node);
+    });
+}
+studentTotal();
