@@ -282,12 +282,10 @@ promoForm.addEventListener("submit", async (e) => {
     for (const [k, v] of fd.entries()) {
         data.push({id: k, pr: v});
     }
-    data.forEach(({id, pr}) => console.log(id, '==>', pr));
-    // const p = data.map(async ({id, pr}) => {
-    //     await updateDoc(doc(db, "students", id), {promo_status: pr});
-    // });
-    // await Promise.all(p);
-
+    const p = data.map(async ({id, pr}) => {
+        await updateDoc(doc(db, "students", id), {promo_status: pr});
+    });
+    await Promise.all(p);
     window.alert('Promotion Settings applied successfully.');
     e.submitter.disabled = false;
     e.submitter.style.cursor = 'pointer';
@@ -296,9 +294,3 @@ promoForm.addEventListener("submit", async (e) => {
 
 const closeBtn = document.querySelector("input#close");
 closeBtn.addEventListener('click', () => closeBtn.closest('dialog').close());
-
-// const myDoc = doc(db, "students", '0vRXCRKCxnQ0qojf5Rzb');
-// await updateDoc(myDoc, {
-//     promo_status: 'Promoted'
-// });
-// console.log("Promoted!")
