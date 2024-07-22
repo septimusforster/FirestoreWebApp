@@ -164,6 +164,68 @@
             opacity: 1;
             transform: translateY(0px);
         }
+        button#promo-btn {
+            margin-left: 5em;
+            padding: .9em 2em;
+            font-size: 1em;
+            border-radius: 7px;
+            border: 0;
+            color: #555;
+            font-weight: bold;
+            background-color: #a4a4a421;
+            transition: background-color 150ms ease;
+        }
+        button#promo-btn:hover {
+            background-color: #2b2a2a21;
+        }
+        dialog {
+            border: 0;
+            max-width: 450px;
+            max-height: 600px;
+            margin: auto;
+            padding: 0 2em;
+            border-radius: 1em;
+            box-shadow: 0 0 24px #1a73e877;
+        }
+        dialog > h3 {
+            padding: 2em 0 1em 0;
+        }
+        dialog > h3,
+        dialog > div {
+            text-align: center;
+        }
+        .key {
+            font-weight: 600;
+        }
+        input[type='radio'],
+        input[type='button'],
+        input[type='submit'],
+        button {
+            cursor: pointer;
+        }
+        input#close, input#submit {
+            padding: .7em 2em;
+            border-radius: .5em;
+            outline: none;
+            border: 0;
+            font-size: 1em;
+            font-weight: 600;
+            background-color: transparent;
+            margin: 0 .5em;
+            transition: background-color 150ms ease;
+        }
+        input#close {
+            color: #555;
+        }
+        input#close:hover {
+            background-color: #55555521;
+        }
+        input#submit {
+            color: #009578;
+        }
+        input#submit:hover {
+            background-color: #00957821;
+        }
         @media screen and (max-width: 667px) {
             ::-webkit-scrollbar {
                 width: 0;
@@ -239,6 +301,32 @@
             </table>
         </div>
     </main>
+    <dialog>
+        <h3>Promotion Status</h3>
+        <div><span class="key">PT:</span> Promoted &mdash; <span class="key">OT:</span> On Trial &mdash; <span class="key">RT:</span> Repeated </div>
+        <form name="promo-form" id="promo-form">
+            <table id="promo-tab">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>PT</th>
+                        <th>OT</th>
+                        <th>RT</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <input type="button" id="close" value="Close">
+                            <input type="submit" id="submit" value="Submit">
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </dialog>
     <script type="module" src="../src/broadsheet_bundle.js"></script>
 </body>
 </html>

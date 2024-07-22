@@ -1,6 +1,6 @@
 //REMEMBER TO WEBPACK IMPORTS: THEY ARE CURRENTLY USING "GSTATIC"
 import { initializeApp, deleteApp } from "firebase/app";
-import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc, where } from "firebase/firestore";
 const configs = [
     {
         "apiKey": "AIzaSyBJA5v78O_yZsw9Vkx7qZcdqo_Ek2Cg0nc",
@@ -83,7 +83,7 @@ const masterArm = masterOfForm[1];
 
 document.querySelector("header").innerHTML = `<span class='flashing'></span>${fname} &mdash; ${masterClass} ${masterArm}`;
 
-let app = initializeApp(configs[6]); //SSS 2 config
+let app = initializeApp(configs[6]); //FirebasePro config
 let db = getFirestore(app);
 
 // get EOT and subject collections for both junior and senior secondary
@@ -237,4 +237,68 @@ newInput.addEventListener("change", (e) => {
 });
 newLabel.append(newInput, labelTxt);
 document.querySelector("header").appendChild(newLabel);
-// document.querySelector("header").insertAdjacentHTML('beforeend','<label for="position"><input type="checkbox" name="position" id="position">Hide/Reveal Position</label>')
+
+//for setting promotion status
+const dialogs = document.querySelectorAll("dialog");
+const promoTabBody = document.querySelector("table#promo-tab tbody");
+const promoForm = document.querySelector("form#promo-form");
+
+let computedProm = false;
+let newBtn = document.createElement("button");
+newBtn.type = "button";
+newBtn.textContent = "Promotion Settings";
+newBtn.id = "promo-btn";
+newBtn.addEventListener("click", (e) => {
+    if (!computedProm) {
+        //get tbody tr IDs and names and insert into the promoTab tbody rows cells having newly created radio buttons
+        const rows = [...document.querySelectorAll('tbody tr')];
+        rows.forEach((tr, ix) => {
+            const id = tr.id;
+            const name = tr.children[1].firstChild.textContent;
+            promoTabBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>${ix+1}</td>
+                    <td>${name}</td>
+                    <td><input type="radio" name="${id}" value="Promoted"/></td>
+                    <td><input type="radio" name="${id}" value="On trial"/></td>
+                    <td><input type="radio" name="${id}" value="Repeated"/></td>
+                </tr>
+            `);
+        });
+        computedProm = true;
+    }
+    dialogs[0].showModal();
+});
+document.querySelector("header").appendChild(newBtn);
+
+//promotion status form submission
+promoForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
+
+    let data = [];
+    const fd = new FormData(promoForm);
+    for (const [k, v] of fd.entries()) {
+        data.push({id: k, pr: v});
+    }
+    data.forEach(({id, pr}) => console.log(id, '==>', pr));
+    // const p = data.map(async ({id, pr}) => {
+    //     await updateDoc(doc(db, "students", id), {promo_status: pr});
+    // });
+    // await Promise.all(p);
+
+    window.alert('Promotion Settings applied successfully.');
+    e.submitter.disabled = false;
+    e.submitter.style.cursor = 'pointer';
+    closeBtn.click();
+});
+
+const closeBtn = document.querySelector("input#close");
+closeBtn.addEventListener('click', () => closeBtn.closest('dialog').close());
+
+// const myDoc = doc(db, "students", '0vRXCRKCxnQ0qojf5Rzb');
+// await updateDoc(myDoc, {
+//     promo_status: 'Promoted'
+// });
+// console.log("Promoted!")
