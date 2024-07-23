@@ -138,6 +138,8 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
+        }
+        main tbody tr td:nth-child(2) {
             min-width: 350px;
         }
         td > div {
@@ -310,16 +312,16 @@
     </main>
     <dialog>
         <h3>Promotion Status</h3>
-        <div><span class="key">PT:</span> Promoted &mdash; <span class="key">OT:</span> On Trial &mdash; <span class="key">RT:</span> Repeated </div>
+        <div><span class="key">PR:</span> Promoted &mdash; <span class="key">PB:</span> Probation &mdash; <span class="key">AR:</span> Advised to repeat </div>
         <form name="promo-form" id="promo-form">
             <table id="promo-tab">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th>PT</th>
-                        <th>OT</th>
-                        <th>RT</th>
+                        <th>PR</th>
+                        <th>PB</th>
+                        <th>AR</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
