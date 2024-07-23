@@ -96,7 +96,7 @@
             background-color: #f3f4f4;
         }
         th, td {
-            padding: 15px;
+            padding: 7px;
         }
         td {
             border-right: 1px solid #ccc;
@@ -126,13 +126,19 @@
         tfoot tr {
             font-weight: bold;
         }
-        tfoot td {
+        tfoot tr td:not(:nth-child(2)) {
             text-align: center;
+            writing-mode: tb;
+        }
+        tfoot tr:last-of-type td {
+            writing-mode: initial;
+            padding: 2em;
         }
         tbody tr td:nth-child(2) {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
+            min-width: 350px;
         }
         td > div {
             margin-left: auto;

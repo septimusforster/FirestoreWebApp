@@ -260,8 +260,8 @@ newBtn.addEventListener("click", (e) => {
                     <td>${ix+1}</td>
                     <td>${name}</td>
                     <td><input type="radio" name="${id}" value="Promoted"/></td>
-                    <td><input type="radio" name="${id}" value="On trial"/></td>
-                    <td><input type="radio" name="${id}" value="Repeated"/></td>
+                    <td><input type="radio" name="${id}" value="Probation"/></td>
+                    <td><input type="radio" name="${id}" value="Advised to repeat"/></td>
                 </tr>
             `);
         });

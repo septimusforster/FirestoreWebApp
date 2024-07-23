@@ -18,6 +18,7 @@ function chooseConfig(num) {
 const ss = JSON.parse(sessionStorage.getItem('student'));
 const offered = ss.offered;
 const classSize = ss.size;
+const promoStatus = ss?.promo_status;
 const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
 
 let eotData, thisTerm, term, percentile;
@@ -162,36 +163,37 @@ const princDiv = document.getElementById('principal');
 princDiv.querySelector('p').textContent = principal.name;
 const percent = document.getElementById('percent');
 let term_grade, cumm_grade;
+let promoTerm = term == 2 ? promoStatus || 'N/A' : 0;
 // ME_AVERAGE = ((total * 100) / (scores.length * 100)).toFixed();
 switch (true) {
     case ME_AVERAGE >= graderObject.A:
         princDiv.querySelector('blockquote').textContent = principal.Acomm;
-        percent.textContent = 'A';
+        percent.textContent = promoTerm || 'A';
         term_grade = 'A';
         break;
     case ME_AVERAGE >= graderObject.B:
         princDiv.querySelector('blockquote').textContent = principal.Bcomm;
-        percent.textContent = 'B';
+        percent.textContent = promoTerm || 'B';
         term_grade = 'B';
         break;
     case ME_AVERAGE >= graderObject.C:
         princDiv.querySelector('blockquote').textContent = principal.Ccomm;
-        percent.textContent = 'C';
+        percent.textContent = promoTerm || 'C';
         term_grade = 'C';
         break;
     case ME_AVERAGE >= graderObject.D:
         princDiv.querySelector('blockquote').textContent = principal.Dcomm;
-        percent.textContent = 'D';
+        percent.textContent = promoTerm || 'D';
         term_grade = 'D';
         break;
     case ME_AVERAGE >= graderObject.E:
         princDiv.querySelector('blockquote').textContent = principal.Ecomm;
-        percent.textContent = 'E';
+        percent.textContent = promoTerm || 'E';
         term_grade = 'E';
         break;
     case ME_AVERAGE >= graderObject.F:
         princDiv.querySelector('blockquote').textContent = principal.Fcomm;
-        percent.textContent = 'F';
+        percent.textContent = promoTerm || 'F';
         term_grade = 'F';
         break;
 }
@@ -222,17 +224,6 @@ for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 c
         <td>${colNum == 3 ? (ft/studentScores.length).toFixed() : ft.toFixed() || ''}</td>
     `);
 }
-const overStats = document.querySelectorAll('.overstats');
-// function overstats(sTot, sAve, cAve) {
-//     let counter = 0;
-//     let prefix = ["Student Total: ","Student Average: ","Class Average: "];
-//     for (let stats of arguments) {
-//         overStats[counter].innerHTML = prefix[counter] + stats;
-//         counter++;
-//     }
-// }
-// overstats(total.toFixed(1), ME_AVERAGE, CLS_AVERAGE);    // total.toFixed()
-
 async function eot() {
     let teacherDiv = document.getElementById('teacher');
     
