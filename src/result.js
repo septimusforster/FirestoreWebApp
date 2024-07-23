@@ -69,15 +69,15 @@ let graderObject = {
 }
 for (i = 0; i < ME.length; i++) {
     var td = '';
-    let [a,b,c,d] = ME[i][1][term];
-    let subtotal = Number((a + b + c + d).toFixed(1));
+    let [...test] = ME[i][1][term];
+    let subtotal = test.reduce((a,c) => a + c);
     td += `
         <td>${i+1}</td>
         <td>${offered[ME[i][0]]}</td>
-        <td>${a || ''}</td>
-        <td>${b || ''}</td>
-        <td>${c || ''}</td>
-        <td>${d || ''}</td>
+        <td>${test[0] || ''}</td>
+        <td>${test[1] || ''}</td>
+        <td>${test[2] || ''}</td>
+        <td>${test[3] || ''}</td>
         <td>${subtotal}</td>
     `;
     switch (true) {
@@ -105,11 +105,12 @@ for (i = 0; i < ME.length; i++) {
     let summation = [];
     for (let j = 0; j < studentScores.length; j++) {
         if (studentScores[j][ME[i][0]] === undefined) continue;
-        let [w,x,y,z] = studentScores[j][ME[i][0]][term];
-
-        if (w + x + y + z == 0) continue;
-        let precision = Number((w + x + y + z).toFixed(1));
-        summation.push(precision);
+        // let [...test] = studentScores[j][ME[i][0]][term];
+        // let all = test.reduce((a, c) => a + c);
+        let [v,w,x,y,z=null] = studentScores[j][ME[i][0]][term];
+        let all = (v + w + x + y + z).toFixed();
+        if (all == 0) continue;
+        summation.push(all);
     };
 
     let max = Math.max(...summation);
@@ -201,6 +202,12 @@ tfootTerm.insertAdjacentHTML('beforeend', `
         <td colspan="${cspan}">Total/Grade</td>
         <td>${total.toFixed()}</td>
         <td>${term_grade}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="${cspan}">Student Average/Class Average</td>
+        <td>${ME_AVERAGE}</td>
+        <td>${CLS_AVERAGE}</td>
     </tr>
 `);
 for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 cols in table 2
@@ -216,15 +223,15 @@ for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 c
     `);
 }
 const overStats = document.querySelectorAll('.overstats');
-function overstats(sTot, sAve, cAve) {
-    let counter = 0;
-    let prefix = ["Student Total: ","Student Average: ","Class Average: "];
-    for (let stats of arguments) {
-        overStats[counter].innerHTML = prefix[counter] + stats;
-        counter++;
-    }
-}
-overstats(total.toFixed(1), ME_AVERAGE, CLS_AVERAGE);    // total.toFixed()
+// function overstats(sTot, sAve, cAve) {
+//     let counter = 0;
+//     let prefix = ["Student Total: ","Student Average: ","Class Average: "];
+//     for (let stats of arguments) {
+//         overStats[counter].innerHTML = prefix[counter] + stats;
+//         counter++;
+//     }
+// }
+// overstats(total.toFixed(1), ME_AVERAGE, CLS_AVERAGE);    // total.toFixed()
 
 async function eot() {
     let teacherDiv = document.getElementById('teacher');
