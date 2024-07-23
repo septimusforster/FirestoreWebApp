@@ -78,7 +78,7 @@ for (i = 0; i < ME.length; i++) {
         <td>${test[0] || ''}</td>
         <td>${test[1] || ''}</td>
         <td>${test[2] || ''}</td>
-        <td>${test[3] || ''}</td>
+        <td>${(test[3] + (test[4] || null)) || ''}</td>
         <td>${subtotal}</td>
     `;
     switch (true) {
@@ -106,8 +106,6 @@ for (i = 0; i < ME.length; i++) {
     let summation = [];
     for (let j = 0; j < studentScores.length; j++) {
         if (studentScores[j][ME[i][0]] === undefined) continue;
-        // let [...test] = studentScores[j][ME[i][0]][term];
-        // let all = test.reduce((a, c) => a + c);
         let [v,w,x,y,z=null] = studentScores[j][ME[i][0]][term];
         let all = (v + w + x + y + z).toFixed();
         if (all == 0) continue;
@@ -123,9 +121,15 @@ for (i = 0; i < ME.length; i++) {
     tbodyScores.insertAdjacentHTML('beforeend', `
         <tr>${td}</tr>
     `);
-    let cumm_td = '', cumm = 0, count = 0;
-    for (const x of Object.values(ME[i][1])) {
-        let t = x.reduce((a, c) => a + c);
+    let cumm_td = '', cumm = 0, count = 0, sc = Object.values(ME[i][1]);
+    for (const x of sc) {
+        const len = sc.length;
+        if (len == 1 && term == 2) {
+            cumm_td += '<td>-</td><td>-</td>';
+        } else if (len == 2 && term == 2) {
+            cumm_td += '<td>-</td>';
+        }
+        let t = x.reduce((a, c) => a + c, 0);
         cumm += t;
         if (t) count++;
         cumm_td += `<td>${percentile < 100 ? '-' : t || '-'}</td>`;
@@ -218,10 +222,8 @@ for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 c
     tds.forEach(td => {
         if(!(td.innerText == '-' || td.innerText == undefined)) ft += Number(td.innerText);
     });
-    // console.log(tds);
-    // console.log(ft)
     tfootCumm.querySelector('tr').insertAdjacentHTML('beforeend', `
-        <td>${colNum == 3 ? (ft/studentScores.length).toFixed() : ft.toFixed() || ''}</td>
+        <td>${colNum == 3 ? (ft/ME.length).toFixed() : ft.toFixed() || ''}</td>
     `);
 }
 async function eot() {

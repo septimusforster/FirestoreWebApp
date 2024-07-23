@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Award Page</title>
+    <link rel="stylesheet" href="../style/award.css">
+</head>
+<body>
+    <header></header>
+    <div id="loader">Loading...</div>
+    <main style="display: none;">
+        <div><button type="button" id="award-btn">AWARD</button></div>
+        <table>
+            <thead></thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <!-- <td>Award Doc</td> -->
+                </tr>
+            </tfoot>
+        </table>
+    </main>
+    <dialog id="class-dialog">
+        <div><div class="button" id="close-dialog"><span>&times;</span></div></div>
+        <form name="class-form" id="class-form">
+            <select name="classroom" id="classroom">
+                <option value="">Choose classroom</option>
+                <option value="JSS 1">JSS 1</option>
+                <option value="JSS 2">JSS 2</option>
+                <option value="JSS 3">JSS 3</option>
+                <option value="SSS 1">SSS 1</option>
+                <option value="SSS 2">SSS 2</option>
+                <option value="SSS 3">SSS 3</option>
+            </select>
+            <input type="submit" value="OPEN">
+        </form>
+    </dialog>
+    <script type="module" src="../src/award_bundle.js"></script>
+</body>
+</html>
