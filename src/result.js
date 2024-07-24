@@ -79,7 +79,7 @@ for (i = 0; i < ME.length; i++) {
         <td>${test[1] || ''}</td>
         <td>${test[2] || ''}</td>
         <td>${(test[3] + (test[4] || null)) || ''}</td>
-        <td>${subtotal}</td>
+        <td>${subtotal.toFixed(1)}</td>
     `;
     switch (true) {
         case subtotal >= graderObject.A:
@@ -132,7 +132,7 @@ for (i = 0; i < ME.length; i++) {
         let t = x.reduce((a, c) => a + c, 0);
         cumm += t;
         if (t) count++;
-        cumm_td += `<td>${percentile < 100 ? '-' : t || '-'}</td>`;
+        cumm_td += `<td>${percentile < 100 ? '-' : Number(t.toFixed(1)) || '-'}</td>`;
     }
     tbodyTerm.insertAdjacentHTML('beforeend', `
         <tr>

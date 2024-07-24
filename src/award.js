@@ -109,6 +109,7 @@ const classForm = document.getElementById("class-form");
 classForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     closeDialogBtn.click();
+    loader.innerText = 'Loading...';
     loader.style.visibility = 'visible';
     //collect class name
     const fd = new FormData(classForm);
@@ -117,15 +118,23 @@ classForm.addEventListener("submit", async (e) => {
     //change configuration
     chooseConfig(classes.indexOf(className));
     //fetch from collection "students"
+    let students = [];
     const studentRef = collection(db, "students");
     await getDocs(studentRef).then(snapshot => {
         snapshot.docs.forEach(shot => {
             const lname = shot.get("last_name");
             const fname = shot.get("first_name");
             const oname = shot.get("other_name");
+            students.push({id: shot.id, lname, fname, oname});
         });
     });
+    loader.innerText = 'Loading...it may seem eternally...';
     //fetch from collection "scores"
+    let scores = [];
+    const scoreRef = collection(db, "scores");
+    await getDocs(scoreRef).then(snapshot => {
+        //snapshot
+    });
     //supply "students" and "scores" into a function to be displayed in the DOM
     //first thead tr:first has name of class opened, thead tr:last has headers for names of students and subjects
     //of course, tbody contains the return and computed data denoting the position per subject
