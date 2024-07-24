@@ -151,7 +151,7 @@ names.forEach((n, i) => {
                 for (let j = 0; j < slice; j++) tds += "<td></td>";
             }
             let s = v[term]?.reduce((a,c) => a + c) || 0;
-            tds += `<td>${s}</td>`;
+            tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
             f = idx + 1;
         }
     }
