@@ -141,18 +141,17 @@ subjectForm.addEventListener('submit', async (e) => {
     kvArray.forEach(([id, nm], ind) => {
         if (scores[ind] && scores[ind][sub]) {
             // console.log(id, "=>", nm);
-            
             tbody.insertAdjacentHTML('beforeend', `
                 <tr id="${id}">
                     <td>${sn}</td>
                     <td>${nm}</td>
-                    <td>${scores[ind][sub][term][0] == null ? '' : scores[ind][sub][term][0]}</td>
-                    <input type="hidden" name="${id}" value="${scores[ind][sub][term][0] == null ? '' : scores[ind][sub][term][0]}"/>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][1] == null ? '' : scores[ind][sub][term][1]}"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][2] == null ? '' : scores[ind][sub][term][2]}"/></td>
-                    <input type="hidden" name="${id}" value="${scores[ind][sub][term][3] == null ? '' : scores[ind][sub][term][3]}"/>
-                    <td>${scores[ind][sub][term][3] == null ? '' : scores[ind][sub][term][3]}</td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term][4] == null ? '' : scores[ind][sub][term][4]}"/></td>
+                    <td>${scores[ind][sub][term]?.[0] == undefined ? '' : scores[ind][sub][term]?.[0]}</td>
+                    <input type="hidden" name="${id}" value="${scores[ind][sub][term]?.[0] == undefined ? '' : scores[ind][sub][term]?.[0]}"/>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term]?.[1] == undefined ? '' : scores[ind][sub][term]?.[1]}"/></td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term]?.[2] == undefined ? '' : scores[ind][sub][term]?.[2]}"/></td>
+                    <input type="hidden" name="${id}" value="${scores[ind][sub][term]?.[3] == undefined ? '' : scores[ind][sub][term]?.[3]}"/>
+                    <td>${scores[ind][sub][term]?.[3] == undefined ? '' : scores[ind][sub][term]?.[3]}</td>
+                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term]?.[4] == undefined ? '' : scores[ind][sub][term]?.[4]}"/></td>
                 </tr>
             `)
             
