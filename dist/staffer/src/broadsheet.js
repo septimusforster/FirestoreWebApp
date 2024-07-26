@@ -127,6 +127,7 @@ const tbody = table.querySelector('tbody');
 const tfoot_td = table.querySelector('tfoot td');
 
 //populate table header with the [abbr] of the subjects
+abbr.push('AVE');   //last column
 const th = abbr.unshift('#','NAME'); //mutates array & returns new length of same array
 tfoot_td.setAttribute('colspan', th);
 for (let i = 0; i < th; i++) {
@@ -138,12 +139,15 @@ document.querySelector("header > span").classList.remove("flashing");
 let term = ["First","Second","Third"].indexOf(EOT.data().this_term);
 
 // populate tbody with student name and total score for each subject
+const benchmark = abbr_unmutated.length;
 names.forEach((n, i) => {
     let tds = `<td>${i+1}</td><td>${n}</td>`;
     const obj = scoresSnap[i];
+    let rt = 0;
+    let scoreEntries = Object.entries(obj).sort();
+    let f = 0;  //rt: running total
     if (obj) {
-        let f = 0;
-        for (const [k, v] of Object.entries(obj).sort()) {
+        for (const [k, v] of scoreEntries) {
             let idx = abbr_unmutated.indexOf(k);
             // console.log(idx);
             let slice = idx - f;
@@ -151,11 +155,14 @@ names.forEach((n, i) => {
                 for (let j = 0; j < slice; j++) tds += "<td></td>";
             }
             let s = v[term]?.reduce((a,c) => a + c) || 0;
+            rt += s;
             tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
             f = idx + 1;
         }
     }
-    // console.log(tds)
+    for (f; f < benchmark + 1; f++) {
+        f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/scoreEntries.length).toFixed(1)}</td>`;
+    }
     tbody.insertAdjacentHTML('beforeend', `
         <tr id="${IDs[i]}">${tds}</tr>
     `)
