@@ -223,7 +223,7 @@ for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 c
         if(!(td.innerText == '-' || td.innerText == undefined)) ft += Number(td.innerText);
     });
     tfootCumm.querySelector('tr').insertAdjacentHTML('beforeend', `
-        <td>${colNum == 3 ? (ft/ME.length).toFixed() : ft.toFixed() || ''}</td>
+        <td>${colNum == 3 ? (ft/ME.length).toFixed(1) : ft.toFixed(1) || ''}</td>
     `);
 }
 async function eot() {
