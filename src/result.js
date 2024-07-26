@@ -141,7 +141,7 @@ for (i = 0; i < ME.length; i++) {
         </tr>
     `)
 }
-const ME_AVERAGE = (total / (ME.length - 1)).toFixed(1);
+const ME_AVERAGE = (total / (ME.length)).toFixed(1);
 let subAverage = [];
 
 overall.forEach(ov => {
@@ -206,7 +206,7 @@ const cspan = Number(tbodyScores.dataset.totHeader);
 tfootTerm.insertAdjacentHTML('beforeend', `
     <tr>
         <td colspan="${cspan}">Total/Grade</td>
-        <td>${total.toFixed()}</td>
+        <td>${total.toFixed(1)}</td>
         <td>${term_grade}</td>
         <td></td>
     </tr>
