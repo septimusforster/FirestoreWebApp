@@ -201,5 +201,16 @@ positioningBtn.addEventListener('click', (e) => {
             if (td.includes(cnt)) el.textContent = td.indexOf(cnt) + 1;
         });
     });
+    document.querySelectorAll('tbody tr td:not(td:nth-child(1), td:nth-child(2)').forEach(td => {
+        if (td.innerText == 1) {
+            td.style.fontWeight = 'bold', td.style.backgroundColor = '#1a73e844';
+        }
+        if (td.innerText == 2) {
+            td.style.fontWeight = 'bold', td.style.backgroundColor = '#00957844';
+        }
+        if (td.innerText == 3) {
+            td.style.fontWeight = 'bold', td.style.backgroundColor = '#ffa50044';
+        }
+    });
     positioningBtn.disabled = true;
 });
