@@ -76,21 +76,12 @@ function chooseConfig(projNum) {
 let app = initializeApp(configs[6]); //FirebasePro config
 let db = getFirestore(app);
 
+// console.log(allScores.length)
 // get EOT and subject collections for both junior and senior secondary
-/*
 const EOT = await getDoc(doc(db,"reserved","EOT"));
 const jrsub = await getDoc(doc(db, "reserved", "2aOQTzkCdD24EX8Yy518"));
 const srsub = await getDoc(doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq"));
 
-let abbr, abbr_unmutated;
-if (masterClass.startsWith("JSS")) {
-    abbr = Object.keys(jrsub.data()).sort();
-    // abbr_unmutated = Object.keys(jrsub.data()).sort();
-} else if (masterClass.startsWith("SSS")) {
-    abbr = Object.keys(srsub.data()).sort();
-    // abbr_unmutated = Object.keys(srsub.data()).sort();
-}
-*/
 //remove #loader & display <main>
 const loader = document.getElementById("loader");
 const main = document.querySelector("main");
@@ -104,10 +95,20 @@ const closeDialogBtn = document.getElementById("close-dialog");
 awardBtn.onclick = () => {classDialog.showModal()};
 closeDialogBtn.onclick = () => {classDialog.close()};
 
+//populate table header with the [abbr] of the subjects
+const table = document.querySelector("table");
+const thead = table.querySelector('thead');
+const tbody = table.querySelector('tbody');
+// const tfoot_td = table.querySelector('tfoot td');
+let names = [], abbr = [], abbr_unmutated = [];
 //reference form and its submit logic create
 const classForm = document.getElementById("class-form");
 classForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    //reset table
+    document.querySelector('thead').innerHTML = '<tr></tr>';
+    tbody.innerHTML = '';
+
     closeDialogBtn.click();
     loader.innerText = 'Loading...';
     loader.style.visibility = 'visible';
@@ -115,42 +116,90 @@ classForm.addEventListener("submit", async (e) => {
     const fd = new FormData(classForm);
     const className = fd.get("classroom");
     console.log(className);
+
+    if (className.startsWith("JSS")) {
+        abbr = Object.keys(jrsub.data()).sort();
+        abbr_unmutated = Object.keys(jrsub.data()).sort();
+    } else if (className.startsWith("SSS")) {
+        abbr = Object.keys(srsub.data()).sort();
+        abbr_unmutated = Object.keys(srsub.data()).sort();
+    }
+    const th = abbr.unshift('#','NAME'); //mutates array & returns new length of same array
+    // tfoot_td.setAttribute('colspan', th);
+    for (let i = 0; i < th; i++) {
+        thead.querySelector('tr').insertAdjacentHTML('beforeend', `
+        <th>${abbr[i]}</th>
+        `);
+    }
     //change configuration
     chooseConfig(classes.indexOf(className));
     //fetch from collection "students"
-    let students = [];
-    const studentRef = collection(db, "students");
-    await getDocs(studentRef).then(snapshot => {
-        snapshot.docs.forEach(shot => {
-            const lname = shot.get("last_name");
-            const fname = shot.get("first_name");
-            const oname = shot.get("other_name");
-            students.push({id: shot.id, lname, fname, oname});
-        });
+    let IDs = [];
+    const q1 = query(collection(db, "students"), where("arm", "!=", null));  //and where("days_present","array-contains","null")
+    const studentSnap = await getDocs(q1);
+    studentSnap.docs.forEach(s => {
+        IDs.push(s.id);
+        names.push(`${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`);
     });
-    loader.innerText = 'Loading...it may seem eternally...';
     //fetch from collection "scores"
-    let scores = [];
-    const scoreRef = collection(db, "scores");
-    await getDocs(scoreRef).then(snapshot => {
-        //snapshot
+    let scoresSnap = [];
+    const p1 = IDs.map(async id => {
+        await getDoc(doc(db, "scores", id)).then(snap => scoresSnap.push(snap.data()));
     });
-    //supply "students" and "scores" into a function to be displayed in the DOM
-    //first thead tr:first has name of class opened, thead tr:last has headers for names of students and subjects
-    //of course, tbody contains the return and computed data denoting the position per subject
+    await Promise.all(p1);
+
+    loader.innerText = 'Loading...it may seem eternally...';
+    let term = ["First","Second","Third"].indexOf(EOT.data().this_term);
+
+    // populate tbody with student name and total score for each subject
+    const benchmark = abbr_unmutated.length;
+    names.forEach((n, i) => {
+        let tds = `<td>${i+1}</td><td>${n}</td>`;
+        const obj = scoresSnap[i];
+        if (!obj) return;
+        let rt = 0;
+        let scoreEntries = Object.entries(obj).sort();
+        let f = 0;  //rt: running total
+        if (obj) {
+            for (const [k, v] of scoreEntries) {
+                let idx = abbr_unmutated.indexOf(k);
+                // console.log(idx);
+                let slice = idx - f;
+                if (slice) {
+                    for (let j = 0; j < slice; j++) tds += "<td></td>";
+                }
+                let s = (v[0]?.reduce((a,c) => a + c) || 0) + (v[1]?.reduce((a,c) => a + c) || 0) + (v[2]?.reduce((a,c) => a + c) || 0);
+                rt += s;
+                tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
+                f = idx + 1;
+            }
+        }
+        for (f; f < benchmark + 1; f++) {
+            f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/(scoreEntries.length * (term + 1))).toFixed(1)}</td>`;
+        }
+        tbody.insertAdjacentHTML('beforeend', `
+            <tr id="${IDs[i]}">${tds}</tr>
+        `)
+    });
+    
+    loader.style.visibility = 'hidden';
     e.submitter.disabled = false;
+    document.querySelector('button#positioning').disabled = false;
     e.submitter.style.cursor = 'pointer';
 });
+const positioningBtn = document.querySelector('button#positioning');
+positioningBtn.addEventListener('click', (e) => {
+    console.log('clicked');
+    console.log(abbr_unmutated.length);
+    abbr_unmutated.forEach((n, i) => {
+        let tds = [...document.querySelectorAll(`tbody tr td:nth-child(${i + 3})`)];
+        let td = tds.filter(f => Boolean(f.textContent)).map(t => Number(t.textContent));
+        td.sort((a, b) => a - b).reverse();
 
-//populate table header with the [abbr] of the subjects
-const table = document.querySelector("table");
-const thead_row = table.querySelector('thead > tr');
-// const th = abbr.unshift('#','NAME'); //mutates array & returns new length of same array
-/*
-tfoot_td.setAttribute('colspan', th);
-for (let i = 0; i < th; i++) {
-    thead_row.insertAdjacentHTML('beforeend', `
-    <th>${abbr[i]}</th>
-    `);
-}
-*/
+        document.querySelectorAll(`tbody tr td:nth-child(${i + 3})`).forEach(el => {
+            const cnt = Number(el.textContent);
+            if (td.includes(cnt)) el.textContent = td.indexOf(cnt) + 1;
+        });
+    });
+    positioningBtn.disabled = true;
+});
