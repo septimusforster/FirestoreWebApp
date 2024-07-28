@@ -99,12 +99,12 @@ closeDialogBtn.onclick = () => {classDialog.close()};
 const table = document.querySelector("table");
 const thead = table.querySelector('thead');
 const tbody = table.querySelector('tbody');
-// const tfoot_td = table.querySelector('tfoot td');
-let names = [], abbr = [], abbr_unmutated = [];
+let names, abbr, abbr_unmutated;
 //reference form and its submit logic create
 const classForm = document.getElementById("class-form");
 classForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    names = [], abbr = [], abbr_unmutated = [];
     //reset table
     document.querySelector('thead').innerHTML = '<tr></tr>';
     tbody.innerHTML = '';
@@ -189,8 +189,6 @@ classForm.addEventListener("submit", async (e) => {
 });
 const positioningBtn = document.querySelector('button#positioning');
 positioningBtn.addEventListener('click', (e) => {
-    console.log('clicked');
-    console.log(abbr_unmutated.length);
     abbr_unmutated.forEach((n, i) => {
         let tds = [...document.querySelectorAll(`tbody tr td:nth-child(${i + 3})`)];
         let td = tds.filter(f => Boolean(f.textContent)).map(t => Number(t.textContent));

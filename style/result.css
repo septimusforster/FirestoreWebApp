@@ -25,7 +25,7 @@ header {
 }
 main {
     min-width: 700px;
-    width: 1200px;
+    width: 1400px;
     margin: 0 auto;
     background-color: #fff;
     border-width: 10px;
@@ -60,8 +60,8 @@ section {
 }
 #section-grade {
     display: flex;
-    align-items: flex-start;
-    gap: 10em;
+    align-items: stretch;
+    gap: 2em;
 }
 .large {
     font-size: 24px;
@@ -141,11 +141,31 @@ table {
 #section-grade table:nth-child(1) {
     flex: 2;
 }
-#section-grade table:nth-child(2) {
-    flex: 1;
+#section-grade > table:nth-of-type(2) {
+    flex-basis: 250px;
 }
-#section-grade table tbody tr:nth-of-type(even) {
+#section-grade > table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
+}
+#section-grade > div {
+    /* margin: auto; */
+    max-width: 250px;
+    padding: 1em;
+    border: 1px solid #ccc;
+}
+#section-grade > div > table {
+    width: 100%;
+    border: 0;
+}
+#section-grade > div > table tr:not(tr:nth-child(1), tr:nth-child(5)) td:nth-child(1) {
+    text-align: left;
+    font-weight: 500;
+    vertical-align: text-bottom;
+}
+.css {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #555;
 }
 #section-grade table tbody tr td, th {
     padding: 5px;
@@ -177,10 +197,10 @@ td {
 #section-grade table {
     border: 1px solid #aaa;
 }
-#section-grade table tbody {
+#section-grade > table tbody {
     border-bottom: 1px solid #ccc;
 }
-#section-grade table tbody tr td:not(td:last-child) {
+#section-grade > table tbody tr td:not(td:last-child) {
     border-right: 1px solid #ddd;
 }
 #section-grade tfoot {
@@ -210,21 +230,19 @@ td {
 #section-footer {
     display: flex;
     align-items: center;
+    gap: 2em;
 }
 #section-footer > div:first-child {
     flex: 2;
 }
-#section-footer > div:nth-child(2) {
-    width: 13%;
-}
-#section-footer > div:nth-child(2) table tr:first-child td,
+/* #section-footer > div:nth-child(2) table tr:first-child td, */
 #section-grade tr:first-child th {
     text-align: center;
     font-size: 17px;
     font-weight: bold;
 }
 #section-footer > div:last-child {
-    flex: 1;
+    flex-basis: 250px;
     text-align: center;
 }
 #section-footer > div > div {
@@ -255,6 +273,9 @@ blockquote::before {
 #section-footer > div {
     position: relative;
 }
+#section-footer > div:nth-child(2) {
+    width: 250px;
+}
 #mr-span {
     position: absolute;
     bottom: 45px;
@@ -269,9 +290,10 @@ blockquote::before {
     opacity: 1;
 }
 #section-footer table {
-    background-color: #555;
-    color: #fff;
-    border-radius: 7px;
+    margin: auto;
+}
+#section-footer table tr:first-child, #section-footer table td:first-child {
+    font-weight: 500;
 }
 #section-footer tbody tr td {
     padding: 7px 14px;

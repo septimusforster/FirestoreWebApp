@@ -57,8 +57,8 @@ if (percentile < 100) theadFirstRow.innerText = "Mid-Term Report";
 
 const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
 const tfootTerm = document.querySelector('#section-grade table:nth-child(1) tfoot');
-const tbodyTerm = document.querySelector('#section-grade table:nth-child(2) tbody');
-const tfootCumm = document.querySelector('#section-grade table:nth-child(2) tfoot');
+const tbodyTerm = document.querySelector('#section-grade > table:nth-of-type(2) tbody');
+const tfootCumm = document.querySelector('#section-grade > table:nth-of-type(2) tfoot');
 let total = 0, i;
 let graderObject = {
     "A": 80/100*percentile, //consider using toFixed() to trim fractional part;
@@ -115,8 +115,8 @@ for (i = 0; i < ME.length; i++) {
     let max = Math.max(...summation);
     let min = Math.min(...summation);
     td += `
-        <td>${max}</td>
-        <td>${min}</td>
+        <td>${max.toFixed(1)}</td>
+        <td>${min.toFixed(1)}</td>
     `;
     tbodyScores.insertAdjacentHTML('beforeend', `
         <tr>${td}</tr>
