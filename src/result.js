@@ -34,9 +34,10 @@ const studentsQuery = query(studentsRef, where("arm", "==", ss.arm));
 const studentsSnapshot = await getDocs(studentsQuery);
 
 let studentIDs = [], studentScores = [];
+const DCA = 'DCA';
 studentsSnapshot.docs.forEach(result => {
-    studentIDs.push(result.id);
-})
+    if (result.data().admission_no.toUpperCase().includes(DCA)) studentIDs.push(result.id);
+});
 
 let overall = [];
 const scorePromises = studentIDs.map(async sid => {
@@ -169,7 +170,7 @@ const percent = document.getElementById('percent');
 let term_grade, cumm_grade;
 let promoTerm = term == 2 ? promoStatus || 'N/A' : 0;
 let principalComment;
-if (promoStatus.toLowerCase() === 'not promoted') principalComment = 'Advised to repeat.'; //if not promoted, princComment should be ADVISED TO REPEAT
+if (promoStatus?.toLowerCase() === 'not promoted') principalComment = 'Advised to repeat.'; //if not promoted, princComment should be ADVISED TO REPEAT
 // ME_AVERAGE = ((total * 100) / (scores.length * 100)).toFixed();
 switch (true) {
     case ME_AVERAGE >= graderObject.A:

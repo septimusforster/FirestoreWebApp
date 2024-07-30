@@ -55,6 +55,7 @@ armArray.forEach(arm => {
     `)
 }) // EOF
 const hiddenElems = document.querySelectorAll("input[type='hidden'");
+const DCA = 'DCA';
 async function setIframeAttr(para1) {
     //there are two hidden elems: the second one holds upass value
     myIframe.setAttribute('data-class-arm', para1);
@@ -65,7 +66,7 @@ async function setIframeAttr(para1) {
     const q = query(colRef, where("arm", "==", myIframe.getAttribute('data-class-arm')), orderBy("first_name"))
     await getDocs(q).then(docs => {
         docs.docs.forEach(obj => {
-            data.push(obj.data())
+            if (obj.data().admission_no.toUpperCase().includes(DCA)) data.push(obj.data())
         });
         data.forEach(({days_present}) => { // extract days_present from docs.data()
             // console.log(days_present)
@@ -75,7 +76,7 @@ async function setIframeAttr(para1) {
         console.log(marked);
         sessionStorage.setItem('preview', JSON.stringify(data));
         // console.log('Done.')
-    })
+    });
     myIframe.contentDocument.querySelector('tbody').innerHTML = '';
     data.forEach((student, index) => {
         myIframe.contentDocument.querySelector('tbody').insertAdjacentHTML('beforeend',`
