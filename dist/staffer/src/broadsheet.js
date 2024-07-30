@@ -101,13 +101,16 @@ if (masterClass.startsWith("JSS")) {
 }
 
 // reset app and query the students of the masterOfForm's arm
+const DCA = 'DCA';
 chooseConfig(classes.indexOf(masterClass));
 let IDs = [], names = [];
 const q1 = query(collection(db, "students"), where("arm", "==", masterArm), orderBy("last_name"));  //and where("days_present","array-contains","null")
 const studentSnap = await getDocs(q1);
 studentSnap.docs.forEach(s => {
-    IDs.push(s.id);
-    names.push(`${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`)
+    if (s.data().admission_no.toUpperCase().includes(DCA)) {
+        IDs.push(s.id);
+        names.push(`${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`)
+    }
 });
 // console.log(IDs);
 //get scores with the provided IDs
@@ -269,6 +272,7 @@ newBtn.addEventListener("click", (e) => {
                     <td><input type="radio" name="${id}" value="Promoted"/></td>
                     <td><input type="radio" name="${id}" value="Probation"/></td>
                     <td><input type="radio" name="${id}" value="Advised to repeat"/></td>
+                    <td><input type="radio" name="${id}" value="Not promoted"/></td>
                 </tr>
             `);
         });
