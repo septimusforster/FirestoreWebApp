@@ -107,7 +107,7 @@ for (i = 0; i < ME.length; i++) {
     for (let j = 0; j < studentScores.length; j++) {
         if (studentScores[j][ME[i][0]] === undefined) continue;
         let [v,w,x,y,z=null] = studentScores[j][ME[i][0]][term];
-        let all = (v + w + x + y + z).toFixed();
+        let all = v + w + x + y + z;
         if (all == 0) continue;
         summation.push(all);
     };
@@ -168,35 +168,37 @@ princDiv.querySelector('p').textContent = principal.name;
 const percent = document.getElementById('percent');
 let term_grade, cumm_grade;
 let promoTerm = term == 2 ? promoStatus || 'N/A' : 0;
+let principalComment;
+if (promoStatus.toLowerCase() === 'not promoted') principalComment = 'Advised to repeat.'; //if not promoted, princComment should be ADVISED TO REPEAT
 // ME_AVERAGE = ((total * 100) / (scores.length * 100)).toFixed();
 switch (true) {
     case ME_AVERAGE >= graderObject.A:
-        princDiv.querySelector('blockquote').textContent = principal.Acomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.Acomm;
         percent.textContent = promoTerm || 'A';
         term_grade = 'A';
         break;
     case ME_AVERAGE >= graderObject.B:
-        princDiv.querySelector('blockquote').textContent = principal.Bcomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.Bcomm;
         percent.textContent = promoTerm || 'B';
         term_grade = 'B';
         break;
     case ME_AVERAGE >= graderObject.C:
-        princDiv.querySelector('blockquote').textContent = principal.Ccomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.Ccomm;
         percent.textContent = promoTerm || 'C';
         term_grade = 'C';
         break;
     case ME_AVERAGE >= graderObject.D:
-        princDiv.querySelector('blockquote').textContent = principal.Dcomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.Dcomm;
         percent.textContent = promoTerm || 'D';
         term_grade = 'D';
         break;
     case ME_AVERAGE >= graderObject.E:
-        princDiv.querySelector('blockquote').textContent = principal.Ecomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.Ecomm;
         percent.textContent = promoTerm || 'E';
         term_grade = 'E';
         break;
     case ME_AVERAGE >= graderObject.F:
-        princDiv.querySelector('blockquote').textContent = principal.Fcomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.Fcomm;
         percent.textContent = promoTerm || 'F';
         term_grade = 'F';
         break;

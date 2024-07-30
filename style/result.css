@@ -156,6 +156,7 @@ table {
 #section-grade > div > table {
     width: 100%;
     border: 0;
+    margin: 30px auto;
 }
 #section-grade > div > table tr:not(tr:nth-child(1), tr:nth-child(5)) td:nth-child(1) {
     text-align: left;
@@ -163,9 +164,13 @@ table {
     vertical-align: text-bottom;
 }
 .css {
+    padding-top: 2em !important;
     font-weight: 600;
     font-size: 1.1em;
     color: #555;
+}
+#section-grade > div > table tbody td {
+    padding: 10px 0;
 }
 #section-grade table tbody tr td, th {
     padding: 5px;
@@ -198,10 +203,10 @@ td {
     border: 1px solid #aaa;
 }
 #section-grade > table tbody {
-    border-bottom: 1px solid #ccc;
+    border: 1px solid #777;
 }
-#section-grade > table tbody tr td:not(td:last-child) {
-    border-right: 1px solid #ddd;
+#section-grade > table tbody tr td {
+    border: 1px solid;
 }
 #section-grade tfoot {
     border-top: 1px solid #eee;
@@ -216,6 +221,7 @@ td {
 }
 #section-bio tr td:first-child {
     font-weight: 600;
+    color: #333;
 }
 #section-bio table:nth-child(1) tbody > tr td:first-child {
     width: 80px;
