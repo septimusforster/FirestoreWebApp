@@ -242,7 +242,7 @@ async function eot() {
         const nextTerm = percentile < 100 ? '' : eotData.next_term[term];
         const session = eotData.session;
         const daysOpen = parseInt(eotData.days_open[term]);
-        const stamp = eotData.stamp; // [,,'../img/24_25/stmp_2.png'][term] || eotData.stamp;
+        const stamp = [,'../img/24_25/stamp02.png','../img/24_25/stamp03.png'][term] || eotData.stamp;
 
         // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
         const photo = "../img/user.png" || ss.photo_src;
