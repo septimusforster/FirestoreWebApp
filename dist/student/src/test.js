@@ -272,7 +272,7 @@ iframeWindow.addEventListener('click', function(){
 const okayBtn = document.querySelector('#okay-btn');
 okayBtn.addEventListener('click', (e) => {
     if (['demo', 'recruit', 'entrance'].includes(snappy.class.toLowerCase())) {
-        okayBtn.style.visibility = 'hidden';
+        document.body.style.visibility = 'hidden';
     } else {
         window.location.replace("./index.html");
     }
