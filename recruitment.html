@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recruitment</title>
+    <!-- <style>
+        @import url('https://fonts.googleapis.com/css2?family=Qwitcher+Grypen:wght@400;700&display=swap');
+    </style> -->
+    <link href="https://fonts.googleapis.com/css2?family=Qwitcher+Grypen:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {margin: 0;padding: 0;box-sizing: border-box;}
         html, body {
@@ -17,6 +21,10 @@
             align-items: center;
             justify-content: flex-end;
             padding: 0 2em;
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
         }
         button#login-btn {
             font-weight: 500;
@@ -30,8 +38,8 @@
         section > * {
             position: absolute;
             left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+            top: 20%;
+            transform: translate(-50%, -20%);
             margin: auto;
         }
         section.stg01 > form {
@@ -99,7 +107,7 @@
             background-color: #fff;
             position: absolute;
             left: 0;
-            top: 4em;
+            top: 0;
             border-radius: 5px / 7px;
             overflow: hidden;
             width: 100%;
@@ -229,6 +237,15 @@
         ::backdrop {
             background-color: rgba(0,0,0,.8);
         }
+        footer {
+            text-align: center;
+        }
+        #author {
+            font-family: "Qwitcher Grypen", cursive;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 2em;
+        }
         dialog {
             outline: none;
             border: 0;
@@ -275,7 +292,13 @@
                         <span id="ICT">Computer Studies</span>
                     </li>
                     <li>
-                        <span id="ICT">Computer Studies</span>
+                        <span id="PHE">Physical Health Education</span>
+                    </li>
+                    <li>
+                        <span id="ENG">English Language</span>
+                    </li>
+                    <li>
+                        <span id="MTH">Mathematics</span>
                     </li>
                 </menu>
             </div>
@@ -298,7 +321,9 @@
             <button id="exm-btn">Start Exam</button>
         </div>
     </section>
-    <footer></footer>
+    <footer>
+        <p>Powered by <span id="author">Dynamax</span><sup>&copy;</sup></p>
+    </footer>
     <dialog id="login-dialog">
         <form name="login-form" id="login-form">
             <h4>Login form</h4>
