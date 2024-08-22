@@ -1,13 +1,12 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import {
-    getFirestore, collection, getDoc, getDocs, addDoc, doc, query, where, deleteDoc} from "firebase/firestore";
+import { getFirestore, collection, getDoc, getDocs, addDoc, doc, query, where, deleteDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import  configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 import entryCode from "./JSON/test.json" assert {type: 'json'};
 
 // initialize firebase app
 var app = initializeApp(configs[6])
-var db;
+var db = getFirestore(app);
 // initialize storage
 // const storage = getStorage();
 
@@ -15,10 +14,8 @@ function chooseConfig(num) {
     deleteApp(app);
     app = initializeApp(configs[num]);
     // init services
-    db = getFirestore()
+    db = getFirestore(app);
 }
-
-db = getFirestore()
 
 // declare refs
 const jnrRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");

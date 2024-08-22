@@ -12,6 +12,17 @@
         header, footer {
             height: 7vh;
         }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 2em;
+        }
+        button#login-btn {
+            font-weight: 500;
+            font-size: 1.1em;
+            background-color: transparent;
+        }
         section {
             height: 84vh;
             position: relative;
@@ -125,16 +136,23 @@
         button > * {
             pointer-events: none;
         }
-        input[type="submit"] {
+        input[type="submit"], #close-dialog-btn {
             font-weight: 500;
             margin: 1em auto;
-            background-color: #1e73be;
-            color: #fff;
             border-radius: 7px;
             transition: box-shadow 150ms ease;
         }
-        input[type="submit"]:hover {
+        input[type="submit"] {
+            background-color: #1e73be;
+            color: #fff;    
+        }
+        input[type="submit"]:hover,
+        #close-dialog-btn:hover {
             box-shadow: 0 7px 24px #aaa;
+        }
+        #close-dialog-btn {
+            padding: 1em 2em;
+            margin-top: 0;
         }
         #loader {
             display: none;
@@ -166,15 +184,16 @@
         div#result > div:nth-of-type(2) {
             display: flex;
             align-items: center;
-            gap: 1em;
         }
         div#result > div:nth-of-type(1) {
             justify-content: center;
+            gap: .3em;
             color: #555;
             font-weight: 600;
             font-size: 1.3em;
         }
         div#result > div:nth-of-type(2) {
+            gap: 1em;
             border: 1px solid #aaa;
             border-radius: 7px;
             padding: .3em .7em;
@@ -207,10 +226,25 @@
         #exm-btn:hover {
             box-shadow: 0 7px 24px #aaa;
         }
+        ::backdrop {
+            background-color: rgba(0,0,0,.3);
+        }
+        dialog {
+            outline: none;
+            border: 0;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 7px;
+        }
+        dialog form {
+            padding: 0 2em;
+        }
     </style>
 </head>
 <body>
-    <header></header>
+    <header>
+        <button type="button" id="login-btn">Login</button>
+    </header>
     <section class="">
         <form name="recruit-form" id="recruit-form" autocomplete="off">
             <h4>Recruitment Form</h4>
@@ -251,9 +285,9 @@
         <div style="display:none;" id="loader" class=""></div>
         <div style="display:none;" id="result">
             <div>
-                <span>&check;</span><br><span>Form submitted.</span>
+                <span>&star;</span><span>SUCCESS</span>
             </div>
-            <p>The form has been submitted successfully.<br>Copy the code and click on "Start Exam" to begin.</p>
+            <p>Copy the code and click on "Start Exam" to begin.</p>
             <div>
                 <span>XYZABC12345</span>
                 <button id="cpy-btn">
@@ -265,6 +299,14 @@
         </div>
     </section>
     <footer></footer>
+    <dialog id="login-dialog">
+        <form name="login-form" id="login-form">
+            <h4>Login form</h4>
+            <input type="tel" name="uphone" id="uphone" placeholder="Enter phone number" required>
+            <input type="submit" value="LOGIN">
+            <button type="button" id="close-dialog-btn">CLOSE</button>
+        </form>
+    </dialog>
     <script type="module" src="src/recruitment_bundle.js"></script>
 </body>
 </html>
