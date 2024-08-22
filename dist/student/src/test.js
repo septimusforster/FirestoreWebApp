@@ -40,9 +40,9 @@ var duration = subby[cat].duration;
 const classIndex = configs[7].indexOf(snappy.class);
 
 // initial firebase app
-var app = initializeApp(configs[6]);
+let app = initializeApp(configs[6]);
 // init services
-var db = getFirestore();
+let db = getFirestore();
 
 let eotDates, term;
 async function eot() {
@@ -261,4 +261,13 @@ iframeWindow.addEventListener('click', function(){
     } else {
         openpad()
     }
-})
+});
+
+const okayBtn = document.querySelector('#okay-btn');
+okayBtn.addEventListener('click', (e) => {
+    if (['demo', 'recruit', 'entrance'].includes(snappy.class.toLowerCase())) {
+        okayBtn.style.visibility = 'hidden';
+    } else {
+        window.location.replace("./index.html");
+    }
+});

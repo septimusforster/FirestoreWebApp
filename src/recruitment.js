@@ -84,7 +84,7 @@ forms[0].addEventListener('submit', async (e) => {
     // console.log(obj);
     const snapshot = await addDoc(collection(db, "students"), obj).then(async student => {
         uid = student.id;
-        obj['id'] = uid;
+        obj['id'] = uid, obj['class'] = 'Demo';
         user = obj;
         const snapshot2 = await setDoc(doc(db, "students", student.id, "scores", student.id), {
             [abbr]: 0,

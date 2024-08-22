@@ -19,7 +19,7 @@
     </dialog>
     <dialog id="msgDialog">
         <output></output>
-        <button class="okay" onclick="dialogOKAY()">OKAY</button>
+        <button class="okay" id="okay-btn">OKAY</button>
     </dialog>
     <dialog id="submitDialog">
         <output>You clicked SUBMIT.<br/>Are you sure?</output>
@@ -65,12 +65,6 @@
                 time.parentElement.remove();
             })
         })
-
-        function dialogOKAY() {
-            // window.sessionStorage.remove();
-            window.location.replace("./index.html");
-        }
-
     </script>
 </body>
 </html>
