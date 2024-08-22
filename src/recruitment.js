@@ -19,7 +19,7 @@ const loader_et_result = document.querySelectorAll("#loader, #result");
 loader_et_result.forEach(elem => elem.removeAttribute('style'));
 
 let abbr, activewindow, uid;
-let user, udata;
+let user, udata, catNo;
 window.addEventListener('click', (e) => {
     if (activewindow) activewindow.classList.remove('active');
 }, true);
@@ -36,6 +36,7 @@ select.addEventListener('click', (e) => {
         });
         hdnInput.value = t.firstElementChild.textContent;
         abbr = t.firstElementChild.id;
+        catNo = Number(t.dataset.ct);
         select.firstElementChild.textContent = t.textContent;
         t.insertAdjacentHTML('beforeend', '<span>&check;</span>');
     } else {
@@ -61,7 +62,7 @@ copyBtn.addEventListener('click', (e) => {
 const examBtn = document.querySelector('#exm-btn');
 examBtn.addEventListener('click', (e) => {
     testJSParams(udata, abbr, user);
-    location.href = `/dist/student/dist/test.html?ct=4&uid=${uid}&sb=${btoa(abbr)}`;  //exam is placed in CAT 4
+    location.href = `/dist/student/dist/test.html?ct=${catNo}&uid=${uid}&sb=${btoa(abbr)}`;
 });
 
 const forms = document.forms;
@@ -82,19 +83,26 @@ forms[0].addEventListener('submit', async (e) => {
         obj[k] = v;
     }
     // console.log(obj);
-    const snapshot = await addDoc(collection(db, "students"), obj).then(async student => {
-        uid = student.id;
-        obj['id'] = uid, obj['class'] = 'Demo';
-        user = obj;
-        const snapshot2 = await setDoc(doc(db, "students", student.id, "scores", student.id), {
-            [abbr]: 0,
+    //check if phone number exists
+    const userSnap = await getDocs(query(collection(db, 'students'), where('phone', '==', obj.phone), limit(1)));
+    if (userSnap.empty) {
+        const snapshot = await addDoc(collection(db, "students"), obj).then(async student => {
+            uid = student.id;
+            obj['id'] = uid, obj['class'] = 'Demo';
+            user = obj;
+            const snapshot2 = await setDoc(doc(db, "students", student.id, "scores", student.id), {
+                [abbr]: 0,
+            });
+            //get abbr code
+            const abbrSnap = await getDocs(query(collection(db, 'activities', 'test', abbr), where('catNo', '==', catNo)));
+            udata = [abbrSnap.docs[0].data()];
+            abbrSnap.docs.forEach(dcmt => copyBtn.previousElementSibling.textContent = dcmt.get('code'));
+            section.classList.replace('stg01', 'stg02');
         });
-        //get abbr code
-        const abbrSnap = await getDocs(query(collection(db, 'activities', 'test', abbr), where('catNo', '==', 4)));
-        udata = [abbrSnap.docs[0].data()];
-        abbrSnap.docs.forEach(dcmt => copyBtn.previousElementSibling.textContent = dcmt.get('code'));
-        section.classList.replace('stg01', 'stg02');
-    });
+    } else {
+        section.classList.remove('stg01');
+        alert("User already exists.");
+    }
 });
 
 const openCloseBtns = document.querySelectorAll('#login-btn, #close-dialog-btn');
@@ -125,11 +133,16 @@ forms[1].addEventListener('submit', async (e) => {
     uid = userSnap.docs[0].id;
     user = {'id': uid, ...userSnap.docs[0].data(), 'class': 'Demo'};
     abbr = Object.keys(userSnap.docs[0].get('offered'))[0];
-    const snapshot2 = await setDoc(doc(db, "students", uid, "scores", uid), {
-        [abbr]: 0,
-    });
+    let subject = Object.values(userSnap.docs[0].get('offered'))[0];
+    // const snapshot2 = await setDoc(doc(db, "students", uid, "scores", uid), {
+    //     [abbr]: 0,
+    // });
     //get abbr code
-    const abbrSnap = await getDocs(query(collection(db, 'activities', 'test', abbr), where('catNo', '==', 4)));
+    console.log(subject);
+    document.querySelectorAll('menu li').forEach(li => {
+        if (li.firstElementChild.textContent == subject) catNo = Number(li.dataset.ct);
+    });
+    const abbrSnap = await getDocs(query(collection(db, 'activities', 'test', abbr), where('catNo', '==', catNo)));
     udata = [abbrSnap.docs[0].data()];
     abbrSnap.docs.forEach(dcmt => copyBtn.previousElementSibling.textContent = dcmt.get('code'));
     openCloseBtns[0].remove();

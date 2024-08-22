@@ -138,7 +138,7 @@ function countDown () {
     sec--;
     if (timer.textContent == "0.00") {
         clearInterval(intervalID);
-        // submission();
+        submission();
         // submitBtn.click();
     } else {
         timer.textContent = duration + '.' + String(sec).padStart(2,0);
@@ -162,12 +162,16 @@ const submitBtn = document.querySelector('.aside__footer input[type="submit"]');
 const accForm = document.forms.accForm;
 accForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
     const acc = accForm.acc.value;
     // get test doc if available
     const scoreRef = doc(db, "scores", uid);
     await getDoc(scoreRef).then(async res => {
         if (res.get(testAbbr) && res.get(testAbbr)[term][testNum] != null) {
             window.alert("You've already taken this test.");
+            e.submitter.disabled = false;
+            e.submitter.style.cursor = 'pointer';
             return;
         }
         if (!res.exists || res.get(testAbbr) == undefined) {
@@ -190,7 +194,9 @@ accForm.addEventListener('submit', async (e) => {
             displayMain();
             intervalID = setInterval(countDown, 1000);
         } else {
-            window.alert("Invalid access token.")
+            window.alert("Invalid access token.");
+            e.submitter.disabled = false;
+            e.submitter.style.cursor = 'pointer';
         }
     })
 })
