@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT photos.js
 /*
 module.exports = {
@@ -83,6 +83,18 @@ module.exports = {
     watch: true
 }
 */
+//ROOT recruitment.js
+
+module.exports = {
+    mode: "development",
+    entry: "./src/recruitment.js",
+    output: {
+        path: path.resolve(__dirname, "src"),
+        filename: "recruitment_bundle.js"
+    },
+    watch: true
+}
+
 //STAFFER index.js
 /*
 module.exports = {

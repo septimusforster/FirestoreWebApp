@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruitment</title>
+    <style>
+        * {margin: 0;padding: 0;box-sizing: border-box;}
+        html, body {
+            font: 15px system-ui;
+        }
+        header, footer {
+            height: 7vh;
+        }
+        section {
+            height: 84vh;
+            position: relative;
+        }
+        section > * {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            margin: auto;
+        }
+        section.stg01 > form {
+            pointer-events: none;
+            opacity: .3;
+        }
+        section.stg01 > #loader {
+            display: block;
+            animation-name: spin;
+        }
+        section.stg02 > form,
+        section.stg02 > #loader {
+            display: none;
+        }
+        section.stg02 > #result {
+            display: flex;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            width: 300px;
+        }
+        form > h4 {
+            text-align: center;
+            font-size: 1.5em;
+            color: #555;
+            margin: 1em auto;
+        }
+        form input,
+        #select {
+            padding: 1em 2em;
+            outline: none;
+            border: 0;
+            font-size: 1em;
+        }
+        form input:not(input[type="submit"]),
+        #select {
+            border: 1px solid #aaa;
+            border-radius: 5px / 7px;
+        }
+        #select {
+            position: relative;
+            cursor: pointer;
+        }
+        #select.active > menu {
+            display: block;
+            pointer-events: fill;
+        }
+        #select.active > i {
+            transform: translateY(-50%) rotate(135deg);
+        }
+        #select > i {
+            height: 10px;
+            width: 10px;
+            border: 2px solid;
+            border-color: #333 #333 transparent transparent;
+            position: absolute;
+            right: 1em;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            transition: transform 100ms ease;
+        }
+        #select > menu {
+            background-color: #fff;
+            position: absolute;
+            left: 0;
+            top: 4em;
+            border-radius: 5px / 7px;
+            overflow: hidden;
+            width: 100%;
+            box-shadow: 0 0 7px #777;
+        }
+        form menu {
+            display: none;
+            list-style-type: none;
+        }
+        form menu li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: .7em 1em;
+            transition: background-color 150ms ease;
+        }
+        form menu li.active,
+        form menu li:hover {
+            background-color: #e3e3e3;
+        }
+        form menu li > span:last-of-type {
+            font-weight: 600;
+        }
+        input[type="submit"],
+        button {
+            cursor: pointer;
+            border: 0;
+            outline: none;
+            color: #555;
+            font-size: 1em;
+        }
+        #select > *,
+        form menu li > *,
+        button > * {
+            pointer-events: none;
+        }
+        input[type="submit"] {
+            font-weight: 500;
+            margin: 1em auto;
+            background-color: #1e73be;
+            color: #fff;
+            border-radius: 7px;
+            transition: box-shadow 150ms ease;
+        }
+        input[type="submit"]:hover {
+            box-shadow: 0 7px 24px #aaa;
+        }
+        #loader {
+            display: none;
+            height: 2em;
+            width: 2em;
+            border: 3px solid;
+            border-radius: 50%;
+            border-color: #777 #777 #777 transparent;
+            transform: rotate(0deg);
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+        /* #loader.active {
+            animation-name: spin;
+        } */
+        @keyframes spin {
+            100% {
+                transform: rotate(359deg);
+            }
+        }
+        div#result {
+            display: none; /*flex*/
+            flex-direction: column;
+            gap: 2em;
+            min-width: 300px;
+        }
+        div#result > div:nth-of-type(1),
+        div#result > div:nth-of-type(2) {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+        }
+        div#result > div:nth-of-type(1) {
+            justify-content: center;
+            color: #555;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+        div#result > div:nth-of-type(2) {
+            border: 1px solid #aaa;
+            border-radius: 7px;
+            padding: .3em .7em;
+            font-size: 1.3em;
+        }
+        div#result p {
+            text-align: center;
+        }
+        #cpy-btn {
+            margin-left: auto;
+            font-size: .7em;
+            padding: .3em .7em;
+            border-radius: 7px;
+            transition: background-color 150ms ease;
+        }
+        #cpy-btn:hover {
+            background-color: #ddd;
+        }
+        #exm-btn {
+            padding: .7em 1.4em;
+            background-color: #555;
+            color: #fff;
+            width: 200px;
+            font-size: 1.1em;
+            margin: 0 auto;
+            border-radius: 7px;
+            background-color: #1e73be;
+            transition: box-shadow 150ms ease;
+        }
+        #exm-btn:hover {
+            box-shadow: 0 7px 24px #aaa;
+        }
+    </style>
+</head>
+<body>
+    <header></header>
+    <section class="">
+        <form name="recruit-form" id="recruit-form" autocomplete="off">
+            <h4>Recruitment Form</h4>
+            <input type="text" name="last_name" placeholder="Last name" required>
+            <input type="text" name="first_name" placeholder="First name" required>
+            <input type="text" name="other_name" placeholder="Other name">
+            <input type="tel" name="phone" id="phone" placeholder="Phone number" required>
+            <div id="select">
+                <span>Subject applied for:</span>
+                <i></i>
+                <menu>
+                    <li>
+                        <span id="BSC">Basic Science</span>
+                    </li>
+                    <li>
+                        <span id="BIO">Biology</span>
+                    </li>
+                    <li>
+                        <span id="CCA">Cultural & Creative Art</span>
+                    </li>
+                    <li>
+                        <span id="COM">Commerce</span>
+                    </li>
+                    <li>
+                        <span id="CRS">Christian Religious Studies</span>
+                    </li>
+                    <li>
+                        <span id="ICT">Computer Studies</span>
+                    </li>
+                    <li>
+                        <span id="ICT">Computer Studies</span>
+                    </li>
+                </menu>
+            </div>
+            <input type="hidden" name="offered" required>
+            <input type="submit" value="SUBMIT">
+        </form>
+        <div style="display:none;" id="loader" class=""></div>
+        <div style="display:none;" id="result">
+            <div>
+                <span>&check;</span><br><span>Form submitted.</span>
+            </div>
+            <p>The form has been submitted successfully.<br>Copy the code and click on "Start Exam" to begin.</p>
+            <div>
+                <span>XYZABC12345</span>
+                <button id="cpy-btn">
+                    <!-- <svg></svg> -->
+                    <span>Copy</span>
+                </button>
+            </div>
+            <button id="exm-btn">Start Exam</button>
+        </div>
+    </section>
+    <footer></footer>
+    <script type="module" src="src/recruitment_bundle.js"></script>
+</body>
+</html>
