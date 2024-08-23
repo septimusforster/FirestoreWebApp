@@ -114,7 +114,7 @@ async function setColRef(arg) {
             const lastPasswordIndex = classrooms[arg].indexOf(doc.data().password);
             const newPassword = classrooms[arg][lastPasswordIndex - 1];
             hiddenElems[1].value = newPassword;
-        })
+        });
     }
 };
 let num;
@@ -125,11 +125,13 @@ topNavAnchors.forEach((a, i, anchors) => {
         myIframe.contentDocument.querySelector('.content div:first-child').innerHTML = '';
         myIframe.contentDocument.querySelector('table').style.display = 'none';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
-        num = Object.keys(classrooms).indexOf(e.target.textContent);
-        chooseConfig(num);
-        setColRef(e.target.textContent);
-    })
-})
+        if (e.target.textContent.toLowerCase() != 'demo') {
+            num = Object.keys(classrooms).indexOf(e.target.textContent);
+            chooseConfig(num);
+            setColRef(e.target.textContent);
+        }
+    });
+});
 // setColRef();
 const fm_createStudent = document.forms.createStudent;
 fm_createStudent.addEventListener('submit', (e) => {

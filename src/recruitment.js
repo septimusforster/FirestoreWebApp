@@ -65,20 +65,21 @@ examBtn.addEventListener('click', (e) => {
     location.href = `/dist/student/dist/test.html?ct=${catNo}&uid=${uid}&sb=${btoa(abbr)}`;
 });
 
-const arms = ['Brilliance','Classic','Distinction','Excellence','Genius','Merit','Perfection','Radiance'];
+// const arms = ['Brilliance','Classic','Distinction','Excellence','Genius','Merit','Perfection','Radiance'];
 const forms = document.forms;
 const section = document.querySelector('section');
 //recruit sign up form
 forms[0].addEventListener('submit', async (e) => {
     e.preventDefault();
     section.classList.add('stg01');
-    const rndIdx = Math.floor(Math.random() * arms.length);
+    // const rndIdx = Math.floor(Math.random() * arms.length);
     const fd = new FormData(forms[0]);
     let obj = {};
     obj['offered'] = {[abbr]: fd.get('offered')};
     fd.delete('offered');
     obj['createdOn'] = serverTimestamp();
-    obj['arm'] = arms[rndIdx];
+    obj['arm'] = 'Recruit';
+    // obj['arm'] = arms[rndIdx];
     console.log(obj.arm);
     for (const [k, v] of fd.entries()) {
         obj[k] = v;
