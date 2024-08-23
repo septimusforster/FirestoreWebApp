@@ -84,7 +84,7 @@ module.exports = {
 }
 */
 //ROOT recruitment.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/recruitment.js",
@@ -94,7 +94,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STAFFER index.js
 /*
 module.exports = {
@@ -216,7 +216,7 @@ module.exports = {
 }
 */
 //STUDENT test.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/test.js",
@@ -226,7 +226,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STUDENT result.js
 /*
 module.exports = {
