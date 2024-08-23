@@ -40,12 +40,7 @@ if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
     await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)));
     console.log('From server')
 }
-function chooseConfig(num) {
-    deleteApp(app);
-    app = initializeApp(configs[num]);
-    // init services
-    db = getFirestore()
-}
+
 const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
 const leftNav = document.querySelector('.left-nav');
 armArray.forEach(arm => {
@@ -62,7 +57,7 @@ async function setIframeAttr(para1) {
     if (sessionStorage.hasOwnProperty('preview')) sessionStorage.removeItem('preview')
     let data = [], marked = 0;
     // console.log(term)
-    const q = query(colRef, where("arm", "==", myIframe.getAttribute('data-class-arm')), orderBy("first_name"))
+    const q = query(colRef, where("arm", "==", para1), orderBy("first_name"), limit(20));   //startAfter() to be included
     await getDocs(q).then(docs => {
         docs.docs.forEach(obj => {
             if (obj.data()?.admission_no.toUpperCase().includes(DCA)) data.push(obj.data());
@@ -77,6 +72,7 @@ async function setIframeAttr(para1) {
         sessionStorage.setItem('preview', JSON.stringify(data));
         // console.log('Done.')
     });
+    console.log(data)
     myIframe.contentDocument.querySelector('tbody').innerHTML = '';
     data.forEach((student, index) => {
         myIframe.contentDocument.querySelector('tbody').insertAdjacentHTML('beforeend',`
@@ -100,8 +96,12 @@ leftNavAnchors.forEach((a, i, anchors) => {
         a.classList.add('active-left-nav');
         setIframeAttr(e.target.textContent);
     })
-})
-async function setColRef(arg) {
+});
+
+let num;
+async function setColRef(arg, num) {
+    if (arg.toLowerCase() == 'demo') return chooseConfig(8);
+    chooseConfig(num);
     let data = [];
     colRef = collection(db, "students");
     //GET LAST DOCUMENT FROM SERVER
@@ -117,7 +117,7 @@ async function setColRef(arg) {
         });
     }
 };
-let num;
+
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
@@ -126,12 +126,20 @@ topNavAnchors.forEach((a, i, anchors) => {
         myIframe.contentDocument.querySelector('table').style.display = 'none';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
         num = Number(a.dataset.href);
-        chooseConfig(num);
-        // if (e.target.textContent.toLowerCase() != 'demo') {
-            setColRef(e.target.textContent);
-        // }
+        setColRef(e.target.textContent, num);
     });
 });
+
+function chooseConfig(num) {
+    deleteApp(app).then(function() {
+        console.log("App deleted successfully.");
+        app = initializeApp(configs[num]);
+        // init services
+        db = getFirestore(app);
+    }).catch(err => {
+        console.error("Error: ", err);
+    });
+}
 // setColRef();
 const fm_createStudent = document.forms.createStudent;
 fm_createStudent.addEventListener('submit', (e) => {
@@ -158,7 +166,7 @@ fm_createStudent.addEventListener('submit', (e) => {
         document.querySelectorAll('dialog')[1].showModal();
         e.submitter.disabled = false;
         e.submitter.style.cursor = 'pointer';
-        setColRef(col)
+        setColRef(col, num)
         document.querySelector('.side-panel').scroll({top:0,left:0,behavior:"smooth"});
     })
 })

@@ -111,7 +111,7 @@ subjectForm.addEventListener('submit', async (e) => {
     personDoc.docs.forEach(doc => {
         if (doc.data().hasOwnProperty("offered") && doc.data().offered.hasOwnProperty(sub)) {
             kvArray.push([
-                doc.data().id,
+                /*doc.data()?.id || */doc.id,
                 `${doc.data().last_name} ${doc.data().first_name} ${doc.data().other_name}`,
             ])
         }
@@ -129,6 +129,8 @@ subjectForm.addEventListener('submit', async (e) => {
     };
 
     let scores = [];
+    console.log(kvArray);
+    
     const promises = kvArray.map(async arrVal => {
         //USE THE TERM-DEFINER TO PICK THE RIGHT SET OF SCORES TO BE EDITED
         await getDoc(doc(db, "scores", arrVal[0])).then((doc) => scores.push(doc.data()));
@@ -172,6 +174,7 @@ subjectForm.addEventListener('submit', async (e) => {
     })
     // sessionStorage.setItem('scores', JSON.stringify(scores))
     document.querySelector('.sub__title').textContent = `${abbr[sub]} ~ ${cls} ~ ${arm}`;
+    
     dialogGreen.querySelector('.submit__icon').classList.remove('running');
     dialogGreen.close();
     e.submitter.disabled = false;
