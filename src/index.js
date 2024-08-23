@@ -15,22 +15,15 @@ let classrooms = {
     "SSS 3": s3.toReversed(),
     "demo": demo.toReversed()
 }
-
 var myIframe = document.getElementById('myIframe');
+
 // initialize firebase app
 var app = initializeApp(configs[6])
 // init services
-var db;
-db = getFirestore();
+var db = getFirestore();
 
-function chooseConfig(num) {
-    deleteApp(app);
-    app = initializeApp(configs[num]);
-    // init services
-    db = getFirestore()
-}
 // collection ref
-var colRef = '';
+var colRef = collection(db, "students");
 const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 // store user ID from url or sessionStorage snapshot
 let url = new URL(location.href);
@@ -47,6 +40,12 @@ if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
     await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)));
     console.log('From server')
 }
+function chooseConfig(num) {
+    deleteApp(app);
+    app = initializeApp(configs[num]);
+    // init services
+    db = getFirestore()
+}
 const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
 const leftNav = document.querySelector('.left-nav');
 armArray.forEach(arm => {
@@ -62,18 +61,19 @@ async function setIframeAttr(para1) {
     hiddenElems[0].value = para1;
     if (sessionStorage.hasOwnProperty('preview')) sessionStorage.removeItem('preview')
     let data = [], marked = 0;
-    console.log(term)
+    // console.log(term)
     const q = query(colRef, where("arm", "==", myIframe.getAttribute('data-class-arm')), orderBy("first_name"))
     await getDocs(q).then(docs => {
         docs.docs.forEach(obj => {
-            if (obj.data().admission_no.toUpperCase().includes(DCA)) data.push(obj.data())
+            if (obj.data()?.admission_no.toUpperCase().includes(DCA)) data.push(obj.data());
+            if (['recruit'].includes(obj.data().arm.toLowerCase())) data.push({id: obj.id, ...obj.data()});
         });
         data.forEach(({days_present}) => { // extract days_present from docs.data()
             // console.log(days_present)
             days_present?.[term] ? marked++ : false;
         });
         size = marked;
-        console.log(marked);
+        // console.log(marked);
         sessionStorage.setItem('preview', JSON.stringify(data));
         // console.log('Done.')
     });
@@ -83,9 +83,9 @@ async function setIframeAttr(para1) {
             <tr onclick="deleteStudent('${student.id}',this.children[3].textContent, this)">
                 <td>${index + 1}</td>
                 <td>${student.id}</td>
-                <td>${student.admission_no}</td>
+                <td>${student.admission_no || student.phone}</td>
                 <td>${student.last_name} ${student.first_name} ${student.other_name}</td>
-                <td>${student.password}</td>
+                <td>${student.password || 'n/a'}</td>
             </tr>
         `);
     })
@@ -125,11 +125,11 @@ topNavAnchors.forEach((a, i, anchors) => {
         myIframe.contentDocument.querySelector('.content div:first-child').innerHTML = '';
         myIframe.contentDocument.querySelector('table').style.display = 'none';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
-        if (e.target.textContent.toLowerCase() != 'demo') {
-            num = Object.keys(classrooms).indexOf(e.target.textContent);
-            chooseConfig(num);
+        num = Number(a.dataset.href);
+        chooseConfig(num);
+        // if (e.target.textContent.toLowerCase() != 'demo') {
             setColRef(e.target.textContent);
-        }
+        // }
     });
 });
 // setColRef();

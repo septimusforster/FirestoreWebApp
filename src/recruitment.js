@@ -77,7 +77,7 @@ forms[0].addEventListener('submit', async (e) => {
     let obj = {};
     obj['offered'] = {[abbr]: fd.get('offered')};
     fd.delete('offered');
-    obj['createdOn'] = serverTimestamp();
+    obj['createdAt'] = serverTimestamp();
     obj['arm'] = 'Recruit';
     // obj['arm'] = arms[rndIdx];
     console.log(obj.arm);
