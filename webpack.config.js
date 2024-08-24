@@ -144,7 +144,7 @@ module.exports = {
 }
 */
 // STAFFER scores.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/scores.js",
@@ -154,9 +154,9 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 // STAFFER broadsheet.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",
@@ -166,7 +166,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STUDENT index.js
 /*
 module.exports = {

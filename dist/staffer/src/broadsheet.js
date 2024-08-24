@@ -1,74 +1,7 @@
 //REMEMBER TO WEBPACK IMPORTS: THEY ARE CURRENTLY USING "GSTATIC"
 import { initializeApp, deleteApp } from "firebase/app";
 import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc, where } from "firebase/firestore";
-const configs = [
-    {
-        "apiKey": "AIzaSyBJA5v78O_yZsw9Vkx7qZcdqo_Ek2Cg0nc",
-        "authDomain": "jss-1-d8b98.firebaseapp.com",
-        "projectId": "jss-1-d8b98",
-        "storageBucket": "jss-1-d8b98.appspot.com",
-        "messagingSenderId": "985767701555",
-        "appId": "1:985767701555:web:4cbe7a5739b4f4288f0746",
-        "measurementId": "G-KWGP4XGZS7"
-    },
-    {
-        "apiKey": "AIzaSyAcW8SrGRjpae3yX41mengldQSkJZNSyyI",
-        "authDomain": "jss-2-45bfb.firebaseapp.com",
-        "projectId": "jss-2-45bfb",
-        "storageBucket": "jss-2-45bfb.appspot.com",
-        "messagingSenderId": "297181603876",
-        "appId": "1:297181603876:web:deda0db38dfd99e56ad0b1",
-        "measurementId": "G-HGF1RZF6G7"
-    },
-    {
-        "apiKey": "AIzaSyBRrmYnGDXYcuhR9hxjUNHjTTAoaFU-iTU",
-        "authDomain": "jss-3-9f56a.firebaseapp.com",
-        "projectId": "jss-3-9f56a",
-        "storageBucket": "jss-3-9f56a.appspot.com",
-        "messagingSenderId": "485860840332",
-        "appId": "1:485860840332:web:03eff5287d1c11e965bca9"
-    },
-    {
-        "apiKey": "AIzaSyDAFU7YC7-F6Z5f7U_c4CaZfvMX2kWOvGY",
-        "authDomain": "sss-1-c4e20.firebaseapp.com",
-        "projectId": "sss-1-c4e20",
-        "storageBucket": "sss-1-c4e20.appspot.com",
-        "messagingSenderId": "583010609084",
-        "appId": "1:583010609084:web:2301c411508b8bc1286db9"
-    },
-    {
-        "apiKey": "AIzaSyBi2pDZDR1UYgE_0BokzSxfEUu6pdFJavE",
-        "authDomain": "sss-2-6559e.firebaseapp.com",
-        "projectId": "sss-2-6559e",
-        "storageBucket": "sss-2-6559e.appspot.com",
-        "messagingSenderId": "1080184329339",
-        "appId": "1:1080184329339:web:afd1b3b963ff9e8b89fede"
-    },
-    {
-        "apiKey": "AIzaSyCg54BF3m0TDPV3slZ0ctWf3s9x1dpaDDs",
-        "authDomain": "sss-3-57cf1.firebaseapp.com",
-        "projectId": "sss-3-57cf1",
-        "storageBucket": "sss-3-57cf1.appspot.com",
-        "messagingSenderId": "213082789734",
-        "appId": "1:213082789734:web:0fdba98e8ffc2ac65b1aa7"
-    },
-    {    
-        "apiKey": "AIzaSyB1FJnKHGt3Ch1KGFuZz_UtZm1EH811NEU",
-        "authDomain": "fir-pro-152a1.firebaseapp.com",
-        "projectId": "fir-pro-152a1",
-        "storageBucket": "fir-pro-152a1.appspot.com",
-        "messagingSenderId": "158660765747",
-        "appId": "1:158660765747:web:bd2b4358cc5fc9067ddb46"
-    },    
-]
-const classes = [
-    "JSS 1",
-    "JSS 2",
-    "JSS 3",
-    "SSS 1",
-    "SSS 2",
-    "SSS 3"
-];
+import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 function chooseConfig(projNum) {
     deleteApp(app);
@@ -98,21 +31,29 @@ if (masterClass.startsWith("JSS")) {
 } else if (masterClass.startsWith("SSS")) {
     abbr = Object.keys(srsub.data()).sort();
     abbr_unmutated = Object.keys(srsub.data()).sort();
+} else {
+    // const x = Object.keys(jrsub.data()).sort();
+    // const y = Object.keys(srsub.data()).sort();
+    // const z = x.concat(y);
+    // let elemObj = {};
+    // z.forEach(val => elemObj[val] = (elemObj[val] || 0) + 1);
+    // const result = Object.keys(elemObj).sort();
+    abbr = ['BSC', 'BIO', 'CCA', 'COM', 'CRS', 'ICT', 'PHE', 'ENG', 'MTH'].sort();
+    abbr_unmutated = ['BSC', 'BIO', 'CCA', 'COM', 'CRS', 'ICT', 'PHE', 'ENG', 'MTH'].sort();
 }
 
 // reset app and query the students of the masterOfForm's arm
-const DCA = 'DCA';
-chooseConfig(classes.indexOf(masterClass));
+const school = 'DCA';
+chooseConfig(configs[7].indexOf(masterClass));
 let IDs = [], names = [];
 const q1 = query(collection(db, "students"), where("arm", "==", masterArm), orderBy("last_name"));  //and where("days_present","array-contains","null")
 const studentSnap = await getDocs(q1);
 studentSnap.docs.forEach(s => {
-    if (s.data().admission_no.toUpperCase().includes(DCA)) {
+    if (['demo'].includes(masterClass.toLowerCase()) || s.data()?.admission_no.toUpperCase().includes(school)) {
         IDs.push(s.id);
         names.push(`${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`)
     }
 });
-// console.log(IDs);
 //get scores with the provided IDs
 let scoresSnap = [];
 const p1 = IDs.map(async id => {
@@ -152,7 +93,6 @@ names.forEach((n, i) => {
     if (obj) {
         for (const [k, v] of scoreEntries) {
             let idx = abbr_unmutated.indexOf(k);
-            // console.log(idx);
             let slice = idx - f;
             if (slice) {
                 for (let j = 0; j < slice; j++) tds += "<td></td>";
@@ -201,7 +141,7 @@ insertFoot(totStr, aveStr);
 let positionArray = [];
 function studentTotal () {
     names.forEach((n, i) => {
-        let x = [...document.querySelectorAll(`tbody tr:nth-child(${i+1}) td`)];
+        let x = [...document.querySelectorAll(`tbody tr:nth-child(${i+1}) td:not(td:last-child)`)];
         let y = x.map(f => Number(f.innerText));
         y.splice(0,2);
         let z = y.reduce((a,c) => a + c, 0);
