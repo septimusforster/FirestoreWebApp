@@ -1,6 +1,7 @@
 import { initializeApp, deleteApp } from "firebase/app"
 import {
-    getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp, setDoc, getDocsFromCache
+    getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp, setDoc, getDocsFromCache,
+    writeBatch
 } from "firebase/firestore"
 import pk from "../src/JSON/upass.json" assert {type: 'json'};
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
@@ -22,32 +23,105 @@ var app = initializeApp(configs[6])
 // init services
 var db = getFirestore();
 
+function chooseConfig(num) {
+    deleteApp(app);
+    app = initializeApp(configs[num]);
+    // init services
+    db = getFirestore()
+}
+
+const ss = JSON.parse(sessionStorage.snapshot);
+
 // collection ref
 var colRef = collection(db, "students");
 const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 // store user ID from url or sessionStorage snapshot
 let url = new URL(location.href);
 let params = new URLSearchParams(url.search);
-let uid = params.get('uid') || JSON.parse(sessionStorage.snapshot).id;
-let eotData, term = 0, size = 0;
+let uid = params.get('uid') || ss.id;
+let eotData, term = 0, size = 0, toggleState;
 const eotRef = doc(db, "reserved", "EOT");
+const leftNav = document.querySelector('.left-nav');
 await getDoc(eotRef).then(async (res) => { // load EOT
     eotData = res.data();
     term = ["First","Second","Third"].indexOf(eotData.this_term);
-});
+    //chk gmode
+    const cities = ['ZAGREB', 'COPENHAGEN', 'PRAGUE', 'MOSCOW', 'SOBIBOR', 'WARSAW', 'TELAVIV'];
+    const c = Math.floor(Math.random() * cities.length);
+    const city = cities[c];
+    const user = ss.data.fullName.toLowerCase();
+    let adminmode = false;
+    if (user !== 'guest user') {
+        //create gmode and eventListener
+        adminmode = true;
+        leftNav.insertAdjacentHTML('afterend', `
+            <div class="gmode">
+                <div>Guest Mode</div>
+                <div>
+                    <input type="checkbox" name="chkmode" id="chkmode">
+                    <label for="chkmode" id="lblmode" class="lblmode"></label>
+                </div>
+            </div>
+        `);
+        const chkmode = document.querySelector('#chkmode');
+        Object.values(eotData?.guestmode)[0] === 1 ? chkmode.checked = true : chkmode.checked = false;
+        //chkmode listener
+        document.querySelector('#chkmode').addEventListener('change', async (e) => {
+            e.target.classList.add('disabled');
+            // console.log(city);
+            toggleState = e.target.checked;
+            console.log('@start:', toggleState);
+            gmodeToggler(e.target);
+            
+            if (!adminmode) {
+                alert('Sorry! You do not have this privilege.');
+                e.target.checked = false;
+                e.target.classList.remove('disabled');
+                return;
+            }
+            let reply = window.prompt('First enter your password.');
+            if (reply !== Object.keys(eotData.guestmode)[0]) {
+                alert("The password is incorrect.");
+                console.log('@if:', toggleState);
+            } else {
+                chkmode.classList.add('disabled');
+                console.log('MAIN TOGGLE STATE:', toggleState);
+                chooseConfig(6);
+                const batch = writeBatch(db);
+                if (toggleState) {
+                    batch.set(doc(db, 'reserved', 'EOT'), {guestmode: {[Object.keys(eotData?.guestmode)[0]]: 0}}, { merge: true });
+                    batch.set(doc(db, 'staffCollection', 'aR6h4JTAI0vCAz12XCk6'), { code: city }, {merge: true});
+                } else {
+                    batch.set(doc(db, 'reserved', 'EOT'), {guestmode: {[Object.keys(eotData?.guestmode)[0]]: 1}}, { merge: true });
+                    batch.set(doc(db, 'staffCollection', 'aR6h4JTAI0vCAz12XCk6'), { code: 'USADEY' }, { merge: true });
+                }
+                await batch.commit();
 
+                console.log('@else:', toggleState);
+                toggleState ? chkmode.checked = false : chkmode.checked = true;
+                chkmode.classList.remove('disabled');
+            }
+        });
+    }
+});
+function gmodeToggler(target) {
+    if (target.checked) {
+        toggleState = false;
+    } else {
+        toggleState = true;
+    }
+    target.checked = toggleState;
+}
 if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
     await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)));
     console.log('From server')
 }
-
 const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
-const leftNav = document.querySelector('.left-nav');
 armArray.forEach(arm => {
     leftNav.insertAdjacentHTML('beforeend', `
     <a href="#">${arm}</a>
     `)
-}) // EOF
+}); // EOF
 const hiddenElems = document.querySelectorAll("input[type='hidden'");
 const DCA = 'DCA';
 async function setIframeAttr(para1) {
@@ -72,7 +146,6 @@ async function setIframeAttr(para1) {
         sessionStorage.setItem('preview', JSON.stringify(data));
         // console.log('Done.')
     });
-    console.log(data)
     myIframe.contentDocument.querySelector('tbody').innerHTML = '';
     data.forEach((student, index) => {
         myIframe.contentDocument.querySelector('tbody').insertAdjacentHTML('beforeend',`
@@ -88,7 +161,6 @@ async function setIframeAttr(para1) {
     myIframe.contentDocument.querySelector('table').style.display = 'block';
     // })
 }
-
 const leftNavAnchors = document.querySelectorAll('.left-nav a');
 leftNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
@@ -97,7 +169,6 @@ leftNavAnchors.forEach((a, i, anchors) => {
         setIframeAttr(e.target.textContent);
     })
 });
-
 let num;
 async function setColRef(arg, num) {
     if (arg.toLowerCase() == 'demo') return chooseConfig(8);
@@ -130,16 +201,16 @@ topNavAnchors.forEach((a, i, anchors) => {
     });
 });
 
-function chooseConfig(num) {
-    deleteApp(app).then(function() {
-        console.log("App deleted successfully.");
-        app = initializeApp(configs[num]);
-        // init services
-        db = getFirestore(app);
-    }).catch(err => {
-        console.error("Error: ", err);
-    });
-}
+// function chooseConfig(num) {
+//     deleteApp(app).then(function() {
+//         console.log("App deleted successfully.");
+//         app = initializeApp(configs[num]);
+//         // init services
+//         db = getFirestore(app);
+//     }).catch(err => {
+//         console.error("Error: ", err);
+//     });
+// }
 // setColRef();
 const fm_createStudent = document.forms.createStudent;
 fm_createStudent.addEventListener('submit', (e) => {

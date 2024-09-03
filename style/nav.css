@@ -100,6 +100,7 @@ nav.top-nav a:hover {
 aside {
     flex-basis: 11%;
     margin: 25px;
+    min-width: 250px;
 }
 aside nav {
     display: flex;
@@ -159,6 +160,52 @@ p.msg {
     animation: blink 1s infinite;
     color: red;
   } */
-
-
- 
+.gmode,
+.gmode > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.gmode {
+    border: 1px solid;
+    border-color: #ccc transparent transparent transparent;
+    color: #777;
+    font-size: 1.1em;
+    font-weight: 500;
+    padding: 1em 0;
+    position: sticky;
+    top: 100%;
+}
+#lblmode {
+    display: inline-block;
+    position: relative;
+    height: 25px;
+    width: 50px;
+    border-radius: 25px;
+    background-color: #d2d2d2;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+#lblmode::before {
+    content: '';
+    position: absolute;
+    margin: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: #fff;
+    transition: transform 0.2s;
+}
+#chkmode {
+    width: 0;
+}
+#chkmode:checked + #lblmode {
+    background-color: #009578;
+}
+#chkmode:checked + #lblmode::before {
+    transform: translateX(25px);
+}
+.disabled {
+    cursor: auto;
+    pointer-events: none;
+}

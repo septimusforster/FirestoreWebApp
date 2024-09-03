@@ -1,6 +1,6 @@
 const path = require("path");
 //ROOT index.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/index.js",
@@ -10,7 +10,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT hacks.js
 /*
 module.exports = {
@@ -19,6 +19,18 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "hacks_bundle.js"
+    },
+    watch: true
+}
+*/
+//ROOT hacks_ssn.js
+/*
+module.exports = {
+    mode: "development",
+    entry: "./src/hacks_ssn.js",
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "hacks_ssn_bundle.js"
     },
     watch: true
 }
@@ -156,7 +168,7 @@ module.exports = {
 }
 */
 // STAFFER broadsheet.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",
@@ -166,7 +178,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STUDENT index.js
 /*
 module.exports = {
