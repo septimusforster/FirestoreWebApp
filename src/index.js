@@ -63,6 +63,11 @@ await getDoc(eotRef).then(async (res) => { // load EOT
                 </div>
             </div>
         `);
+        document.querySelector('header').insertAdjacentHTML('beforeend', `
+            <button type="button" class="link" onclick="location.href='./reserved.html'">Reserved</button>
+            <button type="button" class="link" onclick="location.href='./staffer/dist/test.html'">Test</button>
+            <button type="button" class="link" onclick="location.href='award.html'">Award</button>
+        `);
         const chkmode = document.querySelector('#chkmode');
         Object.values(eotData?.guestmode)[0] === 1 ? chkmode.checked = true : chkmode.checked = false;
         //chkmode listener
