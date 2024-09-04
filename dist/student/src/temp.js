@@ -11,7 +11,7 @@ var app = initializeApp(configs[classIndex])
 // init services
 const db = getFirestore();
 //init references
-const userRef = doc(db, "students", ss.id);
+const userRef = doc(db, 'session', ss.session, 'students', ss.id);
 
 subjectForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ subjectForm.addEventListener('submit', async (e) => {
 
 })
 const storage = getStorage();
-const rootPath = ref(storage, "img/" + ss.class);
+const rootPath = ref(storage, `img/${ss.session}/${ss.class}`);
 
 const photoSrc = document.getElementById('photoSrc');
 const photoPreview = document.querySelector("[alt='photo-preview']");
@@ -47,8 +47,7 @@ photoSrc.addEventListener('change', (e) => {
         photoPreview.src = reader.result;
     }
     reader.readAsDataURL(e.target.files[0]);
-    //md5 Hash Snapshot: phD3lG5Pgx1Tuu/lqQVO0A==
-})
+});
 const dialogSuccess = document.querySelector('dialog#success');
 photoForm.addEventListener('submit', (e) => {
     e.preventDefault();

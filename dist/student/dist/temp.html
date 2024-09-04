@@ -196,7 +196,7 @@
         }
     </style>
 </head>
-<body>
+<body style="opacity: 0;">
     <main class="wrapper">
         <header>
             <h1>Photo</h1>
@@ -271,6 +271,7 @@
                     wrapperChildren[i].firstElementChild.classList.add('deactivate');
                 }
             }
+            document.body.removeAttribute('style'); //after all has been loaded
         })
         const skipBtn = document.querySelector('#skip-btn');
         skipBtn.onclick = function () {

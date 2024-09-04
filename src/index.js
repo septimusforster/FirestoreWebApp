@@ -290,7 +290,7 @@ function collectDataForUpdate() {
         e.submitter.style.cursor = 'not-allowed';
         const collectionName = "students";
         const documentId = sidePanelBtns[2].value;
-        console.log(fields);
+
         const docRef = doc(db, 'session', session, collectionName, documentId);
         updateDoc(docRef, fields)
             .then(async () => {

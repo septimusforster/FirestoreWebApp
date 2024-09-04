@@ -4,8 +4,10 @@ import configs from "../../../src/JSON/configurations.json" assert {type: 'json'
 
 // initial firebase app
 var app = initializeApp(configs[6])
-var db, JSSubjectRef, SSSubjectRef;
+var db = getFirestore(app), JSSubjectRef, SSSubjectRef;
 
+//get EOT, from which you get SESSION
+const session = '2025';
 const selectElt = document.querySelector('select#classroom');
 selectElt.addEventListener('change', (e) => {
     deleteApp(app);
@@ -15,6 +17,7 @@ selectElt.addEventListener('change', (e) => {
     db = getFirestore()
     // collection refs
 })
+
 
 const classroom = document.querySelector('#classroom');
 const email = document.querySelector('#email');
@@ -28,7 +31,7 @@ loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disable = true;
     e.submitter.style.cursor = 'not-allowed';
-    const classroomCollectionRef = collection(db, 'students');
+    const classroomCollectionRef = collection(db, 'session', session, 'students');
     const q = query(classroomCollectionRef, and(or(where("email", "==", email.value), where("admission_no", "==", email.value)), where("password", "==", password.value)))
     const querySnapshot = await getDocs(q);
     // console.log(querySnapshot);
@@ -40,8 +43,8 @@ loginForm.addEventListener('submit', async (e) => {
     } else {
         querySnapshot.docs.forEach(async doc => {
             // let ue = doc.data().upload_enabled;
-            let photo_src = doc.data().photo_src;
-            let offered = doc.data().offered;
+            let photo_src = doc.data()?.photo_src || null;
+            let offered = doc.data()?.offered || null;
             let snapshot = {
                 'id': doc.id,
                 'first_name': doc.data().first_name,
@@ -49,6 +52,7 @@ loginForm.addEventListener('submit', async (e) => {
                 'other_name': doc.data().other_name,
                 'gender': doc.data().gender,
                 'admission_no': doc.data().admission_no,
+                session,
                 'arm': doc.data().arm,
                 'class': classroom.value,
                 'em': doc.data().email || doc.data().admission_no,
@@ -78,7 +82,7 @@ loginForm.addEventListener('submit', async (e) => {
             }
         });
     }
-})
+});
 
 function resetConfig () {
     deleteApp(app);
@@ -87,20 +91,6 @@ function resetConfig () {
     JSSubjectRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
     SSSubjectRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
 }
-/*
-const mainRef = collection(db, "fileCollection");
-addDoc(collection(mainRef, "AGR", "JSS 1"),{
-*/
-
-// const mainRef = collection(db, "demo");
-// addDoc(collection(mainRef, "AGR", "subjectId"),{
-//     name: 'Konan Perry',
-//     type: 'Note'
-// })
-// .then(() => {
-//     console.log("Sent.")
-// })
-
 /*
 const note = query(collectionGroup(db, "subjectId"), where("type", "==", "Note"));
 const querySnapshot1 = await getDocs(note);
