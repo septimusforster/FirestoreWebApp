@@ -12,7 +12,7 @@
     <header>
         <button type="button" onclick="location.href='../index.html'" class="link active">Home</button>
         <div class="dropdown">
-            <button type="button" class="link" onclick="document.querySelector('.dropdown-menu').style.pointerEvents='auto'">Classroom</button>
+            <button type="button" class="link" onclick="document.querySelector('.dropdown-menu').style.pointerEvents='auto'" style="display: none;" id="classroomBtn">Classroom</button>
             <div class="dropdown-menu">
                 <nav class="top-nav">
                     <a href="#" data-href="0">JSS 1</a>
@@ -21,7 +21,6 @@
                     <a href="#" data-href="3">SSS 1</a>
                     <a href="#" data-href="4">SSS 2</a>
                     <a href="#" data-href="5">SSS 3</a>
-                    <a href="#" data-href="8">Demo</a>
                 </nav>
             </div>
         </div>
@@ -55,7 +54,7 @@
             </dialog>
             <dialog>
                 <div>
-                    <button class="side-panel-toggle times-entity" type="button" onclick="document.querySelectorAll('dialog')[2].close();document.querySelectorAll('dialog')[2].lastElementChild.remove();">&times;</button>
+                    <button class="side-panel-toggle times-entity" type="button" onclick="document.querySelectorAll('dialog')[2].close();/*document.querySelectorAll('dialog')[2].lastElementChild.remove();*/">&times;</button>
                 </div>
             </dialog>
             <div class="side-panel" style="grid-column: 2/-1;grid-row: 1/2;">
@@ -88,6 +87,11 @@
                             <input type="text" name="other_name" id="other_name" autocapitalize="off" placeholder="Other name(s)" autocomplete="off" aria-required="true">
                         </div>
                         <div class="input-group">
+                            <label for="arm">Arm</label>
+                            <select name="arm" id="arm">
+                            </select>
+                        </div>
+                        <div class="input-group">
                             <label for="gender">
                                 Gender
                                 <sup class="required" title="Required">*</sup>
@@ -108,7 +112,10 @@
                             <input type="date" name="dob" id="dob" autocapitalize="off" aria-required="true">
                         </div>
                         <div class="input-group">
-                            <label for="ay">Admission year</label>
+                            <label for="ay">
+                                Admission year
+                                <sup class="required" title="Required">*</sup>
+                            </label>
                             <input type="number" name="admission_year" id="ay" placeholder="Admission year" min="2014" required>
                         </div>
                         <div class="input-group">
@@ -148,8 +155,6 @@
                             <label for="mother_phone">Mother's phone</label>
                             <input type="number" name="mother_phone" id="mother_phone" placeholder="Mother's phone">
                         </div>
-                        <input type="hidden" name="arm" value="Classic">
-                        <input type="hidden" name="password" value="abcdef">
                         <div class="input-group">
                             <input type="submit" value="Create">
                         </div>

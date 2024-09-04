@@ -33,18 +33,19 @@ function chooseConfig(num) {
 const ss = JSON.parse(sessionStorage.snapshot);
 
 // collection ref
-var colRef = collection(db, "students");
+let eotData, session = '2025', term = 0, size = 0, toggleState;
+var colRef = collection(db, 'session', session, 'students');
 const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 // store user ID from url or sessionStorage snapshot
 let url = new URL(location.href);
 let params = new URLSearchParams(url.search);
 let uid = params.get('uid') || ss.id;
-let eotData, term = 0, size = 0, toggleState;
 const eotRef = doc(db, "reserved", "EOT");
 const leftNav = document.querySelector('.left-nav');
 await getDoc(eotRef).then(async (res) => { // load EOT
     eotData = res.data();
     term = ["First","Second","Third"].indexOf(eotData.this_term);
+    document.querySelector('header #classroomBtn').removeAttribute('style');
     //chk gmode
     const cities = ['ZAGREB', 'COPENHAGEN', 'PRAGUE', 'MOSCOW', 'SOBIBOR', 'WARSAW', 'TELAVIV'];
     const c = Math.floor(Math.random() * cities.length);
@@ -123,20 +124,20 @@ if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
 }
 const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
 armArray.forEach(arm => {
-    leftNav.insertAdjacentHTML('beforeend', `
-    <a href="#">${arm}</a>
-    `)
+    leftNav.insertAdjacentHTML('beforeend', `<a href="#">${arm}</a>`);
+    document.querySelector('select#arm').insertAdjacentHTML('beforeend', `<option value="${arm}">${arm}</option>`);
 }); // EOF
-const hiddenElems = document.querySelectorAll("input[type='hidden'");
+
 const DCA = 'DCA';
 async function setIframeAttr(para1) {
     //there are two hidden elems: the second one holds upass value
     myIframe.setAttribute('data-class-arm', para1);
-    hiddenElems[0].value = para1;
-    if (sessionStorage.hasOwnProperty('preview')) sessionStorage.removeItem('preview')
+    // hiddenElems[0].value = para1;
+    if (sessionStorage.hasOwnProperty('preview')) sessionStorage.removeItem('preview');
     let data = [], marked = 0;
     // console.log(term)
-    const q = query(colRef, where("arm", "==", para1), orderBy("first_name"), limit(20));   //startAfter() to be included
+    const armRef = collection(db, 'session', session, 'students');
+    const q = query(armRef, where("arm", "==", para1), orderBy("first_name"), limit(20));   //startAfter() to be included
     await getDocs(q).then(docs => {
         docs.docs.forEach(obj => {
             if (obj.data()?.admission_no.toUpperCase().includes(DCA)) data.push(obj.data());
@@ -164,36 +165,8 @@ async function setIframeAttr(para1) {
         `);
     })
     myIframe.contentDocument.querySelector('table').style.display = 'block';
-    // })
 }
-const leftNavAnchors = document.querySelectorAll('.left-nav a');
-leftNavAnchors.forEach((a, i, anchors) => {
-    a.addEventListener('click', (e) => {
-        anchors.forEach((link) => link.classList.remove('active-left-nav'))
-        a.classList.add('active-left-nav');
-        setIframeAttr(e.target.textContent);
-    })
-});
 let num;
-async function setColRef(arg, num) {
-    if (arg.toLowerCase() == 'demo') return chooseConfig(8);
-    chooseConfig(num);
-    let data = [];
-    colRef = collection(db, "students");
-    //GET LAST DOCUMENT FROM SERVER
-    const q = query(colRef, /*where('password', '==', 'undefined'),*/ orderBy("createdAt", "desc"), limit(1));
-    const snapDoc = await getDocs(q);
-    if (snapDoc.empty) {
-        hiddenElems[1].value = classrooms[arg][0];
-    } else {
-        snapDoc.docs.forEach(doc => {
-            const lastPasswordIndex = classrooms[arg].indexOf(doc.data().password);
-            const newPassword = classrooms[arg][lastPasswordIndex - 1];
-            hiddenElems[1].value = newPassword;
-        });
-    }
-};
-
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
@@ -202,100 +175,108 @@ topNavAnchors.forEach((a, i, anchors) => {
         myIframe.contentDocument.querySelector('table').style.display = 'none';
         myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
         num = Number(a.dataset.href);
-        setColRef(e.target.textContent, num);
+        if (e.target.textContent.toLowerCase() === 'demo') {
+            chooseConfig(8);
+        } else {
+            chooseConfig(configs[7].indexOf(e.target.textContent));
+        }
     });
 });
+const leftNavAnchors = document.querySelectorAll('.left-nav a');
+leftNavAnchors.forEach((a, i, anchors) => {
+    a.addEventListener('click', async (e) => {
+        anchors.forEach((link) => link.classList.remove('active-left-nav'))
+        a.classList.add('active-left-nav');
+        await setIframeAttr(e.target.textContent);
+    })
+});
 
-// function chooseConfig(num) {
-//     deleteApp(app).then(function() {
-//         console.log("App deleted successfully.");
-//         app = initializeApp(configs[num]);
-//         // init services
-//         db = getFirestore(app);
-//     }).catch(err => {
-//         console.error("Error: ", err);
-//     });
-// }
-// setColRef();
+function randomKey() {
+    //generate random password
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const passwordLength = 7;
+    var password = '';
+    for (let i = 0; i < passwordLength; i++) {
+        let randomNumber = Math.floor(Math.random() * chars.length);
+        password += chars.substring(randomNumber, randomNumber + 1);
+    }
+    return password;
+};
+
 const fm_createStudent = document.forms.createStudent;
 fm_createStudent.addEventListener('submit', (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
     e.submitter.style.cursor = 'not-allowed';
-    let i, studentDoc = {}; 
+    let i, studentDoc = {};
     for(i = 0; i < e.target.length - 1; i++){
         studentDoc[e.target[i].name] = e.target[i].value;
     }
-    addDoc(colRef, {...studentDoc, photo_src: "", createdAt: serverTimestamp()})
+    studentDoc['password'] = randomKey();
+    const stdRef = collection(db, 'session', session, 'students');
+    addDoc(stdRef, {...studentDoc, comment: {}, days_present: [], photo_src: "", createdAt: serverTimestamp()})
     .then(async (data) => {
-        const operation = 'Create';
-        const action = {
-            person: studentDoc.last_name.concat(' ', studentDoc.first_name, ' ', studentDoc.other_name),
-            id: data.id,
-        }
-        let col = myIframe.contentDocument.querySelector('h3').textContent;
-        // numInClass++;
-        await updateDoc(doc(db, "students", data.id), {id: data.id})
-        await logger(operation, action, uid)
+        await updateDoc(doc(db, 'session', session, 'students', data.id), {id: data.id})
         fm_createStudent.reset()
         document.querySelectorAll('dialog')[1].querySelector('.msg'). textContent = "Student Created.";
         document.querySelectorAll('dialog')[1].showModal();
         e.submitter.disabled = false;
         e.submitter.style.cursor = 'pointer';
-        setColRef(col, num)
         document.querySelector('.side-panel').scroll({top:0,left:0,behavior:"smooth"});
-    })
-})
+    });
+});
 //edit doc
 const sidePanelBtns = document.querySelectorAll('.side-panel-toggle');
 sidePanelBtns[2].addEventListener('click', (e) => {
     fields = {};
-        const getSingleDoc = async (collectionName, documentId) => {
-            try {
-                const docRef = doc(db, collectionName, documentId);
-                const docSnapshot = await getDoc(docRef);
-        
-                if (docSnapshot.exists()) {
-                    const documentData = docSnapshot.data();
-                    return documentData;
-                } else {
-                    console.log(`Document with ID ${documentId} does not exist in collection ${collectionName}.`);
-                    return null;
-                }
-            } catch (error) {
-                console.error("Error getting document:", error);
+    const getSingleDoc = async (collectionName, documentId) => {
+        try {
+            const docRef = doc(db, 'session', session, collectionName, documentId);
+            const docSnapshot = await getDoc(docRef);
+    
+            if (docSnapshot.exists()) {
+                const documentData = docSnapshot.data();
+                return documentData;
+            } else {
+                console.log(`Document with ID ${documentId} does not exist in collection ${collectionName}.`);
                 return null;
             }
-        };
-        // const collectionName = myIframe.contentDocument.querySelector('h3').textContent;
-        const documentId = sidePanelBtns[2].value;
-        getSingleDoc("students", documentId)
-            .then((documentData) => {
-                if (documentData) {
-                    document.querySelectorAll('dialog')[2].innerHTML += document.forms.createStudent.outerHTML;
-                    var inputElems = document.querySelectorAll('dialog')[2].querySelectorAll(".input-group input");
-                    for( var i of inputElems ){
-                        if(i.type == 'submit') continue;
-                        i.value = documentData[i.name];
-                    }
-                    if(documentData.gender == "M") {
-                        document.querySelectorAll('dialog')[2].querySelector("select").selectedIndex = 0;
-                    } else {
-                        document.querySelectorAll('dialog')[2].querySelector("select").selectedIndex = 1
-                    }
-                    document.querySelectorAll('dialog')[2].querySelectorAll("input[type='hidden']")[1].value = documentData.password;
-                    document.forms.createStudent.querySelector('textarea').value = documentData.home_address;
-                    document.querySelectorAll('dialog')[2].lastElementChild.querySelector("input[type='submit']").value = 'Submit';
-                    collectDataForUpdate();
-                } else {
-                    console.log("Document not found.");
+        } catch (error) {
+            console.error("Error getting document:", error);
+            return null;
+        }
+    };
+    // const collectionName = myIframe.contentDocument.querySelector('h3').textContent;
+    const documentId = sidePanelBtns[2].value;
+    getSingleDoc("students", documentId)
+        .then((documentData) => {
+            if (documentData) {
+                // document.querySelectorAll('dialog')[2].innerHTML = document.forms.createStudent.outerHTML;
+                const editForm = document.querySelectorAll('dialog')[2];
+                editForm.lastElementChild.remove(); //reset form
+                editForm.insertAdjacentHTML('beforeend', document.forms.createStudent.outerHTML);
+                var inputElems = document.querySelectorAll('dialog')[2].querySelectorAll(".input-group input");
+                for( var i of inputElems ){
+                    if(i.type == 'submit') continue;
+                    i.value = documentData[i.name];
                 }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-            const dlog = document.querySelectorAll('dialog')[2];
-            dlog.showModal();
+                const activeLeftNav = [...document.querySelectorAll('.left-nav a')].find(a => a.classList.contains('active-left-nav'));
+                const armIdx = [...document.querySelectorAll('.left-nav a')].findIndex(a => a.textContent.toLowerCase() == activeLeftNav.textContent.toLowerCase());
+                editForm.querySelector('select#arm').selectedIndex = armIdx;
+
+                documentData.gender == "M" ? editForm.querySelector("select#gender").selectedIndex = 0 : editForm.querySelector("select#gender").selectedIndex = 1;
+                document.forms.createStudent.querySelector('textarea').value = documentData.home_address;
+                editForm.lastElementChild.querySelector("input[type='submit']").value = 'Submit';
+                collectDataForUpdate();
+            } else {
+                console.log("Document not found.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+        const dlog = document.querySelectorAll('dialog')[2];
+        dlog.showModal();
 });
 var fields = {};
 function collectDataForUpdate() {
@@ -305,23 +286,23 @@ function collectDataForUpdate() {
     })
     document.querySelectorAll('dialog')[2].querySelector('form').addEventListener('submit', (e) => {
         e.preventDefault();
-        const operation = 'Change';
         const collectionName = "students";
         const documentId = sidePanelBtns[2].value;
-        const docRef = doc(db, collectionName, documentId);
+        console.log(fields);
+        const docRef = doc(db, 'session', session, collectionName, documentId);
         updateDoc(docRef, fields)
             .then(async () => {
-                await logger(operation, fields, uid)
+                // await logger(operation, fields, uid)
                 window.alert("Update successful.");
                 resetEditForm();
-            })
-    })
+            });
+    });
 }
 //clear form after data submission
 function resetEditForm() {
     fields = {};
     document.querySelectorAll('dialog')[2].close();
-    document.querySelectorAll('dialog')[2].lastElementChild.remove();
+    // document.querySelectorAll('dialog')[2].lastElementChild.remove();
 }
 //delete doc
 const yesBtn = document.querySelector('dialog button');
@@ -336,13 +317,14 @@ yesBtn.onclick = function() {
     const docRef = doc(db, col, targetID);
     deleteDoc(docRef)
     .then( async () => {
-        await logger(operation, action, uid);
+        // await logger(operation, action, uid);
         msgDialog[1].querySelector('p').textContent = "Deletion Complete.";
             msgDialog[1].showModal();
             document.querySelector('iframe').contentDocument.querySelectorAll('tr')[ri].style.visibility = 'collapse';
             // setColRef(col);
         })
 }
+/*
 async function logger(operation, action, uid) {
     // first init FirebasePro configuration
     chooseConfig(6)
@@ -356,6 +338,7 @@ async function logger(operation, action, uid) {
     // re-init class configuration
     chooseConfig(num)
 }
+*/
 const printBtn = document.querySelectorAll('.side-panel-toggle')[3];
 printBtn.onclick = async function () {
     const row = Number(myIframe.contentDocument.querySelector('table tr.active td:first-child').textContent);
