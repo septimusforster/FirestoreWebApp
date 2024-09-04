@@ -253,7 +253,7 @@ sidePanelBtns[2].addEventListener('click', (e) => {
             if (documentData) {
                 // document.querySelectorAll('dialog')[2].innerHTML = document.forms.createStudent.outerHTML;
                 const editForm = document.querySelectorAll('dialog')[2];
-                editForm.lastElementChild.remove(); //reset form
+                if (editForm.querySelector('form')) editForm.querySelector('form').remove(); //remove form
                 editForm.insertAdjacentHTML('beforeend', document.forms.createStudent.outerHTML);
                 var inputElems = document.querySelectorAll('dialog')[2].querySelectorAll(".input-group input");
                 for( var i of inputElems ){
@@ -286,15 +286,18 @@ function collectDataForUpdate() {
     })
     document.querySelectorAll('dialog')[2].querySelector('form').addEventListener('submit', (e) => {
         e.preventDefault();
+        e.submitter.disabled = true;
+        e.submitter.style.cursor = 'not-allowed';
         const collectionName = "students";
         const documentId = sidePanelBtns[2].value;
         console.log(fields);
         const docRef = doc(db, 'session', session, collectionName, documentId);
         updateDoc(docRef, fields)
             .then(async () => {
-                // await logger(operation, fields, uid)
                 window.alert("Update successful.");
                 resetEditForm();
+                e.submitter.disabled = false;
+                e.submitter.style.cursor = 'pointer';
             });
     });
 }
