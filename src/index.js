@@ -42,6 +42,13 @@ let params = new URLSearchParams(url.search);
 let uid = params.get('uid') || ss.id;
 const eotRef = doc(db, "reserved", "EOT");
 const leftNav = document.querySelector('.left-nav');
+let menu;
+window.addEventListener('click', (e) => {
+    if (menu) {
+        menu.classList.remove('shw');
+        menu = null;
+    }
+}, true);
 await getDoc(eotRef).then(async (res) => { // load EOT
     eotData = res.data();
     term = ["First","Second","Third"].indexOf(eotData.this_term);
@@ -51,11 +58,22 @@ await getDoc(eotRef).then(async (res) => { // load EOT
     const c = Math.floor(Math.random() * cities.length);
     const city = cities[c];
     const user = ss.data.fullName.toLowerCase();
-    let adminmode = false;
+    let adminmode = false, adminSetup = document.querySelector('#admin-setup'), sslnk = document.querySelector('.sslnk');
+    //session link: ssl
+    adminSetup.classList.add('opq');
+    sslnk.addEventListener('click', (e) => {
+        menu = e.target.nextElementSibling;
+        e.target.nextElementSibling.classList.add('shw');
+    });
+    sslnk.nextElementSibling.querySelectorAll('li').forEach(li => {
+        li.addEventListener('click', (e) => {
+            sslnk.textContent = session = li.textContent;
+        });
+    });
     if (user !== 'guest user') {
         //create gmode and eventListener
         adminmode = true;
-        leftNav.insertAdjacentHTML('afterend', `
+        adminSetup.insertAdjacentHTML('afterbegin', `
             <div class="gmode">
                 <div>Guest Mode</div>
                 <div>
@@ -120,7 +138,7 @@ function gmodeToggler(target) {
 }
 if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
     await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)));
-    console.log('From server')
+    console.log('From server');
 }
 const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
 armArray.forEach(arm => {

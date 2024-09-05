@@ -166,15 +166,21 @@ p.msg {
     align-items: center;
     justify-content: space-between;
 }
-.gmode {
+#admin-setup {
+    position: sticky;
+    top: 100%;
     border: 1px solid;
     border-color: #ccc transparent transparent transparent;
     color: #777;
+    opacity: .3;
+}
+#admin-setup.opq {
+    opacity: 1;
+}
+.gmode {
     font-size: 1.1em;
     font-weight: 500;
     padding: 1em 0;
-    position: sticky;
-    top: 100%;
 }
 #lblmode {
     display: inline-block;
@@ -204,6 +210,46 @@ p.msg {
 }
 #chkmode:checked + #lblmode::before {
     transform: translateX(25px);
+}
+#ssl {
+    position: relative;
+}
+.sslnk {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+.sslnk::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background-image: url('data:image/svg+xml,<svg fill="%23999" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g data-name="Layer 2"><g data-name="arrow-ios-forward"><rect width="24" height="24" transform="rotate(-90 12 12)" opacity="0"/><path d="M10 19a1 1 0 0 1-.64-.23 1 1 0 0 1-.13-1.41L13.71 12 9.39 6.63a1 1 0 0 1 .15-1.41 1 1 0 0 1 1.46.15l4.83 6a1 1 0 0 1 0 1.27l-5 6A1 1 0 0 1 10 19z"/></g></g></svg>');
+}
+#ssl > menu {
+    list-style-type: none;
+    border: 1px solid #ddd;
+    position: absolute;
+    left: 100%;
+    bottom: 100%;
+    transform: translateY(50%);
+    background-color: #fff;
+    box-shadow: 0 7px 24px #aaa;
+    display: none;
+}
+#ssl > menu.shw {
+    display: block;
+}
+#ssl > menu li {
+    padding: 7px 27px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 50ms ease;
+}
+#ssl > menu li:hover {
+    background-color: #f3f3f3;
 }
 .disabled {
     cursor: auto;

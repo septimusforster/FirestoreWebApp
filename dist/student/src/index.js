@@ -5,15 +5,17 @@ import configs from "../../../src/JSON/configurations.json" assert {type: 'json'
 // var [f1, f2, f3, f4, f5, f6] = configs;
 
 const ss = JSON.parse(sessionStorage.getItem('snapshot'));
-const classIndex = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3","def"].indexOf(ss.class);
+const classIndex = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3","Demo"].indexOf(ss.class);
 const classConfiguration = configs[classIndex];
 //initial firebase app
 var app = initializeApp(classConfiguration)
 //init services
 var db = getFirestore();
 // collection refs
-const userRef = doc(db, "students", ss.id);
 
+// get EOT for session
+const session = '2025';
+const userRef = doc(db, 'session', session, 'students', ss.id);
 /*
 function chooseConfig(projConfig) {
     deleteApp(app);
@@ -107,8 +109,8 @@ passwords.forEach((password, index) => {
             cfp = undefined;
             e.target.classList.toggle('invalid');
         }
-    })
-})
+    });
+});
 const hideUnhide = document.querySelector('#hide__unhide');
 hideUnhide.addEventListener('change', (e) => {
     if (e.target.checked) {
@@ -120,11 +122,10 @@ hideUnhide.addEventListener('change', (e) => {
             password.type = 'password'
         })
     }
-})
-
+});
 const timelineBar = document.querySelector('#timeline-bar');
 async function getDocuments(category, subject) {
-    // const group = query(collectionGroup(db, subject));
+    // const group = query(collectionGroup(db, subject))
     const querySnapshot = await getDocs(collection(db, "activities", category, subject));
     if (querySnapshot.empty) return timelineBar.innerHTML = 'There are no tasks to perform.';
     timelineBar.innerHTML = '';
@@ -188,27 +189,4 @@ subjectNav.addEventListener('click', (e) => {
         // get document from server and store it in 'testPayload' sessionStorage
         getDocuments(ctx, e.target.id);
     }
-})
-// getDocuments();
-// const dialog = document.querySelector('dialog#photo-dialog');
-/*
-headerParagraph.addEventListener('click', (e) => {
-    if (ss.ue) {
-        dialog.insertAdjacentHTML('beforeend', "<button onclick='changePhoto()'></button>")
-    } else {
-        dialog.showModal();
-    }
-})
-
-async function changePhoto() {
-    const updateSnap = await updateDoc(ref, {
-        photo: 'base64',
-        // upload_enabled: false,
-        timestamp: serverTimestamp(),
-    })
-}
-*/
-/*
-const demoSnap = await getDoc(doc(db, "JSS 3", "13IPf5eMe3sFCTBnBc8T"));
-console.log(demoSnap.data());
-*/
+});
