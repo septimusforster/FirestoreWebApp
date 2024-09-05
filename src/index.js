@@ -329,37 +329,20 @@ function resetEditForm() {
 const yesBtn = document.querySelector('dialog button');
 yesBtn.onclick = function() {
     const ri = parseInt(document.querySelector('iframe').contentDocument.querySelector('.rowIndex__hidden').textContent);
-    const operation = 'destroy';
-    const action = document.querySelector('dialog p.msg').textContent;
+    // const operation = 'destroy';
+    // const action = document.querySelector('dialog p.msg').textContent;
     const targetID = document.querySelectorAll('.side-panel-toggle')[1].value;
     const msgDialog = document.querySelectorAll('dialog');
     msgDialog[0].close();
-    let col = "students";
-    const docRef = doc(db, col, targetID);
+
+    const docRef = doc(db, 'session', session, 'students', targetID);
     deleteDoc(docRef)
     .then( async () => {
-        // await logger(operation, action, uid);
         msgDialog[1].querySelector('p').textContent = "Deletion Complete.";
             msgDialog[1].showModal();
             document.querySelector('iframe').contentDocument.querySelectorAll('tr')[ri].style.visibility = 'collapse';
-            // setColRef(col);
-        })
+        });
 }
-/*
-async function logger(operation, action, uid) {
-    // first init FirebasePro configuration
-    chooseConfig(6)
-    const logRef = collection(db, "log");
-    await addDoc(logRef, {
-        operation,
-        action,
-        uid,
-        timestamp: serverTimestamp()
-    })
-    // re-init class configuration
-    chooseConfig(num)
-}
-*/
 const printBtn = document.querySelectorAll('.side-panel-toggle')[3];
 printBtn.onclick = async function () {
     const row = Number(myIframe.contentDocument.querySelector('table tr.active td:first-child').textContent);
@@ -377,9 +360,8 @@ printBtn.onclick = async function () {
         formMaster = snap.get('fullName');
         // console.log(snap.id)
     })
-    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size, formMaster}));
+    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size, formMaster, session}));
     window.open('result.html', '_blank');
-    // location.href = 'result.html#topical';
 }
 const photoBtn = document.querySelectorAll('.side-panel-toggle')[4];
 photoBtn.onclick = function () {

@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, collection, getDoc, doc, query, where, getDocs } from "firebase/firestore"
+import { getFirestore, collection, getDoc, doc, query, where, getDocs, collectionGroup } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 // initialize firebase app
@@ -20,16 +20,16 @@ const offered = ss.offered;
 const classSize = ss.size;
 const promoStatus = ss?.promo_status;
 const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
+let eotData, session = ss.session, thisTerm, term, percentile;
 
-let eotData, thisTerm, term, percentile;
 await eot();
-const principal = eotData.principal;
+const principal = eotData.principal;    //eotData.principal[term]
 
 var n;
 n = configs[7].indexOf(ss.cls);
 chooseConfig(n);
 
-const studentsRef = collection(db, "students");
+const studentsRef = collection(db, 'session', session, 'students');
 const studentsQuery = query(studentsRef, where("arm", "==", ss.arm));
 const studentsSnapshot = await getDocs(studentsQuery);
 
@@ -41,16 +41,14 @@ studentsSnapshot.docs.forEach(result => {
 
 let overall = [];
 const scorePromises = studentIDs.map(async sid => {
-    await getDoc(doc(db, "scores", sid)).then((res) => {
+    ///session/2024/students/0B8JuDYmgdQLPZBP9YAR/records/scores
+    await getDoc(doc(db, 'session', session, 'students', sid, 'records', 'scores')).then((res) => {
         studentScores.push({sid, ...res.data()});
-        // overall.push(Object.entries(res.data()));
         overall.push(res.data());
     });
 });
 
 await Promise.allSettled(scorePromises);
-// console.log(overall)
-// console.log(studentScores);
 const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort(); //[0] retrieves only the first sid match by filter
 ME.length = ME.length - 1; // excludes sid from iteration, leaving only subs
 const theadFirstRow = document.querySelector("#section-grade table:nth-child(1) thead tr:first-child th");
@@ -232,7 +230,7 @@ for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 c
 async function eot() {
     let teacherDiv = document.getElementById('teacher');
     
-    const eotRef = doc(db, "reserved", "EOT");
+    const eotRef = doc(db, session, 'EOT');
     await getDoc(eotRef).then(async (res) => {
         // store dates in eotDates
         eotData = res.data();
