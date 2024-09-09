@@ -24,7 +24,7 @@ module.exports = {
 }
 */
 //ROOT hacks_ssn.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/hacks_ssn.js",
@@ -34,7 +34,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT reserved.js
 /*
 module.exports = {
@@ -48,7 +48,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -58,7 +58,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT photos.js
 /*
 module.exports = {

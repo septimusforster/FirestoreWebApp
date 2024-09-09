@@ -142,7 +142,6 @@ subjectForm.addEventListener('submit', async (e) => {
     let sn = 1;
     kvArray.forEach(([id, nm], ind) => {
         if (scores[ind] && scores[ind][sub]) {
-            // console.log(id, "=>", nm);
             tbody.insertAdjacentHTML('beforeend', `
                 <tr id="${id}">
                     <td>${sn}</td>
@@ -155,8 +154,7 @@ subjectForm.addEventListener('submit', async (e) => {
                     <td>${scores[ind][sub][term]?.[3] == undefined ? '' : scores[ind][sub][term]?.[3]}</td>
                     <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term]?.[4] == undefined ? '' : scores[ind][sub][term]?.[4]}"/></td>
                 </tr>
-            `)
-            
+            `);
         } else {
             tbody.insertAdjacentHTML('beforeend', `
                 <tr id="${id}">
