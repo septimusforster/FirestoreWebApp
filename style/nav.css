@@ -115,7 +115,7 @@ aside nav {
     padding: 20px;
     /* border: 1px solid black; */
 }
-dialog {
+dialog:not(#perm) {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -128,15 +128,15 @@ dialog {
 dialog::backdrop {
     background-color: rgba(0,0,0,.5);
 }
-dialog button {
+dialog:not(#perm) button {
     font-size: 16px;
     padding: .5em 1em;
     margin: .5em;
     border-radius: 7px;
     color: #555;
 }
-dialog button:hover,
-dialog button:focus {
+dialog:not(#perm) button:hover,
+dialog:not(#perm) button:focus {
     background-color: orangered;
     color: #fff;
 }
@@ -173,6 +173,9 @@ p.msg {
     border-color: #ccc transparent transparent transparent;
     color: #777;
     opacity: .3;
+}
+#admin-setup > div {
+    margin: 1em 0;
 }
 #admin-setup.opq {
     opacity: 1;
@@ -214,11 +217,19 @@ p.msg {
 #ssl {
     position: relative;
 }
-.sslnk {
+.sslnk, #caap {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     font-size: 1.2em;
     cursor: pointer;
+}
+#caap > * {pointer-events: none;}
+#caap:hover {
+    background-color: #f3f3f3;
+}
+#caap-lnk {
+    transform: rotate(-30deg);
 }
 .sslnk::before {
     content: '';
@@ -255,3 +266,129 @@ p.msg {
     cursor: auto;
     pointer-events: none;
 }
+dialog#perm {
+    min-width: 300px;
+    max-width: 380px;
+    margin: auto;
+    outline: none;
+    border: 0;
+    color: #555;
+    padding: 2em;
+    font-weight: 500;
+  }
+  dialog#perm > * {
+    margin: 1em 0;
+  }
+  dialog#perm > p:nth-of-type(1) {
+      font-size: 1.1em;
+  }
+  /* dialog#perm > p:nth-of-type(2) {
+    text-align: left;
+  } */
+  .wrp {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+  }
+  select#yrs {
+    padding: .7em 1.4em;
+    border-radius: 7px / 11px;
+    order: 2;
+  }
+  select#yrs + label::before {
+    content: '';
+    opacity: 0;
+    display: inline-flex;
+    position: absolute;
+    right: 2em;
+    height: 15px;
+    width: 15px;
+    border: 2px solid;
+    border-radius: 50%;
+    border-color: #999 #999 transparent #999;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+  }
+  select#yrs.chg + label::before {
+    animation-name: rte;
+    opacity: 1;
+  }
+  select#yrs.clr + label::before {
+    border-color: #009578 #009578 transparent #009578;
+  }
+  @keyframes rte {
+    from {transform: rotate(0deg)}
+    to {transform: rotate(360deg)}
+  }
+  form#ca-perm {
+    padding-top: 2em;
+    font-weight: 600;
+  }
+  form#ca-perm > div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2em;
+    margin: 1em 0;
+  }
+  form#ca-perm > div:first-of-type > span {
+    width: 50px;
+    text-align: center;
+  }
+  form#ca-perm > div:not(:first-of-type) > span:first-of-type {
+    margin-right: auto;
+  }
+  form#ca-perm > div:not(:first-of-type) > input {
+    width: 0;
+    display: none;
+  }
+  form#ca-perm > div:not(:first-of-type) > input:checked + label {
+    background-color: #009578;
+  }
+  form#ca-perm > div:not(:first-of-type) > input:checked + label::before {
+    background-color: #009578;
+    transform: translate(250%, -50%);
+  }
+  form#ca-perm > div:not(:first-of-type) > label {
+    width: 50px;
+    height: 4px;
+    background-color: #d3d3d3;
+    position: relative;
+    cursor: pointer;
+    transition: background-color .2s ease;
+  }
+  form#ca-perm > div:not(:first-of-type) > label::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0%, -50%);
+    height: 15px;
+    width: 15px;
+    background-color: #d3d3d3;
+    transition: transform .2s ease;
+  }
+  form#ca-perm > div:last-of-type {
+    justify-content: space-between;
+    margin-top: 4em;
+  }
+  form#ca-perm button {
+    display: inline-block;
+    width: 7em;
+    padding: 1em;
+    border: 0;
+    border-radius: 7px / 11px;
+    outline: none;
+    font-weight: 600;
+    color: #555;
+    cursor: pointer;
+    transition: box-shadow .2s ease;
+  }
+  form#ca-perm button:hover {
+    box-shadow: 0 7px 15px #bbb;
+  }
+  form#ca-perm > div:last-of-type > button:last-of-type {
+    background-color: #009578;
+    color: #fff;
+  }

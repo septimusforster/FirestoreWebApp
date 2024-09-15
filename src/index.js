@@ -370,3 +370,42 @@ photoBtn.onclick = function () {
     let arm = preview[0].arm;
     location.href = `photos.html?cls=${cls}&arm=${arm}`;
 }
+// new codes
+const perm_dialog = document.querySelector('dialog#perm');
+const caap = document.querySelector('#caap');
+const uncaap = document.querySelector('dialog#perm > form > div:last-of-type > button');
+const perm_form = document.querySelector('form#ca-perm');
+const perm_switches = perm_form.querySelectorAll("input[type='checkbox'");
+const selectBtn = document.querySelector('select#yrs');
+let stid;
+
+function tester(elem) {
+    if (stid) {
+        clearTimeout(stid);
+        stid = undefined;
+        console.log("Timeout cleared. My stid is", stid);
+    }
+    elem.classList.add('chg');
+    stid = setTimeout(() => {
+        console.log(stid);
+        elem.classList.remove('chg');
+        console.log("Running tester function.");
+    }, 3000);
+}
+selectBtn.addEventListener('change', (e) => {
+    tester(e.target);
+});
+caap.onclick = function () {perm_dialog.showModal()}
+uncaap.onclick = function () {perm_dialog.close()}
+perm_form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    selectBtn.classList.add('chg', 'clr');
+    // tester(selectBtn);
+    const sw = [...perm_switches].map(s => s.checked ? 1 : 0).join('');
+    const fbData = parseInt(sw, 2);
+    const ssn = selectBtn.value;
+    const permRef = doc(db, ssn, 'EOT');
+    await updateDoc(permRef, {perm: fbData}).then(() => {
+        selectBtn.classList.remove('chg', 'clr');
+    });
+});
