@@ -317,6 +317,14 @@ dialog#perm {
   select#yrs.clr + label::before {
     border-color: #009578 #009578 transparent #009578;
   }
+  select#yrs.tck + label::before {
+    opacity: 1;
+    height: 7px;
+    width: 14px;
+    border-radius: 0;
+    border-color: transparent transparent #009578 #009578;
+    transform: rotate(-45deg);
+  }
   @keyframes rte {
     from {transform: rotate(0deg)}
     to {transform: rotate(360deg)}

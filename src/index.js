@@ -407,5 +407,10 @@ perm_form.addEventListener('submit', async (e) => {
     const permRef = doc(db, ssn, 'EOT');
     await updateDoc(permRef, {perm: fbData}).then(() => {
         selectBtn.classList.remove('chg', 'clr');
+        selectBtn.classList.add('tck');
+        const toid = setTimeout(() => {
+            selectBtn.classList.remove('tck');
+            clearTimeout(toid);
+        }, 5000);
     });
 });
