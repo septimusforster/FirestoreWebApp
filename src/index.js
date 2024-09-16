@@ -155,7 +155,7 @@ async function setIframeAttr(para1) {
     let data = [], marked = 0;
     // console.log(term)
     const armRef = collection(db, 'session', session, 'students');
-    const q = query(armRef, where("arm", "==", para1), orderBy("first_name"), limit(20));   //startAfter() to be included
+    const q = query(armRef, where("arm", "==", para1), orderBy("first_name"));   //startAfter() to be included
     await getDocs(q).then(docs => {
         docs.docs.forEach(obj => {
             if (obj.data()?.admission_no.toUpperCase().includes(DCA)) data.push(obj.data());
@@ -383,7 +383,7 @@ selectBtn.addEventListener('change', async (e) => {
     selectBtn.classList.add('chg');
     const ssRef = doc(db, selectBtn.value, 'EOT');
     const snapped = await getDoc(ssRef);
-    if (!snapped.exists) {
+    if (!snapped.exists()) {
         alert("This session's data cannot be found.");
         selectBtn.classList.remove('chg');
     } else {
@@ -402,8 +402,8 @@ caap.onclick = function () {
     perm_dialog.showModal()
 }
 uncaap.onclick = function () {
-    if (!clsTarget) return;
     perm_dialog.close();
+    if (!clsTarget) return;
     try {
         chooseConfig(configs[7].indexOf(clsTarget));
     } catch (err) {

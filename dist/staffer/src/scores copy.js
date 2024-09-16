@@ -17,7 +17,7 @@ let eotDates, term;
 async function eot() {
     const eotRef = doc(db, "reserved", "EOT");
     await getDoc(eotRef).then((res) => {
-
+        
         // store dates in eotDates
         const formBarH3 = document.querySelector('div#formBar > h3');
         formBarH3.insertAdjacentHTML('afterend', `<span>Working on: <b>${res.data().this_term} Term</b></span>`);
@@ -115,7 +115,7 @@ subjectForm.addEventListener('submit', async (e) => {
             kvArray.push([
                 /*doc.data()?.id || */doc.id,
                 `${doc.data().last_name} ${doc.data().first_name} ${doc.data().other_name}`,
-            ]);
+            ])
         }
     })
     
