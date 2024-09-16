@@ -184,14 +184,14 @@ async function setIframeAttr(para1) {
     })
     myIframe.contentDocument.querySelector('table').style.display = 'block';
 }
-let num;
+let clsTarget, num;
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', (e) => {
         document.querySelector('.dropdown-menu').style.pointerEvents='none';
         myIframe.contentDocument.querySelector('.content div:first-child').innerHTML = '';
         myIframe.contentDocument.querySelector('table').style.display = 'none';
-        myIframe.contentDocument.querySelector('h3').textContent = e.target.textContent;
+        myIframe.contentDocument.querySelector('h3').textContent = clsTarget = e.target.textContent;
         num = Number(a.dataset.href);
         if (e.target.textContent.toLowerCase() === 'demo') {
             chooseConfig(8);
@@ -377,30 +377,43 @@ const uncaap = document.querySelector('dialog#perm > form > div:last-of-type > b
 const perm_form = document.querySelector('form#ca-perm');
 const perm_switches = perm_form.querySelectorAll("input[type='checkbox'");
 const selectBtn = document.querySelector('select#yrs');
-let stid;
 
-function tester(elem) {
-    if (stid) {
-        clearTimeout(stid);
-        stid = undefined;
-        console.log("Timeout cleared. My stid is", stid);
+selectBtn.addEventListener('change', async (e) => {
+    if (e.target.selectedIndex === 0) return;
+    selectBtn.classList.add('chg');
+    const ssRef = doc(db, selectBtn.value, 'EOT');
+    const snapped = await getDoc(ssRef);
+    if (!snapped.exists) {
+        alert("This session's data cannot be found.");
+        selectBtn.classList.remove('chg');
+    } else {
+        const p = snapped.get('perm');
+        const perm = p.toString(2).padStart(8,0).split(''); //padStart ensures it is 8-bit long for all switches
+        perm.forEach((pm, ix) => pm == '1' ? perm_switches[ix].checked = true : perm_switches[ix].checked = false);
+        selectBtn.classList.remove('chg');
     }
-    elem.classList.add('chg');
-    stid = setTimeout(() => {
-        console.log(stid);
-        elem.classList.remove('chg');
-        console.log("Running tester function.");
-    }, 3000);
-}
-selectBtn.addEventListener('change', (e) => {
-    tester(e.target);
 });
-caap.onclick = function () {perm_dialog.showModal()}
-uncaap.onclick = function () {perm_dialog.close()}
+caap.onclick = function () {
+    try {
+        chooseConfig(6)
+    } catch(err) {
+        console.log("Configuration already set.");
+    }
+    perm_dialog.showModal()
+}
+uncaap.onclick = function () {
+    if (!clsTarget) return;
+    perm_dialog.close();
+    try {
+        chooseConfig(configs[7].indexOf(clsTarget));
+    } catch (err) {
+        console.log("Configuration is already set.");
+    }
+}
 perm_form.addEventListener('submit', async (e) => {
+    e.submitter.disabled = true;
     e.preventDefault();
     selectBtn.classList.add('chg', 'clr');
-    // tester(selectBtn);
     const sw = [...perm_switches].map(s => s.checked ? 1 : 0).join('');
     const fbData = parseInt(sw, 2);
     const ssn = selectBtn.value;
@@ -411,6 +424,7 @@ perm_form.addEventListener('submit', async (e) => {
         const toid = setTimeout(() => {
             selectBtn.classList.remove('tck');
             clearTimeout(toid);
+            e.submitter.disabled = false;
         }, 5000);
     });
 });
