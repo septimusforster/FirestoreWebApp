@@ -104,12 +104,12 @@
         <button type="button" onclick="this.parentElement.close()">OKAY</button>
     </dialog>
     <dialog id="code-dialog">
-        <output>Before submitting, screenshot and/or copy the code below to access the test.</output>
+        <!--output>Before submitting, screenshot and/or copy the code below to access the test.</output-->
         <p><span>CLASS:</span><span id="span-class"></span></p>
         <p><span>SUBJECT:</span><span id="span-sub"></span></p>
         <strong></strong>
         <button type="button" id="cancel-btn" onclick="okay(this)">CANCEL</button>
-        <button type="button" id="copy-btn">COPY</button>
+        <!--button type="button" id="copy-btn">COPY</button-->
         <button type="button" id="submit-btn">SUBMIT</button>
     </dialog>
     <script type="module" src="../src/test_bundle.js"></script>
@@ -186,13 +186,14 @@
             generateBtn.style.cursor = 'pointer';
         }
 
+        /*
         const copyBtn = document.querySelector('#copy-btn');
         function okay(e) {
             e.parentElement.close();
             copyBtn.textContent = 'COPY';
             copyBtn.classList.remove('copied');
         }
-        
+        */
     </script>
 </body>
 </html>

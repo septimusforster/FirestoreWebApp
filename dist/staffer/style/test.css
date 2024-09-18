@@ -217,7 +217,7 @@ output {
     margin-bottom: 20px;
 }
 #code-dialog strong {
-    display: block;
+    display: block; 
     font: normal 30px 'Segoe UI';
     letter-spacing: 10px;
     margin: 20px 0;

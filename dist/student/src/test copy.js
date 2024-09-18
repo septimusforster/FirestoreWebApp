@@ -18,7 +18,7 @@ subby.forEach((sb, n) => {
 })
 
 const testAbbr = params;
-const testNum = [0,2,4,6][ct - 1];
+const testNum = ct - 1;
 const chosen = subby[cat].chosen;
 const choice = subby[cat].choice;
 const questions = subby[cat].questions;
@@ -45,8 +45,6 @@ let app = initializeApp(configs[6]);
 let db = getFirestore();
 
 let eotDates, term;
-const session = '2025';
-
 async function eot() {
     const eotRef = doc(db, "reserved", "EOT");
     await getDoc(eotRef).then((res) => {
@@ -56,9 +54,9 @@ async function eot() {
         deleteApp(app);
         app = initializeApp(configs[classIndex]);
         db = getFirestore();
-    });
+    })
 }
-await eot();
+eot();
 
 async function chkDate() {
     if (startDate < Date.now()) {
@@ -168,23 +166,26 @@ accForm.addEventListener('submit', async (e) => {
     e.submitter.style.cursor = 'not-allowed';
     const acc = accForm.acc.value;
     // get test doc if available
-    const scoreRef = doc(db, 'session', session, 'students', uid, 'scores', 'records');
+    const scoreRef = doc(db, "scores", uid);
     await getDoc(scoreRef).then(async res => {
-        if (res.get(testAbbr) && res.get(testAbbr)[term]?.[testNum] != null) {
+        if (res.get(testAbbr) && res.get(testAbbr)[term][testNum] != null) {
             window.alert("You've already taken this test.");
             e.submitter.disabled = false;
             e.submitter.style.cursor = 'pointer';
             return;
         }
-        const NULLS = [null, null, null, null, null, null, null, null];
         if (!res.exists || res.get(testAbbr) == undefined) {
             await setDoc(scoreRef, {
-                [testAbbr]: {0: NULLS, 1: NULLS, 2: NULLS}
+                [testAbbr]: {
+                    0: [null, null, null, null],
+                    1: [null, null, null, null],
+                    2: [null, null, null, null]
+                }
             }, { merge: true });
-            // updateVal = NULLS;
-        }/* else {
-        }*/
-        updateVal = res.get(testAbbr)[term] || NULLS;
+            updateVal = [null, null, null, null];
+        } else {
+            updateVal = res.get(testAbbr)[term];
+        }
         if (acc === code) {
             accDialog.close();
             document.documentElement.requestFullscreen();
@@ -197,8 +198,8 @@ accForm.addEventListener('submit', async (e) => {
             e.submitter.disabled = false;
             e.submitter.style.cursor = 'pointer';
         }
-    });
-});
+    })
+})
 
 // document.addEventListener('fullscreenchange', () => {
 //     if (document.fullscreenElement === null) {
@@ -234,16 +235,14 @@ async function submission() {
             score++;
         }
     }
-    const scoreRef = doc(db, 'session', session, 'students', uid, 'scores', 'records');
+    const scoreRef = doc(db, "scores", uid)
     updateVal.splice(testNum, 1, Number((score/questions*rating).toFixed(1)));
-
     await setDoc(scoreRef, {
         [testAbbr]: {[term]: updateVal},
     }, { merge: true });
     msgDialog.querySelector('output').innerHTML = `
         Your score:<br><large>${score} out of ${questions}</large>
     `;
-
     msgDialog.showModal();
     tbody.style.pointerEvents = 'none';
 }

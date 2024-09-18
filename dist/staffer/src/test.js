@@ -202,7 +202,7 @@ codeBtn.addEventListener('click', (e) => {
             //generate code
             let randy = parseInt(Math.random()*1000);
             //add code to hidden input..
-            dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy].toUpperCase();
+            // dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy].toUpperCase();
             dialogCode.showModal();
         } else {
             dialogNotice.close();
