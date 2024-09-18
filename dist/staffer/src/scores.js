@@ -13,11 +13,10 @@ function chooseConfig(num) {
 }
 db = getFirestore()
 
-let eotDates, term;
+let eotDates, term, session = '2025';
 async function eot() {
     const eotRef = doc(db, "reserved", "EOT");
-    await getDoc(eotRef).then((res) => {
-
+    await getDoc(eotRef).then(async (res) => {
         // store dates in eotDates
         const formBarH3 = document.querySelector('div#formBar > h3');
         formBarH3.insertAdjacentHTML('afterend', `<span>Working on: <b>${res.data().this_term} Term</b></span>`);
@@ -26,6 +25,14 @@ async function eot() {
     });
 }
 eot();
+
+let permissions = async function () {
+    const data = await getDoc(doc(db, session, 'EOT'));
+    const p = data.get('perm');
+    const perm = p.toString(2).padStart(8,0).split(''); //padStart ensures it is 8-bit long for all switches
+    return perm;
+}
+let permission = await permissions();
 
 const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
 
@@ -89,23 +96,14 @@ subjectForm.addEventListener('submit', async (e) => {
     const cls = subjectForm.class.value;
     const arm = subjectForm.arm.value;
     sub = subjectForm.subject.value;
-    let dt = new Date(eotDates[cls]).setHours(24);
-
-    if (dt < Date.now()) {
-        e.submitter.disabled = false;
-        dialogGreen.querySelector('.submit__icon').classList.remove('running');
-        dialogGreen.close();
-        window.alert("Oops! The date for entry of records is closed.");
-        return;
-    };
-    
+   
     // fetch student IDs and concatenation of their names
-    const q = query(collection(db, "students"), where("arm", "==", arm), orderBy("last_name"));
+    const q = query(collection(db, 'session', session, "students"), where("arm", "==", arm));
     const personDoc = await getDocs(q);
     if (personDoc.empty) {
         dialogGreen.querySelector('.submit__icon').classList.remove('running');
         dialogGreen.close();
-        window.alert("No dice!");
+        window.alert("No student found.");
         return;
     }
 
@@ -130,55 +128,45 @@ subjectForm.addEventListener('submit', async (e) => {
         return;
     };
 
-    let scores = [];
-    console.log(kvArray);
-    
+    let scores = [];    
     const promises = kvArray.map(async arrVal => {
         //USE THE TERM-DEFINER TO PICK THE RIGHT SET OF SCORES TO BE EDITED
-        await getDoc(doc(db, "scores", arrVal[0])).then((doc) => scores.push(doc.data()));
+        await getDoc(doc(db, 'session', session, 'students', arrVal[0], "scores", 'records')).then((doc) => scores.push(doc?.get(sub) || null));
     })
     await Promise.all(promises);
     // clear tbody for new arrivals
     tbody.innerHTML = '';
     // create scoresheet of names and scores
-    let sn = 1;
-    kvArray.forEach(([id, nm], ind) => {
-        if (scores[ind] && scores[ind][sub]) {
+
+    if (scores.length) {
+        kvArray.forEach(([id, nm], ind) => {
+            let table_data = '';
+            try {
+                for (let h = 0; h < permission.length; h++) {
+                    permission[h] == 1 ? table_data += `<td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][term]?.[h] == undefined ? '' : scores[ind][term]?.[h]}"/></td>` : table_data += `<td>${scores[ind][term]?.[h] == undefined ? '' : scores[ind][term][h]}</td>`;
+                }
+            } catch (error) {
+                for (let h = 0; h < permission.length; h++) {
+                    permission[h] == 1 ? table_data += `<td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder=""/></td>` : table_data += `<td></td>`;
+                }
+            }
             tbody.insertAdjacentHTML('beforeend', `
                 <tr id="${id}">
-                    <td>${sn}</td>
+                    <td>${ind+1}</td>
                     <td>${nm}</td>
-                    <td>${scores[ind][sub][term]?.[0] == undefined ? '' : scores[ind][sub][term]?.[0]}</td>
-                    <input type="hidden" name="${id}" value="${scores[ind][sub][term]?.[0] == undefined ? '' : scores[ind][sub][term]?.[0]}"/>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term]?.[1] == undefined ? '' : scores[ind][sub][term]?.[1]}"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term]?.[2] == undefined ? '' : scores[ind][sub][term]?.[2]}"/></td>
-                    <input type="hidden" name="${id}" value="${scores[ind][sub][term]?.[3] == undefined ? '' : scores[ind][sub][term]?.[3]}"/>
-                    <td>${scores[ind][sub][term]?.[3] == undefined ? '' : scores[ind][sub][term]?.[3]}</td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?" placeholder="${scores[ind][sub][term]?.[4] == undefined ? '' : scores[ind][sub][term]?.[4]}"/></td>
+                    ${table_data}
                 </tr>
             `);
-        } else {
-            tbody.insertAdjacentHTML('beforeend', `
-                <tr id="${id}">
-                    <td>${sn}</td>
-                    <td>${nm}</td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
-                    <td><input type="text" name="${id}" pattern="[0-9]{1,2}(\.[0-9]{0,1})?"/></td>
-                </tr>
-            `)
-        }
-        sn++;
-    })
-    // sessionStorage.setItem('scores', JSON.stringify(scores))
+        });
+    }
+
+    sessionStorage.setItem('scores', JSON.stringify(scores))
     document.querySelector('.sub__title').textContent = `${abbr[sub]} ~ ${cls} ~ ${arm}`;
     
     dialogGreen.querySelector('.submit__icon').classList.remove('running');
     dialogGreen.close();
     e.submitter.disabled = false;
-})
+});
 
 const dialogPurple = document.querySelector('dialog#purple');
 const dialogPurpleBtn = dialogPurple.querySelector('button');
@@ -195,10 +183,10 @@ scoreForm.addEventListener('submit', async (e) => {
     e.submitter.disabled = true;
     dialogPurple.querySelector('.submit__icon').classList.add('running');
     dialogPurple.showModal();
-    const formData = new FormData(scoreForm);
+    // const formData = new FormData(scoreForm);
     let tr = document.body.querySelectorAll('tbody tr');
     let container = [];
-        
+
     if (!tr.length) {
         dialogPurpleBtn.click();
         window.alert("There is nothing to save.");
@@ -210,17 +198,19 @@ scoreForm.addEventListener('submit', async (e) => {
         const inputs = row.querySelectorAll('input');
         let bool = [...inputs].some(inp => inp.type == "text" && inp.value);
         if (!bool) return;
-        let cells = [...inputs].map(x => Number(x.value || x.placeholder) || null);
+        const tds = row.querySelectorAll('td:not(:nth-of-type(1),:nth-of-type(2))');
+        let cells = [...tds].map(x => Number(x.firstChild?.value || x.firstChild?.placeholder || x.innerText) || null);
         container.push([row.id, cells]);
     });
-    
+
     const promises = container.map(async cn => {
-        const docRef = doc(db, "scores", cn[0]);
+        const docRef = doc(db, 'session', session, 'students', cn[0], "scores", 'records');
         await setDoc(docRef, {
             [sub]: {[term]: cn[1]}
         }, { merge: true })
     })
     await Promise.allSettled(promises);
+
     dialogPurple.querySelector('.submit__icon').classList.add('borderless');
     dialogPurpleBtn.innerHTML = 'Changes Saved  &checkmark;';
     dialogPurpleBtn.style.display = 'block';

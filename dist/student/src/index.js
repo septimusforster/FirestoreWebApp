@@ -152,11 +152,11 @@ async function getDocuments(category, subject) {
     });
     if (payload.length) sessionStorage.setItem(subject, JSON.stringify(payload))
 };
+
 const subjectNav = document.querySelector('#subject-navs .inner:last-child');
 subjectNav.addEventListener('click', (e) => {
     e.preventDefault();
     let ctx = document.querySelector('#ctx-txt').textContent.toLowerCase();
-    // e.stopPropagation();
     if (e.target.hasAttribute('href')) {
         subjectNav.querySelectorAll('a').forEach(anchor => {
             if (anchor.classList.contains('active')) {
@@ -170,21 +170,42 @@ subjectNav.addEventListener('click', (e) => {
         timelineBar.innerHTML = '';
         const doc = JSON.parse(sessionStorage.getItem(e.target.id));
         let sb = btoa(e.target.id);
+        let dt = Date.now();
         doc.forEach((data, i) => {
             let docName = data.name;
             let title = docName.slice(0,docName.lastIndexOf('.'));
+            let [h, m] = data.startTime.split(':');
+            const d = new Date(data.startDate).setHours(Number(h), Number(m) - 1);
+            const e = new Date(data.startDate).setHours(Number(h), Number(m) + data.duration);
+
             timelineBar.insertAdjacentHTML('beforeend', `
-            <div class="timeline-content">
-                <input type="checkbox" class="accordion__input" id="cb${i+1}"/>
-                <label for="cb${i+1}" class="accordion__label" title="${title}">#${data.catNo} ${title}</label>
-                <div class="accordion__content">
-                    <p>${data.instr[0] || "No instructions."}</p>
-                    ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}&sb=${sb}`}">Download test</a>` : ""}    
+                <div class="timeline-content">
+                    <input type="checkbox" class="accordion__input" id="cb${i+1}"/>
+                    <label for="cb${i+1}" class="accordion__label" title="${title}">#${data.catNo} ${title}</label>
+                    <div class="accordion__content">
+                        <p>${data.instr[0] || "No instructions."}</p>
+                        ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}&sb=${sb}`}">Download test</a>` : ""}
+                        <code style="display:${d < dt && e > dt ? 'inline-block' : 'none'}">${data.code}</code>
+                    </div>
                 </div>
-            </div>
-            `)
+            `);
             document.querySelectorAll('.timeline-content')[i].style.setProperty('--beforeContent',`"${data.startDate}"`);
-        })
+        });
+
+        //<code> buttons
+        const toast = document.querySelector('div.toast');
+        const codeBtns = document.querySelectorAll('code');
+        codeBtns.forEach(cd => {
+            cd.addEventListener('click', (e) => {
+                navigator.clipboard.writeText(e.target.textContent);
+                //display toast
+                toast.classList.add('shw');
+                const toastID = setTimeout(() => {
+                    toast.classList.remove('shw');
+                    clearTimeout(toastID);
+                }, 3000);
+            });
+        });
     } else {
         // get document from server and store it in 'testPayload' sessionStorage
         getDocuments(ctx, e.target.id);

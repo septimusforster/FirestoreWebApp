@@ -1,4 +1,4 @@
-*{margin: 0; padding: 0;box-sizing: 0;}
+*{margin: 0; padding: 0;box-sizing: border-box;}
 main {
     height: 100vh;
     height: 100dvh;
@@ -13,7 +13,7 @@ main form {
     display: flex;
     flex-direction: column;
     width: 15%;
-    min-width: 300px;
+    min-width: 400px;
     font-family:Poppins, sans-serif;
     padding: 50px;
     /* border-radius: 7px; */

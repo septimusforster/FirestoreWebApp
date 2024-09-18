@@ -1,4 +1,4 @@
-*{margin: 0; padding: 0;box-sizing: 0;}
+*{margin: 0; padding: 0;box-sizing: border-box;}
 body {
     background-color: rgb(42, 7, 75);
 }
@@ -459,4 +459,42 @@ h1 {
 button#logout-btn {
     margin-top: 50vh;
     margin-top: 50dvh;
+}
+code {
+    font-size: 1.2em;
+    padding: 14px 20px;
+    margin: 0 10px;
+    border-radius: 7px;
+    background-color: #fff;
+    color: #009578;
+    cursor: pointer;
+}
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: absolute;
+    bottom: 5%;
+    left: 7%;
+    border-radius: 15px;
+    padding: 20px;
+    background-color: #fff;
+    color: #009578;
+    font: 20px monospace;
+    opacity: 0;
+    transform: translate(7%, 170%);
+    transition: transform .3s ease, opacity .3s ease;
+}
+.toast > div:first-of-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #009578;
+    color: #fff;
+    border-radius: 24px;
+    padding: 10px;
+}
+.toast.shw {
+    transform: translate(7%, 10%);
+    opacity: 1;
 }

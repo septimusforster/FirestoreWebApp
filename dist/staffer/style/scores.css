@@ -2,7 +2,7 @@ html, body, * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font: 16px 'Poppins', sans-serif;
+    font: 16px system-ui;
 }
 button, input[type="submit"], input[type="text"] {
     border: none;
@@ -195,8 +195,15 @@ thead {
 thead, tbody {
     border: 1px solid #aaa;
 }
-tr th {
-    padding: 20px;
+tr th, th > p {
+    color: #555;
+    font-weight: 600;
+}
+th > p:nth-of-type(2) {
+    font-size: .8em;
+}
+th {
+    padding: 10px 20px;
 }
 tr td {
     text-align: center;

@@ -384,7 +384,7 @@ selectBtn.addEventListener('change', async (e) => {
     const ssRef = doc(db, selectBtn.value, 'EOT');
     const snapped = await getDoc(ssRef);
     if (!snapped.exists()) {
-        alert("This session's data cannot be found.");
+        alert("This session's data cannot be found/permission missing.");
         selectBtn.classList.remove('chg');
     } else {
         const p = snapped.get('perm');
