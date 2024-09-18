@@ -177,7 +177,8 @@ subjectNav.addEventListener('click', (e) => {
             let [h, m] = data.startTime.split(':');
             const d = new Date(data.startDate).setHours(Number(h), Number(m) - 1);
             const e = new Date(data.startDate).setHours(Number(h), Number(m) + data.duration);
-
+            let cde = '';
+            if (d < dt && e > dt) cde = `<code>${data.code}</code>`; 
             timelineBar.insertAdjacentHTML('beforeend', `
                 <div class="timeline-content">
                     <input type="checkbox" class="accordion__input" id="cb${i+1}"/>
@@ -185,7 +186,7 @@ subjectNav.addEventListener('click', (e) => {
                     <div class="accordion__content">
                         <p>${data.instr[0] || "No instructions."}</p>
                         ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}&sb=${sb}`}">Download test</a>` : ""}
-                        <code style="display:${d < dt && e > dt ? 'inline-block' : 'none'}">${data.code}</code>
+                        ${cde}
                     </div>
                 </div>
             `);
