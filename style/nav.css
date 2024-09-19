@@ -11,6 +11,12 @@ header nav {
     align-items: center;
     gap: 1em;
 }
+header > button:first-of-type {
+    margin-left: auto;
+}
+header > button.logout {
+    margin: 0 20px 0 auto;
+}
 .dropdown {
     position: relative;
 }
