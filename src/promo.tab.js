@@ -84,12 +84,15 @@ function loginDataErr(str) {
     container_login.classList.add('err');
     const toid = setTimeout(() => {
         container_login.classList.remove('err');
-    }, 4000);
+        clearTimeout(toid);
+    }, 3000);
 }
 async function getMasterFromServer (uname, upwd) {
     let exception;
+    chooseConfig(configs[6]);
     const masterQ = query(collection(db, 'staffCollection'), and(where('username', '==', uname), where('password', '==', upwd)));
     await getDocs(masterQ).then(async res => {
+        console.log('res.empty:', res.empty);
         if (res.empty) {
             loginDataErr('Error logging in.');
             exception = true;
@@ -127,7 +130,6 @@ async function getMasterFromServer (uname, upwd) {
             const prBtns = document.querySelectorAll('tr > td > button');
             prBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // console.log('pr buttons.');
                     promoteHandler(btn)
                 });
             });
@@ -146,17 +148,18 @@ changeFormBtn.onclick = () => {
 ss_props && std_props ? insertData(master_props, std_props) : changeFormBtn.click();
 
 //login form handler
-loginDialog.querySelector('form').addEventListener('submit', async (e) => {
+const login_form = loginDialog.querySelector('form');
+login_form.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true, e.submitter.nextElementSibling.disabled = true;
     e.submitter.classList.add('clk');
     const uname = document.querySelector('input#uname').value;
     const upwd = document.querySelector('input#upwd').value;
-    
+
     let exception = await getMasterFromServer(uname, upwd);
     e.submitter.disabled = false, e.submitter.nextElementSibling.disabled = false;
     e.submitter.classList.remove('clk');
-    console.log(exception);
+
     if (!exception) {
         loginDialog.querySelector('form').reset();
         loginDialog.close();
