@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotion Tab</title>
+    <link rel="stylesheet" href="../style/promo_tab.css"/>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div id="top_header">
+                <div id="back_arrow"></div>
+                <button type="button" id="change_form">Change form/class</button>
+                <button type="button"id="logout">Logout</button>
+            </div>
+            <div id="bottom_header">
+                <div>
+                    <div>Session</div>
+                    <div></div>
+                </div>
+                <div>
+                    <div>Class</div>
+                    <div></div>
+                </div>
+                <div>
+                    <div>Form Master/Mistress</div>
+                    <div></div>
+                </div>
+            </div>
+        </header>
+        <section>
+            <h3>Promotion Table</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>ADM NO</th>
+                        <th>NAME</th>
+                        <th>ADM YR</th>
+                        <th>P/R</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+        <footer>
+            <div>
+                <div>Roll No: <span></span></div>
+            </div>
+        </footer>
+    </div>
+    <div class="notify">
+        <span class="checkmark"></span>
+        <span></span>
+    </div>
+    <dialog id="login_dg">
+        <div class="container">
+            <div>
+                <div>Enter your credentials to view students in your form.</div>
+                <div class="info_div">
+                    <span class="info_circle"></span>
+                    <span>Only for form masters or mistresses.</span>
+                </div>
+            </div>
+            <form name="master_fm" autocomplete="off">
+                <input type="text" name="uname" id="uname" placeholder="Enter username or email" required/>
+                <input type="text" name="upwd" id="upwd" placeholder="Enter password" required/>
+                <button>
+                    <span class="txt">ENTER</span>
+                    <span class="carousel"></span>
+                </button>
+                <button type="button" class="cncl">CANCEL</button>
+            </form>
+        </div>
+        <div class="err_div">
+            <span class="errmark"></span>
+            <span></span>
+        </div>
+    </dialog>
+    <dialog id="pr_dg">
+        <div class="container">
+            <output>Requesting to <span></span>.</output>
+            <div>
+                <button type="button" class="cncl">CANCEL</button>
+                <button type="button">
+                    <span class="txt">PROMOTE</span>
+                    <span class="carousel"></span>
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <script type="module" src="../src/promotab_bundle.js"></script>
+</body>
+</html>

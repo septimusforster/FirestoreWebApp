@@ -1,6 +1,6 @@
 const path = require("path");
 //ROOT index.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/index.js",
@@ -10,7 +10,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT hacks.js
 /*
 module.exports = {
@@ -107,6 +107,18 @@ module.exports = {
     watch: true
 }
 */
+//ROOT promo.tab.js
+
+module.exports = {
+    mode: "development",
+    entry: "./src/promo.tab.js",
+    output: {
+        path: path.resolve(__dirname, "src"),
+        filename: "promotab_bundle.js"
+    },
+    watch: true
+}
+
 //STAFFER index.js
 /*
 module.exports = {
