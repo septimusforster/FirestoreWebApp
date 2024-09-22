@@ -73,11 +73,18 @@ function insertData (master, students) {
     });
     //roll no
     document.querySelector('footer > div > div').firstElementChild.textContent = students.length;
+    promoteBtnsHandler();
 }
 
-async function getMasterFromSession () {
-
+function promoteBtnsHandler () {
+    const prBtns = document.querySelectorAll('tr > td > button');
+    prBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            promoteHandler(btn)
+        });
+    });
 }
+
 //error div function
 function loginDataErr(str) {
     err_div.lastElementChild.textContent = str;
@@ -92,7 +99,6 @@ async function getMasterFromServer (uname, upwd) {
     chooseConfig(configs[6]);
     const masterQ = query(collection(db, 'staffCollection'), and(where('username', '==', uname), where('password', '==', upwd)));
     await getDocs(masterQ).then(async res => {
-        console.log('res.empty:', res.empty);
         if (res.empty) {
             loginDataErr('Error logging in.');
             exception = true;
@@ -125,14 +131,9 @@ async function getMasterFromServer (uname, upwd) {
             })
             sessionStorage.setItem('std_util', JSON.stringify(students));
             std_props = JSON.parse(sessionStorage.getItem('std_util'));
+            
             insertData(master_props, std_props);
-
-            const prBtns = document.querySelectorAll('tr > td > button');
-            prBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    promoteHandler(btn)
-                });
-            });
+            promoteBtnsHandler();
 
             console.log("From server.");
         });
