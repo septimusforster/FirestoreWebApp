@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy } from "firebase/firestore";
+import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy, getCountFromServer } from "firebase/firestore";
 
 import configs from "../src/JSON/configurations.json" assert {type: 'json'};
 // function somefunc(selector) {
@@ -58,7 +58,8 @@ function insertData (master, students) {
     //insert students
     const tbody = document.querySelector('section table > tbody');
     tbody.innerHTML = '';   //reset tbody
-    Object.values(students).forEach((ME, ix) => {
+    const xy = Object.values(students);
+    xy.forEach((ME, ix) => {
         tbody.insertAdjacentHTML('beforeend', `
             <tr>
                 <td>${ix+1}</td>
@@ -72,7 +73,7 @@ function insertData (master, students) {
         `);
     });
     //roll no
-    document.querySelector('footer > div > div').firstElementChild.textContent = students.length;
+    document.querySelector('footer > div > div').firstElementChild.textContent = xy.length;
     promoteBtnsHandler();
 }
 
@@ -171,23 +172,25 @@ login_form.addEventListener('submit', async (e) => {
     }
 });
 
-
+let old_form, new_form, new_session = Number(master_props.SESSION) + 1;
 function promoteHandler(btn) {
     const STUDENT_NAME = btn.parentElement.parentElement.children[2].textContent;
     const ADM_NO = btn.parentElement.parentElement.children[1].textContent;
+    old_form = master_props.FORM_NAME;
+    new_form = configs[7][configs[7].indexOf(old_form) + 1];
     
     Object.entries(std_props).some(([key, val]) => {if (val.admission_no == ADM_NO) promoID = key});
 
     if (btn == btn.parentElement.firstElementChild) {
         //apply promote formatting
         promoMsg = true;
-        container.firstElementChild.firstElementChild.textContent = `promote ${STUDENT_NAME} to ${prmClass}`;
+        container.firstElementChild.firstElementChild.textContent = `promote ${STUDENT_NAME} to ${new_form}`;
         container.lastElementChild.lastElementChild.firstElementChild.textContent = 'PROMOTE';
         container.classList.replace('rpt', 'prm') ? true : container.classList.add('prm');
     } else {
         //apply repeat formatting
         promoMsg = false;
-        container.firstElementChild.firstElementChild.textContent =  `repeat ${STUDENT_NAME} in ${rptClass}`;
+        container.firstElementChild.firstElementChild.textContent =  `repeat ${STUDENT_NAME} in ${old_form}`;
         container.lastElementChild.lastElementChild.firstElementChild.textContent = 'REPEAT';
         container.classList.replace('prm', 'rpt') ? true : container.classList.add('rpt');
     }
@@ -197,19 +200,48 @@ function promoteHandler(btn) {
 //promote or repeat btns
 const notify = document.querySelector('.notify');
 const carouselBtn = container.querySelector('div > button:last-of-type');
-carouselBtn.addEventListener('click', (e) => {
+carouselBtn.addEventListener('click', async (e) => {
     carouselBtn.disabled = true, carouselBtn.previousElementSibling.disabled = true;
     carouselBtn.classList.add('clk');
     notify.lastElementChild.textContent = promoMsg ? 'PROMOTED' : 'REPEATED';
-    //run the promotion or repeating
-    
+    //check if result already exists
+    // const data = std_props[promoID]; //NEEDLESS
     if (promoMsg) {
         //check nxt session for data
-        const data = std_props[promoID];
-        console.log("Promote", promoID, 'data', data);
+        await finalPromotionHandler(new_form, promoMsg);
     } else {
-        console.log("Repeat", promoID)
+        await finalPromotionHandler(old_form, promoMsg);
     }
+    
+});
+
+async function finalPromotionHandler (form_state, promomsg_bool) {
+    chooseConfig(configs[configs[7].indexOf(form_state)]);
+    console.log(promoID);
+    const promoteDoc = await getDoc(doc(db, 'session', String(new_session), 'students', promoID));
+    if (promoteDoc.exists()) {
+        container.nextElementSibling.lastElementChild.textContent = "Task already achieved.";
+        container.classList.add('err');
+        const timerID = setTimeout(() => {
+            container.classList.remove('err');
+            carouselBtn.disabled = false, carouselBtn.previousElementSibling.disabled = false;
+            carouselBtn.classList.remove('clk');
+            clearTimeout(timerID);
+        }, 3000);
+        return;
+    } else {
+        let x = new Array(8);
+        const NULLS = x.fill(null, 0, 8);   //8 nulls for SCORES collection
+        let data = std_props[promoID];
+
+        //check if old_form is JSS 3
+        if (old_form == configs[7][2] && promomsg_bool) {
+            delete data['offered'];
+        }
+        //setDoc to STUDENTS collection and thereafter SCORES collection
+        console.log(data);
+    }
+
     carouselBtn.closest('dialog').close();
     carouselBtn.disabled = false, carouselBtn.previousElementSibling.disabled = false;
     carouselBtn.classList.remove('clk');
@@ -218,7 +250,7 @@ carouselBtn.addEventListener('click', (e) => {
         notify.classList.remove('shw');
         clearTimeout(tid);
     }, 3000);
-});
+}
 
 //cancel btns on dialog elems
 const cancelBtns = document.querySelectorAll('button.cncl');

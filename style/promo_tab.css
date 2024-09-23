@@ -12,7 +12,7 @@ header > #top_header {justify-content: space-around;gap: 24px;}
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2em" height="2em" viewBox="0 0 512 512" version="1.1" xml:space="preserve"><style type="text/css">.st0{fill:%23333;}</style><g id="Layer_1"/><g id="Layer_2"><g><path class="st0" d="M217,129.88c-6.25-6.25-16.38-6.25-22.63,0L79.61,244.64c-0.39,0.39-0.76,0.8-1.11,1.23    c-0.11,0.13-0.2,0.27-0.31,0.41c-0.21,0.28-0.42,0.55-0.62,0.84c-0.14,0.21-0.26,0.43-0.39,0.64c-0.14,0.23-0.28,0.46-0.41,0.7    c-0.13,0.24-0.24,0.48-0.35,0.73c-0.11,0.23-0.22,0.45-0.32,0.68c-0.11,0.26-0.19,0.52-0.28,0.78c-0.08,0.23-0.17,0.46-0.24,0.69    c-0.09,0.29-0.15,0.58-0.22,0.86c-0.05,0.22-0.11,0.43-0.16,0.65c-0.08,0.38-0.13,0.76-0.17,1.14c-0.02,0.14-0.04,0.27-0.06,0.41    c-0.11,1.07-0.11,2.15,0,3.22c0.01,0.06,0.02,0.12,0.03,0.18c0.05,0.46,0.12,0.92,0.21,1.37c0.03,0.13,0.07,0.26,0.1,0.39    c0.09,0.38,0.18,0.76,0.29,1.13c0.04,0.13,0.09,0.26,0.14,0.4c0.12,0.36,0.25,0.73,0.4,1.09c0.05,0.11,0.1,0.21,0.15,0.32    c0.17,0.37,0.34,0.74,0.53,1.1c0.04,0.07,0.09,0.14,0.13,0.21c0.21,0.38,0.44,0.76,0.68,1.13c0.02,0.03,0.04,0.06,0.06,0.09    c0.55,0.81,1.18,1.58,1.89,2.29l114.81,114.81c3.12,3.12,7.22,4.69,11.31,4.69s8.19-1.56,11.31-4.69c6.25-6.25,6.25-16.38,0-22.63    l-87.5-87.5h291.62c8.84,0,16-7.16,16-16s-7.16-16-16-16H129.51L217,152.5C223.25,146.26,223.25,136.13,217,129.88z"/></g></g></svg>');
     border-radius: 24px;
 }
-#top_header > #back_arrow, tbody tr > td > button, span.checkmark, span.errmark, .info_circle {
+#top_header > #back_arrow, tbody tr > td > button, span.checkmark, span.mark, .info_circle {
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -20,7 +20,7 @@ header > #top_header {justify-content: space-around;gap: 24px;}
     height: 40px;
     width: 40px;
 }
-span.errmark {
+span.mark {
     height: 60px;
     width: 60px;
 }
@@ -108,11 +108,11 @@ div.notify {bottom: 0%;left: 5%;z-index: -1;}
     animation-timing-function: ease-in;
     animation-duration: .2s;
 }
-dialog#login_dg > div.container.err {
+dialog > div.container.err {
     opacity: .2;
     pointer-events: none;
 }
-dialog#login_dg > div.container.err + .err_div {
+dialog > div.container.err + .err_div {
     opacity: 1;
     animation-name: plop;
 }
@@ -126,11 +126,16 @@ span.checkmark {
     border-radius: 40px;
     background-color: #444;
 }
-span.errmark {
+span.error {
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" fill="%23FF4500" width="3em" height="3em" viewBox="0 0 64 64" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><path id="error-circle" d="M32.085,56.058c6.165,-0.059 12.268,-2.619 16.657,-6.966c5.213,-5.164 7.897,-12.803 6.961,-20.096c-1.605,-12.499 -11.855,-20.98 -23.772,-20.98c-9.053,0 -17.853,5.677 -21.713,13.909c-2.955,6.302 -2.96,13.911 0,20.225c3.832,8.174 12.488,13.821 21.559,13.908c0.103,0.001 0.205,0.001 0.308,0Zm-0.282,-4.003c-9.208,-0.089 -17.799,-7.227 -19.508,-16.378c-1.204,-6.452 1.07,-13.433 5.805,-18.015c5.53,-5.35 14.22,-7.143 21.445,-4.11c6.466,2.714 11.304,9.014 12.196,15.955c0.764,5.949 -1.366,12.184 -5.551,16.48c-3.672,3.767 -8.82,6.016 -14.131,6.068c-0.085,0 -0.171,0 -0.256,0Zm-12.382,-10.29l9.734,-9.734l-9.744,-9.744l2.804,-2.803l9.744,9.744l10.078,-10.078l2.808,2.807l-10.078,10.079l10.098,10.098l-2.803,2.804l-10.099,-10.099l-9.734,9.734l-2.808,-2.808Z"/></svg>');
+}
+span.exclm {
+    background-image: url('<svg xmlns="http://www.w3.org/2000/svg" fill="%23333" width="3em" height="3em" viewBox="0 0 24 24"><path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM12 20c-4.411 0-8-3.589-8-8s3.567-8 7.953-8C16.391 4 20 7.589 20 12s-3.589 8-8 8z"/><path d="M11 7h2v7h-2zm0 8h2v2h-2z"/></svg>')
+}
+span.mark {
     border-radius: 40px;
 }
-span.checkmark + span, span.errmark + span {
+span.checkmark + span, span.mark + span {
     font-size: 1.3em;
     font-weight: 600;
     color: #fff;
