@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy, getCountFromServer } from "firebase/firestore";
+import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy, getCountFromServer, setDoc } from "firebase/firestore";
 
 import configs from "../src/JSON/configurations.json" assert {type: 'json'};
 // function somefunc(selector) {
@@ -217,7 +217,7 @@ carouselBtn.addEventListener('click', async (e) => {
 
 async function finalPromotionHandler (form_state, promomsg_bool) {
     chooseConfig(configs[configs[7].indexOf(form_state)]);
-    console.log(promoID);
+    // console.log(promoID);
     const promoteDoc = await getDoc(doc(db, 'session', String(new_session), 'students', promoID));
     if (promoteDoc.exists()) {
         container.nextElementSibling.lastElementChild.textContent = "Task already achieved.";
@@ -239,7 +239,7 @@ async function finalPromotionHandler (form_state, promomsg_bool) {
             delete data['offered'];
         }
         //setDoc to STUDENTS collection and thereafter SCORES collection
-        console.log(data);
+        await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);
     }
 
     carouselBtn.closest('dialog').close();
