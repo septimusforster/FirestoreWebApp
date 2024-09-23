@@ -32,7 +32,7 @@ const prmClass = 'JSS 3';
 const rptClass = 'JSS 2';
 const studentSnapshot = {'ABC/00/0001': 'Neil Gibson', 'ABC/00/0002': 'Miranda Salkilld'};
 
-let notifyMsg;
+let promoMsg, promoID;
 const changeFormBtn = document.querySelector('button#change_form');
 const logoutBtn = document.querySelector('button#logout');
 const loginDialog = document.querySelector('dialog#login_dg');
@@ -58,13 +58,13 @@ function insertData (master, students) {
     //insert students
     const tbody = document.querySelector('section table > tbody');
     tbody.innerHTML = '';   //reset tbody
-    students.forEach((st, ix) => {
+    Object.values(students).forEach((ME, ix) => {
         tbody.insertAdjacentHTML('beforeend', `
             <tr>
                 <td>${ix+1}</td>
-                <td>${st.admission_no}</td>
-                <td>${st.last_name + ' ' + st.first_name + ' ' + st.other_name}</td>
-                <td>${st.admission_year}</td>
+                <td>${ME.admission_no}</td>
+                <td>${ME.last_name} ${ME.first_name} ${ME.other_name}</td>
+                <td>${ME.admission_year}</td>
                 <td>
                     <button type="button"></button><button type="button"></button>
                 </td>
@@ -120,15 +120,19 @@ async function getMasterFromServer (uname, upwd) {
         chooseConfig(configs[configs[7].indexOf(cls)]);  //try sub'ing cls for master_props.FORM_NAME
         const formQ = query(collection(db, 'session', master_props.SESSION, 'students'), where('arm', '==', arm), orderBy('last_name'));
         await getDocs(formQ).then(xres => {
-            if (res.empty) {
+            if (xres.empty) {
                 loginDataErr('Data unavailable.');
                 exception = true;
                 return;
             }
-            const students = [];
+            let students = {};
             xres.docs.forEach(val => {
-                students.push(val.data())
-            })
+                students[val.id] = val.data();  /* {
+                    adm_no: val.data().admission_no,
+                    fname: `${val.data().last_name} ${val.data().first_name} ${val.data().other_name}`,
+                    adm_yr: val.data().admission_year,
+                }*/
+            });
             sessionStorage.setItem('std_util', JSON.stringify(students));
             std_props = JSON.parse(sessionStorage.getItem('std_util'));
             
@@ -167,28 +171,28 @@ login_form.addEventListener('submit', async (e) => {
     }
 });
 
-//event handlers for promote or repeat btns
-// prBtns.forEach(btn => {
-//     btn.addEventListener('click', (e) => {
-    function promoteHandler(btn) {
-        const student = btn.parentElement.parentElement.children[2].textContent;
-        if (btn == btn.parentElement.firstElementChild) {
-            //apply promote formatting
-            notifyMsg = 'PROMOTED';
-            container.firstElementChild.firstElementChild.textContent = `promote ${student} to ${prmClass}`;
-            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'PROMOTE';
-            container.classList.replace('rpt', 'prm') ? true : container.classList.add('prm');
-        } else {
-            //apply repeat formatting
-            notifyMsg = 'REPEATED';
-            container.firstElementChild.firstElementChild.textContent =  `repeat ${student} in ${rptClass}`;
-            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'REPEAT';
-            container.classList.replace('prm', 'rpt') ? true : container.classList.add('rpt');
-        }
-        prDialog.showModal();
+
+function promoteHandler(btn) {
+    const STUDENT_NAME = btn.parentElement.parentElement.children[2].textContent;
+    const ADM_NO = btn.parentElement.parentElement.children[1].textContent;
+    
+    Object.entries(std_props).some(([key, val]) => {if (val.admission_no == ADM_NO) promoID = key});
+
+    if (btn == btn.parentElement.firstElementChild) {
+        //apply promote formatting
+        promoMsg = true;
+        container.firstElementChild.firstElementChild.textContent = `promote ${STUDENT_NAME} to ${prmClass}`;
+        container.lastElementChild.lastElementChild.firstElementChild.textContent = 'PROMOTE';
+        container.classList.replace('rpt', 'prm') ? true : container.classList.add('prm');
+    } else {
+        //apply repeat formatting
+        promoMsg = false;
+        container.firstElementChild.firstElementChild.textContent =  `repeat ${STUDENT_NAME} in ${rptClass}`;
+        container.lastElementChild.lastElementChild.firstElementChild.textContent = 'REPEAT';
+        container.classList.replace('prm', 'rpt') ? true : container.classList.add('rpt');
     }
-//     });
-// });
+    prDialog.showModal();
+}
 
 //promote or repeat btns
 const notify = document.querySelector('.notify');
@@ -196,20 +200,26 @@ const carouselBtn = container.querySelector('div > button:last-of-type');
 carouselBtn.addEventListener('click', (e) => {
     carouselBtn.disabled = true, carouselBtn.previousElementSibling.disabled = true;
     carouselBtn.classList.add('clk');
-    notify.lastElementChild.textContent = notifyMsg;
+    notify.lastElementChild.textContent = promoMsg ? 'PROMOTED' : 'REPEATED';
     //run the promotion or repeating
+    
+    if (promoMsg) {
+        //check nxt session for data
+        const data = std_props[promoID];
+        console.log("Promote", promoID, 'data', data);
+    } else {
+        console.log("Repeat", promoID)
+    }
+    carouselBtn.closest('dialog').close();
+    carouselBtn.disabled = false, carouselBtn.previousElementSibling.disabled = false;
+    carouselBtn.classList.remove('clk');
+    notify.classList.add('shw');
     const tid = setTimeout(() => {
-        carouselBtn.closest('dialog').close();
-        carouselBtn.disabled = false, carouselBtn.previousElementSibling.disabled = false;
-        carouselBtn.classList.remove('clk');
-        notify.classList.add('shw');
+        notify.classList.remove('shw');
         clearTimeout(tid);
     }, 3000);
-    const tid0 = setTimeout(() => {
-        notify.classList.remove('shw');
-        clearTimeout(tid0);
-    }, 6000);
-})
+});
+
 //cancel btns on dialog elems
 const cancelBtns = document.querySelectorAll('button.cncl');
 cancelBtns.forEach(btn => {
