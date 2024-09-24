@@ -146,11 +146,23 @@ async function getMasterFromServer (uname, upwd) {
     return exception;
 }
 
+let admin = false;
 //click event to display class login form
 changeFormBtn.onclick = () => {
-    loginDialog.showModal();
+    admin ? alert("Admin dialog") : loginDialog.showModal();
 }
 //on page load
+const snapshot = sessionStorage.getItem('snapshot');
+if (atob(`/${snapshot?.data.code}/`) == 'ýD\x80\fF?') {
+    master_props.MASTER = snapshot.data.fullName;
+    admin = true;
+    const SPAN = document.createElement('span');
+    SPAN.className = 'padlock';
+    SPAN.setAttribute('title', 'Admin Status');
+    document.querySelector('#bottom_header > div:nth-of-type(3) > div').insertAdjacentElement('beforeend', SPAN);
+    //run special admin login dialog
+    //
+}
 ss_props && std_props ? insertData(master_props, std_props) : changeFormBtn.click();
 
 //login form handler
@@ -205,7 +217,6 @@ carouselBtn.addEventListener('click', async (e) => {
     carouselBtn.classList.add('clk');
     notify.lastElementChild.textContent = promoMsg ? 'PROMOTED' : 'REPEATED';
     //check if result already exists
-    // const data = std_props[promoID]; //NEEDLESS
     if (promoMsg) {
         //check nxt session for data
         await finalPromotionHandler(new_form, promoMsg);

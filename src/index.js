@@ -52,7 +52,7 @@ window.addEventListener('click', (e) => {
 await getDoc(eotRef).then(async (res) => { // load EOT
     eotData = res.data();
     term = ["First","Second","Third"].indexOf(eotData.this_term);
-    document.querySelector('header #classroomBtn').removeAttribute('style');
+    document.querySelectorAll('header #classroomBtn, header > .promoBtn').forEach(btn => btn.removeAttribute('style'));
     //chk gmode
     const cities = ['ZAGREB', 'COPENHAGEN', 'PRAGUE', 'MOSCOW', 'SOBIBOR', 'WARSAW', 'TELAVIV'];
     const c = Math.floor(Math.random() * cities.length);
@@ -440,4 +440,9 @@ perm_form.addEventListener('submit', async (e) => {
 document.querySelector('header > button.logout').addEventListener('click', () => {
     sessionStorage.removeItem('snapshot');
     window.location.replace('./login-cat.html');
+});
+//promotion button
+document.querySelector('header > button.promoBtn').addEventListener('click', () => {
+    sessionStorage.removeItem('preview');
+    window.location.href = 'promo_tab.html';
 });
