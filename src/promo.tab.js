@@ -36,15 +36,18 @@ let promoMsg, promoID;
 const changeFormBtn = document.querySelector('button#change_form');
 const logoutBtn = document.querySelector('button#logout');
 const loginDialog = document.querySelector('dialog#login_dg');
+const adminDialog = document.querySelector('dialog#admin_dg');
 const prDialog = document.getElementById('pr_dg');
 const container = prDialog.querySelector('div.container');
 const container_login = loginDialog.querySelector('div.container');
+const container_admin = adminDialog.querySelector('div.container');
 const err_div = loginDialog.querySelector('.err_div');
 
 //logout handler
 logoutBtn.onclick = () => {
     sessionStorage.removeItem('master_util');
     sessionStorage.removeItem('std_util');
+    sessionStorage.removeItem('snapshot');
     location.reload();
 }
 //populate promo_tab.html
@@ -95,8 +98,8 @@ function loginDataErr(str) {
         clearTimeout(toid);
     }, 3000);
 }
+let exception;
 async function getMasterFromServer (uname, upwd) {
-    let exception;
     chooseConfig(configs[6]);
     const masterQ = query(collection(db, 'staffCollection'), and(where('username', '==', uname), where('password', '==', upwd)));
     await getDocs(masterQ).then(async res => {
@@ -117,42 +120,45 @@ async function getMasterFromServer (uname, upwd) {
         sessionStorage.setItem('master_util', JSON.stringify(master_props));
         ss_props = JSON.parse(sessionStorage.getItem('master_util'));
 
-        //get students in this form
-        chooseConfig(configs[configs[7].indexOf(cls)]);  //try sub'ing cls for master_props.FORM_NAME
-        const formQ = query(collection(db, 'session', master_props.SESSION, 'students'), where('arm', '==', arm), orderBy('last_name'));
-        await getDocs(formQ).then(xres => {
-            if (xres.empty) {
-                loginDataErr('Data unavailable.');
-                exception = true;
-                return;
-            }
-            let students = {};
-            xres.docs.forEach(val => {
-                students[val.id] = val.data();  /* {
-                    adm_no: val.data().admission_no,
-                    fname: `${val.data().last_name} ${val.data().first_name} ${val.data().other_name}`,
-                    adm_yr: val.data().admission_year,
-                }*/
-            });
-            sessionStorage.setItem('std_util', JSON.stringify(students));
-            std_props = JSON.parse(sessionStorage.getItem('std_util'));
-            
-            insertData(master_props, std_props);
-            promoteBtnsHandler();
+        await getStudents(cls, arm);
+        insertData(master_props, std_props);
+        promoteBtnsHandler();
 
-            console.log("From server.");
-        });
+        console.log("From server.");
     });
     return exception;
+}
+
+//function to get students
+async function getStudents (cls, arm) {
+    chooseConfig(configs[configs[7].indexOf(cls)]);  //try sub'ing cls for master_props.FORM_NAME
+    const formQ = query(collection(db, 'session', master_props.SESSION, 'students'), where('arm', '==', arm), orderBy('last_name'));
+    await getDocs(formQ).then(xres => {
+        if (xres.empty) {
+            loginDataErr('Data unavailable.');
+            exception = true;
+            return;
+        }
+        let students = {};
+        xres.docs.forEach(val => {
+            students[val.id] = val.data();
+        });
+        sessionStorage.setItem('std_util', JSON.stringify(students));
+        std_props = JSON.parse(sessionStorage.getItem('std_util'));
+
+        insertData(master_props, std_props);
+        promoteBtnsHandler();
+    });
 }
 
 let admin = false;
 //click event to display class login form
 changeFormBtn.onclick = () => {
-    admin ? alert("Admin dialog") : loginDialog.showModal();
+    admin ? adminDialog.showModal() : loginDialog.showModal();
 }
 //on page load
-const snapshot = sessionStorage.getItem('snapshot');
+const admin_form = adminDialog.querySelector('form');
+const snapshot = JSON.parse(sessionStorage.getItem('snapshot'));
 if (atob(`/${snapshot?.data.code}/`) == 'ýD\x80\fF?') {
     master_props.MASTER = snapshot.data.fullName;
     admin = true;
@@ -160,10 +166,39 @@ if (atob(`/${snapshot?.data.code}/`) == 'ýD\x80\fF?') {
     SPAN.className = 'padlock';
     SPAN.setAttribute('title', 'Admin Status');
     document.querySelector('#bottom_header > div:nth-of-type(3) > div').insertAdjacentElement('beforeend', SPAN);
-    //run special admin login dialog
-    //
+    
+    //create and insert admin form and its children select elements
+    const Classes = configs[7].slice(0,6);
+    const SELECT0 = document.createElement('select');
+    SELECT0.name = 'cls';
+    SELECT0.id = 'cls_slct';
+    const options = Classes.map(c => {
+        let o = new Option(c,c);
+        return o;
+    });
+    SELECT0.append(...options);
+    admin_form.appendChild(SELECT0);
+
+    const Arms = JSON.parse(sessionStorage.getItem('arm'));
+    const SELECT1 = document.createElement('select');
+    SELECT1.name = 'arm';
+    SELECT1.id = 'arm_slct';
+    const options1 = Arms.map(a => {
+        let o = new Option(a,a);
+        return o;
+    });
+    SELECT1.append(...options1);
+    admin_form.appendChild(SELECT1);
+
+    admin_form.insertAdjacentHTML('beforeend', `
+        <button>
+            <span class="txt">ENTER</span>
+            <span class="carousel"></span>
+        </button>
+        <button type="button" class="cncl">CLOSE</button>
+    `);
 }
-ss_props && std_props ? insertData(master_props, std_props) : changeFormBtn.click();
+(ss_props && std_props) || (admin && std_props) ? insertData(master_props, std_props) : changeFormBtn.click();
 
 //login form handler
 const login_form = loginDialog.querySelector('form');
@@ -181,6 +216,27 @@ login_form.addEventListener('submit', async (e) => {
     if (!exception) {
         loginDialog.querySelector('form').reset();
         loginDialog.close();
+    }
+});
+
+//admin form handler
+admin_form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.submitter.disabled = true, e.submitter.nextElementSibling.disabled = true;
+    e.submitter.classList.add('clk');
+    const cls = admin_form.querySelector('select#cls_slct').value;
+    const arm = admin_form.querySelector('select#arm_slct').value;
+    
+    master_props.FORM_NAME = cls;
+    master_props.FORM_ARM = arm;
+
+    await getStudents(cls, arm);
+    e.submitter.disabled = false, e.submitter.nextElementSibling.disabled = false;
+    e.submitter.classList.remove('clk');
+
+    if (!exception) {
+        admin_form.reset();
+        adminDialog.close();
     }
 });
 

@@ -31,9 +31,9 @@ span.mark {
 #change_form {margin-left: auto;background-color: #1a73d8;color: #fff;}
 #change_form, #logout {padding: 10px 17px;border-radius: 30px;}
 header > #bottom_header, #bottom_header > div:nth-of-type(3) > div {justify-content: center;}
-#bottom_header > div {text-align: center;position: relative;}
+#bottom_header > div {align-self: flex-end;text-align: center;position: relative;}
 #bottom_header > div:nth-of-type(2)::before {content: '';position: absolute;left: 0;top: 50%;transform: translateY(-50%);height: 40%;width: 100%;border: 1px solid;border-color: transparent #aaa;}
-#bottom_header > div:nth-of-type(3) > div {gap: 10px;}
+#bottom_header > div:nth-of-type(3) > div {align-items: flex-end;gap: 10px;}
 #bottom_header > div > div:nth-of-type(1) {text-transform: uppercase;}
 #bottom_header > div > div:nth-of-type(2) {font-size: 1.2em;font-weight: 500;color: #1a73d8;}
 section {margin: 17px auto;}
