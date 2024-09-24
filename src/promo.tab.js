@@ -215,6 +215,12 @@ carouselBtn.addEventListener('click', async (e) => {
     
 });
 
+let x = new Array(8);
+x.fill(null);   //8 nulls for SCORES collection
+const NULLS = {
+    0: x, 1: x, 2: x,
+}
+
 async function finalPromotionHandler (form_state, promomsg_bool) {
     chooseConfig(configs[configs[7].indexOf(form_state)]);
     // console.log(promoID);
@@ -230,16 +236,25 @@ async function finalPromotionHandler (form_state, promomsg_bool) {
         }, 3000);
         return;
     } else {
-        let x = new Array(8);
-        const NULLS = x.fill(null, 0, 8);   //8 nulls for SCORES collection
         let data = std_props[promoID];
+        //create empty 'comments', 'days_present' and 'promo_status'
+        data['comment'] = {0: '', 1: '', 2: ''};
+        data['days_present'] = [0,0,0];
+        data['promo_status'] = null;
 
+        //create empty "records" of student subjects
+        let records = {};
+        for (let k of Object.keys(data.offered)) records[k] = NULLS;
+        
         //check if old_form is JSS 3
         if (old_form == configs[7][2] && promomsg_bool) {
             delete data['offered'];
+            records = {};   //reset records
         }
+        
         //setDoc to STUDENTS collection and thereafter SCORES collection
         await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);
+        await setDoc(doc(db, 'session', String(new_session), 'students', promoID, 'scores', 'records'), records);
     }
 
     carouselBtn.closest('dialog').close();

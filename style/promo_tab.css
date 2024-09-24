@@ -37,7 +37,7 @@ header > #bottom_header {justify-content: center;}
 #bottom_header > div > div:nth-of-type(2) {font-size: 1.2em;font-weight: 500;color: #1a73d8;}
 section {margin: 17px auto;}
 section > h3 {text-align: center;font-weight: 400;}
-table {min-width: 500px;margin: 17px auto;border-collapse: collapse;}
+table {min-width: 500px;margin: 17px auto 140px;border-collapse: collapse;}
 tr:not(tfoot tr) {border-bottom: 1px solid #ccc;}
 tbody tr > td:nth-child(1) {position: relative;}
 tbody tr > td:nth-child(1)::before {
@@ -72,7 +72,6 @@ tbody tr > td > button:nth-child(1) {
 tbody tr > td > button:nth-child(2) {
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="%23ff4500" version="1.1" id="Layer_1" width="2em" height="2em" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><g><path d="M50.5,19.881c-1.104,0-2,0.896-2,2V72.17L33.193,56.609c-0.781-0.781-1.922-0.781-2.703,0   c-0.781,0.78-0.719,2.047,0.062,2.828l18.883,18.857c0.375,0.375,0.899,0.586,1.43,0.586s1.047-0.211,1.422-0.586l18.857-18.857   c0.781-0.781,0.783-2.048,0.002-2.828c-0.781-0.781-2.296-0.781-3.077,0L52.5,71.933V21.881C52.5,20.776,51.604,19.881,50.5,19.881   z"/></g></svg>');
 }
-tfoot tr td {padding: 70px 0;}  /*70px because footer is 70px in height*/
 footer {
     width: 100%;
     position: fixed;
