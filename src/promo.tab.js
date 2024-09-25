@@ -22,15 +22,11 @@ let ss_props = JSON.parse(sessionStorage.getItem('master_util'));
 let std_props = JSON.parse(sessionStorage.getItem('std_util'));
 
 let master_props = {    //very critical here, the order of the properties
-    'FORM_ARM': ss_props?.FORM_ARM || null,
+    'FORM_ARM': ss_props?.FORM_ARM || '',
     'SESSION': '2024',
-    'FORM_NAME': ss_props?.FORM_NAME || null,
-    'MASTER': ss_props?.MASTER || null,
+    'FORM_NAME': ss_props?.FORM_NAME || '',
+    'MASTER': ss_props?.MASTER || '',
 }
-
-const prmClass = 'JSS 3';
-const rptClass = 'JSS 2';
-const studentSnapshot = {'ABC/00/0001': 'Neil Gibson', 'ABC/00/0002': 'Miranda Salkilld'};
 
 let promoMsg, promoID;
 const changeFormBtn = document.querySelector('button#change_form');
@@ -39,16 +35,14 @@ const loginDialog = document.querySelector('dialog#login_dg');
 const adminDialog = document.querySelector('dialog#admin_dg');
 const prDialog = document.getElementById('pr_dg');
 const container = prDialog.querySelector('div.container');
-const container_login = loginDialog.querySelector('div.container');
-const container_admin = adminDialog.querySelector('div.container');
-const err_div = loginDialog.querySelector('.err_div');
+// const container_login = loginDialog.querySelector('div.container');
+// const container_admin = adminDialog.querySelector('div.container');
+// const err_div = loginDialog.querySelector('.err_div');
 
 //logout handler
 logoutBtn.onclick = () => {
-    sessionStorage.removeItem('master_util');
-    sessionStorage.removeItem('std_util');
-    sessionStorage.removeItem('snapshot');
-    location.reload();
+    sessionStorage.removeItem('master_util'), sessionStorage.removeItem('std_util'), sessionStorage.removeItem('snapshot');
+    location.replace('login-cat.html');
 }
 //populate promo_tab.html
 function insertData (master, students) {
@@ -90,26 +84,32 @@ function promoteBtnsHandler () {
 }
 
 //error div function
-function loginDataErr(str) {
-    err_div.lastElementChild.textContent = str;
-    container_login.classList.add('err');
+function loginDataErr(str, container, errDiv) {
+    errDiv.lastElementChild.textContent = str;
+    container.classList.add('err');
     const toid = setTimeout(() => {
-        container_login.classList.remove('err');
+        container.classList.remove('err');
         clearTimeout(toid);
     }, 3000);
 }
 let exception;
-async function getMasterFromServer (uname, upwd) {
+async function getMasterFromServer (uname, upwd, cont, err) {
+    exception = false;
     chooseConfig(configs[6]);
     const masterQ = query(collection(db, 'staffCollection'), and(where('username', '==', uname), where('password', '==', upwd)));
     await getDocs(masterQ).then(async res => {
         if (res.empty) {
-            loginDataErr('Error logging in.');
+            loginDataErr('Error logging in.', cont, err);
             exception = true;
             return;
         }
         const fname = res.docs[0].get('fullName');
         const resMap = res.docs[0].get('masterOfForm');
+        if (!resMap) {
+            loginDataErr('User not allowed.', cont, err);
+            exception = true;
+            return;
+        }
         const cls = Object.keys(resMap)[0];
         const arm = Object.values(resMap)[0];
         Object.defineProperties(master_props, { //object.defineproperties returns a modified master_props
@@ -120,7 +120,7 @@ async function getMasterFromServer (uname, upwd) {
         sessionStorage.setItem('master_util', JSON.stringify(master_props));
         ss_props = JSON.parse(sessionStorage.getItem('master_util'));
 
-        await getStudents(cls, arm);
+        await getStudents(cls, arm, cont, err);
         insertData(master_props, std_props);
         promoteBtnsHandler();
 
@@ -130,12 +130,13 @@ async function getMasterFromServer (uname, upwd) {
 }
 
 //function to get students
-async function getStudents (cls, arm) {
+async function getStudents (cls, arm, cont, err) {
+    exception = false;
     chooseConfig(configs[configs[7].indexOf(cls)]);  //try sub'ing cls for master_props.FORM_NAME
     const formQ = query(collection(db, 'session', master_props.SESSION, 'students'), where('arm', '==', arm), orderBy('last_name'));
     await getDocs(formQ).then(xres => {
         if (xres.empty) {
-            loginDataErr('Data unavailable.');
+            loginDataErr('Data unavailable.', cont, err);
             exception = true;
             return;
         }
@@ -159,8 +160,8 @@ changeFormBtn.onclick = () => {
 //on page load
 const admin_form = adminDialog.querySelector('form');
 const snapshot = JSON.parse(sessionStorage.getItem('snapshot'));
-if (atob(`/${snapshot?.data.code}/`) == 'ýD\x80\fF?') {
-    master_props.MASTER = snapshot.data.fullName;
+if (snapshot?.data.username !== 'guestmode') {
+    master_props.MASTER = snapshot?.data.fullName || '';
     admin = true;
     const SPAN = document.createElement('span');
     SPAN.className = 'padlock';
@@ -203,18 +204,20 @@ if (atob(`/${snapshot?.data.code}/`) == 'ýD\x80\fF?') {
 //login form handler
 const login_form = loginDialog.querySelector('form');
 login_form.addEventListener('submit', async (e) => {
+    const elem = loginDialog.lastElementChild;
+    const contnr = loginDialog.firstElementChild;
     e.preventDefault();
     e.submitter.disabled = true, e.submitter.nextElementSibling.disabled = true;
     e.submitter.classList.add('clk');
     const uname = document.querySelector('input#uname').value;
     const upwd = document.querySelector('input#upwd').value;
 
-    let exception = await getMasterFromServer(uname, upwd);
+    let exception = await getMasterFromServer(uname, upwd, elem, contnr);
     e.submitter.disabled = false, e.submitter.nextElementSibling.disabled = false;
     e.submitter.classList.remove('clk');
 
     if (!exception) {
-        loginDialog.querySelector('form').reset();
+        login_form.reset();
         loginDialog.close();
     }
 });
@@ -224,13 +227,16 @@ admin_form.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true, e.submitter.nextElementSibling.disabled = true;
     e.submitter.classList.add('clk');
+
+    const cont = adminDialog.firstElementChild;
+    const err = adminDialog.lastElementChild;
     const cls = admin_form.querySelector('select#cls_slct').value;
     const arm = admin_form.querySelector('select#arm_slct').value;
     
     master_props.FORM_NAME = cls;
     master_props.FORM_ARM = arm;
 
-    await getStudents(cls, arm);
+    await getStudents(cls, arm, cont, err);
     e.submitter.disabled = false, e.submitter.nextElementSibling.disabled = false;
     e.submitter.classList.remove('clk');
 

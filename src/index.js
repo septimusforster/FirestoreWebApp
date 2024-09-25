@@ -401,41 +401,44 @@ selectBtn.addEventListener('change', async (e) => {
         selectBtn.classList.remove('chg');
     }
 });
-caap.onclick = function () {
-    try {
-        chooseConfig(6)
-    } catch(err) {
-        console.log("Configuration already set.");
+//check if caap exists
+if (caap) {
+    caap.onclick = function () {
+        try {
+            chooseConfig(6)
+        } catch(err) {
+            console.log("Configuration already set.");
+        }
+        perm_dialog.showModal()
     }
-    perm_dialog.showModal()
-}
-uncaap.onclick = function () {
-    perm_dialog.close();
-    if (!clsTarget) return;
-    try {
-        chooseConfig(configs[7].indexOf(clsTarget));
-    } catch (err) {
-        console.log("Configuration is already set.");
+    uncaap.onclick = function () {
+        perm_dialog.close();
+        if (!clsTarget) return;
+        try {
+            chooseConfig(configs[7].indexOf(clsTarget));
+        } catch (err) {
+            console.log("Configuration is already set.");
+        }
     }
-}
-perm_form.addEventListener('submit', async (e) => {
-    e.submitter.disabled = true;
-    e.preventDefault();
-    selectBtn.classList.add('chg', 'clr');
-    const sw = [...perm_switches].map(s => s.checked ? 1 : 0).join('');
-    const fbData = parseInt(sw, 2);
-    const ssn = selectBtn.value;
-    const permRef = doc(db, ssn, 'EOT');
-    await updateDoc(permRef, {perm: fbData}).then(() => {
-        selectBtn.classList.remove('chg', 'clr');
-        selectBtn.classList.add('tck');
-        const toid = setTimeout(() => {
-            selectBtn.classList.remove('tck');
-            clearTimeout(toid);
-            e.submitter.disabled = false;
-        }, 5000);
+    perm_form.addEventListener('submit', async (e) => {
+        e.submitter.disabled = true;
+        e.preventDefault();
+        selectBtn.classList.add('chg', 'clr');
+        const sw = [...perm_switches].map(s => s.checked ? 1 : 0).join('');
+        const fbData = parseInt(sw, 2);
+        const ssn = selectBtn.value;
+        const permRef = doc(db, ssn, 'EOT');
+        await updateDoc(permRef, {perm: fbData}).then(() => {
+            selectBtn.classList.remove('chg', 'clr');
+            selectBtn.classList.add('tck');
+            const toid = setTimeout(() => {
+                selectBtn.classList.remove('tck');
+                clearTimeout(toid);
+                e.submitter.disabled = false;
+            }, 5000);
+        });
     });
-});
+}
 //logout handler
 document.querySelector('header > button.logout').addEventListener('click', () => {
     sessionStorage.removeItem('snapshot');
