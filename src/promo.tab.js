@@ -204,15 +204,15 @@ if (snapshot?.data.username !== 'guestmode') {
 //login form handler
 const login_form = loginDialog.querySelector('form');
 login_form.addEventListener('submit', async (e) => {
+    const cont = loginDialog.firstElementChild;
     const elem = loginDialog.lastElementChild;
-    const contnr = loginDialog.firstElementChild;
     e.preventDefault();
     e.submitter.disabled = true, e.submitter.nextElementSibling.disabled = true;
     e.submitter.classList.add('clk');
     const uname = document.querySelector('input#uname').value;
     const upwd = document.querySelector('input#upwd').value;
 
-    let exception = await getMasterFromServer(uname, upwd, elem, contnr);
+    let exception = await getMasterFromServer(uname, upwd, cont, elem);
     e.submitter.disabled = false, e.submitter.nextElementSibling.disabled = false;
     e.submitter.classList.remove('clk');
 
