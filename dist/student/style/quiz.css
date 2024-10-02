@@ -19,7 +19,7 @@ button > * {pointer-events: none;}
 main {display: grid;grid-template-rows: 7% 1fr 15%;}
 header {background-color: #fff;box-shadow: 0 3px 7px #ddd;padding: 0 2em;}
 header, div.hde {gap: 2em;}
-header, header > div, header button, span#cdtmr, footer, .fmgrp, dialog#instr-dg > div > div {display: flex;align-items: center;}
+header, header > div, header button, span#cdtmr, footer, .fmgrp, dialog#instr-dg > div > div, #oi-btns > button > span {display: flex;align-items: center;}
 header button {justify-content: center;border-radius: 50%;}
 div.hdd {margin-right: 2em;}
 div.hde > button {height: 2em;width: 2em;background-color: #1a73d8;}
@@ -38,7 +38,7 @@ div.user > span::before {
     transform: translate(0%, -50%) rotate(-90deg);
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="%231A73D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 }
-div.user > span::before, .oculus > *, button.close_dg::before {
+div.user > span::before, .oculus > *, button.close_dg::before, #oi-btns > button > span::before {
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -107,8 +107,26 @@ dialog#startup-dg > div {
     border-radius: 11px;
     box-shadow: 0 0 7px #ccc;
 }
-dialog#instr-dg > div {padding: 1em 2em;}
+dialog#instr-dg > div, dialog#subreq-dg > div {padding: 1em 2em;}
 dialog#instr-dg > div > div {justify-content: space-between;}
+dialog#subreq-dg > div {gap: 2em;}
+dialog#subreq-dg > div > div:last-of-type {display: flex;justify-content: flex-end;gap: 1em;}
+#oi-btns > button {padding: .5em 1.2em;background-color: rgba(0,0,0,.3);color: #fff;border-radius: 30px;border: 3px solid #fff;}
+#oi-btns > button > span {line-height: 1;}
+#oi-btns > button > span::before {
+    content: '';
+    height: 30px;
+    width: 30px;
+}
+#oi-btns > button:nth-child(1):focus {outline: 3px solid rgba(0,0,0,.3);}
+#oi-btns > button:nth-child(1) > span::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23FFFFFF" stroke-width="1" stroke-linecap="round"/></svg>');
+}
+#oi-btns > button:nth-child(2) {background-color: #1a73d8;}
+#oi-btns > button:nth-child(2):focus {outline: 3px solid #1a73d8;}
+#oi-btns > button:nth-child(2) > span::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -0.5 25 25" fill="none"><path d="M5.5 12.5L10.167 17L19.5 8" stroke="%23FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
 button.close_dg {position: relative;height: 32px;width: 32px;border-radius: 50%;transition: background-color .2s ease;}
 button.close_dg:hover {background-color: rgba(150,150,150,.1);}
 button.close_dg::before {

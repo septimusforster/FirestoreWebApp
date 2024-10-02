@@ -3,6 +3,7 @@
 const infoBtn = document.querySelector('#info-btn');
 const oculus = document.querySelector('button.oculus');
 const fmgrps = document.querySelectorAll('div.fmgrp');
+const submitBtn = document.querySelector('#submit-btn');
 const pasteBtn = document.querySelector('#paste-btn');
 const txtCode = document.getElementById('txtcode');
 const dg0btns = document.querySelectorAll('.dg0btn');
@@ -45,6 +46,10 @@ dg0btns[0].addEventListener('click', (e) => {
 dg0btns[1].addEventListener('click', (e) => {
     e.target.disabled = true;
     dg0btns[1].classList.add('clk');
+});
+//submit test btn
+submitBtn.addEventListener('click', () => {
+    document.querySelector('dialog#subreq-dg').showModal();
 });
 /*
 const asideP = document.querySelectorAll('aside > p');
