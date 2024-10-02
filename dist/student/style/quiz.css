@@ -1,0 +1,156 @@
+* {margin: 0;padding: 0;box-sizing: border-box;font: 500 16px system-ui;}
+html, body, main {height: 100vh;color: #555;}
+::-webkit-scrollbar {
+    width: 0;
+}
+/*
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {background-color: rgba(0,0,0,.5);border-radius: 10px;}
+*/
+/*initial rules*/
+button, dialog, input {border: 0;outline: none;}
+.fmgrp > button, #paste-btn{display: inline-flex; align-items: center;justify-content: center;}
+
+/*current rules*/
+button {cursor: pointer;background-color: transparent;}
+button > * {pointer-events: none;}
+main {display: grid;grid-template-rows: 7% 1fr 15%;}
+header {background-color: #fff;box-shadow: 0 3px 7px #ddd;padding: 0 2em;}
+header, div.hde {gap: 2em;}
+header, header > div, header button, span#cdtmr, footer, .fmgrp {display: flex;align-items: center;}
+header button {justify-content: center;border-radius: 50%;}
+div.hdd {margin-right: 2em;}
+div.hde > button {height: 2em;width: 2em;background-color: #1a73d8;}
+div.hde > button:focus > svg {transform: rotate(0deg);}
+div.user {max-width: 250px;z-index: 2;position: fixed;transform: translateY(-70%);left: 6em;padding: 1em;box-shadow: 0 7px 11px rgba(0,0,0,.3);border-radius: 0 0 7px 7px;background-color: #fff;transition: transform .4s ease;}
+div.hde > button:focus + div {transform: translateY(57%);}
+div.hde > button > svg {transform: rotate(-90deg);transition: transform .2s ease;}
+div.user > span {display: block;padding: 1em 1em 1em 2em;color: #1a73d8;position: relative;}
+div.user > span::before {
+    content: '';
+    position: absolute;
+    left: 0%;
+    top: 50%;
+    height: 24px;
+    width: 24px;
+    transform: translate(0%, -50%) rotate(-90deg);
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="%231A73D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+div.user > span::before, .oculus > * {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+div.hdd > span {font-size: 1.3em;}
+div.hdd > i {font-size: 2em;font-style: italic;}
+div.hdf {margin-left: auto;gap: 2em;}
+section {width: 85%;height: 100%;margin: 2em auto;display: grid;grid-template-columns: 100px 1fr;box-shadow: 0 3px 7px #ddd;/*position: relative;*/}
+.oculus {display: block;width:50%;margin: 0 auto 1em;padding: 1.4em;border-radius: 50%;position: relative;transition: background-color .2s ease;}
+.oculus > * {height: 32px;width: 32px;position: absolute;top: 50%; left: 50%;transform: translate(-50%, -50%);}
+.oculus > .opened {
+    opacity: 0;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="32" width="32" version="1.1" id="Capa_1" viewBox="0 0 473.628 473.628" xml:space="preserve"><g><g><g><path style="fill:%23555555;" d="M469.441,231.941c-4.235-4.958-105.314-121.213-232.615-121.213     c-127.326,0-228.405,116.255-232.64,121.213L0,236.826l4.186,4.885C8.446,246.645,109.5,362.9,236.826,362.9     c127.302,0,228.372-116.255,232.615-121.189l4.186-4.885L469.441,231.941z M236.826,276.144     c-21.72,0-39.342-17.615-39.342-39.334c0-21.695,17.615-39.318,39.342-39.318s39.31,17.615,39.31,39.318     C276.144,258.529,258.554,276.144,236.826,276.144z"/></g></g></g></svg>');
+}
+.oculus > .closed {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="%23555555" width="32" height="32" viewBox="0 0 24 24"><path d="M19.293,3.293,16.367,6.219A8.521,8.521,0,0,0,12,5C7.973,5,4.516,7.881,3,12a11.634,11.634,0,0,0,3.015,4.571L3.293,19.293a1,1,0,1,0,1.414,1.414l16-16a1,1,0,1,0-1.414-1.414ZM9.3,13.283A2.934,2.934,0,0,1,9,12a3,3,0,0,1,3-3,2.934,2.934,0,0,1,1.283.3ZM19.808,9.606A12.322,12.322,0,0,1,21,12c-1.516,4.119-4.973,7-9,7a8.363,8.363,0,0,1-1.457-.129Z"/></svg>')
+}
+.oculus.clk {
+    .opened {opacity: 1}
+    .closed {opacity: 0}
+}
+.oculus:hover, #paste-btn:hover {background-color: rgba(120, 120, 120, .1);}
+section > aside {position: relative;}
+section > aside:first-of-type > *:not(div#form) {text-align: center;padding: 1em;}
+section > aside:first-of-type > div:last-of-type {background-color: transparent;position: absolute;left: 50%;bottom: 0;transform: translate(-50%, 0%);}
+div#form {padding: 0 1em;height: 570px;border-radius: 7px / 11px;overflow-y: scroll;position: fixed;width: 320px;margin: 0 10px;z-index: 1;}
+.fmgrp {width: 45px;overflow: hidden;color: #fff;background-color: rgba(0,0,0,.5);border-radius: 45px;transition: width .5s ease;}
+.fmgrp:not(:first-of-type, :last-of-type) {margin: 12px 0;}
+.fmgrp.slt {width: 100%;}
+.fmgrp:hover {width: 100%;}
+.fmgrp > button {flex: 1 0 45px;height: 45px;font-size: 1em;border-radius: 50%;color: #fff;transition: transform .3s ease;}
+.fmgrp > button:not(:first-of-type):hover {background-color: rgba(0,0,0,.2);transform: scale(1.4)}
+
+span.ctr {font-family: monospace;font-size: 1.3em;}
+section > aside:nth-child(1) {background-color: #f3f3f3;}
+footer {justify-content: center;}
+
+::backdrop {background-color: rgba(0,0,0,.5);}
+dialog {
+    margin: 20% auto;
+    min-width: 350px;
+}
+dialog.error > div.err,
+dialog#startup-dg.start > div:nth-child(2) {
+    visibility: visible;
+}
+dialog.error > div:not(div.err),
+dialog > div:not(:last-of-type),
+dialog#startup-dg.start > div:not(:nth-child(2)) {
+    visibility: hidden;
+}
+dialog > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    padding: 2em;
+    background-color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    width: 100%;
+    transform: translate(-50%, 0%);
+    border-radius: 11px;
+    box-shadow: 0 0 7px #ccc;
+}
+dialog#startup-dg > div:nth-child(2) > div {color: #333;}
+div.err > span {position: relative;}
+div.err > span::before {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 50%;
+    transform: translate(0%, -50%);
+    height: 32px;
+    width: 32px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="%23FF4500" height="32" width="32" version="1.1" id="Layer_1" viewBox="0 0 512.018 512.018" xml:space="preserve"><g><g><path d="M509.769,480.665L275.102,11.331c-7.253-14.464-30.933-14.464-38.187,0L2.249,480.665    c-3.307,6.613-2.944,14.464,0.939,20.757c3.904,6.272,10.752,10.112,18.155,10.112h469.333c7.403,0,14.251-3.84,18.155-10.112    C512.713,495.129,513.075,487.278,509.769,480.665z M256.009,426.201c-11.776,0-21.333-9.557-21.333-21.333    s9.557-21.333,21.333-21.333s21.333,9.557,21.333,21.333S267.785,426.201,256.009,426.201z M277.342,340.867    c0,11.776-9.536,21.333-21.333,21.333c-11.797,0-21.333-9.557-21.333-21.333V191.534c0-11.776,9.536-21.333,21.333-21.333    c11.797,0,21.333,9.557,21.333,21.333V340.867z"/></g></g></svg>');
+}
+#cdediv {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    overflow: hidden;
+    transition: box-shadow .3s ease;
+}
+#cdediv:hover, #cdediv:has(input:focus) {
+    box-shadow: 0 0 5px #ddd;
+}
+#cdediv > input {padding: .7em 1em;flex: 1 0 70%;text-align: center;letter-spacing: 2px;}
+#paste-btn {width: 50px;height:50px;border-radius: 0 7px 7px 0;transition: background-color .2s ease;}
+.dg0btn {width: 75%;padding: 1em;border-radius: 7px;background-color: #1a73d8;color: #fff;transition: box-shadow .2s ease;position: relative;}
+.dg0btn::before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    border: 3px solid;
+    border-color: #fff transparent #fff #fff;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+.dg0btn.clk > span {opacity: 0}
+.dg0btn.clk::before {content: '';animation-name: carousel;}
+@keyframes carousel {
+    0% {transform: translate(-50%, -50%) rotate(0deg)}
+    100% {transform: translate(-50%, -50%) rotate(360deg)}
+}
+.dg0btn:hover {box-shadow: 0 0 3px rgba(0,0,0,.7);}
+
+@media screen and (max-width: 768px), (orientation: landscape) {
+    div#form {height: 450px;}
+}
