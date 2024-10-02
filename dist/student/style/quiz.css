@@ -19,7 +19,7 @@ button > * {pointer-events: none;}
 main {display: grid;grid-template-rows: 7% 1fr 15%;}
 header {background-color: #fff;box-shadow: 0 3px 7px #ddd;padding: 0 2em;}
 header, div.hde {gap: 2em;}
-header, header > div, header button, span#cdtmr, footer, .fmgrp {display: flex;align-items: center;}
+header, header > div, header button, span#cdtmr, footer, .fmgrp, dialog#instr-dg > div > div {display: flex;align-items: center;}
 header button {justify-content: center;border-radius: 50%;}
 div.hdd {margin-right: 2em;}
 div.hde > button {height: 2em;width: 2em;background-color: #1a73d8;}
@@ -38,7 +38,7 @@ div.user > span::before {
     transform: translate(0%, -50%) rotate(-90deg);
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="%231A73D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 }
-div.user > span::before, .oculus > * {
+div.user > span::before, .oculus > *, button.close_dg::before {
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -78,7 +78,8 @@ footer {justify-content: center;}
 ::backdrop {background-color: rgba(0,0,0,.5);}
 dialog {
     margin: 20% auto;
-    min-width: 350px;
+    min-width: 320px;
+    max-width: 350px;
 }
 dialog.error > div.err,
 dialog#startup-dg.start > div:nth-child(2) {
@@ -92,8 +93,10 @@ dialog#startup-dg.start > div:not(:nth-child(2)) {
 dialog > div {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 1em;
+}
+dialog#startup-dg > div {
+    align-items: center;
     padding: 2em;
     background-color: #fff;
     position: absolute;
@@ -103,6 +106,19 @@ dialog > div {
     transform: translate(-50%, 0%);
     border-radius: 11px;
     box-shadow: 0 0 7px #ccc;
+}
+dialog#instr-dg > div {padding: 1em 2em;}
+dialog#instr-dg > div > div {justify-content: space-between;}
+button.close_dg {position: relative;height: 32px;width: 32px;border-radius: 50%;transition: background-color .2s ease;}
+button.close_dg:hover {background-color: rgba(150,150,150,.1);}
+button.close_dg::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23777777" stroke-width="1" stroke-linecap="round"/></svg>');
 }
 dialog#startup-dg > div:nth-child(2) > div {color: #333;}
 div.err > span {position: relative;}
@@ -145,6 +161,8 @@ div.err > span::before {
 }
 .dg0btn.clk > span {opacity: 0}
 .dg0btn.clk::before {content: '';animation-name: carousel;}
+menu > span {font-weight: normal;padding: 2em 0;text-align: center;display: block;border-top: 1px solid #ccc;color: #aaa;}
+menu > li {font-weight: normal;margin-bottom: 1em;list-style-type: circle;text-indent: -23px;padding-inline-start: 20px;}
 @keyframes carousel {
     0% {transform: translate(-50%, -50%) rotate(0deg)}
     100% {transform: translate(-50%, -50%) rotate(360deg)}

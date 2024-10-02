@@ -1,11 +1,28 @@
-document.querySelector('#startup-dg').show();
+// document.querySelector('#startup-dg').show();
 
+const infoBtn = document.querySelector('#info-btn');
 const oculus = document.querySelector('button.oculus');
 const fmgrps = document.querySelectorAll('div.fmgrp');
 const pasteBtn = document.querySelector('#paste-btn');
 const txtCode = document.getElementById('txtcode');
 const dg0btns = document.querySelectorAll('.dg0btn');
+const closeBtns = document.querySelectorAll('.close_dg');
 
+//closing dialogs
+closeBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('dialog').forEach(dia => {
+            if (dia.contains(e.target)) {
+                dia.close();
+            }
+        });
+    });
+});
+
+//info btn
+infoBtn.onclick = () => {
+    document.querySelector('#instr-dg').showModal();
+}
 //oculus
 oculus.onclick = () => {
     oculus.classList.toggle('clk');
