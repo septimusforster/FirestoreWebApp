@@ -46,9 +46,11 @@ div.user > span::before, .oculus > *, button.close_dg::before, #oi-btns > button
 div.hdd > span {font-size: 1.3em;color: #fff;}
 div.hdd > i {font-size: 2em;font-style: italic;color: #ffa500;}
 div.hdd > * {text-shadow: 0 0 5px #333;}
+span#cdtmr {width: 250px;gap: .5em;}
+span#cdtmr > i {font-size: 1.5em;}
 div.hdf {margin-left: auto;gap: 2em;}
 section {width: 85%;height: 100%;margin: 2em auto;display: grid;grid-template-columns: 100px 1fr;box-shadow: 0 3px 7px #ddd;/*position: relative;*/}
-.oculus {display: block;width:50%;margin: 0 auto 1em;padding: 1.4em;border-radius: 50%;position: relative;transition: background-color .2s ease;}
+.oculus {display: block;width:50%;margin: 0 auto 1em;padding: 1.4em;border-radius: 50%;opacity: .2;pointer-events:none;position: relative;transition: background-color .2s ease;}
 .oculus > * {height: 32px;width: 32px;position: absolute;top: 50%; left: 50%;transform: translate(-50%, -50%);}
 .oculus > .opened {
     opacity: 0;
@@ -143,6 +145,7 @@ button.close_dg::before {
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23777777" stroke-width="1" stroke-linecap="round"/></svg>');
 }
 dialog#startup-dg > div:nth-child(2) > div {color: #333;}
+dialog#startup-dg > div:nth-child(2) > div:nth-child(1) {text-transform: uppercase;}
 div.err > span {position: relative;}
 div.err > span::before {
     content: '';
