@@ -1,14 +1,14 @@
 * {margin: 0;padding: 0;box-sizing: border-box;font: 500 16px system-ui;}
 html, body, main {height: 100vh;color: #555;}
-::-webkit-scrollbar {
-    width: 0;
+#form::-webkit-scrollbar {width: 0}
+section > aside:nth-child(2)::-webkit-scrollbar {
+    width: 7px;
 }
-/*
-::-webkit-scrollbar-track {
+section > aside:nth-child(2)::-webkit-scrollbar-track {
     background-color: #f1f1f1;
 }
-::-webkit-scrollbar-thumb {background-color: rgba(0,0,0,.5);border-radius: 10px;}
-*/
+section > aside:nth-child(2)::-webkit-scrollbar-thumb {background-color: rgba(0,0,0,.5);border-radius: 10px;}
+
 /*initial rules*/
 button, dialog, input {border: 0;outline: none;}
 input::placeholder {letter-spacing: 0px;}
@@ -17,7 +17,7 @@ input::placeholder {letter-spacing: 0px;}
 /*current rules*/
 button {cursor: pointer;background-color: transparent;}
 button > * {pointer-events: none;}
-main {display: grid;grid-template-rows: 7% 1fr 15%;}
+main {display: grid;grid-template-rows: 7% 80vh 15%;}
 header {background-color: #fff;box-shadow: 0 3px 7px #ddd;padding: 0 2em 0 0;}
 header, div.hde {gap: 2em;}
 header, header > div, header button, span#cdtmr, footer, .fmgrp, dialog#instr-dg > div > div, #oi-btns > button > span {display: flex;align-items: center;}
@@ -70,13 +70,18 @@ section > aside:first-of-type > div:last-of-type {background-color: transparent;
 div#form {padding: 0 1em;height: 570px;border-radius: 7px / 11px;overflow-y: scroll;position: fixed;width: 320px;margin: 0 10px;z-index: 1;}
 .fmgrp {width: 45px;overflow: hidden;color: #fff;background-color: rgba(0,0,0,.5);border-radius: 45px;transition: width .5s ease;}
 .fmgrp:not(:first-of-type, :last-of-type) {margin: 12px 0;}
-.fmgrp.slt {width: 100%;}
-.fmgrp:hover {width: 100%;}
+.fmgrp.slt, .fmgrp:hover {width: 100%;}
 .fmgrp > button {flex: 1 0 45px;height: 45px;font-size: 1em;border-radius: 50%;color: #fff;transition: transform .3s ease;}
-.fmgrp > button:not(:first-of-type):hover {background-color: rgba(0,0,0,.2);transform: scale(1.4)}
+.fmgrp > button:first-of-type {pointer-events: none;}
+.fmgrp > button:first-of-type.sol {background-color: #1a73d8;}
+.fmgrp > button:not(:first-of-type):hover, .fmgrp > button.slt {background-color: rgba(0,0,0,.2);transform: scale(1.4)}
 
 span.ctr {font-family: monospace;font-size: 1.3em;}
 section > aside:nth-child(1) {background-color: #f3f3f3;}
+section > aside:nth-child(2) {overflow-y: scroll;}
+section > aside:nth-child(2) > img {display: block;width: 100%;opacity: 0}
+section > aside:nth-child(2):hover, dialog {z-index: 1;}
+section > aside:nth-child(2) > * {pointer-events: none;}
 footer {justify-content: center;}
 
 ::backdrop {background-color: rgba(0,0,0,.5);}
@@ -192,7 +197,7 @@ menu > li {font-weight: normal;margin-bottom: 1em;list-style-type: circle;text-i
     0% {transform: translate(-50%, -50%) rotate(0deg)}
     100% {transform: translate(-50%, -50%) rotate(360deg)}
 }
-.dg0btn:hover {box-shadow: 0 0 3px rgba(0,0,0,.7);}
+.dg0btn:hover {box-shadow: 10px 12px 32px #bbb;}
 dialog#submitted-dg > div {
     align-items: center;
     box-shadow: 0 0 24px #ccc;

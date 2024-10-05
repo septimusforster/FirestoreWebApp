@@ -9,6 +9,7 @@ const timeElem = document.querySelector('span#cdtmr > i');
 const infoBtn = document.querySelector('#info-btn');
 const oculus = document.querySelector('button.oculus');
 const fmgrps = document.querySelectorAll('div.fmgrp');
+const /*iframe = document.querySelector('iframe'), */img = document.querySelector('aside:nth-child(2) > img');
 const submitBtn = document.querySelector('#submit-btn');
 const pasteBtn = document.querySelector('#paste-btn');
 const txtCode = document.getElementById('txtcode');
@@ -128,8 +129,6 @@ function updateHeaderTree () {
     oculus.insertAdjacentHTML('afterend', `<span class='ctr'>0</span> / ${ssTEST.questions}`);
     
     document.getElementById('date').textContent = ssTEST.startDate;
-    
-    updateFormTree(ssTEST.questions);
 }
 
 //closing dialogs
@@ -167,13 +166,19 @@ pasteBtn.onclick = () => {
 //start btn
 dg0btns[0].addEventListener('click', (e) => {
     e.target.disabled = true;
+    
+    updateFormTree(ssTEST.questions);
+    img.addEventListener('load', (e) => {
+        img.style.opacity = '1';
+        let id = setInterval(() => {
+            const timeElapsed = countdown();
+            if (timeElapsed) clearInterval(id);
+        }, 1000);
+    });
+
+    img.src = ssTEST.link;
     startupDialog.close();
-    let id = setInterval(() => {
-        const timeElapsed = countdown();
-        if (timeElapsed) clearInterval(id);
-    }, 1000);
-    // dg0btns[0].classList.add('clk');
-})
+});
 //code btn
 dg0btns[1].addEventListener('click', (e) => {
     startup(txtCode, e.target);
@@ -222,6 +227,7 @@ function startup(input, button) {
         if (input.value === 'passcode') {
             updateHeaderTree();
             startupDialog.classList.add('start');
+            dg0btns[0].focus();
             clearTimeout(toid);
         } else {
             startupDialog.classList.add('error');
@@ -251,6 +257,22 @@ function updateFormTree (n) {
             </div>
         `);
     }
+
+    const optBtns = document.querySelectorAll('.fmgrp > button');
+    optBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const par = e.target.parentElement;
+            const chdrn = [...par.children];
+            chdrn.forEach(c => c.classList.remove('slt'));
+
+            const idx = chdrn.indexOf(e.target);
+            par.children[idx].classList.add('slt');
+            par.children[0].classList.add('sol');
+
+            // chdrn.forEach(c => c.classList.toggle('slt', c == e.target));
+            // par.previousElementSibling.classList.add('slt');
+        });
+    });
 }
 function countdown () {
     const h = Math.floor(time / 60 / 60);
