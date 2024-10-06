@@ -16,7 +16,7 @@ input::placeholder {letter-spacing: 0px;}
 
 /*current rules*/
 button {cursor: pointer;background-color: transparent;}
-button > * {pointer-events: none;}
+button > *, .oculus, .fmgrp > button:first-of-type, div#form.dsbd > *, section > aside:nth-child(2) > * {pointer-events: none;}
 main {display: grid;grid-template-rows: 7% 80vh 15%;}
 header {background-color: #fff;box-shadow: 0 3px 7px #ddd;padding: 0 2em 0 0;}
 header, div.hde {gap: 2em;}
@@ -39,7 +39,7 @@ div.user > span::before {
     transform: translate(0%, -50%) rotate(-90deg);
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="%231A73D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 }
-div.user > span::before, .oculus > *, button.close_dg::before, #oi-btns > button > span::before {
+div.user > span::before, .oculus > *, button.close_dg::before, #oi-btns > button > span::before, .fmgrp > button.rgt:not(:first-of-type)::before {
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -50,7 +50,7 @@ span#cdtmr {width: 250px;gap: .5em;}
 span#cdtmr > i {font-size: 1.5em;}
 div.hdf {margin-left: auto;gap: 2em;}
 section {width: 85%;height: 100%;margin: 2em auto;display: grid;grid-template-columns: 100px 1fr;box-shadow: 0 3px 7px #ddd;/*position: relative;*/}
-.oculus {display: block;width:50%;margin: 0 auto 1em;padding: 1.4em;border-radius: 50%;opacity: .2;pointer-events:none;position: relative;transition: background-color .2s ease;}
+.oculus {display: block;width:50%;margin: 0 auto 1em;padding: 1.4em;border-radius: 50%;opacity: .2;position: relative;transition: background-color .2s ease;}
 .oculus > * {height: 32px;width: 32px;position: absolute;top: 50%; left: 50%;transform: translate(-50%, -50%);}
 .oculus > .opened {
     opacity: 0;
@@ -63,25 +63,43 @@ section {width: 85%;height: 100%;margin: 2em auto;display: grid;grid-template-co
     .opened {opacity: 1}
     .closed {opacity: 0}
 }
+.oculus.activate {pointer-events: fill;opacity: 1;}
 .oculus:hover, #paste-btn:hover {background-color: rgba(120, 120, 120, .1);}
 section > aside {position: relative;}
 section > aside:first-of-type > *:not(div#form) {text-align: center;padding: 1em;}
 section > aside:first-of-type > div:last-of-type {background-color: transparent;position: absolute;left: 50%;bottom: 0;transform: translate(-50%, 0%);}
 div#form {padding: 0 1em;height: 570px;border-radius: 7px / 11px;overflow-y: scroll;position: fixed;width: 320px;margin: 0 10px;z-index: 1;}
-.fmgrp {width: 45px;overflow: hidden;color: #fff;background-color: rgba(0,0,0,.5);border-radius: 45px;transition: width .5s ease;}
+.fmgrp {width: 45px;overflow: hidden;color: #fff;background-color: rgba(0,0,0,.7);border-radius: 45px;transition: width .5s ease;}
 .fmgrp:not(:first-of-type, :last-of-type) {margin: 12px 0;}
 .fmgrp.slt, .fmgrp:hover {width: 100%;}
-.fmgrp > button {flex: 1 0 45px;height: 45px;font-size: 1em;border-radius: 50%;color: #fff;transition: transform .3s ease;}
-.fmgrp > button:first-of-type {pointer-events: none;}
+.fmgrp > button {flex: 1 0 45px;height: 45px;font-size: 1em;color: #fff;}
 .fmgrp > button:first-of-type.sol {background-color: #1a73d8;}
-.fmgrp > button:not(:first-of-type):hover, .fmgrp > button.slt {background-color: rgba(0,0,0,.2);transform: scale(1.4)}
+.fmgrp > button:not(:first-of-type) {position: relative;}
+.fmgrp > button.rgt:not(:first-of-type)::before,
+.fmgrp > button.wrg:not(:first-of-type)::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 32px;
+    width: 32px;
+}
+.fmgrp > button.rgt > span, .fmgrp > button.wrg > span, .fmgrp > button.null {opacity: 0;}
+.fmgrp > button.rgt:not(:first-of-type)::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -0.5 25 25" fill="none"><path d="M5.5 12.5L10.167 17L19.5 8" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+.fmgrp > button.wrg:not(:first-of-type)::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round"/></svg>')
+}
+.fmgrp > button:not(:first-of-type):hover, .fmgrp > button.slt {background-color: rgba(0,0,0,.3);}
 
 span.ctr {font-family: monospace;font-size: 1.3em;}
 section > aside:nth-child(1) {background-color: #f3f3f3;}
 section > aside:nth-child(2) {overflow-y: scroll;}
 section > aside:nth-child(2) > img {display: block;width: 100%;opacity: 0}
 section > aside:nth-child(2):hover, dialog {z-index: 1;}
-section > aside:nth-child(2) > * {pointer-events: none;}
+section > aside:nth-child(2).slt {z-index: 0}
 footer {justify-content: center;}
 
 ::backdrop {background-color: rgba(0,0,0,.5);}

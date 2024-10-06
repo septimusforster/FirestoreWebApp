@@ -1,4 +1,3 @@
-// document.querySelector('#submitted-dg').show();
 
 const startupDialog = document.querySelector('#startup-dg');
 const scoreDialog = document.querySelector('#score-dg');
@@ -8,7 +7,6 @@ startupDialog.show();
 const timeElem = document.querySelector('span#cdtmr > i');
 const infoBtn = document.querySelector('#info-btn');
 const oculus = document.querySelector('button.oculus');
-const fmgrps = document.querySelectorAll('div.fmgrp');
 const /*iframe = document.querySelector('iframe'), */img = document.querySelector('aside:nth-child(2) > img');
 const submitBtn = document.querySelector('#submit-btn');
 const pasteBtn = document.querySelector('#paste-btn');
@@ -19,6 +17,7 @@ const yesBtn = document.querySelector('#oi-btns > button:nth-child(2)');
 const resultBtn = document.querySelector('#submitted-dg button');
 const progressbar = document.querySelector('.progressbar');
 const scorebar = document.querySelector('#score-dg > div > div:nth-child(3)');
+const form = document.querySelector('div#form');
 
 //SESSION STORAGE ITEMS
 //ss.ENG = subject,//
@@ -155,7 +154,7 @@ infoBtn.onclick = () => {
 //oculus
 oculus.onclick = () => {
     oculus.classList.toggle('clk');
-    fmgrps.forEach(div => div.classList.toggle('slt'));
+    document.querySelectorAll('div.fmgrp').forEach(div => div.classList.toggle('slt'));
 }
 //paste btn
 pasteBtn.onclick = () => {
@@ -165,6 +164,7 @@ pasteBtn.onclick = () => {
     });
 }
 //start btn
+let timeElapsed;
 dg0btns[0].addEventListener('click', (e) => {
     e.target.disabled = true;
     
@@ -172,7 +172,7 @@ dg0btns[0].addEventListener('click', (e) => {
     img.addEventListener('load', (e) => {
         img.style.opacity = '1';
         let id = setInterval(() => {
-            const timeElapsed = countdown();
+            timeElapsed = countdown();
             if (timeElapsed) clearInterval(id);
         }, 1000);
     });
@@ -188,29 +188,45 @@ txtCode.addEventListener('keyup', (e) => {
     if (e.key === 'Enter') startup(e.target, dg0btns[1]);
 });
 //submit test request btn
+let autoSubmit = false;
 submitBtn.addEventListener('click', () => {
-    document.querySelector('dialog#subreq-dg').showModal();
+    const submitDialog = document.querySelector('dialog#subreq-dg');
+    
+    if (autoSubmit) {
+        submitDialog.querySelector('div > div:first-of-type').textContent = 'Submitting test...';
+        submitDialog.querySelector('#io-btns').children[0].style.visibility = 'hidden';
+        yesBtn.click();
+    }
+    submitDialog.showModal();
 });
 //submit YES btn
+let mark = 0;
 yesBtn.addEventListener('click', (e) => {
     const par = e.target.parentElement;
     const chdrn = [...par.children];
     chdrn.forEach(ch => ch.disabled = true);
     yesBtn.classList.add('clk');
-
+    
+    form.classList.add('dsbd');
+    timeElapsed = true;
+    //calculate test mark
+    const f = answered.filter((a, i) => a == ssTEST.chosen[i]);
+    mark = f.length;
     let id = setTimeout(() => {
+        clearTimeout(id);
+        markTest();
         yesBtn.closest('dialog').close();
         yesBtn.classList.remove('clk');
-        console.log(answered);
-        clearTimeout(id);
+        document.querySelector('#submitted-dg').show();
+        oculus.classList.add('activate');
+        document.querySelector('section > aside:nth-child(2)').classList.add('slt');
     }, 3000);
 });
 //result btn
-const score = 38;
-scorebar.textContent = `${score} / ${ssTEST.questions}`;
-const cent = score / ssTEST.questions * 100;
-let scorePercent = parseInt(cent.toFixed());
 resultBtn.addEventListener('click', (e) => {
+    scorebar.textContent = `${mark} / ${ssTEST.questions}`;
+    const cent = mark / ssTEST.questions * 100;
+    let scorePercent = parseInt(cent.toFixed());
     scoreDialog.showModal();
     let progress = 0;
 
@@ -252,7 +268,6 @@ function updateprogress(progress) {
     progressbar.style.setProperty("--progress", progress + "%");
 }
 function updateFormTree (n) {
-    const form = document.querySelector('div#form');
     const choice = ssTEST.choice;
     let btns = '';
     for (let l = 0; l < choice; l++) {btns += `<button type="button"><span>${['A','B','C','D','E'][l]}</span></button>`}
@@ -295,9 +310,28 @@ function countdown () {
     timeElem.innerHTML = `${h} : ${m} : ${s}`;
     time--;
 
-    if (h + m + s == 0) return true;
+    if (h + m + s == 0) {
+        timeElapsed = true;
+        return timeElapsed;
+    }
 }
-
+function markTest () {
+    const chosen = ssTEST.chosen;
+    const fmgrp = document.querySelectorAll('.fmgrp');
+    let mark_scheme = chosen.map((x, i) => x == answered[i] ? true : Number(x));
+    for (let i = 0; i < chosen.length; i++) {
+        if (typeof mark_scheme[i] == 'boolean') {
+            fmgrp[i].querySelector('button.slt').classList.add('rgt');
+        } else {
+            fmgrp[i].children[mark_scheme[i]].classList.add('rgt');
+            try {
+                fmgrp[i].querySelector('button.slt').classList.add('wrg')
+            } catch {
+                fmgrp[i].querySelectorAll('button:not(:first-of-type, .rgt)').forEach(btn => btn.classList.add('null'));
+            }
+        }
+    }
+}
 
 
 
