@@ -103,6 +103,7 @@ const student = `{
 
 const ssTEST = JSON.parse(test);
 const ssSTUDENT = JSON.parse(student);
+let answered = new Array(ssTEST.questions);
 
 const dur = ssTEST.duration;
 let time = dur * 60;
@@ -196,6 +197,13 @@ yesBtn.addEventListener('click', (e) => {
     const chdrn = [...par.children];
     chdrn.forEach(ch => ch.disabled = true);
     yesBtn.classList.add('clk');
+
+    let id = setTimeout(() => {
+        yesBtn.closest('dialog').close();
+        yesBtn.classList.remove('clk');
+        console.log(answered);
+        clearTimeout(id);
+    }, 3000);
 });
 //result btn
 const score = 38;
@@ -219,7 +227,6 @@ resultBtn.addEventListener('click', (e) => {
 
 /***** FUNCTIONS *****/
 //const, let, var of functions
-// const cbtArray = new Array(ssTEST.questions);
 function startup(input, button) {
     button.disabled = true;
     dg0btns[1].classList.add('clk');
@@ -267,10 +274,14 @@ function updateFormTree (n) {
 
             const idx = chdrn.indexOf(e.target);
             par.children[idx].classList.add('slt');
-            par.children[0].classList.add('sol');
+            const firstElemChild = par.children[0]
+            firstElemChild.classList.add('sol');
 
-            // chdrn.forEach(c => c.classList.toggle('slt', c == e.target));
-            // par.previousElementSibling.classList.add('slt');
+            const start = Number(firstElemChild.textContent) - 1;
+            answered.splice(start, 1, idx);
+
+            const opt = answered.filter(x => Boolean(x)).length;
+            document.querySelector('span.ctr').textContent = opt;
         });
     });
 }

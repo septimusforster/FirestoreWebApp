@@ -297,6 +297,11 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
     );
 }
 
-@media screen and (max-width: 768px), (orientation: landscape) {
-    div#form {height: 450px;}
+@media screen and (max-width: 1024px) {
+    div#form {height: 600px;}
+    section {width: 100%;}
+}
+@media (max-width: 768px) and (orientation: landscape) {
+    div#form {height: 320px;}
+    section {width: 100%;}
 }
