@@ -68,7 +68,7 @@ section {width: 85%;height: 100%;margin: 2em auto;display: grid;grid-template-co
 section > aside {position: relative;}
 section > aside:first-of-type > *:not(div#form) {text-align: center;padding: 1em;}
 section > aside:first-of-type > div:last-of-type {background-color: transparent;position: absolute;left: 50%;bottom: 0;transform: translate(-50%, 0%);}
-div#form {padding: 0 1em;height: 570px;border-radius: 7px / 11px;overflow-y: scroll;position: fixed;width: 320px;margin: 0 10px;z-index: 1;}
+div#form {padding: 0 1em;height: 520px;border-radius: 7px / 11px;overflow-y: scroll;position: fixed;width: 320px;margin: 0 10px;z-index: 1;}
 .fmgrp {width: 45px;overflow: hidden;color: #fff;background-color: rgba(0,0,0,.7);border-radius: 45px;transition: width .5s ease;}
 .fmgrp:not(:first-of-type, :last-of-type) {margin: 12px 0;}
 .fmgrp.slt, .fmgrp:hover {width: 100%;}
@@ -85,7 +85,7 @@ div#form {padding: 0 1em;height: 570px;border-radius: 7px / 11px;overflow-y: scr
     height: 32px;
     width: 32px;
 }
-.fmgrp > button.rgt > span, .fmgrp > button.wrg > span, .fmgrp > button.null {opacity: 0;}
+.fmgrp > button.rgt > span, .fmgrp > button.wrg > span {opacity: 0;}
 .fmgrp > button.rgt:not(:first-of-type)::before {
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -0.5 25 25" fill="none"><path d="M5.5 12.5L10.167 17L19.5 8" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 }
@@ -316,7 +316,7 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
 }
 
 @media screen and (max-width: 1024px) {
-    div#form {height: 600px;}
+    div#form {height: 600px;font-size: .5em;}
     section {width: 100%;}
 }
 @media (max-width: 768px) and (orientation: landscape) {

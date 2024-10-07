@@ -102,8 +102,10 @@ const student = `{
 
 const ssTEST = JSON.parse(test);
 const ssSTUDENT = JSON.parse(student);
-let answered = new Array(ssTEST.questions);
 
+//const, var, let of FUNCTIONS
+let didNotAnswer = 0;
+let answered = new Array(ssTEST.questions);
 const dur = ssTEST.duration;
 let time = dur * 60;
 
@@ -141,7 +143,7 @@ closeBtns.forEach(btn => {
             if (dia.id == 'score-dg') {
                 progressbar.setAttribute('aria-value', '0');
                 progressbar.style.setProperty("--progress", '0');
-                progressbar.toggleAttribute('data-bullseye');
+                progressbar.toggleAttribute('data-bullseye', false);
                 scorebar.classList.remove('sco');
             }
         });
@@ -235,19 +237,19 @@ resultBtn.addEventListener('click', (e) => {
         updateprogress(progress);
         if (progress == scorePercent) {
             clearInterval(intervalID);
-            progressbar.toggleAttribute('data-bullseye');
+            progressbar.toggleAttribute('data-bullseye', true);
             scorebar.classList.add('sco');
+            console.log(didNotAnswer);
         }
     }, 50);
 });
 
 /***** FUNCTIONS *****/
-//const, let, var of functions
 function startup(input, button) {
     button.disabled = true;
     dg0btns[1].classList.add('clk');
     let toid = setTimeout(() => {
-        if (input.value === 'passcode') {
+        if (input.value === ssTEST.code) {
             updateHeaderTree();
             startupDialog.classList.add('start');
             dg0btns[0].focus();
@@ -312,8 +314,8 @@ function countdown () {
 
     if (h + m + s == 0) {
         timeElapsed = true;
-        return timeElapsed;
     }
+    return timeElapsed;
 }
 function markTest () {
     const chosen = ssTEST.chosen;
@@ -323,12 +325,15 @@ function markTest () {
         if (typeof mark_scheme[i] == 'boolean') {
             fmgrp[i].querySelector('button.slt').classList.add('rgt');
         } else {
-            fmgrp[i].children[mark_scheme[i]].classList.add('rgt');
             try {
-                fmgrp[i].querySelector('button.slt').classList.add('wrg')
+                fmgrp[i].querySelector('button.slt').classList.add('wrg');
+                fmgrp[i].children[mark_scheme[i]].classList.add('spare');
             } catch {
-                fmgrp[i].querySelectorAll('button:not(:first-of-type, .rgt)').forEach(btn => btn.classList.add('null'));
+                didNotAnswer++;
             }
+            fmgrp[i].querySelectorAll('button:not(:first-of-type, .wrg, .spare)').forEach(btn => {
+                if (btn != fmgrp[i].children[mark_scheme[i]]) btn.firstElementChild.innerHTML = '&bullet;';
+            });
         }
     }
 }
