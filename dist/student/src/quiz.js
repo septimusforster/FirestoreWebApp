@@ -78,7 +78,7 @@ const test = `{
     "startDate": "2024-10-04",
     "code": "8XH94ZRA"
 }`;
-
+//STORE TEST DURATION MILLISECONDS IN CACHE TO EXPIRE AFTERWARDS
 //ss.snapshot = student
 const student = `{
     "id": "R7qu1iKtYYmqQcRKLowJ",
@@ -208,8 +208,8 @@ yesBtn.addEventListener('click', (e) => {
     const chdrn = [...par.children];
     chdrn.forEach(ch => ch.disabled = true);
     yesBtn.classList.add('clk');
+    [form, submitBtn].forEach(elem => elem.classList.add('dsbd'));
     
-    form.classList.add('dsbd');
     timeElapsed = true;
     //calculate test mark
     const f = answered.filter((a, i) => a == ssTEST.chosen[i]);
@@ -301,6 +301,9 @@ function updateFormTree (n) {
             document.querySelector('span.ctr').textContent = opt;
         });
     });
+
+    //show submitBtn
+    submitBtn.removeAttribute('style');
 }
 function countdown () {
     const h = Math.floor(time / 60 / 60);

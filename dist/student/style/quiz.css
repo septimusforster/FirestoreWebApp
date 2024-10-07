@@ -16,7 +16,7 @@ input::placeholder {letter-spacing: 0px;}
 
 /*current rules*/
 button {cursor: pointer;background-color: transparent;}
-button > *, .oculus, .fmgrp > button:first-of-type, div#form.dsbd > *, section > aside:nth-child(2) > * {pointer-events: none;}
+button > *, .oculus, .fmgrp > button:first-of-type, div#form.dsbd > *, section > aside:nth-child(2) > *, button#submit-btn.dsbd {pointer-events: none;}
 main {display: grid;grid-template-rows: 7% 80vh 15%;}
 header {background-color: #fff;box-shadow: 0 3px 7px #ddd;padding: 0 2em 0 0;}
 header, div.hde {gap: 2em;}
@@ -66,7 +66,9 @@ section {width: 85%;height: 100%;margin: 2em auto;display: grid;grid-template-co
 .oculus.activate {pointer-events: fill;opacity: 1;}
 .oculus:hover, #paste-btn:hover {background-color: rgba(120, 120, 120, .1);}
 section > aside {position: relative;}
-section > aside:first-of-type > *:not(div#form) {text-align: center;padding: 1em;}
+section > aside:first-of-type > *:not(div#form, div#form + div) {text-align: center;padding: 1em;}
+button#submit-btn {color: #fff;background-color: #1a73d8;padding: 1em;border-radius: 7px;}
+button#submit-btn.dsbd {background-color: rgba(0,0,0,.1)}
 section > aside:first-of-type > div:last-of-type {background-color: transparent;position: absolute;left: 50%;bottom: 0;transform: translate(-50%, 0%);}
 div#form {padding: 0 1em;height: 520px;border-radius: 7px / 11px;overflow-y: scroll;position: fixed;width: 320px;margin: 0 10px;z-index: 1;}
 .fmgrp {width: 45px;overflow: hidden;color: #fff;background-color: rgba(0,0,0,.7);border-radius: 45px;transition: width .5s ease;}
