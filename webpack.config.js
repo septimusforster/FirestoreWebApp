@@ -108,7 +108,7 @@ module.exports = {
 }
 */
 //ROOT promo.tab.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/promo.tab.js",
@@ -118,7 +118,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STAFFER index.js
 /*
 module.exports = {
@@ -202,7 +202,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STUDENT logon.js
 /*
 module.exports = {
@@ -251,6 +251,18 @@ module.exports = {
     watch: true
 }
 */
+//STUDENT quiz.js
+
+module.exports = {
+    mode: "development",
+    entry: "./dist/student/src/quiz.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/student/src"),
+        filename: "quiz_bundle.js"
+    },
+    watch: true
+}
+
 //STUDENT result.js
 /*
 module.exports = {

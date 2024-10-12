@@ -1,5 +1,5 @@
-import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, doc, getDocs, updateDoc, serverTimestamp } from "firebase/firestore";
 
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 // var [f1, f2, f3, f4, f5, f6] = configs;
@@ -131,19 +131,21 @@ async function getDocuments(category, subject) {
     timelineBar.innerHTML = '';
     let counter = 0;
     let payload = [];
-    let sb = btoa(subject);
     querySnapshot.forEach((doc, i) => {
         let data = doc.data();
         let docName = doc.data().name;
         let title = docName.slice(0,docName.lastIndexOf('.'));
-        if (category === 'test') payload.push(data)
+        if (category === 'test') {
+            data.chosen = [];
+            payload.push(data);
+        }
         timelineBar.insertAdjacentHTML('beforeend', `
         <div class="timeline-content">
             <input type="checkbox" class="accordion__input" id="cb${counter+1}"/>
             <label for="cb${counter+1}" class="accordion__label" title="${title}">#${data.catNo || counter+1} ${title}</label>
             <div class="accordion__content">
                 <p>${data.info || data.instr[0] || "No messages."}</p>
-                ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}&sb=${sb}`}" ${category === 'test' ? '' : 'download='+title}>Download ${data.catPath || 'test'}</a>` : ""}    
+                ${title != "No topic" ? `<a href="${data.dest || `./quiz.html?ct=${data.catNo}&uid=${ss.id}&sb=${subject}`}" ${category === 'test' ? '' : 'download='+title}>Download ${data.catPath || 'test'}</a>` : ""}    
             </div>
         </div>
         `)
@@ -169,23 +171,24 @@ subjectNav.addEventListener('click', (e) => {
         // use testPayload, which is an array of the objects, to setup the test links
         timelineBar.innerHTML = '';
         const doc = JSON.parse(sessionStorage.getItem(e.target.id));
-        let sb = btoa(e.target.id);
-        let dt = Date.now();
+        let sb = e.target.id;
+        // let dt = Date.now();
         doc.forEach((data, i) => {
             let docName = data.name;
             let title = docName.slice(0,docName.lastIndexOf('.'));
-            let [h, m] = data.startTime.split(':');
-            const d = new Date(data.startDate).setHours(Number(h), Number(m) - 2);
-            const e = new Date(data.startDate).setHours(Number(h), Number(m) + data.duration);
-            let cde = '';
-            if (d < dt && e > dt) cde = `<code>${data.code}</code>`; 
+            let cde = `<code>${data.code}</code>`;
+            // let [h, m] = data.startTime.split(':');
+            // const d = new Date(data.startDate).setHours(Number(h), Number(m) - 2);
+            // const e = new Date(data.startDate).setHours(Number(h), Number(m) + data.duration);
+            // let cde = '';
+            // if (d < dt && e > dt) cde = `<code>${data.code}</code>`;
             timelineBar.insertAdjacentHTML('beforeend', `
                 <div class="timeline-content">
                     <input type="checkbox" class="accordion__input" id="cb${i+1}"/>
                     <label for="cb${i+1}" class="accordion__label" title="${title}">#${data.catNo} ${title}</label>
                     <div class="accordion__content">
                         <p>${data.instr[0] || "No instructions."}</p>
-                        ${title != "No topic" ? `<a href="${data.dest || `./test.html?ct=${data.catNo}&uid=${ss.id}&sb=${sb}`}">Download test</a>` : ""}
+                        ${title != "No topic" ? `<a href="${data.dest || `./quiz.html?ct=${data.catNo}&uid=${ss.id}&sb=${sb}`}">Download test</a>` : ""}
                         ${cde}
                     </div>
                 </div>
