@@ -243,7 +243,7 @@ cOSForm.addEventListener('submit', async (e) => {
     })
     // console.log(Object.keys(obj))
     // console.log(update)
-    const q = query(collection(db, "students"), where("admission_no", "==", q_adm));
+    const q = query(collection(db,'session', session, 'students'), where("admission_no", "==", q_adm));
     const docSnap = await getDocs(q);
     if (docSnap.empty) return window.alert('No such student exists.');
     let id, offering;
@@ -251,19 +251,17 @@ cOSForm.addEventListener('submit', async (e) => {
        id = doc.id;
        offering = doc.data().offered;
     })
-    const studentRef = doc(db, "students", id);
+    const studentRef = doc(db, 'session', session, 'students', id);
     if (e.submitter.id === 'add') {
         await updateDoc(studentRef, {
             offered: { ...offering, ...obj }
         })
         window.alert('Subjects have been successfully added.')
     } else {
-        // console.log(offering)
         const mykeys = Object.keys(obj);
         mykeys.forEach(k => {
             delete offering[k];
-        })
-        // console.log(offering)
+        });
         await updateDoc(studentRef, {
             offered: offering
         })
@@ -271,7 +269,7 @@ cOSForm.addEventListener('submit', async (e) => {
     }
     chooseConfig(6);
     formStatus(e);
-})
+});
 
 const mulEntForm = document.forms.mulEntForm;
 mulEntForm.addEventListener('submit', async (e) => {
@@ -285,18 +283,17 @@ mulEntForm.addEventListener('submit', async (e) => {
     const classIndex = configs[7].indexOf(cls);
     chooseConfig(classIndex);
 
-    const q = query(collection(db, "students"), and(where("last_name","==", lname), where("first_name","==", fname), where("other_name", "==", oname)), limit(repetitions));
+    const q = query(collection(db, 'session', session, 'students'), and(where("last_name","==", lname), where("first_name","==", fname), where("other_name", "==", oname)), limit(repetitions));
     const docSnap = await getDocs(q);
     if (docSnap.empty) return window.alert("Oops! No student could be found in that class.");
     let size = docSnap.size;
-    // console.log(size, ' was found and removed.')
     
     var IDs = [];
     docSnap.forEach(doc => {
         IDs.push(doc.id)
     })
     const promises = IDs.map(async id => {
-        await deleteDoc(doc(db, "students", id));
+        await deleteDoc(doc(db, 'session', session, "students", id));
     })
     await Promise.all(promises);
     if (size < 40 && size > 1) {
@@ -387,15 +384,16 @@ mOFForm.addEventListener('submit', async (e) => {
         await updateDoc(doc(db, "staffCollection", uid), {
             masterOfForm: { [cls]: arm },
         })
-        window.alert("User has been declared 'Master of Form'.")
+        window.alert("User has been DECLARED 'Master of Form'.")
     } else {
         await updateDoc(doc(db, "staffCollection", uid), {
             masterOfForm: deleteField(),
         })
-        window.alert("User has been undeclared 'Master of Form'.")
+        window.alert("User has been UNDECLARED 'Master of Form'.")
     }
     formStatus(e);
 })
+/* eOTForm redundant - to be removed */
 const eOTForm = document.forms.eOTForm;
 eOTForm.addEventListener('submit', async (e) => {
     formStatus(e, 'enabled');
@@ -410,7 +408,8 @@ eOTForm.addEventListener('submit', async (e) => {
         window.alert(error)
     }
     formStatus(e);
-})
+});
+/*EOF*/
 const extForm = document.forms.extForm;
 extForm.addEventListener('submit', async (e) => {
     formStatus(e, 'enabled');
@@ -462,7 +461,7 @@ stampForm.addEventListener('submit', async (e) => {
     const dest = ref(storage, "img/" + fileName);
     await uploadBytes(dest, file).then(async res => {
         await getDownloadURL(res.ref).then(async url => {
-            await updateDoc(doc(db, "reserved", "EOT"), { stamp: url });
+            await updateDoc(doc(db, "EOT", session), { stamp: url });
             window.alert("Stamp upload successful.")
         })
     })
@@ -503,6 +502,4 @@ cOEForm.addEventListener("submit", async (e) => {
     await updateDoc(doc(db, "activities/test/" + sub, testID), { startDate });
     window.alert("Test/Exam has been updated.");
     formStatus(e);
-})
-
-// const delRef = await updateDoc(doc(db, "scores", ))
+});

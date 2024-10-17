@@ -13,7 +13,7 @@ html, body {
 .container {
     height: 100%;
     display: grid;
-    grid-template-rows: 7% 6% 1fr;
+    grid-template-rows: 5% 6% 1fr;
 }
 header, header > div, .dir_lnks, .btn, nav > .h4, .nav_btns > div, .ex {
     display: flex;
@@ -44,7 +44,7 @@ button > *, .btn > * {
 header {
     background-color: #009578;
     color: #fff;
-    padding: 1em 2em;
+    padding: 0 2em;
 }
 header > div, .nav_btns > div {
     gap: 1em;
