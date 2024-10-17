@@ -145,21 +145,11 @@ yesBtn.addEventListener('click', async (e) => {
     [form, submitBtn].forEach(elem => elem.classList.add('dsbd'));
     //stop timepiece
     timeElapsed = true;
-    console.log(lvl);
+
+    //calculate test mark
+    markTest();
     //save test score
     await saveScore();
-    //calculate test mark
-    const f = answered.filter((a, i) => a == ssTEST.chosen[i]);
-    mark = f.length;
-    // let id = setTimeout(() => {
-        //     clearTimeout(id);
-        markTest();
-        yesBtn.closest('dialog').close();
-        yesBtn.classList.remove('clk');
-        document.querySelector('#submitted-dg').show();
-        oculus.classList.add('activate');
-        document.querySelector('section > aside:nth-child(2)').classList.add('slt');
-    // }, 3000);
 });
 //result btn
 resultBtn.addEventListener('click', (e) => {
@@ -302,49 +292,57 @@ function markTest () {
 let score = 0, session = '2025', term = 0;
 let NULLS = new Array(8);
 NULLS.fill(null);
-
+console.log(ssSTUDENT.id)
 async function saveScore () {
     //calc score
-    score = Number((mark/ssTEST.questions).toFixed(1));
+    const f = answered.filter((a, i) => a == ssTEST.chosen[i]);
+    mark = f.length;
+    score = Number((mark*ssTEST.rating/ssTEST.questions).toFixed(1));
     //try catch the following
         //instantiate a transaction to:
             //get current array of scores for this subject
     try {
-        let tx = await runTransaction(db, async transaction => {
-            const getref = transaction.get(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'record'));
-            const res = getref.SUBJECT?.[term] || NULLS;
-            const start = [,0,2,4,6][CATNO];
-            res.splice(start, 1, score);
-            //update the array of scores for this subject
-            const setref = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'records'), {
-                [SUBJECT]: res
-            }, {merge: true});
-            //save ANSWERED array with timestamp
-            const setref1 = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'CBT', ssSTUDENT.id), {
-                'answers': answered,
-                'didNotAnswer': didNotAnswer,
-                'dateModified': serverTimestamp()
+        const getref = await getDoc(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'record'));
+        console.log(getref.data())
+        const res = /*getref.get(SUBJECT)?.[term] || */NULLS;
+        const start = [,0,2,4,6][CATNO];
+
+        console.log(res, start)
+        if (res[start] != null) {
+            const err = "This particular test has been sat for.";
+            const errnote = document.querySelector('.errnote');
+            errnote.querySelector('span').textContent = err;
+            errnote.classList.add('shw');
+            const errID = setTimeout(() => {
+                errnote.classList.remove('shw');
+                clearTimeout(errID);
+            }, 5000);
+        } else {
+            let tx = await runTransaction(db, async transaction => {           
+                res.splice(start, 1, score);
+                //update the array of scores for this subject
+                const setref = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'records'), {
+                    [SUBJECT]: res
+                }, {merge: true});
+                //save ANSWERED array with timestamp
+                const setref1 = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'CBT', ssSTUDENT.id), {
+                    'answers': answered,
+                    'attempted': `${didNotAnswer} ~ ${answered.length}`,
+                    'dateModified': serverTimestamp()
+                });
+
+                document.querySelector('#submitted-dg').show();
+                oculus.classList.add('activate');
+                document.querySelector('section > aside:nth-child(2)').classList.add('slt');
             });
-        });
+        }
+        yesBtn.closest('dialog').close();
+        yesBtn.classList.remove('clk');
     } catch (error) {
         console.log(error);
     }
-
         //if catch err, reactivate submitBtn and remove clk from YES btn classlist
 }
-
-/*
-const asideP = document.querySelectorAll('aside > p');
-asideP.forEach(p => {
-    p.addEventListener('click', (e) => {
-        const par = e.target.parentElement;
-        const chdrn = [...par.children];
-        console.log(chdrn.indexOf(e.target));
-        chdrn.forEach(c => c.classList.toggle('slt', c == e.target));
-        par.previousElementSibling.classList.add('slt');
-    });
-});
-*/
 
 /*
 const form = document.forms.namedItem('multi-choice-form');

@@ -23,7 +23,7 @@ const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
 let eotData, session = ss.session, thisTerm, term, percentile;
 
 await eot();
-const principal = eotData.principal;    //eotData.principal[term]
+const principal = eotData.princ;    //eotData.principal[term]
 
 var n;
 n = configs[7].indexOf(ss.cls);
@@ -42,17 +42,20 @@ studentsSnapshot.docs.forEach(result => {
 let overall = [];
 const scorePromises = studentIDs.map(async sid => {
     ///session/2024/students/0B8JuDYmgdQLPZBP9YAR/records/scores
-    await getDoc(doc(db, 'session', session, 'students', sid, 'records', 'scores')).then((res) => {
+    await getDoc(doc(db, 'session', session, 'students', sid, 'scores', 'records')).then((res) => {
         studentScores.push({sid, ...res.data()});
         overall.push(res.data());
     });
 });
+await Promise.all(scorePromises);
 
-await Promise.allSettled(scorePromises);
 const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort(); //[0] retrieves only the first sid match by filter
 ME.length = ME.length - 1; // excludes sid from iteration, leaving only subs
 const theadFirstRow = document.querySelector("#section-grade table:nth-child(1) thead tr:first-child th");
-if (percentile < 100) theadFirstRow.innerText = "Mid-Term Report";
+if (percentile < 100) {
+    theadFirstRow.innerText = "Mid-Term Report";
+    document.querySelector('#status').style.display = 'none';
+}
 
 const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
 const tfootTerm = document.querySelector('#section-grade table:nth-child(1) tfoot');
@@ -74,10 +77,10 @@ for (i = 0; i < ME.length; i++) {
     td += `
         <td>${i+1}</td>
         <td>${offered[ME[i][0]]}</td>
-        <td>${test[0] || ''}</td>
-        <td>${test[1] || ''}</td>
-        <td>${test[2] || ''}</td>
-        <td>${(test[3] + (test[4] || null)) || ''}</td>
+        <td>${test[0] + test[1] || ''}</td>
+        <td>${test[2] + test[3] || ''}</td>
+        <td>${test[4] + test[5] || ''}</td>
+        <td>${(test[6] + (test[7] || null)) || ''}</td>
         <td>${subtotal.toFixed(1)}</td>
     `;
     switch (true) {
@@ -105,9 +108,10 @@ for (i = 0; i < ME.length; i++) {
     let summation = [];
     for (let j = 0; j < studentScores.length; j++) {
         if (studentScores[j][ME[i][0]] === undefined) continue;
-        let [v,w,x,y,z=null] = studentScores[j][ME[i][0]][term];
-        let all = v + w + x + y + z;
-        if (all == 0) continue;
+        let all = 0;
+        studentScores[j][ME[i][0]][term].forEach(n => all += n);
+        // let all = s + t + u + v + w + x + y + z;
+        if (!all) continue;
         summation.push(all);
     };
 
@@ -230,7 +234,7 @@ for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 c
 async function eot() {
     let teacherDiv = document.getElementById('teacher');
     
-    const eotRef = doc(db, session, 'EOT');
+    const eotRef = doc(db, 'EOT', session);
     await getDoc(eotRef).then(async (res) => {
         // store dates in eotDates
         eotData = res.data();
@@ -239,7 +243,7 @@ async function eot() {
         percentile = eotData.percentile;
         const nextTerm = percentile < 100 ? '' : eotData.next_term[term];
         const session = eotData.session;
-        const daysOpen = parseInt(eotData.days_open[term]);
+        const daysOpen = eotData.days_open[term];
         const stamp = [,'../img/24_25/stamp02.png','../img/24_25/stamp03.png'][term] || eotData.stamp;
 
         // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;

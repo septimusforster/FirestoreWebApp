@@ -67,7 +67,7 @@ section {width: 85%;height: 100%;margin: 2em auto;display: grid;grid-template-co
 .oculus:hover, #paste-btn:hover {background-color: rgba(120, 120, 120, .1);}
 section > aside {position: relative;}
 section > aside:first-of-type > *:not(div#form, div#form + div) {text-align: center;padding: 1em;}
-button#submit-btn {color: #fff;background-color: #1a73d8;padding: 1em;border-radius: 7px;}
+button#submit-btn {color: #fff;background-color: #ff4500;padding: 1em;border-radius: 7px;}
 button#submit-btn.dsbd {background-color: rgba(0,0,0,.1)}
 section > aside:first-of-type > div:last-of-type {background-color: transparent;position: absolute;left: 50%;bottom: 0;transform: translate(-50%, 0%);}
 div#form {padding: 0 1em;height: 520px;border-radius: 7px / 11px;overflow-y: scroll;position: fixed;width: 320px;margin: 0 10px;z-index: 1;}
@@ -318,13 +318,14 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
     );
 }
 #clock {
-    --grad-clr: #1a73d833;
+    --grad-clr: #FFFFFF;
     --grad-lvl: 0%;
     position: relative;
     height: 40px;
     width: 40px;
     border-radius: 50%;
     border: 2px solid #333;
+    background-color: #1a73d855;
     background-image: conic-gradient(
         var(--grad-clr) var(--grad-lvl),
         transparent 0
@@ -335,7 +336,7 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
     content: '';
     position: absolute;
     left: 50%;
-    height: 40%;
+    height: 44%;
     width: 3px;
     border-radius: 3px;
     background-color: #333;
@@ -349,7 +350,28 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
     transform: translate(-50%, -13%) rotate(-90deg);
     transform-origin: top;
 } */
-
+.errnote {
+    width: max-content;
+    position: absolute;
+    bottom: 0;
+    left: -3%;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    padding: 1em 2em;
+    background-color: #ffe4c4;
+    animation-duration: .7s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+.errnote.shw {
+    animation-name: show;
+}
+@keyframes show {
+    100% {left: 0%;opacity: 1}
+}
 @media screen and (max-width: 1024px) {
     div#form {height: 600px;font-size: .5em;}
     section {width: 100%;}

@@ -17,11 +17,12 @@ function chooseConfig(num) {
 }
 
 db = getFirestore()
-let EOT, term, days_open, next_term;
+let EOT, term, days_open, next_term, session;
 await getDoc(doc(db, "reserved", "EOT")).then(res => EOT = res.data());
 term = ["First", "Second", "Third"].indexOf(EOT?.this_term) || 0;
 days_open = EOT?.days_open || [0,0,0]; //the 3 elements of the array are for the three terms in a session
 next_term = EOT?.next_term || ['','',''];
+session = EOT?.session.slice(5) || '2025';
 // collection ref
 const jnrRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
 const snrRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
@@ -414,29 +415,29 @@ const extForm = document.forms.extForm;
 extForm.addEventListener('submit', async (e) => {
     formStatus(e, 'enabled');
     const formData = new FormData(extForm);
-    let data = {};
+    let data = {}, comments = {};
     for (const pair of formData.entries()) {
         if (!pair[1]) continue;
         if (pair[0].endsWith('comm')) {
-            data["principal."+pair[0]] = pair[1];
+            comments[pair[0][0]] = pair[1];
         } else if (pair[0].endsWith('principal')) {
-            data[pair[0]+".name"] = pair[1];
+            data["princ"] = {name: pair[1]};
         } else {
             data[pair[0]] = pair[1];
         }
     }
-    console.log("Does formData have days_open?", formData.has("days_open"));
+    if (Object.entries(comments).length) data.princ['comments'] = comments;
     if (formData.get("days_open")) {
         days_open.splice(term,1,Number(formData.get("days_open")));
-        data["days_open"] = days_open;
+        data["days_open"] = days_open || 0;
     }
     if (formData.get("next_term")) {
         next_term.splice(term,1,formData.get("next_term"));
         data["next_term"] = next_term;
     }
 
-    const reference = doc(db, "reserved", "EOT");
-    await updateDoc(reference, data);
+    const reference = doc(db, "EOT", session);
+    await setDoc(reference, data, {merge: true});
     window.alert("EOT resources successfully set.");
     formStatus(e);
 })
