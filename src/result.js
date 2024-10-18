@@ -22,12 +22,9 @@ const promoStatus = ss?.promo_status;
 const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
 let eotData, session = ss.session, thisTerm, term, percentile;
 
+let n;
 await eot();
 const principal = eotData.princ;    //eotData.principal[term]
-
-var n;
-n = configs[7].indexOf(ss.cls);
-chooseConfig(n);
 
 const studentsRef = collection(db, 'session', session, 'students');
 const studentsQuery = query(studentsRef, where("arm", "==", ss.arm));
@@ -236,6 +233,8 @@ async function eot() {
     
     const eotRef = doc(db, 'EOT', session);
     await getDoc(eotRef).then(async (res) => {
+        n = configs[7].indexOf(ss.cls);
+        chooseConfig(n);
         // store dates in eotDates
         eotData = res.data();
         thisTerm = eotData.this_term;
@@ -250,7 +249,7 @@ async function eot() {
         const photo = "../img/user.png" || ss.photo_src;
         const regNo = ss.admission_no;
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
-        const className = `${ss.cls} ${ss.arm}`;
+        const className = `${n + 7}th Grade ${ss.arm}`;
         const daysPresent = ss.days_present[term] || 0;
         const daysAbsent = daysOpen - daysPresent;
         const teacherName = ss.formMaster;
