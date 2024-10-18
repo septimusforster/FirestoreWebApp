@@ -13,9 +13,12 @@ function chooseConfig(num) {
 }
 db = getFirestore()
 
-let eotDates, term, session = '2025';
+let eotDates, term;
+// calculate session
+const MONTH = new Date().getMonth();
+const session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
 async function eot() {
-    const eotRef = doc(db, "reserved", "EOT");
+    const eotRef = doc(db, 'EOT', session);
     await getDoc(eotRef).then(async (res) => {
         // store dates in eotDates
         const formBarH3 = document.querySelector('div#formBar > h3');
@@ -27,7 +30,7 @@ async function eot() {
 eot();
 
 let permissions = async function () {
-    const data = await getDoc(doc(db, session, 'EOT'));
+    const data = await getDoc(doc(db, 'EOT', session));
     const p = data.get('perm');
     const perm = p.toString(2).padStart(8,0).split(''); //padStart ensures it is 8-bit long for all switches
     return perm;

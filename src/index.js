@@ -29,18 +29,21 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-
 const ss = JSON.parse(sessionStorage.snapshot);
 
-// collection ref
-let eotData, session = '2025', term = 0, size = 0, toggleState;
-var colRef = collection(db, 'session', session, 'students');
+let eotData, term = 0, size = 0, toggleState;
+// calculate session
+const MONTH = new Date().getMonth();
+const session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+// var colRef = collection(db, 'session', session, 'students');
 const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 // store user ID from url or sessionStorage snapshot
+/*
 let url = new URL(location.href);
 let params = new URLSearchParams(url.search);
 let uid = params.get('uid') || ss.id;
-const eotRef = doc(db, "reserved", "EOT");
+*/
+const eotRef = doc(db, 'EOT', session);
 const leftNav = document.querySelector('.left-nav');
 let menu;
 window.addEventListener('click', (e) => {
@@ -96,7 +99,9 @@ await getDoc(eotRef).then(async (res) => { // load EOT
             <button type="button" class="link" onclick="location.href='award.html'">Award</button>
         `);
         const chkmode = document.querySelector('#chkmode');
-        Object.values(eotData?.guestmode)[0] === 1 ? chkmode.checked = true : chkmode.checked = false;
+        if ('guestmode' in eotData) {
+            Object.values(eotData.guestmode)[0] === 1 ? chkmode.checked = true : chkmode.checked = false;
+        }
         //chkmode listener
         document.querySelector('#chkmode').addEventListener('change', async (e) => {
             e.target.classList.add('disabled');
@@ -121,10 +126,10 @@ await getDoc(eotRef).then(async (res) => { // load EOT
                 chooseConfig(6);
                 const batch = writeBatch(db);
                 if (toggleState) {
-                    batch.set(doc(db, 'reserved', 'EOT'), {guestmode: {[Object.keys(eotData?.guestmode)[0]]: 0}}, { merge: true });
+                    batch.set(doc(db, 'EOT', session), {guestmode: {mahogany: 0}}, { merge: true });
                     batch.set(doc(db, 'staffCollection', 'aR6h4JTAI0vCAz12XCk6'), { code: city }, {merge: true});
                 } else {
-                    batch.set(doc(db, 'reserved', 'EOT'), {guestmode: {[Object.keys(eotData?.guestmode)[0]]: 1}}, { merge: true });
+                    batch.set(doc(db, 'EOT', session), {guestmode: {mahogany: 1}}, { merge: true });
                     batch.set(doc(db, 'staffCollection', 'aR6h4JTAI0vCAz12XCk6'), { code: 'USADEY' }, { merge: true });
                 }
                 await batch.commit();
@@ -160,7 +165,7 @@ async function setIframeAttr(para1) {
     myIframe.setAttribute('data-class-arm', para1);
     // hiddenElems[0].value = para1;
     if (sessionStorage.hasOwnProperty('preview')) sessionStorage.removeItem('preview');
-    let data = [], marked = 0;
+    let data = [];
     // console.log(term)
     const armRef = collection(db, 'session', session, 'students');
     const q = query(armRef, where("arm", "==", para1), orderBy("first_name"));   //startAfter() to be included
@@ -169,11 +174,7 @@ async function setIframeAttr(para1) {
             if (obj.data()?.admission_no.toUpperCase().includes(DCA)) data.push(obj.data());
             if (['recruit'].includes(obj.data().arm.toLowerCase())) data.push({id: obj.id, ...obj.data()});
         });
-        data.forEach(({days_present}) => { // extract days_present from docs.data()
-            // console.log(days_present)
-            days_present?.[term] ? marked++ : false;
-        });
-        size = marked;
+        size = data.length;
         // console.log(marked);
         sessionStorage.setItem('preview', JSON.stringify(data));
         // console.log('Done.')
@@ -389,9 +390,9 @@ const selectBtn = document.querySelector('select#yrs');
 selectBtn.addEventListener('change', async (e) => {
     if (e.target.selectedIndex === 0) return;
     selectBtn.classList.add('chg');
-    const ssRef = doc(db, selectBtn.value, 'EOT');
+    const ssRef = doc(db, 'EOT', selectBtn.value);
     const snapped = await getDoc(ssRef);
-    if (!snapped.exists()) {
+    if (!(snapped.exists()) || snapped.get('perm') == undefined) {
         alert("This session's data cannot be found/permission missing.");
         selectBtn.classList.remove('chg');
     } else {
@@ -427,7 +428,7 @@ if (caap) {
         const sw = [...perm_switches].map(s => s.checked ? 1 : 0).join('');
         const fbData = parseInt(sw, 2);
         const ssn = selectBtn.value;
-        const permRef = doc(db, ssn, 'EOT');
+        const permRef = doc(db, 'EOT', ssn);
         await updateDoc(permRef, {perm: fbData}).then(() => {
             selectBtn.classList.remove('chg', 'clr');
             selectBtn.classList.add('tck');

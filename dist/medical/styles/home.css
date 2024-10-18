@@ -13,9 +13,9 @@ html, body {
 .container {
     height: 100%;
     display: grid;
-    grid-template-rows: 5% 6% 1fr;
+    grid-template-rows: 5% 95%;
 }
-header, header > div, .dir_lnks, .btn, nav > .h4, .nav_btns > div, .ex {
+header, header > div, .btn, nav > .h4, .nav_btns > div, .ex {
     display: flex;
     align-items: center;
 }
@@ -52,10 +52,6 @@ header > div, .nav_btns > div {
 span.clinic_nm {
     font: 400 1em monospace;
 }
-.dir_lnks {
-    background-color: #fff;
-    padding: 1em 1.5em;
-}
 .ex, .hrbars {
     transition: background-color .1s ease;
 }
@@ -77,8 +73,8 @@ nav {
     padding: .3em 1em;
     position: fixed;
     left: 0;
-    top: 7%;
-    height: 93%;
+    top: 5%;
+    height: 95%;
     min-width: 300px;
     overflow: hidden;
     z-index: 1;

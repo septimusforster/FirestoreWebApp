@@ -11,8 +11,10 @@ var app = initializeApp(configs[6]);
 // init services
 var db = getFirestore(app);
 let eot, term;
-// let term;
-const eotRef = doc(db, "reserved", "EOT");
+// calculate session
+const MONTH = new Date().getMonth();
+const session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+const eotRef = doc(db, 'EOT', session);
 await getDoc(eotRef).then((res) => eot = res.data());
 term = ["First", "Second", "Third"].indexOf(eot.this_term);
 
@@ -36,7 +38,7 @@ for (const [k, v] of master_of_form) {
     spanClass.textContent = k;
     spanArm.textContent = v;
     chooseConfig(classArray.indexOf(k))
-    const q = query(collection(db, "students"), where("arm", "==", v));
+    const q = query(collection(db, 'session', session, 'students'), where("arm", "==", v));
     const snapDoc = await getDocs(q);
     if (snapDoc.empty) {
         window.alert('This class is empty.');
@@ -44,7 +46,7 @@ for (const [k, v] of master_of_form) {
         // snapDoc.docs.sort()
         let scores = [];
         const prom = snapDoc.docs.map(async sd => {
-            await getDoc(doc(db, "scores", sd.id)).then((res) => {
+            await getDoc(doc(db, 'session', session, 'students', sd.id, 'scores', 'records')).then((res) => {
                 if (!res.exists()) return scores.push('0');
                 let st = Object.values(res.data());
                 let ph = 0;
@@ -123,7 +125,7 @@ formRegister.addEventListener('submit', async (e) => {
     console.log("Entries:", entries);
 
     const promises = entries.map(async cb => {
-        await setDoc(doc(db, "students", cb[0]), cb[1], { merge: true });
+        await setDoc(doc(db, 'session', session, 'students', cb[0]), cb[1], { merge: true });
     })
     await Promise.allSettled(promises);
     // location.reload();
