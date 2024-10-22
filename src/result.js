@@ -291,7 +291,7 @@ function generatePDF () {
         margin: 1,
         filename: fullName + '.pdf',
         html2canvas: { scale: 3 },
-        jsPDF: { unit: 'px', format: [dw, dh], orientation: 'landscape', hotfixes: ['px_scaling'] }
+        jsPDF: { unit: 'px', format: [dw, dh], orientation: 'portrait', hotfixes: ['px_scaling'] }
     }
 
     html2pdf().set(opt).from(main).save();

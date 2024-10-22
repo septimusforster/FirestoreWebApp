@@ -148,8 +148,10 @@
                 ri.textContent = e.rowIndex;
                 //display data in preview pane
                 document.querySelector('.preview__content ul').innerHTML = '';
+                let objct = {};
                 ss.forEach(obj => {
                     if (obj.id === studentID && obj.offered) {
+                        objct = obj.offered;
                         let subs = Object.values(obj.offered).sort().reduce((acc, cur) => `${acc}<br>`+ cur);
                         document.querySelector('.preview__content ul').insertAdjacentHTML('beforeend', `
                             <li>NAME: ${''.concat(obj.last_name, ' ', obj.first_name, ' ', obj.other_name)}</li>
@@ -169,10 +171,17 @@
                             <li>PHONE: ${obj.father_phone}</li>
                             <li>MOTHER: ${obj.mother_name}</li>
                             <li>PHONE: ${obj.mother_phone}</li>
-                        `)
+                        `);
+                        return;
                     }
-                    return;
-                })
+                });
+                if (objct) {
+                    const subInp = parent.document.querySelector('form#addSub').querySelectorAll('input');
+                    subInp.forEach(s => {
+                        s.id in objct ? s.checked = true : s.checked = false;
+                    });
+                }
+
                 var pMsg = parent.document.querySelector('p.msg');
                 var yesBtn = parent.document.querySelector('dialog button');
                 pMsg.textContent = "Delete: " + studentName;

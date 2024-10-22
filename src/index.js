@@ -36,7 +36,11 @@ let eotData, term = 0, size = 0, toggleState;
 const MONTH = new Date().getMonth();
 const session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
 // var colRef = collection(db, 'session', session, 'students');
-const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
+let refrs = {
+    arm: doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu"),/*
+    jrSubs: doc(db, "reserved", "2aOQTzkCdD24EX8Yy518"),
+    srSubs: doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq")*/
+}
 // store user ID from url or sessionStorage snapshot
 /*
 let url = new URL(location.href);
@@ -150,10 +154,14 @@ function gmodeToggler(target) {
     target.checked = toggleState;
 }
 if(!sessionStorage.hasOwnProperty('arm')) { // Load arms
-    await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)));
+    let ssmaps = Object.keys(refrs);
+    const proms = ssmaps.map(async k => {
+        await getDoc(refrs[k]).then(doc => sessionStorage.setItem(k, JSON.stringify(doc.data())));
+    });
+    Promise.all(proms);
     console.log('From server');
 }
-const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
+const armArray = JSON.parse(sessionStorage.getItem('arm')).arms.sort();
 armArray.forEach(arm => {
     leftNav.insertAdjacentHTML('beforeend', `<a href="#">${arm}</a>`);
     document.querySelector('select#arm').insertAdjacentHTML('beforeend', `<option value="${arm}">${arm}</option>`);
@@ -205,7 +213,17 @@ topNavAnchors.forEach((a, i, anchors) => {
         if (e.target.textContent.toLowerCase() === 'demo') {
             chooseConfig(8);
         } else {
-            chooseConfig(configs[7].indexOf(e.target.textContent));
+            let idx = configs[7].indexOf(e.target.textContent), keySub;
+            chooseConfig(idx);
+            idx < 3 ? keySub = Object.entries(JSON.parse(sessionStorage.jnr_sub)) : keySub = Object.entries(JSON.parse(sessionStorage.snr_sub));
+            const formWrapper = document.querySelector('form#addSub').firstElementChild;
+            formWrapper.innerHTML = '';
+            for (const [a, b] of keySub) {
+                formWrapper.insertAdjacentHTML('beforeend', `
+                    <input type="checkbox" name="${a}" id="${a}" value="${b}">
+                    <label for="${a}">${b}</label>
+                `);
+            }
         }
     });
 });
@@ -449,4 +467,30 @@ document.querySelector('header > button.logout').addEventListener('click', () =>
 document.querySelector('header > button.promoBtn').addEventListener('click', () => {
     sessionStorage.removeItem('preview');
     window.location.href = 'promo_tab.html';
+});
+//add student subjects
+const addDialog = document.querySelector('dialog#addSubs');
+let myid;
+sidePanelBtns[5].onclick = () => {
+    myid = sidePanelBtns[2].value;
+    if (myid) {
+        addDialog.showModal();
+    }
+}
+const addSubForm = document.querySelector('form#addSub');
+addSubForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.submitter.disabled = true, e.submitter.nextElementSibling.disabled = true;
+    e.submitter.style.cursor = 'not-allowed';
+
+    let data = {};
+    addSubForm.querySelectorAll('input').forEach(inp => {
+        if (inp.checked == true) {
+            data[inp.name] = inp.value;
+        }
+    });
+    await updateDoc(doc(db, 'session', session, 'students', myid), {offered: data});
+    alert("Subject updated.");
+    e.submitter.disabled = false, e.submitter.nextElementSibling.disabled = false;
+    e.submitter.style.cursor = 'pointer';
 });

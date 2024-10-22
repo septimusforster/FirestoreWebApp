@@ -118,7 +118,7 @@ dialog::backdrop {
 }
 dialog:not(#perm) button {
     font-size: 16px;
-    padding: .5em 1em;
+    padding: 14px 20px;
     margin: .5em;
     border-radius: 7px;
     color: #555;

@@ -25,7 +25,7 @@ header {
 }
 main {
     min-width: 700px;
-    width: 1400px;
+    width: 1000px;
     margin: 0 auto;
     background-color: #fff;
     border-width: 10px;
@@ -35,8 +35,8 @@ main {
     position: relative;
 }
 section {
-    padding: 5px 20px;
-    box-shadow: 0 0 2px #aaa;
+    padding: 20px;
+    border: 2px solid #f1f1f1;
 }
 #section-header {
     display: flex;
@@ -133,7 +133,7 @@ table {
     border-right: 1px solid #ccc;
 }
 #section-bio table:nth-child(2) tr {
-    margin: 0 50px;
+    margin: 0 20px;
 }
 #section-bio table {
     flex: 1;
@@ -183,7 +183,7 @@ th:nth-child(9) {
     text-align: left;
 }
 #section-grade th {
-    color: #fff;
+    color: #555;
     font-size: .8rem;
 }
 #section-grade tr:first-child th {
@@ -193,20 +193,22 @@ th:nth-child(9) {
     display: block;
     color: #555;
 }
-td {
+td, .h4 {
     font-size: 14px;
 }
 #section-grade thead {
-    background-color: #555;
+    background-color: #f1f1f1;
 }
 #section-grade table {
-    border: 1px solid #aaa;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    overflow: hidden;
 }
 #section-grade > table tbody {
-    border: 1px solid #777;
+    border: 1px solid #ccc;
 }
 #section-grade > table tbody tr td {
-    border: 1px solid;
+    border: 1px solid #ccc;
 }
 #section-grade tfoot {
     border-top: 1px solid #eee;
@@ -235,29 +237,29 @@ td {
 }
 #section-footer {
     display: flex;
-    align-items: center;
-    gap: 2em;
+    flex-wrap: wrap;
+    background-color: #f1f1f1;
+    gap: 1em;
 }
 #section-footer > div:first-child {
-    flex: 2;
+    flex-basis: 70%;
 }
-/* #section-footer > div:nth-child(2) table tr:first-child td, */
 #section-grade tr:first-child th {
     text-align: center;
     font-size: 17px;
     font-weight: bold;
 }
 #section-footer > div:last-child {
-    flex-basis: 250px;
-    text-align: center;
+    margin: 0 auto;
 }
-#section-footer > div > div {
+#section-footer > div > div:not(.h4) {
     padding: 7px 30px;
     border-radius: 7px 7px 0 0;
-    margin-bottom: 16px;
+    margin: 1em;
     color: #555;
     position: relative;
 }
+.h4 {margin-bottom: 2em;text-align:center;}
 blockquote {
     padding: 10px 20px;
     border-bottom: 1px solid #aaa;
@@ -277,10 +279,13 @@ blockquote::before {
     color: #777;
 }
 #section-footer > div {
-    position: relative;
+    border-radius: 7px;
+    background-color: #fff;
 }
 #section-footer > div:nth-child(2) {
-    width: 250px;
+    flex-basis: 25%;
+    margin: 0 auto;
+    text-align: center;
 }
 #mr-span {
     position: absolute;
@@ -298,14 +303,15 @@ blockquote::before {
 #section-footer table {
     margin: auto;
 }
-#section-footer table tr:first-child, #section-footer table td:first-child {
+#section-footer table tr:first-child, #section-footer table td:first-child, .h4, #section-grade th {
     font-weight: 500;
 }
-#section-footer tbody tr td {
+#section-footer tbody tr td, .h4 {
     padding: 7px 14px;
+    vertical-align: baseline;
 }
 img[alt="stamp"] {
-    width: 170px;
+    width: 140px;
     transform: rotate(-20deg);
 }
 p#percent {
@@ -348,4 +354,9 @@ p#percent::after {
 }
 p#status {
     font-size: .7rem;
+}
+@media print {
+    header {
+        display: none;
+    }
 }

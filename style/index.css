@@ -11,7 +11,7 @@ body {
 a {
     text-decoration: none;
 }
-button {
+button, label {
     border: none;
     outline: none;
     cursor: pointer;
@@ -217,4 +217,44 @@ button[title="PIN"]:hover::after {
     width: 100px;
     text-align: left;
     font-size: 16px;
+}
+#addSubs > div:first-of-type {
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+}
+#addSub {
+    order: 1;
+}
+#addSub + div {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+#addSub > div:first-of-type {
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-bottom: 20px;
+    height: 400px;
+    overflow-y: scroll;
+}
+#addSub > div > label {
+    display: inline-flex;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 27px;
+    font-size: 0.8em;
+}
+#addSub > div > label:hover {
+    background-color: #f3f3f3;
+}
+#addSub > div > input {
+    display: none;
+}
+#addSub > div > input:checked + label {
+    background-color: #e7e7e7;
+}
+#addSub button {
+    font-weight: 500;
 }
