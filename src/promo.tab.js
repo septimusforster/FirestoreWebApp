@@ -180,7 +180,7 @@ if (snapshot?.data.username !== 'guestmode') {
     SELECT0.append(...options);
     admin_form.appendChild(SELECT0);
 
-    const Arms = JSON.parse(sessionStorage.getItem('arm'));
+    const Arms = JSON.parse(sessionStorage.getItem('arm')).arms;
     const SELECT1 = document.createElement('select');
     SELECT1.name = 'arm';
     SELECT1.id = 'arm_slct';
