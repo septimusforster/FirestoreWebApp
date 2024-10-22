@@ -35,7 +35,7 @@ main {
     position: relative;
 }
 section {
-    padding: 20px;
+    padding: 10px;
     border: 2px solid #f1f1f1;
 }
 #section-header {
@@ -259,7 +259,7 @@ td, .h4 {
     color: #555;
     position: relative;
 }
-.h4 {margin-bottom: 2em;text-align:center;}
+.h4 {margin-bottom: 1em;text-align:center;}
 blockquote {
     padding: 10px 20px;
     border-bottom: 1px solid #aaa;
@@ -307,7 +307,7 @@ blockquote::before {
     font-weight: 500;
 }
 #section-footer tbody tr td, .h4 {
-    padding: 7px 14px;
+    padding: 2px 14px;
     vertical-align: baseline;
 }
 img[alt="stamp"] {

@@ -255,10 +255,14 @@ async function eot() {
         const teacherName = ss.formMaster;
         const comment = typeof ss.comment == "object" ? ss.comment?.[term] || '' : ss.comment;
 
+        const d = Date.now() - new Date(ss.dob).getTime();
+        const age = new Date(d).getUTCFullYear() - 1970;
+        /*
         const dob = new Date(ss.dob);
         const compareDate = new Date(eotData[ss.cls]);
         const diff = Math.abs(compareDate - dob);
         const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 7 * 52)) || '';
+        */
 
         //load photo
         document.images[1].src = photo;
