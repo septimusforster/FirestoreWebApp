@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //ROOT reserved.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/reserved.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT result.js
 /*
 module.exports = {
@@ -108,7 +108,7 @@ module.exports = {
 }
 */
 //ROOT promo.tab.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/promo.tab.js",
@@ -118,7 +118,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STAFFER index.js
 /*
 module.exports = {

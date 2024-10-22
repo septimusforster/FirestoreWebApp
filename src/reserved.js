@@ -72,7 +72,7 @@ for(i = 0; i < 4; i++) {
 }
 const jnrArray = Object.entries(JSON.parse(sessionStorage.getItem('jnr_sub'))).sort();
 const snrArray = Object.entries(JSON.parse(sessionStorage.getItem('snr_sub'))).sort();
-const armArray = JSON.parse(sessionStorage.getItem('arm'));
+const armArray = JSON.parse(sessionStorage.getItem('arm')).arms;
 const staffArray = Object.entries(JSON.parse(sessionStorage.getItem('staffers')));
 
 // load Jnr subs into <datalist>
