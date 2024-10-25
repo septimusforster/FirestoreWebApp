@@ -1,0 +1,443 @@
+:root {
+    --radii-50: 50%;
+    --con-grad: 0%;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font: 16px system-ui;
+}
+body, #pie + div {
+    overflow-x: hidden;
+}
+.dets, td > .bar, .sbmt_btn, #preview {
+    position: relative;
+}
+::-webkit-scrollbar {
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 14px;
+    background-color: #555;
+}
+button, .btn, #ctable tbody tr {
+    border: 0;
+    cursor: pointer;
+}
+button > *, .btn > * {
+    pointer-events: none;
+}
+.sbmt_btn {
+    margin-left: auto;
+    padding: 8px 27px;
+    border-radius: 5px;
+}
+input, textarea, button {
+    outline: none;
+    color: #555;
+}
+input, textarea, label {
+    font-size: .9em;
+}
+label {
+    margin: 5px 0;
+}
+label + input, label + textarea,
+.txtinput {
+    border-radius: 5px;
+    color: #888;
+}
+.ttl {
+    font-weight: 500;
+    margin-right: auto;
+    color: #1a73d8;
+}
+html, body {
+    height: 100vh;
+    width: 100vw;
+    color: #555;
+    background-color: #f1f1f1;
+}
+#wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+section {
+    margin: 0 auto;
+}
+section:first-of-type > div, section:last-of-type {
+    border-radius: 10px;
+    overflow: hidden;
+}
+section:first-of-type {
+    flex-basis: 50%;
+}
+section:first-of-type > div {
+    background-color: #fff;
+    min-width: 800px;
+    margin-bottom: 70px;
+    display: flex;
+    flex-wrap: wrap;
+}
+section:last-of-type > div {
+    min-width: 270px;
+    max-width: 370px;
+}
+section > div > * {
+    padding: 10px 20px;
+}
+div > h5 {
+    border-bottom: 1px solid #f1f1f1;
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    position: relative;
+}
+.sort {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><g id="Arrow / Arrows_Reload_01"><path id="Vector" d="M10 16H5V21M14 8H19V3M4.58301 9.0034C5.14369 7.61566 6.08244 6.41304 7.29255 5.53223C8.50266 4.65141 9.93686 4.12752 11.4298 4.02051C12.9227 3.9135 14.4147 4.2274 15.7381 4.92661C17.0615 5.62582 18.1612 6.68254 18.9141 7.97612M19.4176 14.9971C18.8569 16.3848 17.9181 17.5874 16.708 18.4682C15.4979 19.3491 14.0652 19.8723 12.5723 19.9793C11.0794 20.0863 9.58606 19.7725 8.2627 19.0732C6.93933 18.374 5.83882 17.3175 5.08594 16.0239" stroke="%23555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g></svg>');
+}
+.slct {
+    visibility: hidden;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    border-radius: 7px;
+    box-shadow: 0 0 17px #ccc;
+    overflow: hidden;
+    background-color: #fff;
+    z-index: 1;
+}
+.sort:focus + div {
+    visibility: visible;
+}
+.slct > .o {
+    position: relative;
+    padding: 10px 14px 10px 37px;
+    font-size: .8em;
+}
+.slct > .o:hover {
+    background-color: #f0f0f0;
+}
+.slct > .o::before {
+    position: absolute;
+    left: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.slct > .o[data-selected]::before {
+    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -0.5 24 24" fill="none"><path d="M5.5 12.5L10.167 17L19.5 8" stroke="%23777" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+#pie {
+    flex-basis: 40%;
+}
+#pie > div:first-of-type {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 7px;
+}
+.dets {
+    margin-left: auto;
+    padding: 7px 31px 7px 17px;
+    text-wrap: nowrap;
+    font-size: .8em;
+    border-radius: 30px;
+    background-color: #f5f5f5;
+    transition: background-color .1s ease;
+}
+.dets:hover {
+    background-color: #f0f0f0;
+}
+.dets::before {
+    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="%23777" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%) rotate(-90deg);
+    height: 24px;
+    width: 24px;
+}
+#pie + div {
+    overflow-y: scroll;
+    max-height: 300px;
+    margin-left: auto;
+}
+#pie > *,
+#ctable tbody tr td:not(:nth-child(2)) {
+    text-align: center;
+}
+#pie > .val {
+    border-radius: var(--radii-50);
+    height: 100px;
+    width: 100px;
+    background: conic-gradient(
+        #1a73d8 var(--con-grad), #f3f3f3 0%
+    );
+    margin: 20px auto;
+}
+#pie > .val::before {
+    content: attr(data-num);
+    background-color: #fff;
+    height: 70%;
+    width: 70%;
+    font-weight: 500;
+    border-radius: var(--radii-50);
+    box-shadow: 0 0 5px #aaa;
+}
+#pie > .val, #pie > .val::before {
+    display: grid;
+    place-items: center;
+}
+#keys {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+#keys > span {
+    position: relative;
+}
+#keys > span::before {
+    content: '';
+    position: absolute;
+    right: 120%;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 7px;
+    width: 7px;
+    background-color: #ccc;
+}
+#keys > span:last-of-type::before {
+    background-color: #1a73d8;
+}
+#ctable {
+    width: 100%;
+    border-collapse: collapse;
+}
+#ctable tbody tr {
+    border-bottom: 1px solid #f3f3f3;
+    transition: background-color .1s ease;
+}
+#ctable tbody tr:hover, #ctable tbody tr.clk {
+    background-color: #f0f0f0;
+}
+#ctable tbody tr:hover > td:last-child > .bar {
+    background: #fff;
+}
+#ctable tbody tr td {
+    font-size: .8em;
+    padding: 10px;
+}
+#ctable tbody tr td:nth-child(2) {
+    min-width: 270px;
+}
+#ctable tbody tr td:not(:nth-child(3), :nth-child(4)),
+.label {
+    font-weight: 500;
+}
+.foot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    bottom: 0;
+    background-color: #fff;
+    outline: 10px solid #fff;
+    margin-top: 10px;
+}
+.foot > .chevron {
+    padding: 20px;
+}
+.foot > i {
+    margin: 0 10px;
+    font-weight: 500;
+}
+td > .bar {
+    background-color: #f3f3f3;
+    height: 10px;
+    width: 50px;
+    margin: 0 auto;
+}
+td > .bar::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: var(--con-grad);
+    background-color: #1a73d8;
+
+}
+.chevron {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="%23555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+.back {
+    transform: rotate(90deg);
+}
+.forwd {
+    transform: rotate(-90deg);
+}
+.pencil {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12.2424 20H17.5758M4.48485 16.5L15.8242 5.25607C16.5395 4.54674 17.6798 4.5061 18.4438 5.16268V5.16268C19.2877 5.8879 19.3462 7.17421 18.5716 7.97301L7.39394 19.5L4 20L4.48485 16.5Z" stroke="%23333" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+.times {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>');
+}
+.chevron, .pencil, .times, .dets::before, .sort, .slct > .o[data-selected]::before {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.ui_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    border-radius: var(--radii-50);
+    transition: background-color .2s ease;
+}
+.ui_btn:hover {
+    background-color: #f1f1f1;
+}
+form#pharm {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5em;
+    justify-content: space-between;
+}
+.fmgp > * {
+    display: block;
+}
+.fmgp:not(:last-of-type) {
+    flex-basis: 30%;
+}
+.fmgp:last-of-type {
+    flex-basis: 100%;
+}
+.fmgp > label + input, .fmgp > label + textarea {
+    border: 1px solid #ccc;
+    padding: 7px 14px;
+    width: 100%;
+}
+.sbmt_btn {
+    background-color: #1a73d8;
+    color: #fff;
+    transition: background-color .2s ease;
+    display: inline-block;
+}
+.sbmt_btn::after, .sbmt_btn::before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.sbmt_btn::before {
+    height: 1rem;
+    width: 1rem;
+    border-radius: 50%;
+    border: 2px solid;
+    border-color: #fff #fff #fff transparent;
+    animation-delay: 50ms;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+}
+.sbmt_btn.done {
+    background-color: #009578;
+}
+.sbmt_btn.done::after {
+    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -0.5 24 24" fill="none"><path d="M5.5 12.5L10.167 17L19.5 8" stroke="%23FFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+.sbmt_btn.clk > span, .sbmt_btn.done > span {
+    visibility: hidden;
+}
+.sbmt_btn.clk::before {
+    content: '';
+    animation-name: loader;
+}
+@keyframes loader {
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+form#pharm > button:hover, #preview > div .sbmt_btn:hover {
+    background-color: #0063d5;
+}
+#preview > div {
+    background-color: #Fff;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+#preview > div.off {
+    visibility: hidden;
+}
+#preview > div:last-of-type {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+#preview + div {
+    min-height: 300px;
+    background-color: #fff;
+}
+form#editpharm {
+    display: flex;
+    flex-direction: column;
+    padding: 0 50px 27px;
+}
+form#editpharm input, form#editpharm textarea {
+    margin-bottom: 1em;
+}
+.label {
+    padding: 3px 0;
+    margin-top: 12px;
+}
+div[contenteditable='true'] {
+    border: 1px solid #bbb;
+    padding: 7px 14px;
+}
+.md678 {
+    display: none;
+}
+@media (max-width: 667px) {
+    .md678 {
+        display: inline-block;
+    }
+    #wrapper {
+        display: initial;
+    }
+    section, section:first-of-type > div {
+        display: initial;
+        margin-bottom: 0;
+        min-width: 0;
+
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0;
+        background-color: #fff;
+        transition: transform .2s ease-out .2s;
+    }
+    section.off, section:first-of-type > div.off {
+        transform: translateX(-100%);
+    }
+    form#pharm {
+        flex-direction: column;
+    }
+    #preview {
+        position: sticky;
+        top: 0;
+    }
+}
+@media (max-width: 768px) {
+    .chevron.md768 {
+        display: none;
+    }
+}
