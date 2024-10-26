@@ -19,7 +19,7 @@
                     </div>
                 </h5>
                 <div id="pie">
-                    <div>antiseptics
+                    <div>
                         <span class="dets btn">See details</span>
                     </div>
                     <div class="val" data-num="0"></div>
@@ -54,8 +54,13 @@
                 </h5>
                 <form id="pharm">
                     <div class="fmgp">
-                        <label for="alias">Name</label>
-                        <input type="text" name="name" id="alias" required>
+                        <label for="drug">Name</label>
+                        <input type="text" name="drug" id="drug" required>
+                    </div>
+                    <div class="fmgp">
+                        <label for="alias">Category</label>
+                        <select name="name" id="alias"></select>
+                        <!-- <input type="text" name="name" id="alias" required> -->
                     </div>
                     <div class="fmgp">
                         <label for="vendor">Vendor</label>
@@ -64,6 +69,17 @@
                     <div class="fmgp">
                         <label for="qty">Quantity</label>
                         <input type="number" name="quantity" id="qty" required>
+                    </div>
+                    <div class="fmgp">
+                        <label for="unit">Unit</label>
+                        <select name="unit" id="unit">
+                            <option value="Bottle">Bottle</option>
+                            <option value="Card">Card</option>
+                            <option value="Carton">Carton</option>
+                            <option value="Packet">Packet</option>
+                            <option value="Sachet">Sachet</option>
+                            <option value="Tablet">Tablet</option>
+                        </select>
                     </div>
                     <div class="fmgp">
                         <label for="desc">Description</label>
@@ -81,24 +97,13 @@
                 </div>
                 <div>
                     <button type="button" class="chevron back ui_btn md678"></button>
-                    <div class="ttl">antiseptics</div>
+                    <div class="ttl"></div>
                     <button type="button" class="pencil ui_btn"></button>
                     <button type="button" class="times ui_btn"></button>
                 </div>
             </div>
             <div>
-                <form id="editpharm">
-                    <div class="label" data-for="name">Name</div>
-                    <div class="txtinput" contenteditable="false">Antiseptics</div>
-                    <div class="label" data-for="quantity">Quantity (cartons)</div>
-                    <div class="txtinput" contenteditable="false">70</div>
-                    <div class="label" data-for="vendor">Vendor</div>
-                    <div class="txtinput" contenteditable="false">Lorem ipsum dolor sit amet consectetur.</div>
-                    <div class="label" data-for="desc">Description</div>
-                    <div class="txtinput" contenteditable="false">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio ut necessitatibus, quidem rerum inventore tempora! Beatae assumenda delectus esse quo.Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet
-                    </div>
-                </form>
+                <form id="editpharm"></form>
             </div>
         </section>
     </div>

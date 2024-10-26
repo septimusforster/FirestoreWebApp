@@ -1,5 +1,6 @@
 import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";  //"firebase/app";
 import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";   //"firebase/firestore";
+// import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 const cfg = {
     apiKey: "AIzaSyCnGk02gQeUZ9nJeOBxHMk3jlC2_pG_jZo",
@@ -29,12 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 link.href = css;
             };
             document.head.appendChild(link);
-            document.body.removeAttribute('style');
         }).then(async () => {
             const p = parent.document;
             p.querySelector('.loader').classList.remove('on');
             p.querySelector('iframe').classList.remove('off');
             pie.querySelector('.val').classList.add('throb');
+            document.body.removeAttribute('style');
             await dataToTable();
         });
     });
@@ -66,8 +67,9 @@ async function dataToTable () {
             et.textContent = [1,1,Snapdocs.size][ix];
         });
 
-        ctbody.querySelectorAll('tr').forEach(rw => {
+        ctbody.querySelectorAll('tr').forEach((rw, ix, ar) => {
             rw.addEventListener('click', (e) => {
+                ar.forEach(row => row.classList.toggle('clk', rw == row));
                 plotpie(rw);
             });
         });
@@ -76,17 +78,6 @@ async function dataToTable () {
     }
     //meanwhile, pie animation active opacity;      
     pie.querySelector('.val').classList.remove('throb');
-}
-
-//plot pie
-let elem;
-function plotpie (tr) {
-    const idx = Number(tr.firstElementChild.textContent)-1;
-    elem = docs[idx].folios;
-    pie.firstElementChild.firstChild.textContent = elem.name;
-    pie.querySelector('.val').style.setProperty('--con-grad', ((elem.quantity - elem.used) * 100 / elem.quantity) + '%');
-    pie.querySelector('.val').dataset.num = ((elem.quantity - elem.used) * 100 / elem.quantity) + '%';
-    pie.querySelectorAll('#keys > span').forEach((span, ix) => span.setAttribute('title', [elem.used, elem.quantity][ix]));
 }
 //form init
 function initSubmit(elem, clk=true, done=false) {
@@ -101,6 +92,18 @@ function initSubmit(elem, clk=true, done=false) {
     }
 }
 const forms = document.forms;
+//insert opts of select#alias
+// const categories = configs[9].categories;
+const categories = [
+    "Antiseptics",
+    "Analgesics",
+    "Anaesthetics"
+];
+categories.forEach(cat => {
+    forms[0].querySelector('select#alias').insertAdjacentHTML('beforeend', `
+        <option value="${cat}">${cat}</option>    
+    `);
+});
 //create category
 forms[0].addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -136,6 +139,54 @@ forms[1].addEventListener('submit', (e) => {
     });
     console.log(data);
     // updateDoc(doc(db, data.name, doc.id), {folios: data});
+});
+//plot pie
+let elem;
+function plotpie (tr) {
+    const idx = Number(tr.firstElementChild.textContent)-1;
+    elem = docs[idx];
+    let x = elem.folios;
+    pie.firstElementChild.firstChild.textContent = document.querySelector('#preview .ttl').textContent = x.name;
+    pie.querySelector('.val').style.setProperty('--con-grad', ((x.quantity - x.used) * 100 / x.quantity) + '%');
+    pie.querySelector('.val').dataset.num = ((x.quantity - x.used) * 100 / x.quantity) + '%';
+    pie.querySelectorAll('#keys > span').forEach((span, ix) => span.setAttribute('title', [x.used, x.quantity][ix]));
+
+    insertDetails(elem);
+}
+//insert data details
+function insertDetails (data) {
+    forms[1].innerHTML = '';
+    let folios = data.folios;
+    let {name, vendor, quantity, used, desc} = folios;
+    let obj = {
+        'Name': ['name',name],  //str 'name' is the field path actual name
+        'Vendor': ['vendor',vendor],
+        'Quantity': ['quantity',quantity],
+        'Used': ['used',used],
+        'Description': ['desc',desc],
+    }
+
+    for (const [k, v] of Object.entries(obj)) {
+        forms[1].insertAdjacentHTML('beforeend', `
+            <div class="label" data-for="${v[0]}">${k}</div>
+            <div class="txtinput" contenteditable="false">${v[1]}</div>
+        `);
+    }
+}
+//open details pane
+const lastSectionHTML = document.querySelector('section:last-of-type');
+const detailsBtn = document.querySelector('.dets');
+detailsBtn.addEventListener('click', (e) => {
+    lastSectionHTML.classList.add('see');
+    lastSectionHTML.classList.remove('off');
+});
+//close details pane
+const previewBtns = document.querySelectorAll('#preview button.chevron.back, #preview > div:nth-child(2) button.times');
+previewBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        lastSectionHTML.classList.remove('see');
+        lastSectionHTML.classList.add('off');
+    });
 });
 //pencil: edit btn
 const pencil = document.querySelector('.pencil');

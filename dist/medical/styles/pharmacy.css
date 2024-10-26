@@ -43,10 +43,13 @@ input, textarea, label {
 label {
     margin: 5px 0;
 }
-label + input, label + textarea,
+label + input, label + textarea, select,
 .txtinput {
     border-radius: 5px;
     color: #888;
+}
+select#alias {
+    font-size: .85em;
 }
 .ttl {
     font-weight: 500;
@@ -66,6 +69,7 @@ html, body {
 }
 section {
     margin: 0 auto;
+    transition: flex-basis .3s ease;
 }
 section:first-of-type > div, section:last-of-type {
     border-radius: 10px;
@@ -80,6 +84,12 @@ section:first-of-type > div {
     margin-bottom: 70px;
     display: flex;
     flex-wrap: wrap;
+}
+section:last-of-type {
+    flex-basis: 0%;
+}
+section.see:last-of-type {
+    flex-basis: 30%;
 }
 section:last-of-type > div {
     min-width: 270px;
@@ -340,7 +350,7 @@ form#pharm {
 .fmgp:last-of-type {
     flex-basis: 100%;
 }
-.fmgp > label + input, .fmgp > label + textarea {
+.fmgp > input, .fmgp > textarea, .fmgp > select {
     border: 1px solid #ccc;
     padding: 7px 14px;
     width: 100%;
@@ -441,7 +451,6 @@ div[contenteditable='true'] {
         display: initial;
         margin-bottom: 0;
         min-width: 0;
-
         position: absolute;
         left: 0;
         top: 0;
@@ -460,6 +469,9 @@ div[contenteditable='true'] {
     #preview {
         position: sticky;
         top: 0;
+    }
+    #ctable tbody tr td:nth-child(2) {
+        min-width: 0;
     }
 }
 @media (max-width: 768px) {
