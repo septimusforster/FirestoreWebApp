@@ -14,7 +14,7 @@ const cfg = {
 var app = initializeApp(cfg);
 var db = getFirestore(app);
 
-const pie = document.querySelector('#pie > .val');
+const pie = document.querySelector('#pie');
 document.addEventListener('DOMContentLoaded', () => {
     caches.open('pgs').then(cache => {
         const css = '../styles/pharmacy.css';
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const p = parent.document;
             p.querySelector('.loader').classList.remove('on');
             p.querySelector('iframe').classList.remove('off');
-            pie.classList.add('throb');
+            pie.querySelector('.val').classList.add('throb');
             await dataToTable();
         });
     });
@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const ctbody = document.querySelector('#ctable > tbody');
 const tempRow = document.querySelector("[data-tab-template]");
 const foot = document.querySelector('div.foot');
+let docs = [];
 
 async function dataToTable () {
     //get data from backend
@@ -52,8 +53,9 @@ async function dataToTable () {
         alert("No data found.");
     } else {
         Snapdocs.docs.forEach((d, x) => {
-            let data = d.data().folios;
-            let {name, quantity, used} = data;
+            let data = d.data();
+            docs.push(data);
+            let {name, quantity, used} = data.folios;
             let tr = tempRow.content.cloneNode(true).children[0];
             for (let i = 1; i < 4; i++) tr.querySelector('td:nth-child('+i+')').textContent = [x+1, name, `${used} / ${quantity}`][i-1];
             tr.querySelector('td > .bar').style.setProperty('--bar-width', ((quantity - used) * 100 / quantity) + '%');
@@ -64,10 +66,27 @@ async function dataToTable () {
             et.textContent = [1,1,Snapdocs.size][ix];
         });
 
+        ctbody.querySelectorAll('tr').forEach(rw => {
+            rw.addEventListener('click', (e) => {
+                plotpie(rw);
+            });
+        });
+        
         foot.removeAttribute('style');
     }
     //meanwhile, pie animation active opacity;      
-    pie.classList.remove('throb');
+    pie.querySelector('.val').classList.remove('throb');
+}
+
+//plot pie
+let elem;
+function plotpie (tr) {
+    const idx = Number(tr.firstElementChild.textContent)-1;
+    elem = docs[idx].folios;
+    pie.firstElementChild.firstChild.textContent = elem.name;
+    pie.querySelector('.val').style.setProperty('--con-grad', ((elem.quantity - elem.used) * 100 / elem.quantity) + '%');
+    pie.querySelector('.val').dataset.num = ((elem.quantity - elem.used) * 100 / elem.quantity) + '%';
+    pie.querySelectorAll('#keys > span').forEach((span, ix) => span.setAttribute('title', [elem.used, elem.quantity][ix]));
 }
 //form init
 function initSubmit(elem, clk=true, done=false) {
