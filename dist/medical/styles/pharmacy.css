@@ -174,9 +174,24 @@ div > h5 {
     height: 100px;
     width: 100px;
     background: conic-gradient(
-        #1a73d8 var(--con-grad), #f3f3f3 0%
+        #1a73d8 var(--con-grad), #f0f0f0 0%
     );
     margin: 20px auto;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-fill-mode: backwards;
+    animation-iteration-count: infinite;
+}
+#pie > .val.throb {
+    animation-name: throb;
+}
+@keyframes throb {
+    0% {
+        background: #f0f0f0;
+    }
+    100% {
+        background: #fff;
+    }
 }
 #pie > .val::before {
     content: attr(data-num);
@@ -195,6 +210,7 @@ div > h5 {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    padding: 10px 0;
 }
 #keys > span {
     position: relative;
@@ -242,6 +258,7 @@ div > h5 {
     justify-content: center;
     align-items: center;
     position: sticky;
+    top: 100%;
     bottom: 0;
     background-color: #fff;
     outline: 10px solid #fff;
@@ -250,11 +267,18 @@ div > h5 {
 .foot > .chevron {
     padding: 20px;
 }
+.foot > .chevron.back {
+    margin-right: auto;
+}
+.foot > .chevron.forwd {
+    margin-left: auto;
+}
 .foot > i {
     margin: 0 10px;
     font-weight: 500;
 }
 td > .bar {
+    --bar-width: 0%;
     background-color: #f3f3f3;
     height: 10px;
     width: 50px;
@@ -263,8 +287,9 @@ td > .bar {
 td > .bar::before {
     content: '';
     position: absolute;
+    left: 0;
     height: 100%;
-    width: var(--con-grad);
+    width: var(--bar-width);
     background-color: #1a73d8;
 
 }
@@ -345,6 +370,7 @@ form#pharm {
     animation-fill-mode: forwards;
 }
 .sbmt_btn.done {
+    pointer-events: none;
     background-color: #009578;
 }
 .sbmt_btn.done::after {

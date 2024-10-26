@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body style="display: none">
     <div id="wrapper">
         <section>
             <div>
@@ -30,17 +30,19 @@
                 <div>
                     <table id="ctable">
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>antiseptics</td>
-                                <td>28/40</td>
-                                <td><div class="bar"></div></td>
-                            </tr>
+                            <template data-tab-template>
+                                <tr>
+                                    <td>1</td>
+                                    <td>antiseptics</td>
+                                    <td>28/40</td>
+                                    <td><div class="bar"></div></td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
-                    <div class="foot">
+                    <div class="foot" style="display: none;">
                         <button type="button" class="chevron back ui_btn"></button>
-                        <i>0</i> of <i>10</i> of <i>1000</i>
+                        <i>0</i> &ndash; <i>10</i> of <i>1000</i>
                         <button type="button" class="chevron forwd ui_btn"></button>
                     </div>
                 </div>
@@ -100,35 +102,6 @@
             </div>
         </section>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            caches.open('pgs').then(cache => {
-                const css = '../styles/pharmacy.css';
-                cache.match(css).then(res => {
-                    const link = document.createElement('link');
-                    link.rel='stylesheet';
-                    if (res && res.ok) {
-                        link.href = res.url;
-                        console.log("Found css in cache.");
-                    } else {
-                        console.log("Fetching css...")
-                        link.href = css;
-                    };
-                    document.head.appendChild(link);
-                }).then(() => {
-                    const p = parent.document;
-                    p.querySelector('.loader').classList.remove('on');
-                    p.querySelector('iframe').classList.remove('off');
-                });
-            });
-        });
-        const num = 57;
-        // document.querySelector('html').style.setProperty('--con-grad', num + '%');
-        // document.querySelector('#pie > .val').setAttribute('data-num', num + '%');
-
-        //readonly
-        // document.getElementById('editpharm').querySelectorAll('input, textarea').forEach(elem => elem.readOnly = true);
-    </script>
     <script type="module" src="../src/pharmacy.js"></script>
 </body>
 </html>

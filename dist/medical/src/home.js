@@ -75,16 +75,17 @@
 
 // const clinicNM = document.getElementsByClassName('clinic_nm')[0];
 // clinicNM.addEventListener('click', () => APP.deleteCache());
+const iframe = document.querySelector('iframe');
 const APP = {
     cacheName: 'pgs',
-    init () {
-        APP.startCache();
+    async init () {
+        await APP.startCache();
     },
-    startCache () {
-        caches.has(this.cacheName).then(hasCache => {
+    async startCache () {
+        await caches.has(this.cacheName).then(async hasCache => {
             console.log("Has cache:", hasCache);
             if (!hasCache) {
-                caches.open(this.cacheName).then(cache => {
+                await caches.open(this.cacheName).then(cache => {
                     let files = ['pharmacy.html', '../styles/pharmacy.css'];
                     let urls = files.map(url => {
                         const u = new URL(url, location.href).pathname;
@@ -112,13 +113,12 @@ const APP = {
                 });
             }
         });
-    }
+    },
 }
 
 document.addEventListener('DOMContentLoaded', APP.init);
 
 const loader = document.querySelector('.loader');
-const iframe = document.querySelector('iframe');
 const dashBtns = document.querySelectorAll('.actions > div.btn');
 
 dashBtns.forEach(btn => {

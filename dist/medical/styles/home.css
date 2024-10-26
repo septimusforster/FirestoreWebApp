@@ -19,8 +19,8 @@ html, body {
 .container {
     height: 100%;
     display: grid;
-    grid-template-rows: 5% 93%;
-    gap: 2%;
+    grid-template-rows: 5% 84% 5%;
+    gap: 3%;
 }
 header {
     padding: 0 1em;
@@ -158,6 +158,16 @@ iframe {
     100% {
         transform: rotateY(360deg);
     }
+}
+footer > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+footer > div, .author {
+    color: #777;
+    font-weight: 500;
+    font-family: monospace;
 }
 @media (max-width: 678px) {
     main {
