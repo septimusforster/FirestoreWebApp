@@ -20,6 +20,7 @@
                 </h5>
                 <div id="pie">
                     <div>
+                        <select name="category" id="category"></select>
                         <span class="dets btn">See details</span>
                     </div>
                     <div class="val" data-num="0"></div>
@@ -54,25 +55,25 @@
                 </h5>
                 <form id="pharm">
                     <div class="fmgp">
-                        <label for="drug">Name</label>
+                        <label for="drug">Name <i class="req">&ast;</i></label>
                         <input type="text" name="drug" id="drug" required>
                     </div>
                     <div class="fmgp">
-                        <label for="alias">Category</label>
-                        <select name="name" id="alias"></select>
-                        <!-- <input type="text" name="name" id="alias" required> -->
+                        <label for="alias">Category <i class="req">&ast;</i></label>
+                        <select name="name" id="alias" required></select>
                     </div>
                     <div class="fmgp">
                         <label for="vendor">Vendor</label>
-                        <input type="text" name="vendor" id="vendor" required>
+                        <input type="text" name="vendor" id="vendor">
                     </div>
                     <div class="fmgp">
-                        <label for="qty">Quantity</label>
+                        <label for="qty">Quantity <i class="req">&ast;</i></label>
                         <input type="number" name="quantity" id="qty" required>
                     </div>
                     <div class="fmgp">
-                        <label for="unit">Unit</label>
-                        <select name="unit" id="unit">
+                        <label for="unit">Unit <i class="req">&ast;</i></label>
+                        <select name="unit" id="unit" required>
+                            <option value="">Choose unit</option>
                             <option value="Bottle">Bottle</option>
                             <option value="Card">Card</option>
                             <option value="Carton">Carton</option>
@@ -83,7 +84,7 @@
                     </div>
                     <div class="fmgp">
                         <label for="desc">Description</label>
-                        <textarea name="desc" id="desc" required></textarea>
+                        <textarea name="desc" id="desc"></textarea>
                     </div>
                     <button class="sbmt_btn"><span>CREATE</span></button>
                 </form>

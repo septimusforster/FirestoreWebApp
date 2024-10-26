@@ -21,9 +21,10 @@ body, #pie + div {
     border-radius: 14px;
     background-color: #555;
 }
-button, .btn, #ctable tbody tr {
+button, .btn, #ctable tbody tr, select#category {
     border: 0;
     cursor: pointer;
+    outline: none;
 }
 button > *, .btn > * {
     pointer-events: none;
@@ -48,7 +49,7 @@ label + input, label + textarea, select,
     border-radius: 5px;
     color: #888;
 }
-select#alias {
+select {
     font-size: .85em;
 }
 .ttl {
@@ -76,7 +77,7 @@ section:first-of-type > div, section:last-of-type {
     overflow: hidden;
 }
 section:first-of-type {
-    flex-basis: 50%;
+    flex-basis: 60%;
 }
 section:first-of-type > div {
     background-color: #fff;
@@ -112,7 +113,7 @@ div > h5 {
 .slct {
     visibility: hidden;
     position: absolute;
-    right: 10px;
+    right: 0;
     top: 0;
     border-radius: 7px;
     box-shadow: 0 0 17px #ccc;
@@ -176,7 +177,7 @@ div > h5 {
     margin-left: auto;
 }
 #pie > *,
-#ctable tbody tr td:not(:nth-child(2)) {
+#ctable tbody tr td:not(:nth-child(2), :last-of-type) {
     text-align: center;
 }
 #pie > .val {
@@ -339,7 +340,6 @@ form#pharm {
     display: flex;
     flex-wrap: wrap;
     gap: .5em;
-    justify-content: space-between;
 }
 .fmgp > * {
     display: block;
@@ -354,6 +354,9 @@ form#pharm {
     border: 1px solid #ccc;
     padding: 7px 14px;
     width: 100%;
+}
+.req {
+    color: #ff4500;
 }
 .sbmt_btn {
     background-color: #1a73d8;

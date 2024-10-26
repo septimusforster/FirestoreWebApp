@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";  //"firebase/app";
-import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";   //"firebase/firestore";
+import { getFirestore, collection, collectionGroup, addDoc, doc, getDoc, getDocs, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";   //"firebase/firestore";
 // import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 const cfg = {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 link.href = res.url;
                 console.log("Found css in cache.");
             } else {
-                console.log("Fetching css...")
+                console.log("Fetching css...");
                 link.href = css;
             };
             document.head.appendChild(link);
@@ -34,38 +34,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const p = parent.document;
             p.querySelector('.loader').classList.remove('on');
             p.querySelector('iframe').classList.remove('off');
-            pie.querySelector('.val').classList.add('throb');
             document.body.removeAttribute('style');
-            await dataToTable();
         });
     });
 });
 
+const selectCategoryBtn = document.querySelector('select#category');
 const ctbody = document.querySelector('#ctable > tbody');
 const tempRow = document.querySelector("[data-tab-template]");
 const foot = document.querySelector('div.foot');
 let docs = [];
 
-async function dataToTable () {
+selectCategoryBtn.addEventListener('change', async (e) => {
+    pie.querySelector('.val').classList.add('throb');
+    if (e.target.selectedIndex) {
+        await dataToTable(e.target.value);
+    }
+})
+async function dataToTable (category) {
     //get data from backend
-    const Q = query(collection(db, 'category'), orderBy('createdAt','desc'));
+    const Q = query(collection(db, 'products'), where('name', '==', category), orderBy('createdAt','desc'));
     const Snapdocs = await getDocs(Q);
     if (Snapdocs.empty) {
         alert("No data found.");
     } else {
+        ctbody.innerHTML = '';
         Snapdocs.docs.forEach((d, x) => {
             let data = d.data();
-            docs.push(data);
-            let {name, quantity, used} = data.folios;
+            docs.push({[d.id]: data});
+            let {drug, quantity, used} = data;
             let tr = tempRow.content.cloneNode(true).children[0];
-            for (let i = 1; i < 4; i++) tr.querySelector('td:nth-child('+i+')').textContent = [x+1, name, `${used} / ${quantity}`][i-1];
+            for (let i = 1; i < 4; i++) tr.querySelector('td:nth-child('+i+')').textContent = [x+1, drug, `${used} / ${quantity}`][i-1];
             tr.querySelector('td > .bar').style.setProperty('--bar-width', ((quantity - used) * 100 / quantity) + '%');
             ctbody.appendChild(tr);
         });
 
-        foot.querySelectorAll('i').forEach((et, ix) => {
-            et.textContent = [1,1,Snapdocs.size][ix];
-        });
+        // foot.querySelectorAll('i').forEach((et, ix) => {
+        //     et.textContent = [1,1,Snapdocs.size][ix];
+        // });
 
         ctbody.querySelectorAll('tr').forEach((rw, ix, ar) => {
             rw.addEventListener('click', (e) => {
@@ -74,7 +80,7 @@ async function dataToTable () {
             });
         });
         
-        foot.removeAttribute('style');
+        // foot.removeAttribute('style');
     }
     //meanwhile, pie animation active opacity;      
     pie.querySelector('.val').classList.remove('throb');
@@ -94,74 +100,41 @@ function initSubmit(elem, clk=true, done=false) {
 const forms = document.forms;
 //insert opts of select#alias
 // const categories = configs[9].categories;
-const categories = [
-    "Antiseptics",
-    "Analgesics",
-    "Anaesthetics"
-];
-categories.forEach(cat => {
-    forms[0].querySelector('select#alias').insertAdjacentHTML('beforeend', `
-        <option value="${cat}">${cat}</option>    
-    `);
-});
-//create category
-forms[0].addEventListener('submit', async (e) => {
-    e.preventDefault();
-    initSubmit(e.submitter);
-    let data = {
-        createdAt: Date.now(),
-        lastModified: serverTimestamp(),
-        folios: {
-            used: 0,
-        }
-    }
-    const fd = new FormData(forms[0]);
-    for (const [k, v] of fd.entries()) {
-        data.folios[k] = Number(v) || v;
-    }
-    const docRef = await getDoc(doc(db, 'category', data.folios.name));
-    if (!docRef.exists()) {
-        await setDoc(doc(db,'category', data.folios.name), data);
-        initSubmit(e.submitter, false, true);
-    } else {
-        initSubmit(e.submitter, false);
-        alert(`${data.folios.name} has already been categorized.`);
-    }
-});
-//edit category
-const txtInputs = document.querySelectorAll('.txtinput');
-forms[1].addEventListener('submit', (e) => {
-    e.preventDefault();
-    initSubmit(e.submitter);
-    let data = {};
-    txtInputs.forEach(elem => {
-        data[elem.previousElementSibling.dataset.for] = Number(elem.textContent) || elem.textContent;
+(function addCategories() {
+    const categories = [
+        "Antiseptics",
+        "Analgesics",
+        "Anaesthetics"
+    ];
+    let defaultOpt = '<option value="">Choose category</option>';
+    categories.forEach(cat => {
+        defaultOpt += `<option value="${cat}">${cat}</option>`;
     });
-    console.log(data);
-    // updateDoc(doc(db, data.name, doc.id), {folios: data});
-});
+    document.querySelector('select#category').insertAdjacentHTML('beforeend', defaultOpt);
+    forms[0].querySelector('select#alias').insertAdjacentHTML('beforeend', defaultOpt);
+})();
+
 //plot pie
 let elem;
 function plotpie (tr) {
     const idx = Number(tr.firstElementChild.textContent)-1;
     elem = docs[idx];
-    let x = elem.folios;
-    pie.firstElementChild.firstChild.textContent = document.querySelector('#preview .ttl').textContent = x.name;
+    let x = Object.values(elem)[0];
+    document.querySelector('#preview .ttl').textContent = x.name;
     pie.querySelector('.val').style.setProperty('--con-grad', ((x.quantity - x.used) * 100 / x.quantity) + '%');
     pie.querySelector('.val').dataset.num = ((x.quantity - x.used) * 100 / x.quantity) + '%';
     pie.querySelectorAll('#keys > span').forEach((span, ix) => span.setAttribute('title', [x.used, x.quantity][ix]));
 
-    insertDetails(elem);
+    insertDetails(x);
 }
 //insert data details
 function insertDetails (data) {
     forms[1].innerHTML = '';
-    let folios = data.folios;
-    let {name, vendor, quantity, used, desc} = folios;
+    let {name, vendor, quantity, unit, used, desc} = data;
     let obj = {
         'Name': ['name',name],  //str 'name' is the field path actual name
         'Vendor': ['vendor',vendor],
-        'Quantity': ['quantity',quantity],
+        [`Quantity (in ${unit})`]: ['quantity',quantity],
         'Used': ['used',used],
         'Description': ['desc',desc],
     }
@@ -169,10 +142,43 @@ function insertDetails (data) {
     for (const [k, v] of Object.entries(obj)) {
         forms[1].insertAdjacentHTML('beforeend', `
             <div class="label" data-for="${v[0]}">${k}</div>
-            <div class="txtinput" contenteditable="false">${v[1]}</div>
+            <div class="txtinput" contenteditable="false">${v[1] || 'Nil'}</div>
         `);
     }
 }
+//create category
+forms[0].addEventListener('submit', async (e) => {
+    e.preventDefault();
+    initSubmit(e.submitter);
+    let data = {
+        createdAt: Date.now(),
+        lastModified: serverTimestamp(),
+        used: 0,
+        vendor: '',
+        desc: '',
+    }
+    const fd = new FormData(forms[0]);
+    for (const [k, v] of fd.entries()) {
+        data[k] = Number(v) || v;
+    }
+    // console.log(data);
+    await addDoc(collection(db,'products'), data);
+    initSubmit(e.submitter, false, true);
+});
+//edit category
+forms[1].addEventListener('submit', async (e) => {
+    const txtInputs = document.querySelectorAll('.txtinput');
+    e.preventDefault();
+    initSubmit(e.submitter);
+    let data = {};
+    txtInputs.forEach(elem => {
+        data[elem.previousElementSibling.dataset.for] = Number(elem.textContent) || elem.textContent;
+    });
+    const id = Object.keys(elem)[0];
+
+    await updateDoc(doc(db, 'products', id), data);
+    initSubmit(e.submitter, false, true);
+});
 //open details pane
 const lastSectionHTML = document.querySelector('section:last-of-type');
 const detailsBtn = document.querySelector('.dets');
@@ -191,6 +197,7 @@ previewBtns.forEach(btn => {
 //pencil: edit btn
 const pencil = document.querySelector('.pencil');
 pencil.onclick = () => {
+    const txtInputs = document.querySelectorAll('.txtinput');
     pencil.parentElement.classList.add('off');
     txtInputs.forEach(elem => elem.setAttribute('contenteditable', 'true'));
 }
@@ -198,6 +205,7 @@ pencil.onclick = () => {
 const times = document.querySelectorAll('.times');
 times.forEach(btn => {
     btn.addEventListener('click', (e) => {
+        const txtInputs = document.querySelectorAll('.txtinput');
         if (times[0] == btn) {
             btn.parentElement.nextElementSibling.classList.remove('off');
             txtInputs.forEach(elem => elem.setAttribute('contenteditable', 'false'));
