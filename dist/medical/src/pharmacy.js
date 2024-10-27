@@ -63,6 +63,7 @@ async function dataToTable (category) {
         pie.querySelector('.val').style.setProperty('--con-grad', 0 + '%');
         pie.querySelector('.val').dataset.num = 0 + '%';
         pie.querySelectorAll('#keys > span').forEach(span => span.setAttribute('title', 0));
+        docs = [];
 
         Snapdocs.docs.forEach((d, x) => {
             let data = d.data();
@@ -151,9 +152,9 @@ function plotpie (tr) {
 //insert data details
 function insertDetails (data) {
     forms[1].innerHTML = '';
-    let {name, vendor, quantity, unit, used, desc} = data;
+    let {drug, vendor, quantity, unit, used, desc} = data;
     let obj = {
-        'Name': ['name',name],  //str 'name' is the field path actual name
+        'Product': ['product',drug],  //str 'name' is the field path actual name
         'Vendor': ['vendor',vendor],
         [`Quantity (in ${unit})`]: ['quantity',quantity],
         'Used': ['used',used],
