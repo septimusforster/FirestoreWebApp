@@ -78,7 +78,8 @@
 const iframe = document.querySelector('iframe');
 const APP = {
     cacheName: 'pgs',
-    async init () {
+    async init (user) {
+        document.querySelector('.usrn').textContent = user;
         await APP.startCache();
     },
     async startCache () {
@@ -116,26 +117,32 @@ const APP = {
     },
 }
 
-document.addEventListener('DOMContentLoaded', APP.init);
-
-const loader = document.querySelector('.loader');
-const dashBtns = document.querySelectorAll('.actions > div.btn');
-
-dashBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        const href= btn.dataset.href;
-        const src = iframe.src;
-        const url = src.slice(src.lastIndexOf('/')+1);
-        if (href && href != url) {
-            dashBtns.forEach(obtn => obtn.classList.toggle('on', btn == obtn));
-            loader.classList.add('on');
-            const id = setTimeout(async() => {
-                clearTimeout(id);
-                iframe.src = await APP.openCache('yom' + href) || href;
-            }, 2000);
-        }
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    let data = JSON.parse(sessionStorage.getItem('data'));
+    if (data) {
+        APP.init(data.user);
+        
+        const loader = document.querySelector('.loader');
+        const dashBtns = document.querySelectorAll('.actions > div.btn');
+        
+        dashBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const href= btn.dataset.href;
+                const src = iframe.src;
+                const url = src.slice(src.lastIndexOf('/')+1);
+                if (href && href != url) {
+                    dashBtns.forEach(obtn => obtn.classList.toggle('on', btn == obtn));
+                    loader.classList.add('on');
+                    const id = setTimeout(async() => {
+                        clearTimeout(id);
+                        iframe.src = await APP.openCache('yom' + href) || href;
+                    }, 2000);
+                }
+            });
+        });
+    }
 });
+
 // const txt = document.createTextNode('a text node');
 // const txt = 'a text node';
 // document.querySelector('.usr').insertAdjacentText('afterbegin', txt);

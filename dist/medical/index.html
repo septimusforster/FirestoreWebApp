@@ -11,10 +11,15 @@
             box-sizing: border-box;
             font: 16px system-ui;
         }
-        button, .btn {
+        button, input {
+            background-color: transparent;
+            outline: none;
+            border: 0;
+        }
+        button {
             cursor: pointer;
         }
-        button > *, .btn > * {
+        button > * {
             pointer-events: none;
         }
         html, body {
@@ -37,6 +42,140 @@
             gap: 1em;
             box-shadow: 0 7px 17px #ddd;
         }
+        main > div, .fmgp, .ui_btn {
+            display: flex;
+        }
+        main > div {
+            flex-direction: column;
+            gap: 2rem;
+            width: 450px;
+            margin: 24px auto;
+            padding: 10px;
+        }
+        .fmgp {
+            align-items: center;
+        }
+        .fmgp:not(:last-of-type) {
+            margin: 20px 10px;
+            border-radius: 27px;
+            overflow: hidden;
+            position: relative;
+        }
+        input {
+            flex-basis: 100%;
+            padding: 14px 20px;
+            margin-right: 70px;
+            margin-left: 12px;
+            border-radius: 27px;
+            box-shadow: -4px -4px 10px #fff, inset 4px 4px 10px rgba(0,0,0,0.05), inset -4px -4px 10px #fff, 4px 4px 10px rgba(0,0,0,0.05); 
+        }
+        .head {
+            padding-right: 70px;
+            font-size: 1.2em;
+            font-weight: 500;
+            text-align: center;
+        }
+        span#user {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="%23777" viewBox="0 0 448 512" width="24" height="24"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/></svg>');
+        }
+        span#key {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="%23777" version="1.1" id="Capa_1" viewBox="0 0 47.001 47.001" xml:space="preserve"><g><g><path d="M45.328,16.918l-4.463-4.464c-2.229-2.23-5.856-2.229-8.085,0.001l-1.273,1.273l4.661,0.35    c0.842-0.227,1.776-0.021,2.437,0.638l4.463,4.462c0.979,0.982,0.979,2.58-0.002,3.562l-1.32,1.321    c-0.981,0.981-2.581,0.983-3.561,0L33.72,19.6c-0.308-0.307-0.506-0.676-0.62-1.064l-3.27-0.245    c0.107,1.303,0.632,2.578,1.626,3.571l4.463,4.463c2.229,2.229,5.855,2.229,8.085-0.001l1.321-1.32    C47.559,22.774,47.559,19.148,45.328,16.918z"/><path d="M23.612,18.342l-2.121,3.513l-7.203-4.35l2.122-3.513c1.201-1.989,3.794-2.633,5.778-1.433    c0.253,0.152,0.483,0.328,0.691,0.522l5.105,0.383c-0.615-1.822-1.848-3.445-3.618-4.514C20.39,6.549,15.2,7.833,12.799,11.812    l-2.122,3.513l-0.367-0.221c-1.488-0.898-3.442-0.417-4.34,1.072l-5.518,9.14c-0.899,1.487-0.416,3.441,1.072,4.34l15.158,9.153    c1.488,0.897,3.442,0.417,4.341-1.072l5.517-9.138c0.899-1.487,0.416-3.442-1.072-4.341l-0.367-0.223l2.122-3.514    c0.452-0.75,0.773-1.543,0.972-2.354l-4.346-0.325C23.775,18.009,23.709,18.181,23.612,18.342z"/><path d="M20.394,15.239c-0.065,0.881,0.596,1.646,1.477,1.714l14.672,1.102c0.879,0.066,1.647-0.593,1.714-1.476    c0.066-0.88-0.596-1.647-1.475-1.714L22.11,13.764C21.23,13.697,20.461,14.357,20.394,15.239z"/></g></g></svg>');
+        }
+        .fmgp > span, .ui_btn {
+            height: 40px;
+            width: 40px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .ui_btn.see {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none"><path d="M4 12C4 12 5.6 7 12 7M12 7C18.4 7 20 12 20 12M12 7V4M18 5L16 7.5M6 5L8 7.5M15 13C15 14.6569 13.6569 16 12 16C10.3431 16 9 14.6569 9 13C9 11.3431 10.3431 10 12 10C13.6569 10 15 11.3431 15 13Z" stroke="%23777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        }
+        .ui_btn.unsee {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="%23777" viewBox="0 0 24 24"><g data-name="Layer 2"><g data-name="eye-off-2"><rect width="30" height="30" opacity="0"/><path d="M17.81 13.39A8.93 8.93 0 0 0 21 7.62a1 1 0 1 0-2-.24 7.07 7.07 0 0 1-14 0 1 1 0 1 0-2 .24 8.93 8.93 0 0 0 3.18 5.77l-2.3 2.32a1 1 0 0 0 1.41 1.41l2.61-2.6a9.06 9.06 0 0 0 3.1.92V19a1 1 0 0 0 2 0v-3.56a9.06 9.06 0 0 0 3.1-.92l2.61 2.6a1 1 0 0 0 1.41-1.41z"/></g></g></svg>');
+        }
+        .ui_btn {
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            border-radius: 50%;
+            right: 7px;
+            background-color: #f1f1f1;
+            transition: background-color .1s ease;
+        }
+        .ui_btn:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        .ui_btn.hide {
+            opacity: 0;
+            z-index: -1;
+        }
+        #sbmt_btn {
+            margin: 14px 84px 14px 140px;
+            border-radius: 27px;
+            padding: 17px 27px;
+            background-color: #333;
+            color: #fff;
+            transition: background-color .2s ease-out, color .2s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        #sbmt_btn:hover, #sbmt_btn.clk {
+            background-color: #1a73d8;
+            color: #fff;
+        }
+        #sbmt_btn::before, #sbmt_btn::after {
+            position: absolute;
+            height: 100%;
+            top: 0;
+            border-radius: 20px;
+            animation-duration: 4s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+        }
+        #sbmt_btn::before {
+            width: 50%;
+            background-color: rgba(0,0,0,0.15);
+            transform: rotate(125deg);
+            left: -15%;
+        }
+        #sbmt_btn::after {
+            right: -15%;
+            width: 50%;
+            background-color: rgba(0,0,0,0.25);
+            transform: rotate(-70deg);
+        }
+        #sbmt_btn.clk > span {
+            opacity: 0;
+        }
+        #sbmt_btn.clk::before, #sbmt_btn.clk::after {
+            content: '';
+            animation-name: epl;
+        }
+        @keyframes epl {
+            100% {
+                transform: translate(-20%);
+                opacity: .1;
+            }
+        }
+        .notice {
+            opacity: 0;
+            position: fixed;
+            padding: 20px;
+            min-width: 300px;
+            border-radius: 17px;
+            font-size: 1.1em;
+            font-weight: 500;
+            background-color: #333;
+            color: #fff;
+            bottom: -30px;
+            left: 70px;
+            transition: bottom .3s ease, opacity .1s ease-out;
+        }
+        .fmgp.err + .notice {
+            bottom: 30px;
+            opacity: 1;
+        }
         footer > div {
             display: flex;
             justify-content: center;
@@ -55,7 +194,27 @@
             <svg width="2em" height="2em"><use href="#moses" xlink:href="#moses"></use></svg>
             <span>Clinical</span>
         </header>
-        <main></main>
+        <main>
+            <div>
+                <div class="head">Staff Sign-In</div>
+                <form autocomplete="off">
+                    <div class="fmgp">
+                        <span id="user"></span>
+                        <input type="text" name="uname" id="uname" placeholder="Enter your username" required>
+                    </div>
+                    <div class="fmgp">
+                        <span id="key"></span>
+                        <input type="password" name="upass" id="upass" placeholder="Enter your password" required>
+                        <button type="button" class="ui_btn see hide"></button>
+                        <button type="button" class="ui_btn unsee"></button>
+                    </div>
+                    <div class="fmgp">
+                        <button id="sbmt_btn"><span>Log in</span></button>
+                    </div>
+                    <div class="notice"></div>
+                </form>
+            </div>
+        </main>
         <footer>
             <div>&copy; 2024&nbsp;-&nbsp;<span class="author">Dynamax</span></div>
         </footer>
@@ -69,5 +228,27 @@
             </symbol>
         </svg>
     </div>
+    <script>
+        const inputPassword = document.querySelector('input#upass');
+        let pass = '';
+        inputPassword.addEventListener('keyup', (e) => {
+            // if (e.keyCode < 48) return;     //Less than 48 are non-alphanumeric chars
+            // pass += e.key;
+            // const len = pass.length;
+            // const id = setTimeout(() => {
+            //     inputPassword.value = '*'.repeat(len);
+            // }, 100);
+        });
+
+        const eyeBtns = document.querySelectorAll('.ui_btn.see, .ui_btn.unsee');
+        eyeBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                eyeBtns.forEach(b => {
+                    b.classList.toggle('hide') ? inputPassword.type = 'text' : inputPassword.type = 'password';
+                });
+            });
+        });
+    </script>
+    <script type="module" src="index.js"></script>
 </body>
 </html>

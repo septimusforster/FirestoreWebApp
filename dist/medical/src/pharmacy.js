@@ -58,7 +58,12 @@ async function dataToTable (category) {
     if (Snapdocs.empty) {
         alert("No data found.");
     } else {
+        //reset
         ctbody.innerHTML = '';
+        pie.querySelector('.val').style.setProperty('--con-grad', 0 + '%');
+        pie.querySelector('.val').dataset.num = 0 + '%';
+        pie.querySelectorAll('#keys > span').forEach(span => span.setAttribute('title', 0));
+
         Snapdocs.docs.forEach((d, x) => {
             let data = d.data();
             docs.push({[d.id]: data});
@@ -85,6 +90,21 @@ async function dataToTable (category) {
     //meanwhile, pie animation active opacity;      
     pie.querySelector('.val').classList.remove('throb');
 }
+//open details pane
+const lastSectionHTML = document.querySelector('section:last-of-type');
+const detailsBtn = document.querySelector('.dets');
+detailsBtn.addEventListener('click', (e) => {
+    lastSectionHTML.classList.add('see');
+    lastSectionHTML.classList.remove('off');
+});
+//close details pane
+const previewBtns = document.querySelectorAll('#preview button.chevron.back, #preview > div:nth-child(2) button.times');
+previewBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        lastSectionHTML.classList.remove('see');
+        lastSectionHTML.classList.add('off');
+    });
+});
 //form init
 function initSubmit(elem, clk=true, done=false) {
     elem.disabled = clk;
@@ -93,6 +113,7 @@ function initSubmit(elem, clk=true, done=false) {
     if (isToggled) {
         const id = setTimeout(() => {
             elem.classList.remove('done');
+            if (elem.textContent.toLowerCase() == 'save') previewBtns[1].click();
             clearTimeout(id);
         }, 3000);
     }
@@ -163,6 +184,7 @@ forms[0].addEventListener('submit', async (e) => {
     }
     // console.log(data);
     await addDoc(collection(db,'products'), data);
+    forms[0].reset();
     initSubmit(e.submitter, false, true);
 });
 //edit category
@@ -177,22 +199,10 @@ forms[1].addEventListener('submit', async (e) => {
     const id = Object.keys(elem)[0];
 
     await updateDoc(doc(db, 'products', id), data);
+    for (const [k, v] of Object.entries(data)) {
+        Object.values(elem)[0][k] = v;
+    }
     initSubmit(e.submitter, false, true);
-});
-//open details pane
-const lastSectionHTML = document.querySelector('section:last-of-type');
-const detailsBtn = document.querySelector('.dets');
-detailsBtn.addEventListener('click', (e) => {
-    lastSectionHTML.classList.add('see');
-    lastSectionHTML.classList.remove('off');
-});
-//close details pane
-const previewBtns = document.querySelectorAll('#preview button.chevron.back, #preview > div:nth-child(2) button.times');
-previewBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        lastSectionHTML.classList.remove('see');
-        lastSectionHTML.classList.add('off');
-    });
 });
 //pencil: edit btn
 const pencil = document.querySelector('.pencil');
