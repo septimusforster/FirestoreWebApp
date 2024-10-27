@@ -3,7 +3,6 @@
 		padding: 0;
 		overflow: hidden;
 	}
-
   body {
 	display: flex;
 	position: relative;
@@ -47,7 +46,7 @@
 	border-radius: 10px;
   }
 
-  #log-btn {
+  /* #log-btn {
 	width: 100%;
 	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	text-transform: uppercase;
@@ -57,8 +56,45 @@
 	padding: 20px;
 	border: none;
 	cursor: pointer;
-  }
+  } */
 
+  #log-btn {
+	outline: none;
+	border: 0;
+	font-size: 1.2em;
+	width: 300px;
+	margin: auto;
+	padding: 14px;
+	border-radius: 30px;
+	background-color: #333;
+	color: #fff;
+	cursor: pointer;
+	text-transform: uppercase;
+	font-family: system-ui;
+	position: relative;
+	transition: background-color .2s ease;
+  }
+  #log-btn::after, #log-btn::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	background-color: rgba(0,0,0,.2);
+	height: 100%;
+	border-radius: 11px / 9px;
+  }
+  #log-btn::after {
+	left: -5%;
+	width: 20%;
+	transform: rotate(-20deg);
+  }
+  #log-btn::before {
+	right: -5%;
+	width: 27%;
+	transform: rotate(47deg);
+  }
+  #log-btn:hover {
+	background-color: #1a73d8;
+  }
   body {
 	container-type: inline-size;
   }
@@ -78,6 +114,7 @@
 		.ima {
 			width: 9rem;
 		}
+		/*
 		.login-cat:hover, #log-btn:hover{
 			background: cyan;
 			color: aliceblue;
@@ -88,8 +125,9 @@
 			color: aliceblue;
 			box-shadow: 0 0 12px 3px cyan;
 		}
+		*/
 	}
-	
+	/*
 	.login-cat:hover, #log-btn:hover{
 		background: cyan;
 		color: aliceblue;
@@ -100,5 +138,4 @@
 		color: aliceblue;
 		box-shadow: 0 0 12px 3px cyan;
 	}
-
-	
+*/
