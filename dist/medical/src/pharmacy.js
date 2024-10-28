@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("Fetching css...");
                 link.href = css;
             };
-            document.head.appendChild(link);
+            // document.head.appendChild(link);
         }).then(async () => {
             p.querySelector('.loader').classList.remove('on');
             p.querySelector('iframe').classList.remove('off');
@@ -235,10 +235,13 @@ times.forEach(btn => {
 //share
 const shareBtn = document.querySelector('button.share');
 shareBtn.addEventListener('click', async () => {
-    const available = elem.quantity - elem.used;
+    const e = Object.values(elem)[0];
+    const available = e.quantity - e.used;
+
     const data = {
-        title: elem.name,
-        text: `Available in stock: ${available + ' ' + elem.unit}${available == 1 ? '' : 's'}`,
+        title: e.name,
+        text: `Available in stock: ${available + ' ' + e.unit}${available <= 1 ? '' : 's'}`,
+        url: location.origin + '/dist/medical/index.html'
     }
     if (!navigator.canShare(data)) {
         console.log("This piece of data cannot be shared using this API.");
@@ -251,4 +254,4 @@ shareBtn.addEventListener('click', async () => {
     } catch (err) {
         console.log(err);
     }
-})
+});
