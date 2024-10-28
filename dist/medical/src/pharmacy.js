@@ -152,8 +152,8 @@ function plotpie (tr) {
     elem = docs[idx];
     let x = Object.values(elem)[0];
     document.querySelector('#preview .ttl').textContent = x.name;
-    pie.querySelector('.val').style.setProperty('--con-grad', ((x.quantity - x.used) * 100 / x.quantity) + '%');
-    pie.querySelector('.val').dataset.num = ((x.quantity - x.used) * 100 / x.quantity) + '%';
+    pie.querySelector('.val').style.setProperty('--con-grad', ((x.quantity - x.used) * 100 / x.quantity).toFixed() + '%');
+    pie.querySelector('.val').dataset.num = ((x.quantity - x.used) * 100 / x.quantity).toFixed() + '%';
     pie.querySelectorAll('#keys > span').forEach((span, ix) => span.setAttribute('title', [x.used, x.quantity][ix]));
 
     insertDetails(x);
@@ -232,3 +232,23 @@ times.forEach(btn => {
         }
     });
 });
+//share
+const shareBtn = document.querySelector('button.share');
+shareBtn.addEventListener('click', async () => {
+    const available = elem.quantity - elem.used;
+    const data = {
+        title: elem.name,
+        text: `Available in stock: ${available + ' ' + elem.unit}${available == 1 ? '' : 's'}`,
+    }
+    if (!navigator.canShare(data)) {
+        console.log("This piece of data cannot be shared using this API.");
+        return;
+    }
+    try {
+        await navigator.share(data);
+        const d = Date.now();
+        console.log(d, "Shared successfully.");
+    } catch (err) {
+        console.log(err);
+    }
+})
