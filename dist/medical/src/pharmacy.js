@@ -15,6 +15,7 @@ const cfg = {
 var app = initializeApp(cfg);
 var db = getFirestore(app);
 
+const p = parent.document;
 const pie = document.querySelector('#pie');
 document.addEventListener('DOMContentLoaded', () => {
     caches.open('pgs').then(cache => {
@@ -31,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             document.head.appendChild(link);
         }).then(async () => {
-            const p = parent.document;
             p.querySelector('.loader').classList.remove('on');
             p.querySelector('iframe').classList.remove('off');
             document.body.removeAttribute('style');
@@ -104,6 +104,27 @@ previewBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         lastSectionHTML.classList.remove('see');
         lastSectionHTML.classList.add('off');
+    });
+});
+//nav to index page/new cat
+const newCat = document.querySelector('.new_cat');
+const navCatBtns = document.querySelectorAll('.exst_cat > h5 > button.chevron.back, .exst_cat > button.add, .new_cat > h5 > button.chevron.back');
+navCatBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+        console.log('clicked')
+        switch (idx) {
+            case 0:
+                p.querySelector('iframe').classList.add('off');
+                break;
+            case 1:
+                newCat.classList.remove('off');
+                break;
+            case 2:
+                newCat.classList.add('off');
+                break;
+            default:
+                break;
+        }
     });
 });
 //form init

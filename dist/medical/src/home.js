@@ -137,6 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         clearTimeout(id);
                         iframe.src = await APP.openCache('yom' + href) || href;
                     }, 2000);
+                } else if (href && href == url) {
+                    iframe.classList.remove('off');
                 }
             });
         });

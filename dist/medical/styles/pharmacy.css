@@ -319,7 +319,10 @@ td > .bar::before {
 .times {
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>');
 }
-.chevron, .pencil, .times, .dets::before, .sort, .slct > .o[data-selected]::before {
+.add {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="%23FFF"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+}
+.chevron, .pencil, .times, .add, .dets::before, .sort, .slct > .o[data-selected]::before {
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -327,13 +330,21 @@ td > .bar::before {
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: var(--radii-50);
     height: 24px;
     width: 24px;
-    border-radius: var(--radii-50);
     transition: background-color .2s ease;
 }
-.ui_btn:hover {
+.ui_btn:not(.add):hover {
     background-color: #f1f1f1;
+}
+.ui_btn.add {
+    height: 40px;
+    width: 40px;
+    background-color: #0063d5;
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
 }
 form#pharm {
     width: 100%;
@@ -477,8 +488,8 @@ div[contenteditable='true'] {
         min-width: 0;
     }
 }
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .chevron.md768 {
         display: none;
     }
-}
+} */
