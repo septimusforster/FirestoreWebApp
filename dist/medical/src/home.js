@@ -75,11 +75,17 @@
 
 // const clinicNM = document.getElementsByClassName('clinic_nm')[0];
 // clinicNM.addEventListener('click', () => APP.deleteCache());
+
 const iframe = document.querySelector('iframe');
 const APP = {
     cacheName: 'pgs',
-    async init (user) {
-        document.querySelector('.usrn').textContent = user;
+    async init (data) {
+        document.querySelector('.usrn').textContent = data.user;
+        document.querySelector('aside.body .photo + div').textContent = data.uname;
+        document.querySelector('aside.body .photo + div + div').innerHTML = `
+            <p><b>Personnel</b><br/>${data.user}</p>
+        `;
+
         await APP.startCache();
     },
     async startCache () {
@@ -120,7 +126,7 @@ const APP = {
 document.addEventListener('DOMContentLoaded', () => {
     let data = JSON.parse(sessionStorage.getItem('data'));
     if (data) {
-        APP.init(data.user);
+        APP.init(data);
         
         const loader = document.querySelector('.loader');
         const dashBtns = document.querySelectorAll('.actions > div.btn');
@@ -144,7 +150,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
+//show user profile
+const btns = document.querySelectorAll('.usr.btn, aside.body > span.ex');
+btns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+        if (btn == btns[0]) {
+            btns[0].classList.add('clk');
+        } else {  
+            btns[0].classList.remove('clk');
+        }
+    });
+});
+//profile btns
+const logoutDialog = document.querySelector('[data-logout]');
+const profileBtns = document.querySelectorAll('aside.nav button');
+profileBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const bool = btn == [...profileBtns].at(-1);
+        // profileBtns.forEach(clkbtn => clkbtn.classList.toggle('clk', bool));
+        if (bool) { //logout
+            btns[1].click();
+            logoutDialog.showModal();
+        } else {   //edit btn
+            console.log("Use function for other btns, including EDIT.");
+        }
+    })
+});
+//logout btnn action
+const logoutDiaBtns = logoutDialog.querySelectorAll('div > button');
+logoutDiaBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (btn == logoutDiaBtns[0]) {
+            logoutDialog.close();
+        } else {
+            sessionStorage.removeItem('data');
+            location.replace('../index.html');
+        }
+    });
+});
 // const txt = document.createTextNode('a text node');
 // const txt = 'a text node';
 // document.querySelector('.usr').insertAdjacentText('afterbegin', txt);

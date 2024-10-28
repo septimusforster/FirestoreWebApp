@@ -86,10 +86,18 @@
             "measurementId": "G-5E3NVV96HY"
         },
         "categories": [
-            "Anaesthetics",
-            "Analgesics",
-            "Antibiotics",
-            "Antiseptics"
+            "Cough Syrup",
+            "Analgesic Tablet",
+            "Eye/Ear Drops/Antiallergy",
+            "Anti-malaria Tablet/Injection",
+            "Ulcer Medication",
+            "Antifungal/Anti-diarrhea",
+            "Antibiotics Tablet/Injection",
+            "Analgesic Injection/Ointment",
+            "Multi Vitamins",
+            "Non-consummables 1",
+            "Non-consummables 2",
+            "Lozenge"
         ]
     }    
 ]

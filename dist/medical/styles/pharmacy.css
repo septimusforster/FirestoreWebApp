@@ -52,6 +52,9 @@ label + input, label + textarea, select,
 select {
     font-size: .85em;
 }
+select#category {
+    width: 150px;
+}
 .ttl {
     font-weight: 500;
     margin-right: auto;

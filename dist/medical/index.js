@@ -23,6 +23,7 @@ document.forms[0].addEventListener('submit', async (e) => {
     e.submitter.classList.add('clk');
 
     const fd = new FormData(e.target);
+    
     const q = query(collection(db, 'staff'), and(where('uname', '==', fd.get('uname')), where('upass', '==', fd.get('upass'))));
     const snapdocs = await getDocs(q);
     if (snapdocs.empty) {
@@ -34,28 +35,31 @@ document.forms[0].addEventListener('submit', async (e) => {
             e.submitter.disabled = false;
         }, 3000);
     } else {
-        sessionStorage.setItem('data', JSON.stringify(snapdocs.docs[0].data()));
+        let data = snapdocs.docs[0].data();
+        data['id'] = snapdocs.docs[0].id;
+        delete data.upass;
+        sessionStorage.setItem('data', JSON.stringify(data));
         location.assign('public/home.html');
     }
-});
 
-//for sign up
-    /*
-    let data = {
-        user: 'Nurse Ladi',
-        createdAt: Date.now(),
-        lastModified: serverTimestamp()
-    }
-    for (const [k, v] of fd.entries()) {
-        data[k] = v;
-    }
-    await addDoc(collection(db, 'staff'), data);
-    notice.textContent = 'User created successfully.';
-    const id = setTimeout(() => {
-        document.forms[0].reset();
-        e.submitter.disabled = false;
-        e.submitter.classList.remove('clk');
-        e.submitter.parentElement.classList.remove('err');
-    }, 3000);
-    e.submitter.parentElement.classList.add('err');
-    */
+   //for sign up
+       /*
+       let data = {
+           user: 'Mabel Akogwu',
+           createdAt: Date.now(),
+           lastModified: serverTimestamp()
+       }
+       for (const [k, v] of fd.entries()) {
+           data[k] = v;
+       }
+       await addDoc(collection(db, 'staff'), data);
+       notice.textContent = 'User created successfully.';
+       const id = setTimeout(() => {
+           document.forms[0].reset();
+           e.submitter.disabled = false;
+           e.submitter.classList.remove('clk');
+           e.submitter.parentElement.classList.remove('err');
+       }, 3000);
+       e.submitter.parentElement.classList.add('err');
+    */   
+});

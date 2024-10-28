@@ -48,7 +48,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -119,6 +119,17 @@ module.exports = {
     watch: true
 }
 */
+//MEDICAL pharmacy.js
+
+module.exports = {
+    mode: "development",
+    entry: "./dist/medical/src/pharmacy.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/medical/src"),
+        filename: "pharmacy_bundle.js"
+    },
+    watch: true
+}
 //STAFFER index.js
 /*
 module.exports = {

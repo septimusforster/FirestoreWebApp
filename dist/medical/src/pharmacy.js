@@ -1,16 +1,8 @@
-import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";  //"firebase/app";
-import { getFirestore, collection, collectionGroup, addDoc, doc, getDoc, getDocs, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";   //"firebase/firestore";
-// import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
+import { initializeApp, deleteApp } from "firebase/app"; //"https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getFirestore, collection, collectionGroup, addDoc, doc, getDoc, getDocs, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "firebase/firestore";  // "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
-const cfg = {
-    apiKey: "AIzaSyCnGk02gQeUZ9nJeOBxHMk3jlC2_pG_jZo",
-    authDomain: "flutterspace-d2385.firebaseapp.com",
-    projectId: "flutterspace-d2385",
-    storageBucket: "flutterspace-d2385.appspot.com",
-    messagingSenderId: "979544012314",
-    appId: "1:979544012314:web:c2eef86fccbae61f17c3a3",
-    measurementId: "G-5E3NVV96HY"
-};
+const cfg = configs[9].appsettings;
 
 var app = initializeApp(cfg);
 var db = getFirestore(app);
@@ -144,11 +136,7 @@ const forms = document.forms;
 //insert opts of select#alias
 // const categories = configs[9].categories;
 (function addCategories() {
-    const categories = [
-        "Antiseptics",
-        "Analgesics",
-        "Anaesthetics"
-    ];
+    const categories = configs[9].categories.sort();
     let defaultOpt = '<option value="">Choose category</option>';
     categories.forEach(cat => {
         defaultOpt += `<option value="${cat}">${cat}</option>`;
