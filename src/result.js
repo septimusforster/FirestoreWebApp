@@ -78,7 +78,7 @@ for (i = 0; i < ME.length; i++) {
         <td>${test[2] + test[3] || ''}</td>
         <td>${test[4] + test[5] || ''}</td>
         <td>${(test[6] + (test[7] || null)) || ''}</td>
-        <td>${subtotal.toFixed(1)}</td>
+        <td>${!subtotal ? '' : subtotal.toFixed(1)}</td>
     `;
     switch (true) {
         case subtotal >= graderObject.A:
@@ -96,8 +96,11 @@ for (i = 0; i < ME.length; i++) {
         case subtotal >= graderObject.E:
             td += '<td>E</td><td>Pass</td>';
             break;
-        case subtotal >= graderObject.F:
+        case subtotal > graderObject.F:
             td += '<td>F</td><td>Fail</td>';
+            break;
+        default:
+            td += '<td></td><td></td>';
             break;
     }
     total += subtotal;
@@ -107,16 +110,18 @@ for (i = 0; i < ME.length; i++) {
         if (studentScores[j][ME[i][0]] === undefined) continue;
         let all = 0;
         studentScores[j][ME[i][0]][term].forEach(n => all += n);
-        // let all = s + t + u + v + w + x + y + z;
         if (!all) continue;
         summation.push(all);
     };
 
-    let max = Math.max(...summation);
-    let min = Math.min(...summation);
+    // if (!summation.length) continue;
+    const bool = summation.length;
+    let max = bool ? Math.max(...summation).toFixed(1) : '';
+    let min = bool ? Math.min(...summation).toFixed(1) : '';
+
     td += `
-        <td>${max.toFixed(1)}</td>
-        <td>${min.toFixed(1)}</td>
+        <td>${max}</td>
+        <td>${min}</td>
     `;
     tbodyScores.insertAdjacentHTML('beforeend', `
         <tr>${td}</tr>
