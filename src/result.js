@@ -173,32 +173,32 @@ if (promoStatus?.toLowerCase() === 'not promoted') principalComment = 'Advised t
 // ME_AVERAGE = ((total * 100) / (scores.length * 100)).toFixed();
 switch (true) {
     case ME_AVERAGE >= graderObject.A:
-        princDiv.querySelector('blockquote').textContent = principalComment || principal.Acomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.A;
         percent.textContent = promoTerm || 'A';
         term_grade = 'A';
         break;
     case ME_AVERAGE >= graderObject.B:
-        princDiv.querySelector('blockquote').textContent = principalComment || principal.Bcomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.B;
         percent.textContent = promoTerm || 'B';
         term_grade = 'B';
         break;
     case ME_AVERAGE >= graderObject.C:
-        princDiv.querySelector('blockquote').textContent = principalComment || principal.Ccomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.C;
         percent.textContent = promoTerm || 'C';
         term_grade = 'C';
         break;
     case ME_AVERAGE >= graderObject.D:
-        princDiv.querySelector('blockquote').textContent = principalComment || principal.Dcomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.D;
         percent.textContent = promoTerm || 'D';
         term_grade = 'D';
         break;
     case ME_AVERAGE >= graderObject.E:
-        princDiv.querySelector('blockquote').textContent = principalComment || principal.Ecomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.E;
         percent.textContent = promoTerm || 'E';
         term_grade = 'E';
         break;
     case ME_AVERAGE >= graderObject.F:
-        princDiv.querySelector('blockquote').textContent = principalComment || principal.Fcomm;
+        princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.F;
         percent.textContent = promoTerm || 'F';
         term_grade = 'F';
         break;

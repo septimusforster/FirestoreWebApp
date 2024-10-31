@@ -240,7 +240,7 @@ shareBtn.addEventListener('click', async () => {
 
     const data = {
         title: e.name,
-        text: `Available in stock: ${available + ' ' + e.unit}${available <= 1 ? '' : 's'}`,
+        text: `${e.drug}\b*Available in stock*: ${available + ' ' + e.unit}${available <= 1 ? '' : 's'}`,
         url: location.origin + '/dist/medical/index.html'
     }
     if (!navigator.canShare(data)) {

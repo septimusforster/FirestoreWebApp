@@ -280,8 +280,12 @@ dialog {
         grid-template-columns: 1fr 0px;
     }
     #profile {
-        width: 100%;
+        border-radius: 0;
+        position: fixed;
         left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
     }
     iframe {
         position: fixed;

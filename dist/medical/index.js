@@ -63,3 +63,9 @@ document.forms[0].addEventListener('submit', async (e) => {
        e.submitter.parentElement.classList.add('err');
     */   
 });
+/*
+document.addEventListener('DOMContentLoaded', async () => {
+    const q = query(collection(db, 'products'), where('name', ''))
+    const snap = await 
+})
+*/
