@@ -1,11 +1,16 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
-// let u = [11,10,9,8,7,6,5,4,3,2,1], w = [];
-// for (let a = 0; a < u.length; a = a + 3) {
-//     w.push(u.slice(a, a + 3));
-// }
-// console.log(w);
+//fullscreen setup
+// document.addEventListener('DOMContentLoaded', (e) => {
+    
+// });
+// document.addEventListener('fullscreenchange', (e) => {
+//     if (document.fullscreenElement === null) {
+//         console.log(e);
+//     }
+// });
+
 const startupDialog = document.querySelector('#startup-dg');
 const scoreDialog = document.querySelector('#score-dg');
 
@@ -40,7 +45,7 @@ startupDialog.show();
 //const, var, let of FUNCTIONS
 let didNotAnswer = 0;
 let answered = new Array(ssTEST.questions).fill(null);
-const dur = ssTEST.duration;
+let dur = ssTEST.duration;
 let time = dur * 60;
 
 function updateHeaderTree () {
@@ -103,20 +108,21 @@ pasteBtn.onclick = () => {
 let timeElapsed;
 dg0btns[0].addEventListener('click', (e) => {
     e.target.disabled = true;
+    document.documentElement.requestFullscreen().then((res) => {
+        updateFormTree(ssTEST.questions);
+        img.addEventListener('load', (e) => {
+            img.style.opacity = '1';
+            let id = setInterval(() => {
+                timeElapsed = countdown();
+                if (timeElapsed) {
+                    clearInterval(id);
+                }
+            }, 1000);
+        });
     
-    updateFormTree(ssTEST.questions);
-    img.addEventListener('load', (e) => {
-        img.style.opacity = '1';
-        let id = setInterval(() => {
-            timeElapsed = countdown();
-            if (timeElapsed) {
-                clearInterval(id);
-            }
-        }, 1000);
+        img.src = ssTEST.link;
+        startupDialog.close();
     });
-
-    img.src = ssTEST.link;
-    startupDialog.close();
 });
 //code btn
 dg0btns[1].addEventListener('click', async (e) => {
@@ -131,7 +137,7 @@ submitBtn.addEventListener('click', () => {
     
     if (timeElapsed) {
         submitDialog.querySelector('div > div:first-of-type').textContent = 'Submitting test...';
-        submitDialog.querySelector('#io-btns').children[0].style.visibility = 'hidden';
+        submitDialog.querySelector('#oi-btns').children[0].style.visibility = 'hidden';
         yesBtn.click();
     }
     submitDialog.showModal();
@@ -161,13 +167,13 @@ resultBtn.addEventListener('click', (e) => {
     let progress = 0;
 
     var intervalID = setInterval(() => {
-        progress += 1;
         updateprogress(progress);
         if (progress == scorePercent) {
             clearInterval(intervalID);
             progressbar.toggleAttribute('data-bullseye', true);
             scorebar.classList.add('sco');
         }
+        progress += 1;
     }, 50);
 });
 
@@ -180,10 +186,11 @@ async function startup(input, button) {
         const q = query(collection(db, 'activities', 'test', SUBJECT), where('code', '==', ssTEST.code), limit(1));
         const testRef = await getDocs(q);
         if (testRef.empty) return alert("No docs found.");
+        dur = testRef.docs[0].get('duration');
         let dt = Date.now();
         let [h, m] = testRef.docs[0].get('startTime').split(':');
         const d = new Date(testRef.docs[0].get('startDate')).setHours(Number(h), Number(m));
-        const e = new Date(testRef.docs[0].get('startDate')).setHours(Number(h), Number(m) + ssTEST.duration);
+        const e = new Date(testRef.docs[0].get('startDate')).setHours(Number(h), Number(m) + dur);
         if (d < dt && e > dt) {
             ssTEST.chosen = testRef.docs[0].get('chosen');
             updateHeaderTree();
@@ -306,12 +313,11 @@ async function saveScore () {
             //get current array of scores for this subject
     try {
         const getref = await getDoc(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'records'));
-        console.log(getref.data())
-        const res = getref.get(SUBJECT)?.[term] || NULLS;
+        const res = getref.get(SUBJECT)[term] || NULLS;
         const start = [,0,2,4,6][CATNO];
-
-        console.log(res, start)
-        if (res[start] != null) {
+        if (res[start] != null) {   
+            yesBtn.classList.remove('clk');
+            yesBtn.closest('dialog').close();
             const err = "This particular test has been sat for.";
             const errnote = document.querySelector('.errnote');
             errnote.querySelector('span').textContent = err;
@@ -325,26 +331,28 @@ async function saveScore () {
                 res.splice(start, 1, score);
                 //update the array of scores for this subject
                 const setref = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'records'), {
-                    [SUBJECT]: res
+                    [SUBJECT]: {[term]: res}
                 }, {merge: true});
                 //save ANSWERED array with timestamp
                 const setref1 = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'CBT', ssSTUDENT.id), {
-                    'answers': answered,
-                    'attempted': `${didNotAnswer} ~ ${answered.length}`,
+                    'Q': answered.length,
+                    'A': answered,
+                    'C': didNotAnswer,
                     'dateModified': serverTimestamp()
                 });
-
+                yesBtn.closest('dialog').close();
+                yesBtn.classList.remove('clk');
                 document.querySelector('#submitted-dg').show();
                 oculus.classList.add('activate');
                 document.querySelector('section > aside:nth-child(2)').classList.add('slt');
             });
         }
-        yesBtn.closest('dialog').close();
-        yesBtn.classList.remove('clk');
     } catch (error) {
         console.log(error);
-    }
         //if catch err, reactivate submitBtn and remove clk from YES btn classlist
+        yesBtn.classList.remove('clk');
+        // submitBtn.classList.remove('dsbd');
+    }
 }
 
 /*
