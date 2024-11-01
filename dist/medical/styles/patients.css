@@ -12,7 +12,7 @@ html, body {
 }
 main, section > header {
     display: flex;
-    justify-content: space-around;
+    /* justify-content: space-around; */
 }
 select, button, tbody tr {
     background-color: transparent;
@@ -42,7 +42,6 @@ section > header {
     align-items: center;
     gap: 1em;
     padding: 7px 11px;
-    /* border-bottom: 1px solid #ddd; */
     position: relative;
 }
 .ttl {
@@ -64,6 +63,7 @@ section > header {
 .back {
     transform: rotate(90deg);
 }
+/*
 .add {
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="%23888"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
     margin-left: auto;
@@ -74,10 +74,12 @@ section > header {
 .add > span {
     vertical-align: middle;
 }
+*/
 .chevron, .add {
     background-repeat: no-repeat;
     background-position: center;
 }
+/*
 select#month {
     position: absolute;
     bottom: 0%;
@@ -105,9 +107,6 @@ table {
     width: 100%;
     border-collapse: collapse;
 }
-/* thead {
-    background-color: #1a73d822;
-} */
 th {
     padding: 18px 7px;
     color: #777;
@@ -155,12 +154,12 @@ tbody tr:hover {
     animation-iteration-count: infinite;
     animation-fill-mode: forwards;
 }
+*/
 @keyframes load {
     100% {
         transform: translate(-50%, -50%) rotate(360deg);
     }
 }
-
 /* @media (max-width: 678px) {
     select#month {
     }

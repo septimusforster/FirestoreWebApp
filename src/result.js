@@ -50,7 +50,7 @@ const ME = Object.entries(studentScores.filter(a => a.sid === ss.id)[0]).sort();
 ME.length = ME.length - 1; // excludes sid from iteration, leaving only subs
 const theadFirstRow = document.querySelector("#section-grade table:nth-child(1) thead tr:first-child th");
 if (percentile < 100) {
-    theadFirstRow.innerText = "Mid-Term Report";
+    theadFirstRow.innerText = "Progressive Report";
     document.querySelector('#status').style.display = 'none';
 }
 

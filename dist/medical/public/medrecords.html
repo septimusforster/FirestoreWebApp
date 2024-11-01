@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        section {
+            height: 100vh;
+            width: 400px;
+            margin: 100px auto;
+            display: grid;
+            grid-template-rows: 3% 7% repeat(5, 1fr);
+        }
+        section > * {
+            grid-column: 1/1;
+            border: 1px solid #ccc;
+            transition: grid-rows 1s ease;
+        }
+        header {
+            grid-row: 1/3;
+        }
+
+        .search {
+            background-color: lavender;
+            grid-row: 3/4;
+            display: grid;
+            grid-template-rows: 40px 0fr;
+            transition: grid-template-rows 500ms ease;
+        }
+        section.cls > .search {
+            grid-template-rows: 40px max-content;
+            grid-row: 1/4;
+        }
+        /* section.cls > .search {
+        } */
+        .data {
+            grid-row: 4/8;
+        }
+        .input {
+            padding: 7px;
+        }
+        .search_params {
+            overflow: hidden;
+            background-color: blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section>
+            <header></header>
+            <div class="search">
+                <div class="input"></div>
+                <div class="search_params"></div>
+            </div>
+            <div class="data"></div>
+        </section>
+    </main>
+</body>
+</html>

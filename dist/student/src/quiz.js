@@ -109,7 +109,9 @@ dg0btns[0].addEventListener('click', (e) => {
         img.style.opacity = '1';
         let id = setInterval(() => {
             timeElapsed = countdown();
-            if (timeElapsed) clearInterval(id);
+            if (timeElapsed) {
+                clearInterval(id);
+            }
         }, 1000);
     });
 
@@ -124,11 +126,10 @@ txtCode.addEventListener('keyup', async (e) => {
     if (e.key === 'Enter') await startup(e.target, dg0btns[1]);
 });
 //submit test request btn
-let autoSubmit = false;
 submitBtn.addEventListener('click', () => {
     const submitDialog = document.querySelector('dialog#subreq-dg');
     
-    if (autoSubmit) {
+    if (timeElapsed) {
         submitDialog.querySelector('div > div:first-of-type').textContent = 'Submitting test...';
         submitDialog.querySelector('#io-btns').children[0].style.visibility = 'hidden';
         yesBtn.click();
@@ -178,6 +179,7 @@ async function startup(input, button) {
     if (input.value === ssTEST.code) {
         const q = query(collection(db, 'activities', 'test', SUBJECT), where('code', '==', ssTEST.code), limit(1));
         const testRef = await getDocs(q);
+        if (testRef.empty) return alert("No docs found.");
         let dt = Date.now();
         let [h, m] = testRef.docs[0].get('startTime').split(':');
         const d = new Date(testRef.docs[0].get('startDate')).setHours(Number(h), Number(m));
@@ -265,6 +267,7 @@ function countdown () {
 
     if (h + m + s == 0) {
         timeElapsed = true;
+        submitBtn.click();
     }
     return timeElapsed;
 }
@@ -302,9 +305,9 @@ async function saveScore () {
         //instantiate a transaction to:
             //get current array of scores for this subject
     try {
-        const getref = await getDoc(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'record'));
+        const getref = await getDoc(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'records'));
         console.log(getref.data())
-        const res = /*getref.get(SUBJECT)?.[term] || */NULLS;
+        const res = getref.get(SUBJECT)?.[term] || NULLS;
         const start = [,0,2,4,6][CATNO];
 
         console.log(res, start)
