@@ -1,5 +1,5 @@
-import { initializeApp, deleteApp } from "firebase/app"; //"https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getFirestore, collection, collectionGroup, addDoc, doc, getDoc, getDocs, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "firebase/firestore";  // "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { initializeApp } from "firebase/app"; //"https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, query, where, serverTimestamp, orderBy } from "firebase/firestore";  // "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 const cfg = configs[9].appsettings;

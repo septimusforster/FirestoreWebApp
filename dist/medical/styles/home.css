@@ -100,7 +100,7 @@ nav > h4 {
     box-shadow: 0 5px 20px #ccc;
     align-items: stretch;
     overflow: hidden;
-    z-index: 1;
+    z-index: 2;
 }
 aside, aside.nav > div:last-of-type {
     display: flex;
@@ -206,6 +206,7 @@ div[data-svg='Laboratory'] {
 iframe {
     width: 100%;
     height: 100%;
+    z-index: 1;
 }
 .loader {
     position: fixed;
@@ -255,12 +256,11 @@ dialog {
 }
 [data-logout] > div {
     padding: 17px 27px;
-    font-size: 1.1em;
 }
 [data-logout] button {
     margin: 31px 2px 0;
-    padding: 17px 24px;
-    border-radius: 32px;
+    padding: 12px 18px;
+    border-radius: 24px;
     font-weight: 500;
     transition: background-color .1s ease;
 }
@@ -273,6 +273,18 @@ dialog {
 [data-logout] button:last-of-type {
     color: #fff;
     background-color: #ff4500;
+}
+.backdrop {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.4);
+}
+.backdrop.bkdrp {
+    display: block;
 }
 @media (max-width: 678px) {
     main {

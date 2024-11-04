@@ -130,6 +130,17 @@ module.exports = {
     },
     watch: true
 }
+*/
+//MEDICAL patients.js
+module.exports = {
+    mode: "development",
+    entry: "./dist/medical/src/patients.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/medical/src"),
+        filename: "patients_bundle.js"
+    },
+    watch: true
+}
 //STAFFER index.js
 /*
 module.exports = {
@@ -263,7 +274,7 @@ module.exports = {
 }
 */
 //STUDENT quiz.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/quiz.js",

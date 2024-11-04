@@ -1,60 +1,96 @@
 :root {
     --full-circle: 50%;
 }
+section::-webkit-scrollbar {
+    width: 0;
+}
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    outline: none;
+    border: 0;
     color: #555;
+    font-size: 1em;
+    background-color: transparent;
 }
 html, body {
+    height: 100vh;
+    width: 100vw;
     font: 15px system-ui;
+    background-color: #f1f1f1;
 }
 main, section > header {
     display: flex;
     /* justify-content: space-around; */
 }
-select, button, tbody tr {
-    background-color: transparent;
-    border: 0;
-    outline: none;
+button, .btn, select {
     cursor: pointer;
 }
+button > *, .btn > * {
+    pointer-events: none;
+}
 main {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
     align-items: stretch;
-    gap: 7em;
+    gap: 2em;
+    justify-content: space-around;
 }
 section {
-    height: 100%;
     background-color: #fff;
     border-radius: 10px;
     position: relative;
+    overflow-y: scroll;
 }
 section:first-of-type {
-    flex: 1;
+    flex-basis: 65%;
 }
 section:last-of-type {
     flex-basis: 27%;
 }
 section > header {
     align-items: center;
-    gap: 1em;
+    margin-bottom: 20px;
     padding: 7px 11px;
-    position: relative;
+    /* position: relative; */
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+}
+.search, .search_opt {
+    width: 47%;
+    /* min-width: 500px; */
+}
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: .5em;
+    margin: 30px auto;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    padding: 0 .5em;
+}
+input#search {
+    flex: 1;
+    padding: .5em;
+}
+input#search::placeholder {
+    color: rgba(0,0,0,.4);
 }
 .ttl {
+    padding: .5em;
     font-size: 1.1em;
     font-weight: 500;
 }
 .uibtn {
-    height: 36px;
-    width: 36px;
+    height: 3em;
+    width: 3em;
     border-radius: var(--full-circle);
     transition: background-color .1s ease-out;
 }
-.uibtn:hover, .add:hover, select#month:hover {
+.uibtn:hover, .add:hover {
     background-color: #f0f0f0;
 }
 .chevron {
@@ -63,98 +99,421 @@ section > header {
 .back {
     transform: rotate(90deg);
 }
-/*
+.times {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23555" stroke-width="1" stroke-linecap="round"/></svg>');
+}
+.fwd_arrow {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="%23777" width="24" height="24" viewBox="0 0 52 52" data-name="Layer 1" id="Layer_1"><path d="M50,24H6.83L27.41,3.41a2,2,0,0,0,0-2.82,2,2,0,0,0-2.82,0l-24,24a1.79,1.79,0,0,0-.25.31A1.19,1.19,0,0,0,.25,25c0,.07-.07.13-.1.2l-.06.2a.84.84,0,0,0,0,.17,2,2,0,0,0,0,.78.84.84,0,0,0,0,.17l.06.2c0,.07.07.13.1.2a1.19,1.19,0,0,0,.09.15,1.79,1.79,0,0,0,.25.31l24,24a2,2,0,1,0,2.82-2.82L6.83,28H50a2,2,0,0,0,0-4Z"/></svg>');
+    transform: rotate(180deg) scale(.7);
+}
 .add {
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="%23888"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-    margin-left: auto;
-    padding: 12px 20px 12px 36px;
-    background-position: left 10% center !important;
-    border-radius: 36px;
 }
-.add > span {
-    vertical-align: middle;
+.more {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="%235F6368"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>');
 }
-*/
-.chevron, .add {
+.ex {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 24px;
+    width: 24px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23555" stroke-width="2" stroke-linecap="round"/></svg>');
+}
+.share {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.803 5.33333C13.803 3.49238 15.3022 2 17.1515 2C19.0008 2 20.5 3.49238 20.5 5.33333C20.5 7.17428 19.0008 8.66667 17.1515 8.66667C16.2177 8.66667 15.3738 8.28596 14.7671 7.67347L10.1317 10.8295C10.1745 11.0425 10.197 11.2625 10.197 11.4872C10.197 11.9322 10.109 12.3576 9.94959 12.7464L15.0323 16.0858C15.6092 15.6161 16.3473 15.3333 17.1515 15.3333C19.0008 15.3333 20.5 16.8257 20.5 18.6667C20.5 20.5076 19.0008 22 17.1515 22C15.3022 22 13.803 20.5076 13.803 18.6667C13.803 18.1845 13.9062 17.7255 14.0917 17.3111L9.05007 13.9987C8.46196 14.5098 7.6916 14.8205 6.84848 14.8205C4.99917 14.8205 3.5 13.3281 3.5 11.4872C3.5 9.64623 4.99917 8.15385 6.84848 8.15385C7.9119 8.15385 8.85853 8.64725 9.47145 9.41518L13.9639 6.35642C13.8594 6.03359 13.803 5.6896 13.803 5.33333Z" fill="%23555"/></svg>');
+}
+.search + div {
+    text-align: center;
+}
+.search.focused + div {
+    display: none;
+}
+.search.focused ~ .search_opt {
+    display: block;
+}
+.search_opt, div.table {
+    margin: 0 auto;
+    display: none;
+    position: relative;
+}
+div.month, div.inmate {
+    margin-bottom: 7px;
+}
+div.month > button, div.inmate > button {
+    padding: 5px 20px;
+    margin: .5em;
+    border-radius: 24px;
+    background-color: #1a73d811;
+    color: #1a73d8;
+    transition: background-color .1s ease;
+}
+div.month > button:hover, div.inmate > button:hover, .tr:hover {
+    background-color: #1a73d822;
+}
+.chevron, .add, .times, .fwd_arrow, .more, .share {
     background-repeat: no-repeat;
     background-position: center;
 }
-/*
-select#month {
-    position: absolute;
-    bottom: 0%;
-    transform: translateY(50%);
-    width: 200px;
-    margin: 0 auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-    text-align: center;
-    background-color: #fff;
+div.table {
+    width: 70%;
+    min-width: 500px;
+    display: block; /*remove later*/
+    /* border: 1px solid #ccc; */
 }
-.divtable {
-    margin: 24px 0 12px;
-    border-radius: 11px 11px 0 0;
-    overflow: hidden;
-}
-.divtable.slct + .loader {
-    display: block;
-}
-.divtable.slct + .loader::before {
-    animation-name: load;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-th {
-    padding: 18px 7px;
-    color: #777;
-}
-th:nth-child(2) {
-    text-align: left;
-}
-td {
-    padding: 12px 7px;
-}
-td:not(:nth-child(2)) {
-    text-align: center;
-}
-tbody tr {
+.tr {
+    font-family: monospace;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1em;
+    position: relative;
+    padding: 10px;
+    border-radius: 24px;
+    
     transition: background-color .2s ease;
 }
-tbody tr:nth-child(odd) {
+.tr::before {
+    content: '';
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(to right, transparent, #ccc 10%, #ccc 90%, transparent);
+}
+.tr > span {
+    text-align: center;
+}
+.tr > span:nth-child(2) {
+    text-align: left;
+    width: 230px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: 600;
+}
+section:last-of-type > header > .ttl, .wrapper > header > .ttl {
+    margin-right: auto;
+}
+.more.focus + .menu {
+    display: block;
+}
+.menu {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 50px;
+    padding: 3px 0;
+    background-color: #fff;
+    border-radius: 7px;
+    box-shadow: 1px 3px 17px rgba(0,0,0,.2);
+    overflow: hidden;
+}
+.menu > button {
+    padding: 14px 34px;
+    color: #1a73d8;
+    transition: background-color .1s ease;
+}
+.menu > button:hover, #crt-rec:hover {
     background-color: #1a73d811;
 }
-tbody tr:hover {
-    background-color: #1a73d833;
+section:last-of-type > div {
+    border-radius: 12px;
+    margin: 0 20px;
+    padding: 10px;
+    min-height: 80px;
 }
-.loader {
-    display: none;
-    background-color: rgba(255,255,255,.5);
-    position: absolute;
+.li {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.li > span {
+    flex: 1;
+}
+.li > span:first-of-type {
+    font-weight: 500;
+}
+.li > span:last-of-type {
+    text-align: right;
+}
+p.hr {
+    text-align: center;
+    padding: 14px 0 7px;
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    background-color: #fff;
+    z-index: 2;
 }
-.loader::before {
+.records {
+    position: relative;
+    border-width: 1px 0 0;
+    border-style: dashed;
+    border-color: #ccc;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.records {
+    padding: 0 7px 7px;
+}
+.records > * {
+    padding: 7px;
+}
+.records > div:nth-of-type(1) {
+    font-size: .8em;
+}
+.records > div:nth-of-type(2) {
+    width: 80%;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.records > button {
+    width: 20%;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 7px;
+    background-color: #1a73d811;
+    color: #1a73d8;
+    transition: background-color .1s ease;
+}
+.records > button:hover {
+    background-color: #1a73d822;
+}
+::backdrop {
+    background-color: rgba(0,0,0,.4);
+}
+dialog {
+    position: absolute;
+    left: -100%;
+    top: 0%;
+    transform: translate(-100%, 0%);
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+dialog > .wrapper {
+    background-color: #fff;
+    border-radius: 12px;
+    min-width: 300px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    position: relative;
+}
+dialog:nth-of-type(3)> .wrapper {
+    max-width: 350px;
+}
+dialog > .wrapper::before {
     content: '';
     position: absolute;
     left: 50%;
     top: 50%;
+    transform: translate(-50%, -50%) scale(2);
+    height: 50%;
+    width: 50%;
+    border: 1px dashed #ccc;
+    border-radius: 12px;
+    z-index: -1;
+}
+dialog > .wrapper > *:not(header, #add-btn) {
+    border-bottom: 1px solid #ddd;
+    padding: 12px;
+}
+dialog > .wrapper > header {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.wrapper > header > .times {
+    margin-left: auto;
+}
+.wrapper .li > span:last-of-type {
+    text-align: left;
+    flex: 2;
+}
+#prescription {
+    width: 40%;
+    margin: 0 auto 10px;
+    font-size: 0.8em;
+    text-align: center;
+    font-weight: 500;
+    /* background-color: #ff0; */
+    position: relative;
+    padding: 5px;
+    border: solid #aaa;
+    border-width: 0 1px;
+    border-radius: 18px;
+}
+#prescription::before {
+    content: '';
+    height: 1px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
-    height: 36px;
-    width: 36px;
+    width: 300%;
+    background: linear-gradient(to right, transparent, #aaa 10%, transparent 40%, transparent 60%, #aaa 90%, transparent);
+}
+.wrapper > footer {
+    background-color: #fff;
+    position: sticky;
+    top: 100%;
+    padding: 20px;
+}
+.wrapper > footer > button, #add-btn {
+    display: block;
+    border-radius: 24px;
+    margin: 0 auto;
+    background-color: #f3f3f3;
+    padding: 14px 20px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+.wrapper > footer > button, #add-btn, #crt-rec {
+    transition: background-color .1s ease;
+}
+#add-btn {
+    margin: 30px auto;
+}
+.wrapper > footer > button:hover, #add-btn:hover {
+    background-color: #1a73d822;
+}
+small {
+    font-size: .8em;
+}
+#sid {
+    text-align: right;
+}
+form#nwpat {
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+    border-bottom: 0 !important;
+}
+form#nwpat input, form#nwpat select {
+    border-bottom: 1px solid #ddd;
+    padding: 12px;
+}
+form[name="nw-pre"] {
+    width: 400px;
+}
+form[name="nw-pre"] > div {
+    padding: 1px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+}
+form[name="nw-pre"] > div > div {
+    padding: 8px 0 12px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+form[name="nw-pre"] > div > div:first-of-type {
+    border-radius: 12px 12px 0 0;
+}
+form[name="nw-pre"] > div > div:last-of-type {
+    border-radius: 0 0 20px 20px;
+}
+form[name="nw-pre"] > div > button, #crt-rec {
+    padding: 12px;
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 30px;
+}
+form[name="nw-pre"] > div > button {
+    outline: 10px solid #fff;
+}
+.fm_part {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: space-around;
+}
+.fm_part > select {
+    flex-basis: 40%;
+    border-radius: 18px;
+    background-color: #f2f2f2;
+    padding: 5px;
+}
+.fm_part > small {
+    font-weight: 500;
+    flex-basis: 30%;
+    text-align: center;
+}
+.fm_part > small > input {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 8px / 5px;
+    text-align: center;
+    font-size: 1.2em;
+}
+#crt-rec {
+    border: 1px solid #ccc;
+    margin: 40px auto 20px;
+}
+input#complaint {
+    border: 1px solid #ccc;
+    padding: 12px 8px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.sbmt_btn {
+    user-select: none;
+    position: relative;
+}
+.sbmt_btn.clk {
+    background-color: #1a73d822 !important;
+}
+.sbmt_btn.fin {
+    background-color: #009578 !important;
+}
+.sbmt_btn.clk > span, .sbmt_btn.fin > span {
+    color: transparent;
+}
+.sbmt_btn > span::before, .sbmt_btn > span::after {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 20px;
+    width: 20px;
+}
+.sbmt_btn > span::before {
+    border-radius: 50%;
     border: 3px solid;
-    border-color: #1a73d8 #1a73de #1a73d811 #1a73d8;
-    border-radius: var(--full-circle);
+    border-color: #1a73c8 #1a73d8 #1a73e8 transparent;
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-fill-mode: forwards;
 }
-*/
+.sbmt_btn > span::after {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="4 4 25 25" fill="none"><path d="M5.5 12.5L10.167 17L19.5 8" stroke="%23FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+.sbmt_btn.clk > span::before {
+    content: '';
+    animation-name: load;
+}
+.sbmt_btn.fin > span::after {
+    content: '';
+}
+@keyframes load {
+    from {transform: translate(-50%, -50%) rotate(0deg);}
+    to {transform: translate(-50%, -50%) rotate(360deg);}
+}
+.mq678, [data-hidden] {
+    display: none !important;
+}
 @keyframes load {
     100% {
         transform: translate(-50%, -50%) rotate(360deg);
