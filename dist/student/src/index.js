@@ -172,16 +172,17 @@ subjectNav.addEventListener('click', (e) => {
         timelineBar.innerHTML = '';
         const doc = JSON.parse(sessionStorage.getItem(e.target.id));
         let sb = e.target.id;
-        // let dt = Date.now();
+        let dt = Date.now();
         doc.forEach((data, i) => {
             let docName = data.name;
             let title = docName.slice(0,docName.lastIndexOf('.'));
-            let cde = `<code>${data.code}</code>`;
-            // let [h, m] = data.startTime.split(':');
-            // const d = new Date(data.startDate).setHours(Number(h), Number(m) - 2);
-            // const e = new Date(data.startDate).setHours(Number(h), Number(m) + data.duration);
-            // let cde = '';
-            // if (d < dt && e > dt) cde = `<code>${data.code}</code>`;
+            // let cde = `<code>${data.code}</code>`;
+            let [h, m] = data.startTime.split(':');
+            let ulimit = 15;   //15 i.e. 1500, school close time
+            const d = new Date(data.startDate).setHours(Number(h), Number(m) - 2);
+            const e = new Date(data.startDate).setHours(ulimit, Number(m) + data.duration);
+            let cde = '';
+            if (d < dt && e > dt) cde = `<code>${data.code}</code>`;
             timelineBar.insertAdjacentHTML('beforeend', `
                 <div class="timeline-content">
                     <input type="checkbox" class="accordion__input" id="cb${i+1}"/>
