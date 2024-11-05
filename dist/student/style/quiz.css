@@ -24,9 +24,9 @@ header, header > div, header button, span#cdtmr, footer, .fmgrp, dialog#instr-dg
 header button {justify-content: center;border-radius: 50%;}
 div.hdd {background-color: #555;height: 100%;padding: 0 3em;clip-path: polygon(0% 100%, 100% 100%, 80% 0%, 0% 0%);}
 div.hde > button {height: 2em;width: 2em;background-color: #1a73d8;}
-div.hde > button:focus > svg {transform: rotate(0deg);}
+div.hde > button.focus > svg {transform: rotate(0deg);}
 div.user {max-width: 250px;z-index: 2;position: fixed;transform: translateY(-70%);left: 6em;padding: 1em;box-shadow: 0 7px 11px rgba(0,0,0,.3);border-radius: 0 0 7px 7px;background-color: #fff;transition: transform .4s ease;}
-div.hde > button:focus + div {transform: translateY(57%);}
+div.hde > button.focus + div {transform: translateY(57%);}
 div.hde > button > svg {transform: rotate(-90deg);transition: transform .2s ease;}
 div.user > span {display: block;padding: 1em 1em 1em 2em;color: #1a73d8;position: relative;}
 div.user > span::before {
@@ -42,6 +42,14 @@ div.user > span::before {
 div.user > span::before, .oculus > *, button.close_dg::before, #oi-btns > button > span::before, .fmgrp > button.rgt:not(:first-of-type)::before {
     background-repeat: no-repeat;
     background-position: center;
+}
+#logout {
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 7px;
+    background-color: #ff450022;
+    color: #ff4500;
+    text-transform: uppercase;
 }
 div.hdd > span {font-size: 1.3em;color: #fff;}
 div.hdd > i {font-size: 2em;font-style: italic;color: #ffa500;}

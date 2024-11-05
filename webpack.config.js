@@ -215,7 +215,7 @@ module.exports = {
 }
 */
 //STUDENT index.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/index.js",
@@ -262,20 +262,8 @@ module.exports = {
     watch: true
 }
 */
-//STUDENT test.js
-/*
-module.exports = {
-    mode: "development",
-    entry: "./dist/student/src/test.js",
-    output: {
-        path: path.resolve(__dirname, "./dist/student/src"),
-        filename: "test_bundle.js"
-    },
-    watch: true
-}
-*/
 //STUDENT quiz.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/quiz.js",

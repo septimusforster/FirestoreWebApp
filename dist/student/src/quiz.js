@@ -355,7 +355,14 @@ async function saveScore () {
         // submitBtn.classList.remove('dsbd');
     }
 }
-
+//logout event
+document.querySelector('#logout').addEventListener('click', () => {
+    //clear sessionStorage and navigate home
+    sessionStorage.clear();
+    location.replace('../dist/logon.html');
+});
+//view test details
+document.querySelector('.hde > button').addEventListener('click', (e) => e.target.classList.toggle('focus'));
 /*
 const form = document.forms.namedItem('multi-choice-form');
 const fader = document.querySelector('#light-dark-fader');
