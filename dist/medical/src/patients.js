@@ -116,9 +116,13 @@ dialog[0].querySelector('form').addEventListener('submit', async (e) => {
             const patient = await getDocs(q2);
             if (!patient.empty) {
                 const d = patient.docs[0].data();
+                const lname = d.last_name.toUpperCase();
+                const fname = d.first_name.toUpperCase();
+                const oname = d.other_name.toUpperCase();
                 const date = Date.now();
                 let data = {
-                    'name': [d.last_name.toUpperCase(), d.first_name.toUpperCase(), d.other_name.toUpperCase()],
+                    'name': [lname, fname, oname],
+                    'initials': `${lname[0]+fname[0]}`,
                     'regNo': d.admission_no,
                     'gender': d.gender,
                     'cls': fd.get('cls'),
@@ -129,9 +133,9 @@ dialog[0].querySelector('form').addEventListener('submit', async (e) => {
                     'lastModified': serverTimestamp(),
                     'searchTerm': [
                         new Date(date).getMonth(),
-                        d.last_name.toUpperCase(),
-                        d.first_name.toUpperCase(),
-                        d.other_name.toUpperCase(),
+                        lname,
+                        fname,
+                        oname,
                         d.admission_no
                     ],
                 }
