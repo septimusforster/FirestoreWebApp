@@ -7,13 +7,10 @@ import entryCode from "./JSON/test.json" assert {type: 'json'};
 // initialize firebase app
 var app = initializeApp(configs[6])
 var db = getFirestore(app);
-// initialize storage
-// const storage = getStorage();
 
 function chooseConfig(num) {
     deleteApp(app);
     app = initializeApp(configs[num]);
-    // init services
     db = getFirestore(app);
 }
 
@@ -63,7 +60,6 @@ pdfForm.addEventListener('submit', (e) => {
     dialogNotice.showModal();
 });
 
-
 const clsDatalist = document.querySelector('datalist#cls');
 const quizForm = document.forms.quizForm;
 const submitBtn = document.querySelector('#submit-btn');
@@ -112,14 +108,10 @@ submitBtn.addEventListener('click', (e) => {
                     //send URL to teacher's doc
                     chooseConfig(6);
                     clearSheet();
-                    iframe.srcdoc = `
-                        <div style="margin:300px auto;padding:10px;width:300px;font-family:tahoma;font-size:16px;text-align:center;border-bottom:1px solid #777;color:#777;">
-                            After choosing a PDF,<br/>its preview should be displayed here.    
-                        </div>
-                    `;
+
                     e.target.parentElement.close();
-                    copyBtn.textContent = 'COPY';
-                    copyBtn.classList.remove('copied');
+                    // copyBtn.textContent = 'COPY';
+                    // copyBtn.classList.remove('copied');
 
                     pdfForm.reset();
                     quizForm.reset();
@@ -146,8 +138,8 @@ submitBtn.addEventListener('click', (e) => {
 
 const hiddenInput = document.querySelector('input[type="hidden"]');
 const dialogCode = document.querySelector('#code-dialog');
-const codeBtn = document.querySelector('#code-btn');
 
+const codeBtn = document.querySelector('#code-btn');
 codeBtn.addEventListener('click', (e) => {
     e.target.disabled = true;
     e.target.style.cursor = 'not-allowed';
@@ -187,7 +179,6 @@ codeBtn.addEventListener('click', (e) => {
             });
             await Promise.allSettled(p1);
             console.log("Files deleted.");
-    
             // delete doc from firebase
             const p2 = docID.map(async did => {
                 await deleteDoc(doc(db, "activities"+`/test/${sub}`, did))
@@ -202,6 +193,8 @@ codeBtn.addEventListener('click', (e) => {
             //generate code
             let randy = parseInt(Math.random()*1000);
             //add code to hidden input..
+            dialogCode.querySelector('strong').textContent = 'CODE SET.';
+            hiddenInput.value = entryCode[randy].toUpperCase();
             // dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy].toUpperCase();
             dialogCode.showModal();
         } else {
@@ -212,7 +205,9 @@ codeBtn.addEventListener('click', (e) => {
             //generate code
             let randy = parseInt(Math.random()*1000);
             //add code to hidden input..
-            dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy].toUpperCase();
+            dialogCode.querySelector('strong').textContent = 'CODE SET.';
+            hiddenInput.value = entryCode[randy].toUpperCase();
+            // dialogCode.querySelector('strong').textContent = hiddenInput.value = entryCode[randy].toUpperCase();
             dialogCode.showModal();
         }
         e.target.disabled = false;
@@ -220,7 +215,7 @@ codeBtn.addEventListener('click', (e) => {
         clearTimeout(timeoutID);
     }, 3000)
 })
-
+/*
 const copyBtn = document.querySelector('#copy-btn');
 copyBtn.addEventListener('click', async (e) => {
     await navigator.clipboard.writeText(dialogCode.querySelector('strong').textContent)
@@ -231,4 +226,5 @@ copyBtn.addEventListener('click', async (e) => {
         .catch(err => {
             console.log(err)
         })
-})
+});
+*/

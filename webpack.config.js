@@ -132,6 +132,7 @@ module.exports = {
 }
 */
 //MEDICAL patients.js
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/medical/src/patients.js",
@@ -178,7 +179,7 @@ module.exports = {
 }
 */
 //STAFFER test.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/test.js",
@@ -188,7 +189,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 // STAFFER scores.js
 /*
 module.exports = {

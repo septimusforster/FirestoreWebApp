@@ -46,7 +46,8 @@
                 <button id="clear-btn" class="sub__action" type="button" onclick="clearSheet()">Clear</button><button class="sub__action" type="submit">Done</button>
             </div>
         </form>
-        <iframe frameborder="0" width="400"></iframe>
+        <div id="imgframe"><img src=""></div>
+        <!-- <iframe frameborder="0" width="400"></iframe> -->
         <aside>
             <form class="aside__form" name="quizForm">
                 <label for="subject">What is the name of the subject?</label>
@@ -116,29 +117,31 @@
     <script>
         // set min attr for date input
         // document.querySelector('input[type="date"]').setAttribute('min', Intl.DateTimeFormat('en-us', {dateStyle: "medium"}).format(new Date()))
-        const iframe = document.querySelector('iframe');
+        // const iframe = document.querySelector('iframe');
         // load srcdoc
-        iframe.srcdoc = `
-            <div style="margin:300px auto;padding:10px;width:300px;font-family:tahoma;font-size:16px;text-align:center;border-bottom:1px solid #777;color:#777;">
-                After choosing a file,<br/>its preview should be displayed here.    
-            </div>
-        `;
+        // iframe.srcdoc = `
+        //     <div style="margin:300px auto;padding:10px;width:300px;font-family:tahoma;font-size:16px;text-align:center;border-bottom:1px solid #777;color:#777;">
+        //         After choosing a file,<br/>its preview should be displayed here.    
+        //     </div>
+        // `;
+        const imgframe = document.querySelector('#imgframe');
         const file = document.querySelector("input[type='file']");
         file.onchange = (e) => {
+            console.log(e);
             const fs = new FileReader()
             // console.log(e.target.files[0].size)
             fs.onload = function () {
-                iframe.removeAttribute('srcdoc');
+                // iframe.removeAttribute('srcdoc');
+                
                 const img = new Image();
                 img.onload = function () {
-                    img.setAttribute('width', '100%');
-                    iframe.contentDocument.body.appendChild(img);
+                    imgframe.classList.add('set');
+                    imgframe.querySelector('img').src = img.src;
                 }
-                img.src = fs.result+"#toolbar=0";
+                img.src = fs.result;
             }
             fs.readAsDataURL(e.target.files[0])
         }
-
         const plusBtn = document.getElementById('plus');
 
         function pluse(e) {
