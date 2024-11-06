@@ -221,6 +221,17 @@ async function sideAsset (sdata) {
     sectionII.querySelectorAll('div:nth-of-type(1) > .li > span:nth-child(2)').forEach((sp,ix) => {
         sp.textContent = [name, regNo, cls, fphone, mphone][ix];
     });
+    //asset for Record Details <dialog>
+    dialog[2].querySelector('header + div > .li:nth-child(1) > span:nth-child(2)').textContent = name;
+    //asset for New Record <dialog>
+    const nameArr = name.split(' ');
+    dialog[1].querySelector('header').insertAdjacentHTML('afterend', `
+        <div class="li">
+            <span><small>${nameArr[0]} ${nameArr[2]}</small><br/>${nameArr[1]}</span>
+            <span id="sid"><small>${regNo}</small></span>
+        </div>
+    `);
+    
     await findMedRecords(sdata.id);
 }
 const pHR = document.querySelector('p.hr');
@@ -228,16 +239,25 @@ let medFOLDER = [];
 async function findMedRecords(fid) {
     pHR.classList.add('load');
     //filter medFOLDER for id
-    const record = medFOLDER.filter(({id}) => id == fid);
+    let record = medFOLDER.filter(({id}) => id == fid);
     //if found, insert into the DOM
     if (record.length) {
         insertMedRecords(record);
         return;
     };
-    const snapREC = await getDocs(query(collection(db, `patients${yr}`, )))
     //else, await checking backend
-    //if found, push to medFOLDER and repeat Step 1 and 2
+    const snapREC = await getDocs(query(collection(db, `patients${yr}`, fid, 'record')));
     //if not found, alert the user as such
+    if (snapREC.empty) {
+        sectionII.querySelector('div:nth-of-type(2)').innerHTML = '<code>No Data</code>';
+    } else {
+        //if found, push to medFOLDER and repeat Step 1 and 2
+        record = {[fid]: snapREC.docs};
+        medFOLDER.unshift(record);
+        insertMedRecords(record);
+        return;
+    }
+    pHR.classList.remove('load');
 }
 function insertMedRecords (rcd) {
     rcd.forEach(rec => {

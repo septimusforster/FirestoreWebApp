@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"; //"https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, query, where, serverTimestamp, orderBy } from "firebase/firestore";  // "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, query, where, serverTimestamp, orderBy, setDoc, arrayUnion } from "firebase/firestore";  // "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 const cfg = configs[9].appsettings;
@@ -178,6 +178,7 @@ function insertDetails (data) {
     }
 }
 //create category
+let forbiddenSymb = '/.-:;#$%*()[]{}!~ '.split('');
 forms[0].addEventListener('submit', async (e) => {
     e.preventDefault();
     initSubmit(e.submitter);
@@ -193,9 +194,20 @@ forms[0].addEventListener('submit', async (e) => {
         data[k] = Number(v) || v;
     }
     // console.log(data);
-    await addDoc(collection(db,'products'), data);
-    forms[0].reset();
-    initSubmit(e.submitter, false, true);
+    await addDoc(collection(db,'products'), data).then(async d => {
+        let cname = '';
+        for (let i = 0; i < data.name.length; i++) {
+            if (forbiddenSymb.includes(data.name[i])) continue;
+            cname += data.name[i];
+        }
+        await setDoc(doc(db, 'category', cname), {
+            'prod': arrayUnion(data.drug),
+        }, {merge: true});
+        
+        forms[0].reset();
+        initSubmit(e.submitter, false, true);
+    });
+    
 });
 //edit category
 forms[1].addEventListener('submit', async (e) => {
@@ -255,3 +267,8 @@ shareBtn.addEventListener('click', async () => {
         console.log(err);
     }
 });
+
+/** HACKS for pharmacy.js **/
+//get all docs on antibiotics/tablet injection
+// const n = 
+// const snapped = await getDocs(query(collection(db, 'products'), where('name', '==', )))

@@ -368,6 +368,11 @@ p.hr.load::after {
 .records > button:hover {
     background-color: #1a73d822;
 }
+code {
+    color: #aaa;
+    font-size: 1.2em;
+    font-weight: 500;
+}
 ::backdrop {
     background-color: rgba(0,0,0,.4);
 }

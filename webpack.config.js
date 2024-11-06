@@ -1,6 +1,6 @@
 const path = require("path");
 //ROOT index.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/index.js",
@@ -120,7 +120,7 @@ module.exports = {
 }
 */
 //MEDICAL pharmacy.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/medical/src/pharmacy.js",
@@ -130,7 +130,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //MEDICAL patients.js
 /*
 module.exports = {
