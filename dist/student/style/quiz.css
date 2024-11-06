@@ -294,7 +294,6 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
 }
 [role="progressbar"] {
     --size: 140px;
-    /* --bar-width: 20px; */
     --color-bar: rgba(0,0,0,.3);
     --color-success: #009578;
     --progress: 0%;
@@ -352,7 +351,7 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
         transform: rotate(360deg);
     }
 }
-#clock::before/*, #clock::after*/ {
+#clock::before {
     content: '';
     position: absolute;
     left: 50%;

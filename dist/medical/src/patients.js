@@ -88,6 +88,7 @@ viewBtns.forEach(btn => {
         dialog[2].showModal();
     });
 });
+
 //FUNCTIONS:
 const yr = String(new Date(Date.now()).getUTCFullYear() + 1);   //current academic year
 //to set backdrop
@@ -166,7 +167,8 @@ dialog[0].querySelector('form').addEventListener('submit', async (e) => {
     });
 });
 //search for student
-let searchTerm, snapFOLDER = [];
+const divTable = document.querySelector('div.table');
+let searchTerm, snapFOLDER = [],/* newVersion = false,*/ nodes = [];;
 search_form.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
@@ -179,13 +181,77 @@ search_form.addEventListener('submit', async (e) => {
     if (snapdocs.empty) {
         alert("Sorry. No patient could be found.");
     } else {
+        // if (!snapFOLDER.length) newVersion = true;
+        snapFOLDER = [];
         snapdocs.docs.forEach(snapDOC => {
-            snapFOLDER.unshift(snapDOC);
-            
+            let obj = snapDOC.data();
+            obj['id'] = snapDOC.id;
+            obj['name'] = snapDOC.data().name.join(' ');
+            snapFOLDER.unshift(obj);
+        });
+        //run a function to insert snapdocs
+        snapFOLDER.forEach(item => {
+            const row = divTable.querySelector('template').content.cloneNode(true);
+            const {initials, name, regNo, cls, gender, onmed='No'} = item;
+            row.firstElementChild.firstElementChild.firstElementChild.textContent = initials;
+            row.firstElementChild.lastElementChild.querySelector('span:nth-child(1)').textContent = name;
+            let others = [regNo, cls, gender, onmed];
+            row.lastElementChild.querySelectorAll('span:not(:nth-child(1))').forEach((span, idx) => {
+                span.textContent = others[idx];
+            });
+            nodes.push(row);
+        });
+        nodes.forEach(node => {
+            divTable.appendChild(node);
+        });
+
+        //event for rows in divTable
+        divTable.querySelectorAll('.tr').forEach((tr, ix) => {
+            tr.addEventListener('click', async (e) => {
+                await sideAsset(snapFOLDER[ix]);
+            });
         });
     }
     e.submitter.disabled = false;
 });
+//function to insert bio data into the upper section of the sidebar
+const sectionII = document.querySelector('main > section:nth-of-type(2)');
+async function sideAsset (sdata) {
+    const {name, regNo, cls, fphone, mphone} = sdata;
+    sectionII.querySelectorAll('div:nth-of-type(1) > .li > span:nth-child(2)').forEach((sp,ix) => {
+        sp.textContent = [name, regNo, cls, fphone, mphone][ix];
+    });
+    await findMedRecords(sdata.id);
+}
+const pHR = document.querySelector('p.hr');
+let medFOLDER = [];
+async function findMedRecords(fid) {
+    pHR.classList.add('load');
+    //filter medFOLDER for id
+    const record = medFOLDER.filter(({id}) => id == fid);
+    //if found, insert into the DOM
+    if (record.length) {
+        insertMedRecords(record);
+        return;
+    };
+    const snapREC = await getDocs(query(collection(db, `patients${yr}`, )))
+    //else, await checking backend
+    //if found, push to medFOLDER and repeat Step 1 and 2
+    //if not found, alert the user as such
+}
+function insertMedRecords (rcd) {
+    rcd.forEach(rec => {
+        sectionII.querySelector('div:nth-of-type(2)').insertAdjacentHTML('beforeend', `
+            <div class="records">
+                <div>${rec.createdAt}</div>
+                <div>${rec.comp}</div>
+                <button type="button" class="view">View</button>
+            </div>
+        `);
+    });
+
+    pHR.classList.remove('load');
+}
 //search option buttons
 const searchOptBtns = document.querySelectorAll('.search_opt button:not(.uibtn)');
 const search_form_submitter = document.querySelector('.fwd_arrow');

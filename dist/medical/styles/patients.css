@@ -231,6 +231,8 @@ div.table {
     flex-wrap: wrap;
     gap: 3em;
 }
+.tr > div:last-of-type > span:nth-child(1) {flex: 8;}
+.tr > div:last-of-type > span:not(:nth-child(1)) {flex: 1;}
 .tr > div:first-of-type > div {
     position: absolute;
     top: 50%;
@@ -247,6 +249,7 @@ div.table {
 .tr > div:last-of-type > span:nth-child(1),
 .tr > div:last-of-type > span:last-of-type {
     font-weight: 500;
+    text-transform: capitalize;
 }
 .tr > div:last-of-type > span:last-of-type {
     color: #800080;
@@ -304,6 +307,30 @@ p.hr {
     top: 0;
     background-color: #fff;
     z-index: 2;
+}
+p.hr::after {
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-40%);
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    border: 2px solid;
+    border-color: #ddd #888 #888 #888;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: backwards;
+}
+@keyframes spin {
+    100% {
+        transform: translateY(-40%) rotate(360deg);
+    }
+}
+p.hr.load::after {
+    content: '';
+    animation-name: spin;
 }
 .records {
     position: relative;

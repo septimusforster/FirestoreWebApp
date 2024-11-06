@@ -98,7 +98,6 @@ await getDoc(eotRef).then(async (res) => { // load EOT
         `);
         document.querySelector('header > button.logout').insertAdjacentHTML('beforebegin', `
             <button type="button" class="link" onclick="location.href='./reserved.html'">Reserved</button>
-            <button type="button" class="link" onclick="location.href='./staffer/dist/test.html'">Test</button>
             <button type="button" class="link" onclick="location.href='award.html'">Award</button>
         `);
         const chkmode = document.querySelector('#chkmode');
@@ -171,7 +170,7 @@ function preload() {
         leftNav.insertAdjacentHTML('beforeend', `<a href="#">${arm}</a>`);
         document.querySelector('select#arm').insertAdjacentHTML('beforeend', `<option value="${arm}">${arm}</option>`);
     }); // EOF
-    document.querySelectorAll('header #classroomBtn, header > .promoBtn').forEach(btn => btn.removeAttribute('style'));
+    document.querySelectorAll('header #classroomBtn, header > .promoBtn, header > .promoBtn + button').forEach(btn => btn.removeAttribute('style'));
 }
 
 const DCA = 'DCA';
