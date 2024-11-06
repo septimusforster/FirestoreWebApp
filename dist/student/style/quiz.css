@@ -25,7 +25,8 @@ header button {justify-content: center;border-radius: 50%;}
 div.hdd {background-color: #555;height: 100%;padding: 0 3em;clip-path: polygon(0% 100%, 100% 100%, 80% 0%, 0% 0%);}
 div.hde > button {height: 2em;width: 2em;background-color: #1a73d8;}
 div.hde > button.focus > svg {transform: rotate(0deg);}
-div.user {max-width: 250px;z-index: 2;position: fixed;transform: translateY(-70%);left: 6em;padding: 1em;box-shadow: 0 7px 11px rgba(0,0,0,.3);border-radius: 0 0 7px 7px;background-color: #fff;transition: transform .4s ease;}
+div.user.load > span {display: none;}
+div.user {max-width: 250px;min-width: 220px;z-index: 2;position: fixed;transform: translateY(-100%);left: 6em;padding: 1em;box-shadow: 0 7px 11px rgba(0,0,0,.3);border-radius: 0 0 7px 7px;background-color: #fff;transition: transform .4s ease;}
 div.hde > button.focus + div {transform: translateY(57%);}
 div.hde > button > svg {transform: rotate(-90deg);transition: transform .2s ease;}
 div.user > span {display: block;padding: 1em 1em 1em 2em;color: #1a73d8;position: relative;}
@@ -339,6 +340,17 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
         transparent 0
     );
     order: 1;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+#clock.load {
+    animation-name: carousel2;
+}
+@keyframes carousel2 {
+    100% {
+        transform: rotate(360deg);
+    }
 }
 #clock::before/*, #clock::after*/ {
     content: '';
@@ -353,11 +365,6 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
     top: 13%;
     transform: translate(-50%, -13%);
 }
-/* #clock::after {
-    bottom: 13%;
-    transform: translate(-50%, -13%) rotate(-90deg);
-    transform-origin: top;
-} */
 .errnote {
     width: max-content;
     position: absolute;
@@ -369,7 +376,7 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
     justify-content: center;
     gap: 1em;
     padding: 1em 2em;
-    background-color: #ffe4c4;
+    background-color: #deb887;
     animation-duration: .7s;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
@@ -380,8 +387,11 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
 @keyframes show {
     100% {left: 0%;opacity: 1}
 }
-@media screen and (max-width: 1024px) {
-    div#form {height: 600px;font-size: .5em;}
+@media screen and (max-width: 768px) {
+    div#form {height: 620px}
+}
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+    div#form {height: 440px;font-size: .5em;}
     section {width: 100%;}
 }
 @media (max-width: 768px) and (orientation: landscape) {

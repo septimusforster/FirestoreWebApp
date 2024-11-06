@@ -41,7 +41,48 @@ const classConfiguration = configs[configs[7].indexOf(ssSTUDENT.class)];
 var app = initializeApp(classConfiguration)
 var db = getFirestore(app);
 
-startupDialog.show();
+const today = Date.now();
+const month = new Date(today).getUTCMonth();
+let score = 0,
+    session = month >= 8 ? String(new Date(today).getUTCFullYear()+1) : String(new Date(today).getUTCFullYear()),
+    term = 0;
+switch (true) {
+    case month <= 3:
+        term = 1;
+        break;
+    case month <= 7:
+        term = 2;
+        break;
+    default:
+        term = 0;
+        break;
+}
+
+let NULLS = new Array(8);
+NULLS.fill(null);
+//check if test has been earlier taken, before display startupDialog
+const userDIV = document.querySelector('div.user');
+const clock = document.querySelector('#clock');
+
+const getref = await getDoc(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'records'));
+const res = getref.get(SUBJECT)?.[term] || NULLS;
+const start = [,0,2,4,6][CATNO];
+
+if (res[start] != null) {   
+    yesBtn.classList.remove('clk');
+    yesBtn.closest('dialog').close();
+    const err = "This particular test has been sat for.";
+    const errnote = document.querySelector('.errnote');
+    errnote.querySelector('span').textContent = err;
+    errnote.classList.add('shw');
+    const errID = setTimeout(() => {
+        errnote.classList.remove('shw');
+        clearTimeout(errID);
+    }, 5000);
+} else {
+    startupDialog.show();
+}
+clock.classList.remove('load');
 //const, var, let of FUNCTIONS
 let didNotAnswer = 0;
 let answered = new Array(ssTEST.questions).fill(null);
@@ -51,11 +92,11 @@ let time = dur * 60;
 function updateHeaderTree () {
     //catNo
     document.querySelector('div.hdd > i').textContent = ['01','02','03','Ex'][ssTEST.catNo - 1];
-    
-    document.querySelectorAll('div.user > span').forEach((span, idx) => {
+    userDIV.querySelectorAll('span').forEach((span, idx) => {
         span.textContent = [`${ssSTUDENT.first_name} ${ssSTUDENT.last_name}`, ssSTUDENT.offered[SUBJECT], ssSTUDENT.class][idx];
     });
 
+    userDIV.classList.remove('load');
     let li = '';
     ssTEST.instr.forEach(ins => li += `<li>${ins}</li>`);
     document.querySelector('#instr-dg menu').innerHTML = li;
@@ -132,9 +173,8 @@ txtCode.addEventListener('keyup', async (e) => {
     if (e.key === 'Enter') await startup(e.target, dg0btns[1]);
 });
 //submit test request btn
+const submitDialog = document.querySelector('dialog#subreq-dg');
 submitBtn.addEventListener('click', () => {
-    const submitDialog = document.querySelector('dialog#subreq-dg');
-    
     if (timeElapsed) {
         submitDialog.querySelector('div > div:first-of-type').textContent = 'Submitting test...';
         submitDialog.querySelector('#oi-btns').children[0].style.visibility = 'hidden';
@@ -257,7 +297,6 @@ function updateFormTree (n) {
     //show submitBtn
     submitBtn.removeAttribute('style');
 }
-const clock = document.querySelector('#clock');
 const fx = 100 / time;
 let lvl = 0;
 
@@ -300,10 +339,7 @@ function markTest () {
     }
 }
 //submit test score
-let score = 0, session = '2025', term = 0;
-let NULLS = new Array(8);
-NULLS.fill(null);
-console.log(ssSTUDENT.id)
+// console.log(ssSTUDENT.id)
 async function saveScore () {
     //calc score
     const f = answered.filter((a, i) => a == ssTEST.chosen[i]);
@@ -313,44 +349,29 @@ async function saveScore () {
         //instantiate a transaction to:
             //get current array of scores for this subject
     try {
-        const getref = await getDoc(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'records'));
-        const res = getref.get(SUBJECT)[term] || NULLS;
-        const start = [,0,2,4,6][CATNO];
-        if (res[start] != null) {   
-            yesBtn.classList.remove('clk');
-            yesBtn.closest('dialog').close();
-            const err = "This particular test has been sat for.";
-            const errnote = document.querySelector('.errnote');
-            errnote.querySelector('span').textContent = err;
-            errnote.classList.add('shw');
-            const errID = setTimeout(() => {
-                errnote.classList.remove('shw');
-                clearTimeout(errID);
-            }, 5000);
-        } else {
-            let tx = await runTransaction(db, async transaction => {           
-                res.splice(start, 1, score);
-                //update the array of scores for this subject
-                const setref = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'records'), {
-                    [SUBJECT]: {[term]: res}
-                }, {merge: true});
-                //save ANSWERED array with timestamp
-                const setref1 = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'CBT', ssSTUDENT.id), {
-                    'Q': answered.length,
-                    'A': answered,
-                    'C': didNotAnswer,
-                    'dateModified': serverTimestamp()
-                });
-                yesBtn.closest('dialog').close();
-                yesBtn.classList.remove('clk');
-                document.querySelector('#submitted-dg').show();
-                oculus.classList.add('activate');
-                document.querySelector('section > aside:nth-child(2)').classList.add('slt');
+        let tx = await runTransaction(db, async transaction => {           
+            res.splice(start, 1, score);
+            //update the array of scores for this subject
+            const setref = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'scores', 'records'), {
+                [SUBJECT]: {[term]: res}
+            }, {merge: true});
+            //save ANSWERED array with timestamp
+            const setref1 = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'CBT', ssSTUDENT.id), {
+                'Q': answered.length,
+                'A': answered,
+                'C': didNotAnswer,
+                'dateModified': serverTimestamp()
             });
-        }
+            yesBtn.closest('dialog').close();
+            yesBtn.classList.remove('clk');
+            document.querySelector('#submitted-dg').show();
+            oculus.classList.add('activate');
+            document.querySelector('section > aside:nth-child(2)').classList.add('slt');
+        });
     } catch (error) {
         console.log(error);
         //if catch err, reactivate submitBtn and remove clk from YES btn classlist
+        submitDialog.querySelector('div > div:first-of-type').textContent = 'Try again. Click Yes to submit the test.';
         yesBtn.classList.remove('clk');
         // submitBtn.classList.remove('dsbd');
     }
@@ -363,17 +384,3 @@ document.querySelector('#logout').addEventListener('click', () => {
 });
 //view test details
 document.querySelector('.hde > button').addEventListener('click', (e) => e.target.classList.toggle('focus'));
-/*
-const form = document.forms.namedItem('multi-choice-form');
-const fader = document.querySelector('#light-dark-fader');
-fader.addEventListener('mousemove', (e) => {
-    // console.log(e.target.value);
-    let x = Number(e.target.value / 100);
-    form.style.opacity = Number((x).toFixed(1));
-});
-
-const multiChoiceBtn = document.querySelector("button#multi-choice-btn");
-multiChoiceBtn.addEventListener('click', (e) => {
-    e.target.parentElement.classList.toggle('on');
-});
-*/

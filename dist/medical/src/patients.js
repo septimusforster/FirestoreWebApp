@@ -166,7 +166,7 @@ dialog[0].querySelector('form').addEventListener('submit', async (e) => {
     });
 });
 //search for student
-let searchTerm;
+let searchTerm, snapFOLDER = [];
 search_form.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
@@ -180,7 +180,8 @@ search_form.addEventListener('submit', async (e) => {
         alert("Sorry. No patient could be found.");
     } else {
         snapdocs.docs.forEach(snapDOC => {
-            console.log(snapDOC.data())
+            snapFOLDER.unshift(snapDOC);
+            
         });
     }
     e.submitter.disabled = false;
