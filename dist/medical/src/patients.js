@@ -174,7 +174,7 @@ search_form.addEventListener('submit', async (e) => {
     e.submitter.disabled = true;
 
     let st = searchTerm || search_input.value.toUpperCase();
-    
+    if (st == '') return;
     // resetConfig(9);
     const q = query(collection(db, `patients${yr}`), where('searchTerm', 'array-contains', st), orderBy('lastModified'));
     const snapdocs = await getDocs(q);
@@ -219,19 +219,18 @@ const sectionII = document.querySelector('main > section:nth-of-type(2)');
 async function sideAsset (sdata) {
     const {name, regNo, cls, fphone, mphone} = sdata;
     sectionII.querySelectorAll('div:nth-of-type(1) > .li > span:nth-child(2)').forEach((sp,ix) => {
-        sp.textContent = [name, regNo, cls, fphone, mphone][ix];
+        sp.textContent = [name, regNo, cls, fphone, mphone][ix] || 'None';
     });
     //asset for Record Details <dialog>
     dialog[2].querySelector('header + div > .li:nth-child(1) > span:nth-child(2)').textContent = name;
     //asset for New Record <dialog>
     const nameArr = name.split(' ');
-    dialog[1].querySelector('header').insertAdjacentHTML('afterend', `
-        <div class="li">
-            <span><small>${nameArr[0]} ${nameArr[2]}</small><br/>${nameArr[1]}</span>
-            <span id="sid"><small>${regNo}</small></span>
-        </div>
-    `);
-    
+    // dialog[1].querySelector('header + div').remove();
+    dialog[1].querySelector('header + div.li').innerHTML = `
+        <span><small>${nameArr[0]} ${nameArr[2]}</small><br/>${nameArr[1]}</span>
+        <span id="sid"><small>${regNo}</small></span>
+    `;
+
     await findMedRecords(sdata.id);
 }
 const pHR = document.querySelector('p.hr');
@@ -249,7 +248,7 @@ async function findMedRecords(fid) {
     const snapREC = await getDocs(query(collection(db, `patients${yr}`, fid, 'record')));
     //if not found, alert the user as such
     if (snapREC.empty) {
-        sectionII.querySelector('div:nth-of-type(2)').innerHTML = '<code>No Data</code>';
+        pHR.nextElementSibling.innerHTML = '<code>No Data</code>';
     } else {
         //if found, push to medFOLDER and repeat Step 1 and 2
         record = {[fid]: snapREC.docs};

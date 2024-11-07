@@ -206,8 +206,7 @@ forms[0].addEventListener('submit', async (e) => {
         
         forms[0].reset();
         initSubmit(e.submitter, false, true);
-    });
-    
+    }); 
 });
 //edit category
 forms[1].addEventListener('submit', async (e) => {
@@ -269,6 +268,24 @@ shareBtn.addEventListener('click', async () => {
 });
 
 /** HACKS for pharmacy.js **/
+/*
 //get all docs on antibiotics/tablet injection
-// const n = 
-// const snapped = await getDocs(query(collection(db, 'products'), where('name', '==', )))
+const n = configs[9].categories[11];
+const snapped = await getDocs(query(collection(db, 'products'), where('name', '==', n)));
+let drugs = [];
+if (snapped.empty) {
+    alert('No drug found.');
+} else {
+    snapped.docs.forEach(snp => drugs.push(snp.data().drug));
+    console.log(drugs);
+}
+let nname = '';
+for (let i = 0; i < n.length; i++) {
+    if (forbiddenSymb.includes(n[i])) continue;
+    nname += n[i];
+}
+await setDoc(doc(db, 'category', nname), {
+    'prod': arrayUnion(...drugs),
+}, {merge: true});
+console.log('Set!');
+*/
