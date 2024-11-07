@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, getDoc, getDocs, addDoc, doc, query, where, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, getDoc, getDocs, addDoc, doc, query, where, deleteDoc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import  configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 import entryCode from "./JSON/test.json" assert {type: 'json'};
@@ -38,9 +38,81 @@ if (sessionStorage.getItem("subs") === null) {
 }
 function loadSubs() {
     const subArray = Object.entries(JSON.parse(sessionStorage.getItem('subs')));
+    const subName = document.getElementById('subname');
     subArray.forEach((e, i) => {
-        subDatalist.insertAdjacentHTML('beforeend', `<option data-id='${i}' value='${e[0]}'>${e[1]}</option>`)
-    })
+        let o = new Option(e[1], e[0]);
+        subName.appendChild(o);
+        subDatalist.insertAdjacentHTML('beforeend', `<option data-id='${i}' value='${e[0]}'>${e[1]}</option>`);
+    });
+}
+//create Find Test button
+if (JSON.parse(sessionStorage.getItem('snapshot')).data.username !== 'guestmode') {
+    document.body.querySelector('header > div:first-of-type').insertAdjacentHTML('afterbegin', `
+        <button onclick="document.querySelector('[data-tst-conditions]').showModal();">Find Test</button>
+    `);
+
+    let subject;
+    const dforms = document.querySelectorAll('[data-tst-conditions] > form');
+    //download form
+    dforms[0].addEventListener('submit', async (e) => {
+        e.preventDefault();
+        e.submitter.disabled = true;
+        e.submitter.classList.add('dsbd');
+        dforms[1].classList.add('loading');
+
+        const [cls, sub, tst] = new FormData(dforms[0]).values();
+        subject = sub;
+        chooseConfig(Number(cls));
+        const snapShot = await getDocs(query(collection(db, 'activities', 'test', sub), where('catNo', '==', Number(tst))));
+        if (snapShot.empty) {
+            insertInputsForUpload();    //defaults to false
+        } else {
+            //function to add result of snapshot to dforms[1]
+            let data = {[snapShot.docs[0].id]: snapShot.docs[0].data()};
+            insertInputsForUpload(data);
+        }
+        e.submitter.disabled = false;
+        e.submitter.classList.remove('dsbd');
+        dforms[1].classList.remove('loading');
+    });
+    //upload form
+    const success = document.querySelector('.success');
+    dforms[1].addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const loadBtns = document.querySelectorAll('.loadBtn');
+        loadBtns.forEach(btn => btn.disabled = true);
+        e.submitter.classList.add('dsbd');
+
+        const [date, time, code, rating] = new FormData(dforms[1]).values();
+        await updateDoc(doc(db, 'activities', 'test', subject, e.submitter.id), {
+            startDate: date,
+            startTime: time,
+            code,
+            rating,
+        })
+        .then(val => {
+            success.classList.add('shw');
+
+            loadBtns.forEach(btn => btn.disabled = false);
+            e.submitter.classList.remove('dsbd');
+        });
+    });
+    //populate
+    function insertInputsForUpload(obj=false) {
+        if (obj) {
+            for (const [k, v] of Object.entries(obj)) {
+                dforms[1].innerHTML = `
+                    <input type="date" name="tstdate" id="tstdate" value="${v.startDate}" required/>
+                    <input type="time" name="tsttime" id="tsttime" value="${v.startTime}" required/>
+                    <input type="text" name="tstcode" id="tstcode" value="${v.code}" placeholder="Code" required/>
+                    <input type="text" name="tstrating" id="tstrating" value="${v.rating}" placeholder="Rating" required/>
+                    <button class="loadbtn" id="${k}">Upload</button>
+                `;
+            }
+        } else {
+            dforms[1].innerHTML = '<code>Not found.</code>';
+        }
+    }
 }
 const dialogNotice = document.querySelector('dialog#notice');
 
@@ -228,3 +300,4 @@ copyBtn.addEventListener('click', async (e) => {
         })
 });
 */
+

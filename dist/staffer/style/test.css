@@ -7,6 +7,19 @@ html, body, * {
 body {
     user-select: none;
 }
+header > div:first-of-type {
+    padding: 20px;
+    text-align: right;
+}
+header > div:first-of-type > button {
+    padding: 10px 18px;
+    border: 1px solid #ff450033;
+    background-color: #ff450022;
+    color: #ff4500;
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 8px;
+}
 header div:nth-of-type(2) {
     display: flex;
     justify-content: space-evenly;
@@ -17,13 +30,17 @@ header div:nth-of-type(2) strong {
     font-weight: normal;
     padding: 30px;
 }
-button {
+button, input, select {
     border: none;
     outline: none;
     cursor: pointer;
 }
 input, select {
+    font-weight: 500;
     padding: 10px 12px;
+}
+aside input, .aside__form select, .aside__form input {
+    border: 1px solid #ccc;
 }
 input[type='file'] {
     display: none;
@@ -87,12 +104,12 @@ main {
 form, aside {
     flex: 1;
     max-width: 400px;
-    min-width: 350px;
     display: flex;
     flex-direction: column;
     gap: .7em;
 }
-form {
+form:not(dialog > form) {
+    min-width: 350px;
     padding: 20px 40px;
 }
 #imgframe::-webkit-scrollbar {
@@ -231,11 +248,13 @@ dialog {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    width: 350px;
     padding: 20px;
     border-radius: 5px;
     border: none;
     overflow: hidden;
+}
+dialog:not([data-tst-conditions]) {
+    width: 350px;
 }
 output {
     display: block;
@@ -278,4 +297,148 @@ input:invalid + span::after {
     content: '×';
     padding-left: 5px;
     color: #f00;
+}
+.hdr {
+    font-weight: 500;
+    text-transform: uppercase;
+    margin: 17px 0;
+    position: relative;
+}
+.tick {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 -0.5 24 24" fill="none"><path d="M5.5 12.5L10.167 17L19.5 8" stroke="%23009578" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+.ex {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23555" stroke-width="2" stroke-linecap="round"/></svg>');
+}
+.hdr > button {
+    position: absolute;
+    right: 0;
+    top: -50%;
+    transform: translateY(-50%);
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    transition: background-color .1s ease;
+}
+.hdr > button, .success {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.hdr > button:hover {
+    background-color: #ddd;
+}
+[data-tst-conditions] > form {
+    width: 270px;
+    margin: 20px;
+}
+[data-tst-conditions] > form:nth-of-type(2) {
+    position: relative;
+}
+[data-tst-conditions] > form:nth-of-type(2)::after {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    border: 2px solid;
+    border-color: transparent transparent #888 #888;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: backwards;
+}
+[data-tst-conditions] > form:nth-of-type(2).loading::after {
+    content: '';
+    animation-name: spin;
+}
+@keyframes spin {
+    100% {
+        transform: translate(-50%, -100%) rotate(360deg);
+    }
+}
+[data-tst-conditions] > form > input,
+[data-tst-conditions] > form > select {
+    width: 100%;
+    border-radius: 24px;
+    font-size: 1em;
+    /* border: 0; */
+}
+[data-tst-conditions] > form:nth-of-type(1) > select {
+    color: #1a73d8;
+    background-color: #1a73d822;
+}
+[data-tst-conditions] > form:nth-of-type(2) > input {
+    color: #009578;
+    background-color: #00957822;
+}
+.loadBtn {
+    padding: 14px 7px 14px 35px;
+    width: 57%;
+    color: #fff;
+    background-repeat: no-repeat;
+    background-position: 12% center;
+    position: relative;
+}
+.loadBtn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0%;
+    height: 100%;
+    background-color: rgba(255,255,255,.2);
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: backwards;
+    animation-iteration-count: infinite;
+}
+.loadBtn.dsbd::after {
+    animation-name: len;
+}
+@keyframes len {
+    100% {
+        width: 100%;
+    }
+}
+.loadbtn, .success > button {
+    font-size: 1em;
+    margin-left: auto;
+    margin-bottom: 2em;
+    border-radius: 30px;
+    font-weight: 500;
+}
+form:nth-of-type(1) > .loadBtn {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12.5535 16.5061C12.4114 16.6615 12.2106 16.75 12 16.75C11.7894 16.75 11.5886 16.6615 11.4465 16.5061L7.44648 12.1311C7.16698 11.8254 7.18822 11.351 7.49392 11.0715C7.79963 10.792 8.27402 10.8132 8.55352 11.1189L11.25 14.0682V3C11.25 2.58579 11.5858 2.25 12 2.25C12.4142 2.25 12.75 2.58579 12.75 3V14.0682L15.4465 11.1189C15.726 10.8132 16.2004 10.792 16.5061 11.0715C16.8118 11.351 16.833 11.8254 16.5535 12.1311L12.5535 16.5061Z" fill="%23FFF"/><path d="M3.75 15C3.75 14.5858 3.41422 14.25 3 14.25C2.58579 14.25 2.25 14.5858 2.25 15V15.0549C2.24998 16.4225 2.24996 17.5248 2.36652 18.3918C2.48754 19.2919 2.74643 20.0497 3.34835 20.6516C3.95027 21.2536 4.70814 21.5125 5.60825 21.6335C6.47522 21.75 7.57754 21.75 8.94513 21.75H15.0549C16.4225 21.75 17.5248 21.75 18.3918 21.6335C19.2919 21.5125 20.0497 21.2536 20.6517 20.6516C21.2536 20.0497 21.5125 19.2919 21.6335 18.3918C21.75 17.5248 21.75 16.4225 21.75 15.0549V15C21.75 14.5858 21.4142 14.25 21 14.25C20.5858 14.25 20.25 14.5858 20.25 15C20.25 16.4354 20.2484 17.4365 20.1469 18.1919C20.0482 18.9257 19.8678 19.3142 19.591 19.591C19.3142 19.8678 18.9257 20.0482 18.1919 20.1469C17.4365 20.2484 16.4354 20.25 15 20.25H9C7.56459 20.25 6.56347 20.2484 5.80812 20.1469C5.07435 20.0482 4.68577 19.8678 4.40901 19.591C4.13225 19.3142 3.9518 18.9257 3.85315 18.1919C3.75159 17.4365 3.75 16.4354 3.75 15Z" fill="%23FFF"/></svg>');
+    background-color: #ff4500;
+}
+form:nth-of-type(2) > .loadBtn {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12.5535 2.49392C12.4114 2.33852 12.2106 2.25 12 2.25C11.7894 2.25 11.5886 2.33852 11.4465 2.49392L7.44648 6.86892C7.16698 7.17462 7.18822 7.64902 7.49392 7.92852C7.79963 8.20802 8.27402 8.18678 8.55352 7.88108L11.25 4.9318V16C11.25 16.4142 11.5858 16.75 12 16.75C12.4142 16.75 12.75 16.4142 12.75 16V4.9318L15.4465 7.88108C15.726 8.18678 16.2004 8.20802 16.5061 7.92852C16.8118 7.64902 16.833 7.17462 16.5535 6.86892L12.5535 2.49392Z" fill="%23FFF"/><path d="M3.75 15C3.75 14.5858 3.41422 14.25 3 14.25C2.58579 14.25 2.25 14.5858 2.25 15V15.0549C2.24998 16.4225 2.24996 17.5248 2.36652 18.3918C2.48754 19.2919 2.74643 20.0497 3.34835 20.6516C3.95027 21.2536 4.70814 21.5125 5.60825 21.6335C6.47522 21.75 7.57754 21.75 8.94513 21.75H15.0549C16.4225 21.75 17.5248 21.75 18.3918 21.6335C19.2919 21.5125 20.0497 21.2536 20.6517 20.6516C21.2536 20.0497 21.5125 19.2919 21.6335 18.3918C21.75 17.5248 21.75 16.4225 21.75 15.0549V15C21.75 14.5858 21.4142 14.25 21 14.25C20.5858 14.25 20.25 14.5858 20.25 15C20.25 16.4354 20.2484 17.4365 20.1469 18.1919C20.0482 18.9257 19.8678 19.3142 19.591 19.591C19.3142 19.8678 18.9257 20.0482 18.1919 20.1469C17.4365 20.2484 16.4354 20.25 15 20.25H9C7.56459 20.25 6.56347 20.2484 5.80812 20.1469C5.07435 20.0482 4.68577 19.8678 4.40901 19.591C4.13225 19.3142 3.9518 18.9257 3.85315 18.1919C3.75159 17.4365 3.75 16.4354 3.75 15Z" fill="%23FFF"/></svg>');
+    background-color: #800080;
+}
+.success {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    align-items: flex-end;
+    justify-content: flex-end;
+    background-color: #fff;
+}
+.success.shw {
+    display: flex;
+}
+.success > button {
+    width: 40%;
+    padding: 14px;
+    margin: 30px;
+    color: #009578;
+    background-color: #00957822;
+}
+code {
+    color: #888;
+    font-size: 1.5em;
 }

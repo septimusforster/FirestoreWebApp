@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <div>AN</div>
+        <div></div>
         <div>
             <strong>1 - Upload file</strong><strong>2 - Preview file</strong><strong>3 - Other settings</strong>
         </div>
@@ -113,6 +113,37 @@
         <!--button type="button" id="copy-btn">COPY</button-->
         <button type="button" id="submit-btn">SUBMIT</button>
     </dialog>
+    <dialog data-tst-conditions>
+        <div class="hdr">Test Conditions
+            <button type="button" class="ex" onclick="this.closest('dialog').close();"></button>
+        </div>
+        <form>
+            <select name="clsname" id="clsname" required>
+                <option value="">Select class</option>
+                <option value="0">JSS 1</option>
+                <option value="1">JSS 2</option>
+                <option value="2">JSS 3</option>
+                <option value="3">SSS 1</option>
+                <option value="4">SSS 2</option>
+                <option value="5">SSS 3</option>
+            </select>
+            <select name="subname" id="subname" required>
+                <option value="">Select subject</option>
+            </select>
+            <select name="tstnum" id="tstnum" required>
+                <option value="">Select C.A</option>
+                <option value="1">C.A 1</option>
+                <option value="2">C.A 2</option>
+                <option value="3">C.A 3</option>
+                <option value="4">C.A 4</option>
+            </select>
+            <button class="loadbtn">Download</button>
+        </form>
+        <form></form>
+        <div class="success tick">
+            <button type="button" onclick="this.parentElement.classList.remove('shw')">Done</button>
+        </div>
+    </dialog>
     <script type="module" src="../src/test_bundle.js"></script>
     <script>
         // set min attr for date input
@@ -128,8 +159,7 @@
         const file = document.querySelector("input[type='file']");
         file.onchange = (e) => {
             console.log(e);
-            const fs = new FileReader()
-            // console.log(e.target.files[0].size)
+            const fs = new FileReader();
             fs.onload = function () {
                 // iframe.removeAttribute('srcdoc');
                 
