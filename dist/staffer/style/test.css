@@ -8,17 +8,25 @@ body {
     user-select: none;
 }
 header > div:first-of-type {
-    padding: 20px;
+    padding: 20px 40px;
     text-align: right;
 }
+.hdr, header > div:first-of-type > button {
+    font-family: monospace;
+}
 header > div:first-of-type > button {
-    padding: 10px 18px;
-    border: 1px solid #ff450033;
-    background-color: #ff450022;
-    color: #ff4500;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12.2424 20H17.5758M4.48485 16.5L15.8242 5.25607C16.5395 4.54674 17.6798 4.5061 18.4438 5.16268V5.16268C19.2877 5.8879 19.3462 7.17421 18.5716 7.97301L7.39394 19.5L4 20L4.48485 16.5Z" stroke="%23800080" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    padding: 10px 20px 10px 52px;
+    border: 1px solid #80008022;
+    background-color: #80008011;
+    color: #800080;
     font-size: 1em;
     font-weight: 500;
     border-radius: 8px;
+    transition: background-color .1s ease-in-out;
+}
+header > div:first-of-type > button:hover {
+    background-color: #80008022;
 }
 header div:nth-of-type(2) {
     display: flex;
@@ -244,9 +252,9 @@ hr {
 }
 dialog {
     position: absolute;
-    top: 50%;
+    top: 10%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     text-align: center;
     padding: 20px;
     border-radius: 5px;
@@ -302,6 +310,8 @@ input:invalid + span::after {
     font-weight: 500;
     text-transform: uppercase;
     margin: 17px 0;
+    color: #800080;
+    font-size: 1.5em;
     position: relative;
 }
 .tick {
@@ -373,12 +383,14 @@ input:invalid + span::after {
     color: #009578;
     background-color: #00957822;
 }
+.loadBtn, header > div:first-of-type > button {
+    background-repeat: no-repeat;
+    background-position: 12% center;
+}
 .loadBtn {
     padding: 14px 7px 14px 35px;
     width: 57%;
     color: #fff;
-    background-repeat: no-repeat;
-    background-position: 12% center;
     position: relative;
 }
 .loadBtn::after {

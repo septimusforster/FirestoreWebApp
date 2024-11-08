@@ -48,7 +48,7 @@ function loadSubs() {
 //create Find Test button
 if (JSON.parse(sessionStorage.getItem('snapshot')).data.username !== 'guestmode') {
     document.body.querySelector('header > div:first-of-type').insertAdjacentHTML('afterbegin', `
-        <button onclick="document.querySelector('[data-tst-conditions]').showModal();">Find Test</button>
+        <button onclick="document.querySelector('[data-tst-conditions]').showModal();">Edit Test</button>
     `);
 
     let subject;
