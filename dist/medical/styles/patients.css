@@ -250,11 +250,6 @@ div.table {
     font-weight: 500;
     color: #009578;
 }
-/* .tr > div > * {
-    flex: 1;
-    text-align: center;
-    border: 1px solid #ccc;
-} */
 .tr > div:last-of-type > span:nth-child(1),
 .tr > div:last-of-type > span:last-of-type {
     font-weight: 500;
@@ -285,7 +280,7 @@ section:last-of-type > header > .ttl, .wrapper > header > .ttl {
     color: #1a73d8;
     transition: background-color .1s ease;
 }
-.menu > button:hover, #crt-rec:hover {
+.menu > button:hover {
     background-color: #1a73d811;
 }
 section:last-of-type > div {
@@ -539,6 +534,7 @@ form[name="nw-pre"] > div > div:nth-child(2) {
 }
 .fm_part > div {
     display: flex;
+    justify-content: center;
     padding: 10px;
     gap: 2em;
     position: relative;
@@ -546,7 +542,7 @@ form[name="nw-pre"] > div > div:nth-child(2) {
 .fm_part > div::after {
     content: '';
     position: absolute;
-    right: 50px;
+    left: 20px;
     top: 50%;
     transform: translateY(-50%);
     height: 15px;
@@ -562,10 +558,18 @@ form[name="nw-pre"] > div > div:nth-child(2) {
 .fm_part > div > input {
     width: 15%;
     text-align: center;
-    border: 1px solid #ddd;
+    border-radius: 5px;
     font-size: 1.2em;
     aspect-ratio: 6/5;
-    /* background-color: #f7f7f7; */
+    background-color: #1a73d822;
+}
+.fm_part > div > input:nth-child(2) {
+    background-color: #80008022;
+    color: #800080;
+}
+.fm_part > div > input:nth-child(3) {
+    background-color: #00957822;
+    color: #009578;
 }
 .fm_part > div > input::placeholder {
     font-size: .8em;
@@ -592,8 +596,13 @@ form[name="nw-pre"] > div > div:nth-child(2) {
     font-size: 1.2em;
 }
 #crt-rec {
-    border: 1px solid #ccc;
     margin: 40px auto 20px;
+    padding: 14px 20px;
+    border-radius: 27px;
+    background-color: #1a73d8;
+}
+#crt-rec > span {
+    color: #fff;
 }
 input#complaint {
     border: 1px solid #eee;
@@ -606,6 +615,7 @@ input#complaint:focus {
     border: 1px solid #ccc;
 }
 .sbmt_btn {
+    font-family: monospace;
     user-select: none;
     position: relative;
 }

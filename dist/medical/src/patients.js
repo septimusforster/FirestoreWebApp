@@ -217,9 +217,9 @@ search_form.addEventListener('submit', async (e) => {
 //function to insert bio data into the upper section of the sidebar
 const sectionII = document.querySelector('main > section:nth-of-type(2)');
 async function sideAsset (sdata) {
-    const {name, regNo, cls, fphone, mphone} = sdata;
+    const {name, regNo, cls, arm, fphone, mphone} = sdata;
     sectionII.querySelectorAll('div:nth-of-type(1) > .li > span:nth-child(2)').forEach((sp,ix) => {
-        sp.textContent = [name, regNo, cls, fphone, mphone][ix] || 'None';
+        sp.textContent = [name, regNo, `${cls} ${arm}`, fphone, mphone][ix] || 'None';
     });
     //asset for Record Details <dialog>
     dialog[2].querySelector('header + div > .li:nth-child(1) > span:nth-child(2)').textContent = name;
@@ -285,3 +285,4 @@ searchOptBtns.forEach(btn => {
         //Intl.DateTimeFormat('en-gb', {dateStyle: 'full'}).format(Date.now()).search(/November/)
     });
 });
+//initiate
