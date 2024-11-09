@@ -1,0 +1,21 @@
+{
+    "short_name": "Dynamax",
+    "name": "DCA WebP",
+    "icons": [
+        {
+            "src": "../img/simple-firefox.9b9181d8c30c3de88edf.svg",
+            "sizes": "150x150",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "../img/opera.a0ab0c5004c00e618a00.svg",
+            "sizes": "150x150",
+            "type": "image/svg+xml"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "description": "DCA Home Portal",
+    "theme_color": "#555555",
+    "background-color": "#FFFFFF"
+}
