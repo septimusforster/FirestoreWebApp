@@ -175,42 +175,32 @@
             </div>
             <form name="nw-pre">
                 <input type="text" name="complaint" id="complaint" placeholder="Complaint/Info" required/>
-                <div>
-                    <div class="fm_part">
-                        <select name="cn" class="cn" required>
-                            <option value="">Select Group</option>
-                        </select>
-                        <select name="cd" class="cd" required></select>
-                        <div>
-                            <input type="text" name="#" id="" placeholder="Morn" required>
-                            <input type="text" name="#" id="" placeholder="Noon" required>
-                            <input type="text" name="#" id="" placeholder="Even" required>
-                        </div>
-                    </div>
+                <template>
                     <div>
-                        <div class="cb btn tick"></div>
-                    </div>
-                </div>
-                <!--div>
-                    <div>
-                        <button type="button" class="uibtn times"></button>
                         <div class="fm_part">
-                            <select name="c0" id="c0">
-                                <option value="">Emollient Balm</option>
-                            </select><select name="d0" id="d0">
-                                <option value="">Artesunate</option>
+                            <select name="cn" id="cn" required>
+                                <option value="">Select Group</option>
                             </select>
-                            <small>MORN<br/><input type="text" name="n0" id="n0" placeholder="0"/></small>
-                            <small>NOON<br/><input type="text" name="n0" id="n0" placeholder="0"/></small>
-                            <small>EVEN<br/><input type="text" name="n0" id="n0" placeholder="0"/></small>
+                            <select name="cd" id="cd" required></select>
+                            <div>
+                                <input type="text" name="#" id="" placeholder="Morn" required>
+                                <input type="text" name="#" id="" placeholder="Noon" required>
+                                <input type="text" name="#" id="" placeholder="Even" required>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="cb btn tick"></div>
                         </div>
                     </div>
-                    <button type="button"><small>Add medication</small></button>
-                </div-->
+                </template>
             </form>
             <button type="button" id="crt-rec" class="sbmt_btn">
                 <span>CREATE RECORD</span>
             </button>
+            <div id="uihead">
+                <button type="button" class="times"></button>
+                <button type="button">Remove</button>
+            </div>
         </div>
     </dialog>
     <dialog>

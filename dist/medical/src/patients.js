@@ -285,4 +285,25 @@ searchOptBtns.forEach(btn => {
         //Intl.DateTimeFormat('en-gb', {dateStyle: 'full'}).format(Date.now()).search(/November/)
     });
 });
-//initiate
+//clone medication
+const medTemp = dialog[1].querySelector('form > template');
+//insert categories into <select>
+let groupNames = [], forbiddenSymb = '/.-:;#$%*()[]{}!~ '.split('');
+configs[9].categories.forEach(c => {
+    let cname = '';
+    for (let i = 0; i < c.length; i++) {
+        if (forbiddenSymb.includes(c[i])) continue;
+        cname += c[i];
+    }
+    groupNames.push(cname);
+});
+groupNames.forEach((g, h) => {
+    const selectElem = medTemp.content.cloneNode(true).querySelector('select#cn');
+    let o = new Option(configs[9].categories[h], g);
+    selectElem.appendChild(o);
+});
+//Add Medication click event listener
+document.querySelector('button#addmed').addEventListener('click', (e) => {
+    const clone = medTemp.content.cloneNode(true);
+    dialog[1].querySelector('form').appendChild(clone);
+});

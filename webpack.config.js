@@ -132,7 +132,7 @@ module.exports = {
 }
 */
 //MEDICAL patients.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/medical/src/patients.js",
@@ -263,7 +263,7 @@ module.exports = {
 }
 */
 //STUDENT quiz.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/quiz.js",
