@@ -132,7 +132,6 @@ input#search::placeholder {
     margin: auto 20px;
     background-color: #ccc;
     border-radius: 5px;
-    border: 1px solid #ccc;
     user-select: none;
 }
 .chevron, .add, .times, .fwd_arrow, .more, .share, .tick {
@@ -332,7 +331,8 @@ p.hr::after {
         transform: translateY(-40%) rotate(360deg);
     }
 }
-p.hr.load::after {
+p.hr.load::after,
+.fm_part > select.chg:nth-of-type(1) ~ div::after {
     content: '';
     animation-name: spin;
 }
@@ -487,7 +487,7 @@ dialog > .wrapper > header {
     letter-spacing: 1px;
     font-weight: bold;
 }
-.wrapper > footer > button, #add-btn, #crt-rec {
+.wrapper > footer > button, #add-btn {
     transition: background-color .1s ease;
 }
 #add-btn {
@@ -531,14 +531,12 @@ form[name="nw-pre"] > div {
     margin-bottom: 10px;
 }
 form[name="nw-pre"] > div > div:nth-child(2) {
-    /* background-color: #fff; */
     display: flex;
 }
 .fm_part {
     flex: 1;
     display: flex;
     flex-wrap: wrap;
-    /* gap: 1em; */
     justify-content: space-around;
 }
 .fm_part > div {
@@ -549,18 +547,17 @@ form[name="nw-pre"] > div > div:nth-child(2) {
     position: relative;
 }
 .fm_part > div::after {
-    content: '';
     position: absolute;
     left: 20px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-40%);
     height: 15px;
     width: 15px;
     border-radius: 50%;
     border: 2px solid;
     border-color: transparent transparent #777 #777;
     animation-duration: 1s;
-    animation-timing-function: ease;
+    animation-timing-function: linear;
     animation-fill-mode: backwards;
     animation-iteration-count: infinite;
 }
@@ -585,12 +582,14 @@ form[name="nw-pre"] > div > div:nth-child(2) {
     color: #888;
 }
 .fm_part > select {
-    flex-basis: 40%;
-    /* border-radius: 18px; */
-    /* background-color: #f2f2f2; */
+    width: 47%;
     padding: 5px;
     font-weight: 500;
 }
+[data-cb] {   /*div.cb.clk*/
+    background-color: #ff4500;
+}
+/*
 .fm_part > small {
     font-weight: 500;
     flex-basis: 30%;
@@ -604,12 +603,34 @@ form[name="nw-pre"] > div > div:nth-child(2) {
     text-align: center;
     font-size: 1.2em;
 }
+*/
 #crt-rec {
     margin: 40px auto 20px;
     padding: 14px 20px;
     border-radius: 27px;
     background-color: #1a73d8;
+    /*
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    */
 }
+/*
+#crt-rec::after {
+    content: '';
+    height: 100%;
+    width: 20%;
+    background: linear-gradient(transparent rgba(255,255,255,.5));
+}
+#crt-rec.clk::after {
+    content: '';
+    animation-name: wave;
+}
+#crt-rec.clk > span {
+    opacity: 1;
+}
+*/
 #crt-rec > span {
     color: #fff;
 }
@@ -628,14 +649,14 @@ input#complaint:focus {
     user-select: none;
     position: relative;
 }
-.sbmt_btn.clk {
+.sbmt_btn:not(#crt-rec).clk {
     background-color: #1a73d822 !important;
 }
 .sbmt_btn.fin {
     background-color: #009578 !important;
 }
 .sbmt_btn.clk > span, .sbmt_btn.fin > span {
-    color: transparent;
+    color: transparent !important;
 }
 .sbmt_btn > span::before, .sbmt_btn > span::after {
     position: absolute;
@@ -653,6 +674,9 @@ input#complaint:focus {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-fill-mode: forwards;
+}
+#crt-rec > span::before {
+    border-color: #fff #fff #fff transparent;
 }
 .sbmt_btn > span::after {
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="4 4 25 25" fill="none"><path d="M5.5 12.5L10.167 17L19.5 8" stroke="%23FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
@@ -679,6 +703,7 @@ input#complaint:focus {
     left: 0;
     padding: 10px;
     background-color: #fff;
+    box-shadow: 0 3px 7px rgba(0,0,0,.1);
 }
 #uihead.shw {
     display: flex;

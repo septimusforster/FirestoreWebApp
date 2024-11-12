@@ -6,11 +6,14 @@
     <link rel="stylesheet" href="../style/logon.css">
 </head>
 <body>
+    <header>
+        <button type="button" class="back" onclick="location.href = '../../login-cat.html'">Back</button>
+    </header>
     <div id="wrapper">
         <div class="sign">
         <main class="sign">
             <!-- <small>Not yet registered?</small> -->
-            <h2>Sign Up</h2>
+            <h2><button type="button" class="chevron bkwd" onclick="location.href = location.pathname + location.search"></button><span>Sign Up</span></h2>
             <form name="signup">
                 <dialog id="info">
                     <output></output>
@@ -155,9 +158,13 @@
         })
         function login() {
             mains.forEach(main => {
-                main.classList.remove('activate')
+                main.classList.remove('activate');
             })
-            mains[0].classList.toggle('activate')
+            if(mains[0].classList.toggle('activate')) {
+                document.querySelector('div.sign').style.display = 'block';
+            } else {
+                document.querySelector('div.sign').style.display = 'none';
+            };
         }
         // console.log(window.getComputedStyle(document.querySelector('hr')).borderColor);
         const eyes = document.querySelectorAll('.eye');

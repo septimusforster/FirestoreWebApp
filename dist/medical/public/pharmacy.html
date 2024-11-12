@@ -70,19 +70,32 @@
                         <input type="text" name="vendor" id="vendor">
                     </div>
                     <div class="fmgp">
-                        <label for="qty">Quantity <i class="req">&ast;</i></label>
+                        <label for="qty">Stock <i class="req">&ast;</i></label>
                         <input type="number" name="quantity" id="qty" required>
                     </div>
                     <div class="fmgp">
-                        <label for="unit">Unit <i class="req">&ast;</i></label>
-                        <select name="unit" id="unit" required>
-                            <option value="">Choose unit</option>
+                        <label for="container">Container <i class="req">&ast;</i></label>
+                        <select name="container" id="container" required>
+                            <option value="">Choose container</option>
                             <option value="Bottle">Bottle</option>
                             <option value="Card">Card</option>
                             <option value="Carton">Carton</option>
                             <option value="Packet">Packet</option>
                             <option value="Sachet">Sachet</option>
-                            <option value="Tablet">Tablet</option>
+                        </select>
+                    </div>
+                    <div class="fmgp">
+                        <label for="unit_number">Per Unit <i class="req">&ast;</i></label>
+                        <label for="unit_name">In <i class="req">&ast;</i></label>
+                        <input type="number" name="unit_number" id="unit_number" required>
+                        <select name="unit_name" id="unit_name">
+                            <option value="">Unit in</option>
+                            <option value="tablet">tabs</option>
+                            <option value="gramme">g</option>
+                            <option value="milligramme">mg</option>
+                            <option value="kilogramme">kl</option>
+                            <option value="litres">l</option>
+                            <option value="millilitres">ml</option>
                         </select>
                     </div>
                     <div class="fmgp">

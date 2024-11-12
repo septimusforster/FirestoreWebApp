@@ -225,7 +225,6 @@ async function sideAsset (sdata) {
     dialog[2].querySelector('header + div > .li:nth-child(1) > span:nth-child(2)').textContent = name;
     //asset for New Record <dialog>
     const nameArr = name.split(' ');
-    // dialog[1].querySelector('header + div').remove();
     dialog[1].querySelector('header + div.li').innerHTML = `
         <span><small>${nameArr[0]} ${nameArr[2]}</small><br/>${nameArr[1]}</span>
         <span id="sid"><small>${regNo}</small></span>
@@ -289,21 +288,89 @@ searchOptBtns.forEach(btn => {
 const medTemp = dialog[1].querySelector('form > template');
 //insert categories into <select>
 let groupNames = [], forbiddenSymb = '/.-:;#$%*()[]{}!~ '.split('');
-configs[9].categories.forEach(c => {
+configs[9].categories.forEach((c, d) => {
     let cname = '';
     for (let i = 0; i < c.length; i++) {
         if (forbiddenSymb.includes(c[i])) continue;
         cname += c[i];
     }
-    groupNames.push(cname);
+    let o = `<option value="${cname}">${configs[9].categories[d]}</option>`;
+    groupNames.push(o);
 });
-groupNames.forEach((g, h) => {
-    const selectElem = medTemp.content.cloneNode(true).querySelector('select#cn');
-    let o = new Option(configs[9].categories[h], g);
-    selectElem.appendChild(o);
-});
+//close uihead
+const uihead = document.getElementById('uihead');
+uihead.firstElementChild.onclick = () => {
+    dialog[1].querySelectorAll('form div.cb').forEach(cb => {
+        cb.removeAttribute('data-cb');
+    });
+    uihead.classList.remove('shw');
+}
+//remove checkbox selection
+uihead.lastElementChild.onclick = () => {   //the Remove Button
+    dialog[1].querySelectorAll('form div.cb').forEach(cb => {
+        if (cb.hasAttribute('data-cb')) cb.parentElement.parentElement.remove();
+        uihead.classList.remove('shw');
+    });
+}
 //Add Medication click event listener
-document.querySelector('button#addmed').addEventListener('click', (e) => {
-    const clone = medTemp.content.cloneNode(true);
-    dialog[1].querySelector('form').appendChild(clone);
+document.querySelector('button#addmed').addEventListener('click', () => {
+    const copy = medTemp.content.cloneNode(true);
+    groupNames.forEach(g => {
+        copy.querySelector('select.cn').insertAdjacentHTML('beforeend', `${g}`);
+    });
+    //insert category drugs
+    copy.querySelectorAll('select.cn').forEach(select => {
+        select.addEventListener('change', async (e) => {
+            e.target.disabled = true;
+            e.target.classList.add('chg');
+            await fetchDrugs(e.target.value, e.target.nextElementSibling);
+            e.target.classList.remove('chg');
+            e.target.disabled = false;
+        });
+    });
+    //select checkbox event
+    copy.querySelectorAll('div.cb').forEach(cb => {
+        cb.addEventListener('click', (e) => {
+            e.target.toggleAttribute('data-cb');
+            const cbs = [...dialog[1].querySelector('form').querySelectorAll('div.cb')];
+            const b = cbs.some(c => c.hasAttribute('data-cb'));
+            b ? uihead.classList.add('shw') : uihead.classList.remove('shw');
+        });
+    });
+    dialog[1].querySelector('form').appendChild(copy.firstElementChild);
+});
+//function to insert category drugs
+async function fetchDrugs(cat, elem) {
+    const i = JSON.parse(sessionStorage.getItem(cat));
+    if (i === null) {
+        //fetch from backend
+        // resetConfig(9);
+        const snap = await getDoc(doc(db, 'category', cat));
+        console.log(snap.data())
+        sessionStorage.setItem(cat, JSON.stringify(snap.data().prod));
+        insertDrugs(snap.data().prod, elem);
+    } else {
+        insertDrugs(i, elem);
+    }
+}
+function insertDrugs(items, elem) {
+    let o = '<option value="">Select Drug</option>';
+    items.forEach(im => {
+        o += `<option value="${im}">${im}</option>`;
+    });
+    elem.innerHTML = o;
+}
+//create and submit medication
+dialog[1].querySelector('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    e.submitter.disabled = true;
+    e.submitter.classList.add('clk');
+
+    let datA = [...dialog[1].querySelectorAll('.fm_part')].map(part => {
+        let p = [...part.querySelectorAll('select, input')].map(elem => elem.value);
+        return p;
+    });
+    //complaint
+    const complaint = dialog[1].querySelector('form input#complaint').value;
+    console.log(datA, complaint);
 });
