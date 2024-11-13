@@ -126,18 +126,27 @@ for (i = 0; i < ME.length; i++) {
     tbodyScores.insertAdjacentHTML('beforeend', `
         <tr>${td}</tr>
     `);
-    let cumm_td = '', cumm = 0, count = 0, sc = Object.values(ME[i][1]);
+    let cumm_td = '<td>-</td>', cumm = 0, count = 0, sc = Object.values(ME[i][1]);
+    // console.log(sc)
     for (const x of sc) {
+        /*
         const len = sc.length;
         if (len == 1 && term == 2) {
-            cumm_td += '<td>-</td><td>-</td>';
+            cumm_td += '<td>-</td>';
         } else if (len == 2 && term == 2) {
             cumm_td += '<td>-</td>';
         }
+        */
         let t = x.reduce((a, c) => a + c, 0);
         cumm += t;
         if (t) count++;
-        cumm_td += `<td>${percentile < 100 ? '-' : Number(t.toFixed(1)) || '-'}</td>`;
+        if (term == 0) {
+            cumm_td = `<td>${percentile < 100 ? '-' : Number(t.toFixed(1)) || '-'}</td>` + cumm_td.repeat(2);
+        } else if (term == 1) {
+            cumm_td += `<td>${percentile < 100 ? '-' : Number(t.toFixed(1)) || '-'}</td>` + cumm_td;
+        } else if(term == 2) {
+            cumm_td += cumm_td.repeat(2) + `<td>${percentile < 100 ? '-' : Number(t.toFixed(1)) || '-'}</td>`;
+        }
     }
     tbodyTerm.insertAdjacentHTML('beforeend', `
         <tr>
@@ -245,7 +254,7 @@ async function eot() {
         thisTerm = eotData.this_term;
         term = ["First", "Second", "Third"].indexOf(eotData.this_term);
         percentile = eotData.percentile;
-        const nextTerm = percentile < 100 ? '' : eotData.next_term[term];
+        const nextTerm = percentile < 100 ? '' : ["First", "Second", "Third"][term + 1] || "First";
         const session = eotData.session;
         const daysOpen = eotData.days_open[term];
         const stamp = [,'../img/24_25/stamp02.png','../img/24_25/stamp03.png'][term] || eotData.stamp;

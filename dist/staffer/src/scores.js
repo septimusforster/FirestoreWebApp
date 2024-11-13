@@ -64,16 +64,15 @@ subjects.forEach((sbs, idx) => {
 // Arm yourselves
 const armRef = doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu");
 if(!sessionStorage.hasOwnProperty('arm')) {
-    await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data().arms)))
+    await getDoc(armRef).then(doc => sessionStorage.setItem('arm', JSON.stringify(doc.data())))
     console.log('From server')
 }
-const armArray = JSON.parse(sessionStorage.getItem('arm')).sort();
+const armArray = JSON.parse(sessionStorage.getItem('arm')).arms.sort();
 armArray.forEach((arm, ind) => {
     armDatalist.insertAdjacentHTML('beforeend', `
         <option data-id="${ind}" id="${arm}" value="${arm}"></option>
     `)
 })
-
 const subjectForm = document.forms.subjectForm;
 subjectForm.addEventListener('change', (e) => {
     if (e.target.value) {
