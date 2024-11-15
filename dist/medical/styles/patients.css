@@ -550,67 +550,58 @@ textarea#complaint {
     display: flex;
     justify-content: center;
     padding: 10px;
-    gap: 2em;
+    gap: 1em;
     position: relative;
 }
 .fm_part > div::after {
     position: absolute;
-    left: 20px;
-    top: 50%;
+    left: 50%;
+    top: 40%;
     transform: translateY(-40%);
     height: 15px;
     width: 15px;
     border-radius: 50%;
     border: 2px solid;
-    border-color: transparent transparent #777 #777;
+    border-color: transparent transparent #1a73d8 #ff4500;
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-fill-mode: backwards;
     animation-iteration-count: infinite;
+    background-color: #fff;
+    outline: 5px solid #fff;
+    box-shadow: 0 0 14px #000;
 }
 .fm_part > div > input {
     width: 15%;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 23px;
     font-size: 1.2em;
-    aspect-ratio: 6/5;
-    background-color: #1a73d822;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    font-weight: 500;
+    padding: 10px 2px;
 }
-.fm_part > div > input:nth-child(2) {
-    background-color: #80008022;
-    color: #800080;
+.fm_part > div > input:focus {
+    border-color: #777;
 }
-.fm_part > div > input:nth-child(3) {
-    background-color: #00957822;
-    color: #009578;
+.fm_part > div > input:nth-child(4) {
+    width: 27%;
+    margin-left: auto;
 }
 .fm_part > div > input::placeholder {
-    font-size: .8em;
-    color: #888;
+    font-size: .7em;
 }
 .fm_part > select {
     width: 47%;
-    padding: 5px;
+    padding: 5px 7px;
     font-weight: 500;
+    background-color: #f3f3f3;
+    border-radius: 20px;
+    margin-top: 5px;
 }
 [data-cb] {   /*div.cb.clk*/
     background-color: #ff4500;
 }
-/*
-.fm_part > small {
-    font-weight: 500;
-    flex-basis: 30%;
-    text-align: center;
-}
-.fm_part > small > input {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ccc;
-    border-radius: 8px / 5px;
-    text-align: center;
-    font-size: 1.2em;
-}
-*/
 #crt-rec {
     margin: 40px auto 20px;
     padding: 14px 20px;

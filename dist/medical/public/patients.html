@@ -95,47 +95,14 @@
                 </div>
             </div>
             <p class="hr">Records</p>
-            <div>
-                <div class="records">
-                    <div>Thursday, 13 July, 1967</div>
-                    <div>Abdominal pain</div>
-                    <button type="button" class="view">View</button>
-                </div>
-                <div class="records">
-                    <div>Thursday, 13 July, 1967, 00:09:40 AM</div>
-                    <div>Abdominal pain</div>
-                    <button type="button" class="view">View</button>
-                </div>
-                <div class="records">
-                    <div>Thursday, 13 July, 1967</div>
-                    <div>Abdominal pain</div>
-                    <button type="button" class="view">View</button>
-                </div>
-                <div class="records">
-                    <div>Thursday, 13 July, 1967</div>
-                    <div>Incessant coughing, blood in phlegm, etc</div>
-                    <button type="button" class="view">View</button>
-                </div>
-                <div class="records">
-                    <div>Thursday, 13 July, 1967</div>
-                    <div>Incessant coughing, blood in phlegm, etc</div>
-                    <button type="button" class="view">View</button>
-                </div>
-                <div class="records">
-                    <div>Thursday, 13 July, 1967</div>
-                    <div>Incessant coughing, blood in phlegm, etc</div>
-                    <button type="button" class="view">View</button>
-                </div>
-                <div class="records">
-                    <div>Thursday, 13 July, 1967</div>
-                    <div>Incessant coughing, blood in phlegm, etc</div>
-                    <button type="button" class="view">View</button>
-                </div>
-                <div class="records">
-                    <div>Thursday, 13 July, 1967</div>
-                    <div>Incessant coughing, blood in phlegm, etc</div>
-                    <button type="button" class="view">View</button>
-                </div>
+            <div id="rec_holder">
+                <template>
+                    <div class="records">
+                        <div>Thursday, 13 July, 1967</div>
+                        <div>Abdominal pain</div>
+                        <button type="button" class="view">View</button>
+                    </div>
+                </template>
             </div>
             <div class="loader"></div>
         </section>
@@ -173,7 +140,7 @@
                 <div><small>Brandin</small><br/>Podziemski</div>
                 <div id="sid"><small>DCA/00/0002</small><br/><button type="button" id="addmed">Add Medication</button></div>
             </div>
-            <form name="nw-pre" id="nw-pre">
+            <form name="nw-pre" id="nw-pre" autocomplete="off">
                 <textarea name="complaint" id="complaint" rows="3" placeholder="Write complaint/info" required></textarea>
                 <!-- <input type="text" name="complaint" id="complaint" placeholder="Complaint/Info" required/> -->
                 <template>
@@ -189,7 +156,7 @@
                                 <input type="text" name="#" placeholder="Morn" required>
                                 <input type="text" name="#" placeholder="Noon" required>
                                 <input type="text" name="#" placeholder="Even" required>
-                                <input type="text" name="#" id="" placeholder="Dur" required>
+                                <input type="text" name="#" id="" placeholder="Duration" required>
                             </div>
                         </div>
                         <div>

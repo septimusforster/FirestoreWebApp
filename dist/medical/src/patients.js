@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, collectionGroup, addDoc, doc, getDoc, getDocs, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "firebase/firestore";
+import { getFirestore, collection, collectionGroup, addDoc, doc, getDoc, getDocs, increment, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 let cfg = configs[9].appsettings;
@@ -193,6 +193,7 @@ search_form.addEventListener('submit', async (e) => {
         snapFOLDER.forEach(item => {
             const row = divTable.querySelector('template').content.cloneNode(true);
             const {initials, name, regNo, cls, gender, onmed='No'} = item;
+            // if (item.lastMedTime < Date.now())
             row.firstElementChild.firstElementChild.firstElementChild.textContent = initials;
             row.firstElementChild.lastElementChild.querySelector('span:nth-child(1)').textContent = name;
             let others = [regNo, cls, gender, onmed];
@@ -212,23 +213,30 @@ search_form.addEventListener('submit', async (e) => {
             });
         });
     }
+    search_form.classList.remove('focused');
     e.submitter.disabled = false;
 });
 //function to insert bio data into the upper section of the sidebar
+let cuData;   //curr user data
 const sectionII = document.querySelector('main > section:nth-of-type(2)');
 async function sideAsset (sdata) {
-    const {name, regNo, cls, arm, fphone, mphone} = sdata;
+    const {name, regNo, cls, arm, fphone, mphone} = cuData = sdata;
     sectionII.querySelectorAll('div:nth-of-type(1) > .li > span:nth-child(2)').forEach((sp,ix) => {
         sp.textContent = [name, regNo, `${cls} ${arm}`, fphone, mphone][ix] || 'None';
     });
+    console.log(cuData.id);
     //asset for Record Details <dialog>
     dialog[2].querySelector('header + div > .li:nth-child(1) > span:nth-child(2)').textContent = name;
     //asset for New Record <dialog>
     const nameArr = name.split(' ');
+    dialog[1].querySelectorAll('header + div.li small').forEach((small,ix) => small.textContent = [`${nameArr[0]} ${nameArr[2]}`,regNo][ix]);
+    dialog[1].querySelector('header + div.li > div:nth-of-type(1)').lastChild.textContent = nameArr[1];
+    /*
     dialog[1].querySelector('header + div.li').innerHTML = `
-        <span><small>${nameArr[0]} ${nameArr[2]}</small><br/>${nameArr[1]}</span>
-        <span id="sid"><small>${regNo}</small></span>
+        <div><small>${nameArr[0]} ${nameArr[2]}</small><br/>${}</div>
+        <div id="sid"><small>${regNo}</small><br/><button type="button" id="addmed">Add Medication</button></div>
     `;
+    */
 
     await findMedRecords(sdata.id);
 }
@@ -247,10 +255,15 @@ async function findMedRecords(fid) {
     const snapREC = await getDocs(query(collection(db, `patients${yr}`, fid, 'record')));
     //if not found, alert the user as such
     if (snapREC.empty) {
-        pHR.nextElementSibling.innerHTML = '<code>No Data</code>';
+        sectionII.querySelectorAll('#rec_holder > div.records, #rec_holder code').forEach(div => div.remove());
+        sectionII.querySelector('#rec_holder').insertAdjacentHTML('beforeend', '<code>No Data</code>');
     } else {
         //if found, push to medFOLDER and repeat Step 1 and 2
-        record = {[fid]: snapREC.docs};
+        const fx = [];
+        snapREC.docs.forEach(val => {
+            fx.push(val.data());
+        });
+        record = {[fid]: fx};
         medFOLDER.unshift(record);
         insertMedRecords(record);
         return;
@@ -258,7 +271,19 @@ async function findMedRecords(fid) {
     pHR.classList.remove('load');
 }
 function insertMedRecords (rcd) {
+    sectionII.querySelectorAll('#rec_holder > div.records, #rec_holder code').forEach(div => div.remove());
+    
+    let records = Object.values(rcd);
+    records.forEach(rec => {
+        const viewRecordClone = sectionII.querySelector('#rec_holder > template').content.cloneNode(true);
+        viewRecordClone.firstElementChild.children[0].textContent = Intl.DateTimeFormat('en-gb', {dateStyle: 'full'}).format(new Date(rec[0].madeAt));
+        viewRecordClone.firstElementChild.children[1].textContent = rec[0].cmpl;
+        sectionII.querySelector('#rec_holder').appendChild(viewRecordClone);
+    });
+
+    /*
     rcd.forEach(rec => {
+        console.log(viewRecordClone.firstElementChild);
         sectionII.querySelector('div:nth-of-type(2)').insertAdjacentHTML('beforeend', `
             <div class="records">
                 <div>${rec.createdAt}</div>
@@ -267,7 +292,7 @@ function insertMedRecords (rcd) {
             </div>
         `);
     });
-
+    */
     pHR.classList.remove('load');
 }
 //search option buttons
@@ -344,9 +369,8 @@ async function fetchDrugs(cat, elem) {
     const i = JSON.parse(sessionStorage.getItem(cat));
     if (i === null) {
         //fetch from backend
-        // resetConfig(9);
         const snap = await getDoc(doc(db, 'category', cat));
-        console.log(snap.data())
+        // console.log(snap.data())
         sessionStorage.setItem(cat, JSON.stringify(snap.data().prod));
         insertDrugs(snap.data().prod, elem);
     } else {
@@ -355,22 +379,79 @@ async function fetchDrugs(cat, elem) {
 }
 function insertDrugs(items, elem) {
     let o = '<option value="">Select Drug</option>';
-    items.forEach(im => {
-        o += `<option value="${im}">${im}</option>`;
+    items.forEach(({ref, load}) => {
+        o += `<option value="${ref}">${load}</option>`;
     });
     elem.innerHTML = o;
 }
 //create and submit medication
-dialog[1].querySelector('form').addEventListener('submit', (e) => {
+dialog[1].querySelector('form').addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
     e.submitter.classList.add('clk');
 
     let datA = [...dialog[1].querySelectorAll('.fm_part')].map(part => {
-        let p = [...part.querySelectorAll('select, input')].map(elem => elem.value);
-        return p;
+        let slct = [...part.querySelectorAll('select')].map((elem, idx) => {
+            if (idx == 1) {
+                return [elem.previousElementSibling.value, elem.value, elem.children[elem.selectedIndex].textContent];
+            }
+        });
+        let inp = [...part.querySelectorAll('input')].map(elem => Number(elem.value) || elem.value);
+        return [...slct, ...inp];
     });
     //complaint
-    const complaint = dialog[1].querySelector('form input#complaint').value;
-    console.log(datA, complaint);
+    const cmpl = dialog[1].querySelector('form textarea#complaint').value;
+    const newDate = new Date();
+    const time = `${newDate.getDate()}${newDate.getMonth() + 1}${newDate.getFullYear()}`;
+    let nowDate = Date.now();
+    //run a transaction to: [undefined, Array(3), 1, 1, 1, '1 day']
+
+    let presc = {};
+    for (let a = 0; a < datA.length; a++) {
+        let morn = datA[a][2] == 0 ? '' : datA[a][2] + ' mornings';
+        let noon = datA[a][3] == 0 ? '' : datA[a][3] + ' afternoons';
+        let even = datA[a][4] == 0 ? '' : datA[a][4] + ' evenings';
+        let dur = datA[a][5];
+        presc[datA[a][1][2]] = [morn,noon,even,dur].filter(x => x != "");
+    }
+    // console.log(presc);
+    // /*
+    try {   //used in case of network error, we can reset the submit btn
+        let tx = await runTransaction(db, async transaction => {
+            //find and subtract the requested drugs
+            let prom = datA.map(data => {
+                transaction.update(doc(db, 'products', data[1][1]), {
+                    available: increment(-(Number(data[2]) + Number(data[3]) + Number(data[4])))
+                });
+            });
+            await Promise.all(prom);
+            //record the prescription
+            transaction.set(doc(db, `patients${yr}`, cuData.id, 'record', time), {
+                cmpl,
+                medic: 'Doctor Charles',
+                presc,
+                madeAt: nowDate,
+            });
+            //update the patient's prescDate with Date.now();
+            transaction.update(doc(db, `patients${yr}`, cuData.id), {
+                lastMedTime: nowDate,
+            });
+        })
+    } catch (err) {
+        console.log(err)
+        //on err, reset e.submitter
+        e.submitter.disabled = false;
+        e.submitter.classList.remove('clk');
+    }
+    e.submitter.classList.replace('clk', 'fin');
+    const id = setTimeout(() => {
+        dialog[1].close();
+        // setBackdrop(false);
+        dialog[1].querySelector('form').reset();
+        e.submitter.classList.remove('fin');
+        e.submitter.disabled = false;
+        clearTimeout(id);
+    }, 3000);
+    // */
+    // const snapREC = await getDocs(query(collection(db, `patients${yr}`, fid, 'record')));
 });

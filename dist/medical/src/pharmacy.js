@@ -270,27 +270,31 @@ shareBtn.addEventListener('click', async () => {
 });
 
 /** HACKS for pharmacy.js **/
-/*
+
 //CREATE CATEGORY FOR EACH DRUG
 //get all docs on antibiotics/tablet injection
+/*
 const n = configs[9].categories[11];
 const snapped = await getDocs(query(collection(db, 'products'), where('name', '==', n)));
 let drugs = [];
 if (snapped.empty) {
     alert('No drug found.');
 } else {
-    snapped.docs.forEach(snp => drugs.push(snp.data().drug));
-    console.log(drugs);
+    snapped.docs.forEach(snp => drugs.push({
+        'ref': snp.id,
+        'load': snp.data().drug
+    }));
+
+    let nname = '';
+    for (let i = 0; i < n.length; i++) {
+        if (forbiddenSymb.includes(n[i])) continue;
+        nname += n[i];
+    }
+    await setDoc(doc(db, 'category', nname), {
+        'prod': drugs,
+    }, {merge: true});
+    console.log('Set!');
 }
-let nname = '';
-for (let i = 0; i < n.length; i++) {
-    if (forbiddenSymb.includes(n[i])) continue;
-    nname += n[i];
-}
-await setDoc(doc(db, 'category', nname), {
-    'prod': arrayUnion(...drugs),
-}, {merge: true});
-console.log('Set!');
 */
 
 //ENTER NEW FIELDS FOR EACH DRUG
