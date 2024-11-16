@@ -17,6 +17,9 @@ const title = document.head.querySelector('title');
 const parentTitle = parent.document.head.querySelector('title');
 const APP = {
     init() {
+        parent.document.querySelector('.loader').classList.remove('on');
+        parent.document.querySelector('iframe').classList.remove('off');
+        // document.body.removeAttribute('style');
         parent.document.head.replaceChild(title, parentTitle);
     }
 }
@@ -227,20 +230,13 @@ async function sideAsset (sdata) {
     sectionII.querySelectorAll('div:nth-of-type(1) > .li > span:nth-child(2)').forEach((sp,ix) => {
         sp.textContent = [name, regNo, `${cls} ${arm}`, fphone, mphone][ix] || 'None';
     });
-    console.log(cuData.id);
     //asset for Record Details <dialog>
     dialog[2].querySelector('header + div > .li:nth-child(1) > span:nth-child(2)').textContent = name;
     //asset for New Record <dialog>
     const nameArr = name.split(' ');
     dialog[1].querySelectorAll('header + div.li small').forEach((small,ix) => small.textContent = [`${nameArr[0]} ${nameArr[2]}`,regNo][ix]);
     dialog[1].querySelector('header + div.li > div:nth-of-type(1)').lastChild.textContent = nameArr[1];
-    /*
-    dialog[1].querySelector('header + div.li').innerHTML = `
-        <div><small>${nameArr[0]} ${nameArr[2]}</small><br/>${}</div>
-        <div id="sid"><small>${regNo}</small><br/><button type="button" id="addmed">Add Medication</button></div>
-    `;
-    */
-
+    
     await findMedRecords(sdata.id);
 }
 const pHR = document.querySelector('p.hr');
