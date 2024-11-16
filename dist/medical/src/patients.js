@@ -192,8 +192,11 @@ search_form.addEventListener('submit', async (e) => {
         //run a function to insert snapdocs
         snapFOLDER.forEach(item => {
             const row = divTable.querySelector('template').content.cloneNode(true);
-            const {initials, name, regNo, cls, gender, onmed='No'} = item;
-            // if (item.lastMedTime < Date.now())
+            let {initials, name, regNo, cls, gender, onmed='No'} = item;
+            if (item.lastMedTime > Date.now()) {
+                onmed='Yes';
+                row.firstElementChild.firstElementChild.classList.add('om');
+            }
             row.firstElementChild.firstElementChild.firstElementChild.textContent = initials;
             row.firstElementChild.lastElementChild.querySelector('span:nth-child(1)').textContent = name;
             let others = [regNo, cls, gender, onmed];
@@ -245,10 +248,10 @@ let medFOLDER = [];
 async function findMedRecords(fid) {
     pHR.classList.add('load');
     //filter medFOLDER for id
-    let record = medFOLDER.filter(({id}) => id == fid);
+    let record = medFOLDER.filter(e => Object.keys(e)[0] == fid);
     //if found, insert into the DOM
     if (record.length) {
-        insertMedRecords(record);
+        insertMedRecords(record[0]);
         return;
     };
     //else, await checking backend
@@ -281,18 +284,22 @@ function insertMedRecords (rcd) {
         sectionII.querySelector('#rec_holder').appendChild(viewRecordClone);
     });
 
-    /*
-    rcd.forEach(rec => {
-        console.log(viewRecordClone.firstElementChild);
-        sectionII.querySelector('div:nth-of-type(2)').insertAdjacentHTML('beforeend', `
-            <div class="records">
-                <div>${rec.createdAt}</div>
-                <div>${rec.comp}</div>
-                <button type="button" class="view">View</button>
-            </div>
-        `);
+    sectionII.querySelectorAll('#rec_holder > div.records > button').forEach((btn, idx) => {
+        btn.addEventListener('click', (e) => {
+            // console.log(records[idx][0].cmpl);
+            dialog[2].querySelector('.wrapper > div > .li:nth-child(2) > span:last-of-type').textContent = records[idx][0].cmpl;
+            const presc = Object.entries(records[idx][0].presc);
+            for (const [p, q] of presc) {
+                dialog[2].querySelector('#prescription').insertAdjacentHTML('afterend', `
+                    <div class="li">
+                        <span>${p}</span><span>${q.join(', ')}</span>
+                    </div>
+                `);
+            }
+            setBackdrop();
+            dialog[2].showModal();
+        });
     });
-    */
     pHR.classList.remove('load');
 }
 //search option buttons
@@ -399,12 +406,16 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
         let inp = [...part.querySelectorAll('input')].map(elem => Number(elem.value) || elem.value);
         return [...slct, ...inp];
     });
+    let highestDuration = [...dialog[1].querySelectorAll('.fm_part')].map(i => { //to get the highest duration of the medications
+        return parseInt(i.querySelector('div > input:last-of-type').value);
+    }).reduce((pv, cv) => cv > pv ? cv : pv);
+
     //complaint
     const cmpl = dialog[1].querySelector('form textarea#complaint').value;
     const newDate = new Date();
     const time = `${newDate.getDate()}${newDate.getMonth() + 1}${newDate.getFullYear()}`;
     let nowDate = Date.now();
-    //run a transaction to: [undefined, Array(3), 1, 1, 1, '1 day']
+    //run a transaction to: [undefined, Array(3)=>category,id,drug, 1, 1, 1, '1 day']
 
     let presc = {};
     for (let a = 0; a < datA.length; a++) {
@@ -414,8 +425,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
         let dur = datA[a][5];
         presc[datA[a][1][2]] = [morn,noon,even,dur].filter(x => x != "");
     }
-    // console.log(presc);
-    // /*
+
     try {   //used in case of network error, we can reset the submit btn
         let tx = await runTransaction(db, async transaction => {
             //find and subtract the requested drugs
@@ -434,7 +444,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
             });
             //update the patient's prescDate with Date.now();
             transaction.update(doc(db, `patients${yr}`, cuData.id), {
-                lastMedTime: nowDate,
+                lastMedTime: nowDate + (highestDuration*24*60*60*1000),
             });
         })
     } catch (err) {
@@ -446,12 +456,14 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
     e.submitter.classList.replace('clk', 'fin');
     const id = setTimeout(() => {
         dialog[1].close();
-        // setBackdrop(false);
+        setBackdrop(false);
         dialog[1].querySelector('form').reset();
         e.submitter.classList.remove('fin');
         e.submitter.disabled = false;
         clearTimeout(id);
     }, 3000);
-    // */
-    // const snapREC = await getDocs(query(collection(db, `patients${yr}`, fid, 'record')));
 });
+
+// const inputs = [1,7,3,4];
+// const max = inputs.reduce((pv, cv) => cv > pv ? cv : pv);
+// console.log(max);
