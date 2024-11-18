@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"; //"https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, query, where, serverTimestamp, orderBy, setDoc, arrayUnion } from "firebase/firestore";  // "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, query, where, serverTimestamp, orderBy, setDoc, arrayUnion, deleteDoc } from "firebase/firestore";  // "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 const cfg = configs[9].appsettings;
@@ -35,7 +35,7 @@ const selectCategoryBtn = document.querySelector('select#category');
 const ctbody = document.querySelector('#ctable > tbody');
 const tempRow = document.querySelector("[data-tab-template]");
 const foot = document.querySelector('div.foot');
-let docs = [];
+let docs = [], Drug;
 
 selectCategoryBtn.addEventListener('change', async (e) => {
     pie.querySelector('.val').classList.add('throb');
@@ -68,13 +68,10 @@ async function dataToTable (category) {
             ctbody.appendChild(tr);
         });
 
-        // foot.querySelectorAll('i').forEach((et, ix) => {
-        //     et.textContent = [1,1,Snapdocs.size][ix];
-        // });
-
         ctbody.querySelectorAll('tr').forEach((rw, ix, ar) => {
             rw.addEventListener('click', (e) => {
                 ar.forEach(row => row.classList.toggle('clk', rw == row));
+                Drug = Object.keys(docs[ix])[0];
                 plotpie(rw);
             });
         });
@@ -161,12 +158,13 @@ function plotpie (tr) {
 //insert data details
 function insertDetails (data) {
     forms[1].innerHTML = '';
-    let {drug, vendor, quantity, container, available, desc, unit_number} = data;
+    let {drug, vendor, quantity, container, available, desc, unit_name, unit_number} = data;
     let obj = {
         'Product': ['product',drug],  //str 'name' is the field path actual name
         'Vendor': ['vendor',vendor],
         [`Quantity (in ${container})`]: ['quantity',quantity],
-        'Available': ['available',Number((available / unit_number).toFixed())],
+        [`Available (in ${unit_name})`]: ['available',available],
+        [`Unit per ${unit_name}`]: ['unit_number',Number((available / quantity).toFixed())],
         'Description': ['desc',desc],
     }
 
@@ -177,6 +175,44 @@ function insertDetails (data) {
         `);
     }
 }
+//to set backdrop
+function setBackdrop (b) {
+    const pbody = parent.document.body.querySelector('.backdrop');
+    pbody.classList.toggle('bkdrp', b);
+}
+//delete product
+const deleteDialog = document.querySelector('dialog#del-dg');
+document.querySelector('.ui_btn.delete').onclick = () => {
+    setBackdrop(true);
+    deleteDialog.showModal();
+};
+deleteDialog.querySelectorAll('button').forEach((btn, idx, btns) => {
+    btn.addEventListener('click', async (e) => {
+        btns.forEach(b => {
+            b.style.cursor = 'not-allowed';
+            b.disabled = true;
+        });
+
+        if (idx && Drug) {
+            //perform delete operation
+            await deleteDoc(doc(db, 'products', Drug));
+            forms[1].innerHTML = '<code>Empty record.</code>';
+            ctbody.querySelectorAll('tr').forEach(tr => {
+                if (tr.className === 'clk') {
+                    tr.classList.replace('clk','del');
+                }
+            });
+        }
+
+        deleteDialog.close();
+        setBackdrop(false);
+
+        btns.forEach(b => {
+            b.style.cursor = 'pointer';
+            b.disabled = false;
+        });
+    });
+});
 //create category
 let forbiddenSymb = '/.-:;#$%*()[]{}!~ '.split('');
 forms[0].addEventListener('submit', async (e) => {
@@ -218,6 +254,8 @@ forms[1].addEventListener('submit', async (e) => {
     txtInputs.forEach(elem => {
         data[elem.previousElementSibling.dataset.for] = Number(elem.textContent) || elem.textContent;
     });
+    data['available'] = data.quantity * data.unit_number;
+
     const id = Object.keys(elem)[0];
 
     await updateDoc(doc(db, 'products', id), data);
@@ -270,7 +308,6 @@ shareBtn.addEventListener('click', async () => {
 });
 
 /** HACKS for pharmacy.js **/
-
 //CREATE CATEGORY FOR EACH DRUG
 //get all docs on antibiotics/tablet injection
 /*
@@ -299,17 +336,32 @@ if (snapped.empty) {
 
 //ENTER NEW FIELDS FOR EACH DRUG
 /*
+//drugs of the eleven categories: 10,4,2,5,1,7,0,0,0,0,0,
 const n = configs[9].categories[11];
+
 const snapped = await getDocs(query(collection(db, 'products'), where('name', '==', n)));
 let drugs = [];
 if (snapped.empty) {
-    alert('No drug found.');
+    alert('No drug found in ' + n + '.');
 } else {
     snapped.docs.forEach(snp => {
         let d = snp.data();
-        // d['available'] = d.quantity * d
-        drugs.push(snp.data().drug)
+        d['available'] = 0;
+        d['container'] = snp.data().unit;
+        d['unit_name'] = ['mg', 'tab','g'][0];
+        d['unit_number'] = 0;
+
+        delete d.unit;
+        delete d.used;
+        drugs.push({[snp.id]: d});
+        console.log(snp.id);
     });
-    console.log(drugs);
+    // console.log(drugs);
+    const prom = drugs.map(async drug => {
+        await setDoc(doc(db, 'products', Object.keys(drug)[0]), Object.values(drug)[0]);
+    });
+
+    Promise.all(prom);
+    console.log("Category", n, "set.");
 }
 */

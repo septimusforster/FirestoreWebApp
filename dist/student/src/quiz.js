@@ -386,3 +386,8 @@ document.querySelector('#logout').addEventListener('click', () => {
 });
 //view test details
 document.querySelector('.hde > button').addEventListener('click', (e) => e.target.classList.toggle('focus'));
+/*
+CBT Re-adjustments
+1 - Store whether test was submitted by user or the user-agent
+2 - Store time remaining during cbt
+*/

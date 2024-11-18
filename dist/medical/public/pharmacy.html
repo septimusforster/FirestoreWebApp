@@ -90,12 +90,12 @@
                         <input type="number" name="unit_number" id="unit_number" required>
                         <select name="unit_name" id="unit_name">
                             <option value="">Unit in</option>
-                            <option value="tablet">tabs</option>
-                            <option value="gramme">g</option>
-                            <option value="milligramme">mg</option>
-                            <option value="kilogramme">kl</option>
-                            <option value="litres">l</option>
-                            <option value="millilitres">ml</option>
+                            <option value="tab">tabs</option>
+                            <option value="g">g</option>
+                            <option value="mg">mg</option>
+                            <option value="kg">kl</option>
+                            <option value="l">l</option>
+                            <option value="ml">ml</option>
                         </select>
                     </div>
                     <div class="fmgp">
@@ -117,7 +117,8 @@
                     <div class="ttl"></div>
                     <button type="button" class="share ui_btn"></button>
                     <button type="button" class="pencil ui_btn"></button>
-                    <button type="button" class="times ui_btn md678"></button>
+                    <button type="button" class="delete ui_btn"></button>
+                    <!-- <button type="button" class="times ui_btn md678"></button> -->
                 </div>
             </div>
             <div>
@@ -125,6 +126,11 @@
             </div>
         </section>
     </div>
+    <dialog id="del-dg">
+        <p>Delete this drug?</p>
+        <button type="button">Cancel</button>
+        <button type="button">Delete</button>
+    </dialog>
     <script type="module" src="../src/pharmacy_bundle.js"></script>
 </body>
 </html>
