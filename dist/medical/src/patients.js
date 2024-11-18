@@ -184,6 +184,8 @@ search_form.addEventListener('submit', async (e) => {
     if (snapdocs.empty) {
         alert("Sorry. No patient could be found.");
     } else {
+        //reset searchTerm
+        searchTerm = null;
         // if (!snapFOLDER.length) newVersion = true;
         snapFOLDER = [];
         snapdocs.docs.forEach(snapDOC => {
@@ -192,6 +194,8 @@ search_form.addEventListener('submit', async (e) => {
             obj['name'] = snapDOC.data().name.join(' ');
             snapFOLDER.unshift(obj);
         });
+        //remove old rows
+        divTable.querySelectorAll('.tr').forEach(tr => tr.remove());
         //run a function to insert snapdocs
         snapFOLDER.forEach(item => {
             const row = divTable.querySelector('template').content.cloneNode(true);
@@ -206,11 +210,14 @@ search_form.addEventListener('submit', async (e) => {
             row.lastElementChild.querySelectorAll('span:not(:nth-child(1))').forEach((span, idx) => {
                 span.textContent = others[idx];
             });
-            nodes.push(row);
+
+            divTable.appendChild(row);
+            // nodes.push(row);
         });
-        nodes.forEach(node => {
-            divTable.appendChild(node);
-        });
+        
+        // nodes.forEach(node => {
+        //     divTable.appendChild(node);
+        // });
 
         //event for rows in divTable
         divTable.querySelectorAll('.tr').forEach((tr, ix) => {
