@@ -225,6 +225,9 @@ div.table {
 .tr:hover {
     background-color: #1a73d811;
 }
+.tr.clk {
+    background-color: #1a73d822;
+}
 .tr > div:first-of-type {
     position: relative;
     height: 2.5em;
@@ -294,10 +297,8 @@ section:last-of-type > div {
     justify-content: space-between;
     margin-bottom: 20px;
 }
-.li > span {
-    flex: 1;
-}
 .li > span:first-of-type {
+    flex: 1;
     font-weight: 500;
 }
 .li > span:last-of-type {
@@ -499,6 +500,11 @@ dialog > .wrapper > header {
 }
 small {
     font-size: .8em;
+    padding: 3px 15px;
+    border-radius: 15px;
+    background-color: #80008011;
+    font-weight: 500;
+    color: #800080;
 }
 #sid {
     text-align: right;

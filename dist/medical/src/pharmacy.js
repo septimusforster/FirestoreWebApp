@@ -183,6 +183,7 @@ function setBackdrop (b) {
 //delete product
 const deleteDialog = document.querySelector('dialog#del-dg');
 document.querySelector('.ui_btn.delete').onclick = () => {
+    if (!Drug) return;
     setBackdrop(true);
     deleteDialog.showModal();
 };
@@ -196,12 +197,14 @@ deleteDialog.querySelectorAll('button').forEach((btn, idx, btns) => {
         if (idx && Drug) {
             //perform delete operation
             await deleteDoc(doc(db, 'products', Drug));
-            forms[1].innerHTML = '<code>Empty record.</code>';
+            forms[1].innerHTML = '<code class="empty">empty record</code>';
             ctbody.querySelectorAll('tr').forEach(tr => {
                 if (tr.className === 'clk') {
                     tr.classList.replace('clk','del');
                 }
             });
+            // reset Drug
+            Drug = null;
         }
 
         deleteDialog.close();
@@ -267,6 +270,7 @@ forms[1].addEventListener('submit', async (e) => {
 //pencil: edit btn
 const pencil = document.querySelector('.pencil');
 pencil.onclick = () => {
+    if (!Drug) return;
     const txtInputs = document.querySelectorAll('.txtinput');
     pencil.parentElement.classList.add('off');
     txtInputs.forEach(elem => elem.setAttribute('contenteditable', 'true'));
@@ -285,10 +289,9 @@ times.forEach(btn => {
 //share
 const shareBtn = document.querySelector('button.share');
 shareBtn.addEventListener('click', async () => {
+    if (!Drug) return;
     const e = Object.values(elem)[0];
-    
     const available = e.quantity - Number((e.available / e.unit_number).toFixed());
-
     const data = {
         title: e.name,
         text: `${e.drug}\b*Available in stock*: ${available + ' ' + e.unit_name}${available <= 1 ? '' : 's'}`,

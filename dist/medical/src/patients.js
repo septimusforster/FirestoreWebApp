@@ -133,6 +133,8 @@ dialog[0].querySelector('form').addEventListener('submit', async (e) => {
                     'arm': d.arm,
                     'fphone': d.father_phone,
                     'mphone': d.mother_phone,
+                    'email': d.email,
+                    'dob': d.dob,
                     'createdAt': date,
                     'lastModified': serverTimestamp(),
                     'searchTerm': [
@@ -220,8 +222,9 @@ search_form.addEventListener('submit', async (e) => {
         // });
 
         //event for rows in divTable
-        divTable.querySelectorAll('.tr').forEach((tr, ix) => {
+        divTable.querySelectorAll('.tr').forEach((tr, ix, rows) => {
             tr.addEventListener('click', async (e) => {
+                rows.forEach(rw => tr.classList.toggle('clk', tr == rw));
                 await sideAsset(snapFOLDER[ix]);
             });
         });
@@ -233,16 +236,18 @@ search_form.addEventListener('submit', async (e) => {
 let cuData;   //curr user data
 const sectionII = document.querySelector('main > section:nth-of-type(2)');
 async function sideAsset (sdata) {
-    const {name, regNo, cls, arm, fphone, mphone} = cuData = sdata;
+    const {name, regNo, cls, arm, fphone, mphone, dob, email} = cuData = sdata;
+    const d = Date.now() - new Date(dob).getTime();
+    const age = new Date(d).getUTCFullYear() - 1970;
     sectionII.querySelectorAll('div:nth-of-type(1) > .li > span:nth-child(2)').forEach((sp,ix) => {
-        sp.textContent = [name, regNo, `${cls} ${arm}`, fphone, mphone][ix] || 'None';
+        sp.innerHTML = [name, regNo, `${cls} ${arm}`, fphone, mphone, `${age || 'N/A'} <small>${dob || '&mdash;'}</small>`, email][ix] || 'None';
     });
     //asset for Record Details <dialog>
     dialog[2].querySelector('header + div > .li:nth-child(1) > span:nth-child(2)').textContent = name;
     //asset for New Record <dialog>
     const nameArr = name.split(' ');
-    dialog[1].querySelectorAll('header + div.li small').forEach((small,ix) => small.textContent = [`${nameArr[0]} ${nameArr[2]}`,regNo][ix]);
-    dialog[1].querySelector('header + div.li > div:nth-of-type(1)').lastChild.textContent = nameArr[1];
+    dialog[1].querySelectorAll('header + div.li small').forEach((small,ix) => small.textContent = [`${nameArr[1]}`,regNo][ix]);
+    dialog[1].querySelector('header + div.li > div:nth-of-type(1)').lastChild.textContent = `${nameArr[0]} ${nameArr[2]}`;
     
     await findMedRecords(sdata.id);
 }
@@ -291,9 +296,15 @@ function insertMedRecords (rcd) {
         btn.addEventListener('click', (e) => {
             // console.log(records[idx][0].cmpl);
             dialog[2].querySelector('.wrapper > div > .li:nth-child(2) > span:last-of-type').textContent = records[idx][0].cmpl;
+            const elemPresc = dialog[2].querySelector('#prescription');
+            const li = [...dialog[2].querySelectorAll('.li')];
+
+            for (let l = 0; l < li.length; l++) {
+                if (elemPresc.nextElementSibling == li[l]) li[l].remove();
+            }
             const presc = Object.entries(records[idx][0].presc);
             for (const [p, q] of presc) {
-                dialog[2].querySelector('#prescription').insertAdjacentHTML('afterend', `
+                elemPresc.insertAdjacentHTML('afterend', `
                     <div class="li">
                         <span>${p}</span><span>${q.join(', ')}</span>
                     </div>
@@ -425,7 +436,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
         let morn = datA[a][2] == 0 ? '' : datA[a][2] + ' mornings';
         let noon = datA[a][3] == 0 ? '' : datA[a][3] + ' afternoons';
         let even = datA[a][4] == 0 ? '' : datA[a][4] + ' evenings';
-        let dur = datA[a][5];
+        let dur = `for ${parseInt(datA[a][5])} days.`;
         presc[datA[a][1][2]] = [morn,noon,even,dur].filter(x => x != "");
     }
 
@@ -441,7 +452,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
             //record the prescription
             transaction.set(doc(db, `patients${yr}`, cuData.id, 'record', time), {
                 cmpl,
-                medic: 'Doctor Charles',
+                medic: JSON.parse(sessionStorage.getItem('data'))?.user || 'Unknown',
                 presc,
                 madeAt: nowDate,
             });
