@@ -15,7 +15,7 @@
                 <span class="ttl">Patients</span>
             </header>
             <form class="search" autocomplete="off">
-                <button type="button" class="uibtn times mq678"></button>
+                <!-- <button type="button" class="uibtn times mq678"></button> -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
                     <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#555" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -68,7 +68,7 @@
             </div>
             <div class="loader"></div>
         </section>
-        <section>
+        <section class="off">
             <header>
                 <button type="button" class="uibtn chevron back mq678"></button>
                 <span class="ttl">Records</span>
@@ -207,5 +207,25 @@
         </div>
     </dialog>
     <script type="module" src="../src/patients_bundle.js"></script>
+    <!-- <script src="https://github.com/niklasvh/html2canvas/releases/download/v1.4.1/html2canvas.min.js"></script> -->
+    <script>
+        //FOR CONVERTING HTML TO IMAGE
+        /*
+        var element = document.getElementById('myDiv');
+        var canvas = document.createElement('canvas');
+        canvas.width = element.offsetWidth;
+        canvas.height = element.offsetHeight;
+        html2canvas(element, {}).then(function (canvas) {
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(canvas, 0, 0);
+          var dataURL = canvas.toDataURL();
+          console.log(dataURL);
+  
+          const img = document.createElement('img');
+          img.src = dataURL;
+          document.body.appendChild(img);
+        });
+        */
+      </script>
 </body>
 </html>

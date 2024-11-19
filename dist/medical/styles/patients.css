@@ -175,8 +175,8 @@ div.month > button:hover, div.inmate > button:hover {
 div.table {
     width: 80%;
     min-width: 500px;
+    margin-top: 20px;
     display: block; /*remove later*/
-    /* border: 1px solid #ccc; */
     position: relative;
 }
 .tag {
@@ -218,7 +218,7 @@ div.table {
     gap: 1em;
     justify-content: space-around;
     align-items: center;
-    padding: 7px 17px;
+    padding: 3px 17px;
     border-radius: 7px / 11px;
     transition: background-color .1s ease;
 }
@@ -710,7 +710,7 @@ input#complaint:focus {
     background-color: #ff450022;
 }
 .mq678, [data-hidden] {
-    display: none !important;
+    display: none;
 }
 .tr > div:first-of-type.om {
     background-color: #ff450033;
@@ -724,6 +724,9 @@ input#complaint:focus {
     }
 }
 @media (max-width: 678px) {
+    .mq678 {
+        display: block;
+    }
     main {
         gap: 0;
     }
@@ -736,6 +739,16 @@ input#complaint:focus {
     .search, .search_opt {
         width: 90%;
     }
+    .tag {
+        font-size: .5em;
+    }
+    dialog {
+        width: 100vw;
+        height: 100vh;
+    }
+    dialog > .wrapper {
+        height: 100%;
+    }
     div.table {
         min-width: 0;
         width: 100%;
@@ -743,6 +756,9 @@ input#complaint:focus {
     .tr > div:last-of-type {
         gap: 3px;
         justify-content: flex-start;
+    }
+    .tr {
+        padding: 17px;
     }
     .tr > div:last-of-type > span:nth-child(1) {
         flex: 1 0 100%;

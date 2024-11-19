@@ -40,8 +40,14 @@ document.addEventListener('click', (e) => {
 })
 //all dialog boxes
 const dialog = document.querySelectorAll('dialog');
-dialog.forEach(dg => dg.style.left = mid);
-
+if (pw > 768) {
+    dialog.forEach(dg => dg.style.left = mid);
+} else {
+    dialog.forEach(dg => {
+        dg.style.left = '0%';
+        dg.style.transform = 'translate(0%, 0%)';
+    });
+}
 //close any parent dialog
 const xDials = document.querySelectorAll('.x_dial');
 xDials.forEach(btn => {
@@ -64,10 +70,8 @@ search_input.addEventListener('focus', (e) => {
 });
 //event to close search suggestions
 const button_ex = document.querySelector('.search_opt button.ex');
-[search_form.querySelector('button.times'),button_ex].forEach(btn => {
-    btn.addEventListener('click', () => {
-        search_form.classList.remove('focused');
-    });
+button_ex.addEventListener('click', () => {
+    search_form.classList.remove('focused');
 });
 
 //Add New button
@@ -248,7 +252,7 @@ async function sideAsset (sdata) {
     const nameArr = name.split(' ');
     dialog[1].querySelectorAll('header + div.li small').forEach((small,ix) => small.textContent = [`${nameArr[1]}`,regNo][ix]);
     dialog[1].querySelector('header + div.li > div:nth-of-type(1)').lastChild.textContent = `${nameArr[0]} ${nameArr[2]}`;
-    
+    hideShowSection(true, false);
     await findMedRecords(sdata.id);
 }
 const pHR = document.querySelector('p.hr');
@@ -325,9 +329,17 @@ searchOptBtns.forEach(btn => {
         search_input.value = btn.textContent;
         searchTerm = Number(e.target.dataset.val);
         search_form_submitter.click();
-
-        // new Date(Date.now()).getMonth() == e.target.dataset.val  //10 for  November
-        //Intl.DateTimeFormat('en-gb', {dateStyle: 'full'}).format(Date.now()).search(/November/)
+    });
+});
+//function to display/hide sections
+const main = document.querySelector('main');
+function hideShowSection (b1, b2) {
+    main.querySelectorAll('section').forEach((chd, idx) => chd.classList.toggle('off', [b1, b2][idx]));
+}
+//chevron backs
+document.querySelectorAll('button.chevron.back').forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+        idx ? hideShowSection(false, true) : parent.document.querySelector('iframe').classList.add('off');
     });
 });
 //clone medication
