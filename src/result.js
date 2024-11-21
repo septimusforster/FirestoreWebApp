@@ -129,14 +129,16 @@ for (i = 0; i < ME.length; i++) {
     let cumm_td = '<td>-</td>', cumm = 0, count = 0, sc = Object.values(ME[i][1]);
     for (const x of sc) {
         let t = x.reduce((a, c) => a + c, 0);
+        if (!t) continue;
         cumm += t;
-        if (t) count++;
+        count++;
         if (term == 0) {
-            cumm_td = `<td>${percentile < 100 ? '-' : Number(t.toFixed(1)) || '-'}</td>` + cumm_td.repeat(2);
+            cumm_td = `<td>${percentile < 100 ? '-' : t.toFixed(1) || '-'}</td>` + cumm_td.repeat(2);
+            // console.log(t);
         } else if (term == 1) {
-            cumm_td += `<td>${percentile < 100 ? '-' : Number(t.toFixed(1)) || '-'}</td>` + cumm_td;
+            cumm_td += `<td>${percentile < 100 ? '-' : t.toFixed(1) || '-'}</td>` + cumm_td;
         } else if(term == 2) {
-            cumm_td = `<td>${percentile < 100 ? '-' : Number(t.toFixed(1)) || '-'}</td>`;
+            cumm_td = `<td>${percentile < 100 ? '-' : t.toFixed(1) || '-'}</td>`;
         }
     }
     tbodyTerm.insertAdjacentHTML('beforeend', `
@@ -145,6 +147,7 @@ for (i = 0; i < ME.length; i++) {
             <td>${percentile < 100 ? '-' : (cumm/count).toFixed(1)}</td>
         </tr>
     `)
+    // console.log(count, cumm)
 }
 const ME_AVERAGE = (total / (ME.length)).toFixed(1);
 let subAverage = [];

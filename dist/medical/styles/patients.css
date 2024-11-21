@@ -389,10 +389,12 @@ dialog {
     top: 0%;
     transform: translate(-100%, 0%);
     border-radius: 12px;
+}
+dialog:not(#del-dg) {
     border: 1px solid #ccc;
     padding: 5px;
 }
-dialog > .wrapper {
+dialog:not(#del-dg) > .wrapper {
     background-color: #fff;
     border-radius: 12px;
     min-width: 300px;
@@ -422,7 +424,7 @@ button#addmed:hover {
 dialog:nth-of-type(3) > .wrapper {
     max-width: 350px;
 }
-dialog > .wrapper::before {
+dialog:not(#del-dg) > .wrapper::before {
     content: '';
     position: absolute;
     left: 50%;
@@ -434,7 +436,7 @@ dialog > .wrapper::before {
     border-radius: 12px;
     z-index: -1;
 }
-dialog:not(:nth-of-type(2)) > .wrapper > *:not(header, #add-btn) {
+dialog:not(:nth-of-type(2), #del-dg) > .wrapper > *:not(header, #add-btn) {
     border-bottom: 1px solid #ddd;
     padding: 12px;
 }
@@ -722,6 +724,27 @@ input#complaint:focus {
     100% {
         transform: translate(-50%, -50%) rotate(360deg);
     }
+}
+dialog#del-dg > .wrapper{
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+}
+#del-dg > .wrapper > p {
+    padding: 20px;
+    flex-basis: 100%;
+    border-bottom: 1px solid #eee;
+    font-weight: 500;
+}
+#del-dg > .wrapper > button {
+    flex: 1;
+    font-weight: 500;
+    padding: 15px;
+    transition: background-color .2s ease;
+    display: inline-block;
+}
+#del-dg > .wrapper > button:hover {
+    background-color: #f1f1f1;
 }
 @media (max-width: 678px) {
     .mq678 {

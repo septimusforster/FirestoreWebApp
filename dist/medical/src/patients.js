@@ -489,7 +489,72 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
         clearTimeout(id);
     }, 3000);
 });
+//share prescription
+let card, cardW, cardH;
+const shareBtn = dialog[2].querySelector('button.share');
+shareBtn.addEventListener('click', () => {
+    card = dialog[2].querySelector('.wrapper > div');
+    cardW = card.offsetWidth, cardH = card.offsetHeight;
+    dialog[2].close();
+    dialog[3].showModal();
+});
+dialog[3].querySelectorAll('button').forEach((btn, idx, arr) => {
+    btn.addEventListener('click', () => {
+        if (!idx) {
+            dialog[3].close();
+            dialog[2].showModal();
+        } else {
+            arr.forEach(bt => {
+                bt.disabled = true;
+                bt.style.cursor = 'not-allowed';
+            });
+            card.style.width = cardW, card.style.height = cardH;
+            console.log(cardW, cardH);
+            console.log(card.style.width);
 
+            html2canvas(card, {}).then(function(canvas) {
+                var dataURL = canvas.toDataURL();
+                console.log(dataURL);
+                const img = document.createElement('img');
+                img.src = dataURL;
+                
+                dialog[3].appendChild(img);
+            })
+            /*
+            html2canvas(card, {
+                onrendered: function (canvas) {
+                    var imageData = canvas.toDataURL();
+                    var newData = imageData.replace(/^data:image\/jpg/, "data:application/octet-stream");
+                    console.log(imageData);
+
+                    const img = document.createElement('img');
+                    img.src = imageData;
+                    
+                    dialog[3].appendChild(img);
+                }
+            });
+*/
+            /*
+            if (!navigator.canShare(img)) {
+                console.log("This image cannot be shared.");
+                return;
+            }
+            try {
+                await navigator.share(img);
+                console.log("Shared successfully.");
+                arr.forEach(bt => {
+                    bt.disabled = false;
+                    bt.style.cursor = 'pointer';
+                });
+                dialog[3].close();
+                setBackdrop(false);
+            } catch (err) {
+                console.log(err);
+            }
+                */
+        }
+    })
+});
 // const inputs = [1,7,3,4];
 // const max = inputs.reduce((pv, cv) => cv > pv ? cv : pv);
 // console.log(max);

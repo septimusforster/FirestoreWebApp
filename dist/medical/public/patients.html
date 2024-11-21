@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../img/pharmacy-symbol-svgrepo-com.svg" type="image/svg+xml"/>
     <link rel="stylesheet" href="../styles/patients.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
     <title>Patients</title>
 </head>
 <body>
@@ -191,41 +192,22 @@
                     <span>Patient</span><span></span>
                 </div>
                 <div class="li">
-                    <span>Complaint</span><span>Inflammatory swellings in the kneecap and throbbing sensations in the tarsal and carpal joints.</span>
+                    <span>Complaint</span><span></span>
                 </div>
                 <div id="prescription">PRESCRIPTION</div>
-                <!--div class="li">
-                    <span>Panadol</span><span>3 mornings and 3 nights, for 2 days.</span>
-                </div>
-                <div class="li">
-                    <span>Artesunate</span><span>3 mornings, 3 afternoons, and 3 nights, for 2 days.</span>
-                </div-->
             </div>
             <footer>
                 <button type="button" class="x_dial">CLOSE</button>
             </footer>
         </div>
     </dialog>
+    <dialog id="del-dg">
+        <div class="wrapper">
+            <p>Continue to share?</p>
+            <button type="button">CANCEL</button>
+            <button type="button">SHARE</button>
+        </div>
+    </dialog>
     <script type="module" src="../src/patients_bundle.js"></script>
-    <!-- <script src="https://github.com/niklasvh/html2canvas/releases/download/v1.4.1/html2canvas.min.js"></script> -->
-    <script>
-        //FOR CONVERTING HTML TO IMAGE
-        /*
-        var element = document.getElementById('myDiv');
-        var canvas = document.createElement('canvas');
-        canvas.width = element.offsetWidth;
-        canvas.height = element.offsetHeight;
-        html2canvas(element, {}).then(function (canvas) {
-          var ctx = canvas.getContext('2d');
-          ctx.drawImage(canvas, 0, 0);
-          var dataURL = canvas.toDataURL();
-          console.log(dataURL);
-  
-          const img = document.createElement('img');
-          img.src = dataURL;
-          document.body.appendChild(img);
-        });
-        */
-      </script>
 </body>
 </html>
