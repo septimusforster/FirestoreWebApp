@@ -467,7 +467,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
                 medic: JSON.parse(sessionStorage.getItem('data'))?.user || 'Unknown',
                 presc,
                 madeAt: nowDate,
-            });
+            }, {merge: true});
             //update the patient's prescDate with Date.now();
             transaction.update(doc(db, `patients${yr}`, cuData.id), {
                 lastMedTime: nowDate + (highestDuration*24*60*60*1000),

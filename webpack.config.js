@@ -48,7 +48,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -201,9 +201,9 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 // STAFFER broadsheet.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",
@@ -213,7 +213,19 @@ module.exports = {
     },
     watch: true
 }
-*/
+
+// STAFFER worker.js
+/*
+module.exports = {
+    mode: "development",
+    entry: "./dist/staffer/src/worker.js",
+    output: {
+        path: path.resolve(__dirname, "./dist/staffer/src"),
+        filename: "worker_bundle.js"
+    },
+    watch: true
+}
+
 //STUDENT index.js
 /*
 module.exports = {

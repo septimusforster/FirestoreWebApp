@@ -1,6 +1,5 @@
-//REMEMBER TO WEBPACK IMPORTS: THEY ARE CURRENTLY USING "GSTATIC"
 import { initializeApp, deleteApp } from "firebase/app";
-import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { collection, collectionGroup, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc, where } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 function chooseConfig(projNum) {
@@ -19,10 +18,21 @@ document.querySelector("header").innerHTML = `<span class='flashing'></span>${fn
 let app = initializeApp(configs[6]); //FirebasePro config
 let db = getFirestore(app);
 
+// calculate session
+const MONTH = new Date().getMonth();
+const session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
 // get EOT and subject collections for both junior and senior secondary
-const EOT = await getDoc(doc(db,"reserved","EOT"));
+let term;
+const worker = new Worker(new URL('dist/staffer/src/worker_bundle.js', location.origin));
+worker.postMessage(session);
+worker.onmessage = ({data}) => {
+    // const EOT = data;   //worker.js
+    term = ["First","Second","Third"].indexOf(data?.this_term);
+    console.log(data.this_term, term);
+};
 const jrsub = await getDoc(doc(db, "reserved", "2aOQTzkCdD24EX8Yy518"));
 const srsub = await getDoc(doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq"));
+
 // console.log(jrsub.data());
 let abbr, abbr_unmutated;
 if (masterClass.startsWith("JSS")) {
@@ -32,12 +42,7 @@ if (masterClass.startsWith("JSS")) {
     abbr = Object.keys(srsub.data()).sort();
     abbr_unmutated = Object.keys(srsub.data()).sort();
 } else {
-    // const x = Object.keys(jrsub.data()).sort();
-    // const y = Object.keys(srsub.data()).sort();
-    // const z = x.concat(y);
-    // let elemObj = {};
-    // z.forEach(val => elemObj[val] = (elemObj[val] || 0) + 1);
-    // const result = Object.keys(elemObj).sort();
+    //for recruits or entrance students
     abbr = ['BSC', 'BIO', 'CCA', 'COM', 'CRS', 'ICT', 'PHE', 'ENG', 'MTH'].sort();
     abbr_unmutated = ['BSC', 'BIO', 'CCA', 'COM', 'CRS', 'ICT', 'PHE', 'ENG', 'MTH'].sort();
 }
@@ -46,7 +51,7 @@ if (masterClass.startsWith("JSS")) {
 const school = 'DCA';
 chooseConfig(configs[7].indexOf(masterClass));
 let IDs = [], names = [];
-const q1 = query(collection(db, "students"), where("arm", "==", masterArm), orderBy("last_name"));  //and where("days_present","array-contains","null")
+const q1 = query(collection(db, 'session', session, 'students'), where("arm", "==", masterArm), orderBy("last_name"));  //and where("days_present","array-contains","null")
 const studentSnap = await getDocs(q1);
 studentSnap.docs.forEach(s => {
     if (['demo'].includes(masterClass.toLowerCase()) || s.data()?.admission_no.toUpperCase().includes(school)) {
@@ -57,7 +62,7 @@ studentSnap.docs.forEach(s => {
 //get scores with the provided IDs
 let scoresSnap = [];
 const p1 = IDs.map(async id => {
-    await getDoc(doc(db, "scores", id)).then(snap => scoresSnap.push(snap.data()));
+    await getDoc(doc(db, 'session', session, 'students', id, "scores", 'records')).then(snap => scoresSnap.push(snap.data()));
 });
 await Promise.all(p1);
 // console.log(scoresSnap.length, scoresSnap[0]);
@@ -80,7 +85,6 @@ for (let i = 0; i < th; i++) {
     `);
 }
 document.querySelector("header > span").classList.remove("flashing");
-let term = ["First","Second","Third"].indexOf(EOT.data().this_term);
 
 // populate tbody with student name and total score for each subject
 const benchmark = abbr_unmutated.length;
