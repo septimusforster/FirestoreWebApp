@@ -310,4 +310,7 @@ dialog p {
     label[for='uploadpop'], label[for='uploadpop'] ~ output {
         flex-basis: auto;
     }
+    dialog {
+        width: 100%;
+    }
 }
