@@ -62,7 +62,7 @@ class Student {
                 <div>
                     <small>Account Name</small><strong>Destiny Christian Academy</strong>
                     <small>Bank Name</small><strong>Zenith Bank</strong>
-                    <small>Account Number</small><strong>1012766749</strong>
+                    <small>Account Number</small><strong>1012756749</strong>
                 </div>
                 <div>
                     <label for="uploadpop">Upload Receipt</label>
