@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { collection, collectionGroup, doc, getDoc, getDocs, getFirestore, orderBy } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore, orderBy } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 let app = initializeApp(configs[6]); //FirebasePro config

@@ -238,7 +238,7 @@ promoForm.addEventListener("submit", async (e) => {
         data.push({id: k, pr: v});
     }
     const p = data.map(async ({id, pr}) => {
-        await updateDoc(doc(db, "students", id), {promo_status: pr});
+        await updateDoc(doc(db, 'session', session, 'students', id), {promo_status: pr});
     });
     await Promise.all(p);
     window.alert('Promotion Settings applied successfully.');
