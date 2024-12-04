@@ -13,6 +13,7 @@
             "type": "image/png"
         }
     ],
+    "start_url": ".",
     "display_override": ["fullscreen", "window-controls-overlay", "minimal-ui"],
     "display": "standalone",
     "description": "DCA Student Portal",
