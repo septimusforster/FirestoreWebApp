@@ -7,8 +7,6 @@ body {
     display: grid;
     place-items: center;
 }
-
-
 #container {
     background-color: rgba(223, 126, 15, 0.164);
     width: clamp(300px, 40%, 500px);

@@ -1,13 +1,22 @@
-import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, collection, getDoc, doc, query, where, getDocs, collectionGroup } from "firebase/firestore"
-import  configs from "./JSON/configurations.json" assert {type: 'json'};
+import { initializeApp, deleteApp } from "firebase/app";
+import { getFirestore, collection, getDoc, doc, query, where, getDocs, limit } from "firebase/firestore";
+import  configs from "../src/JSON/configurations.json" assert {type: 'json'};
+
+var app = initializeApp(configs[6]);
+var db = getFirestore(app);
+
+function chooseConfig(projNum) {
+    deleteApp(app);
+    app = initializeApp(configs[projNum]);
+    db = getFirestore(app);
+}
 
 //form elements
-const admNo = document.getElementById('#admission_no');
-const clsName = document.getElementById('#class_name');
+const admNo = document.getElementById('admission_no');
+const clsName = document.getElementById('class_name');
 
 const month = new Date().getMonth();
-const session = month >= 9 ? new Date().getFullYear() + 1 : new Date().getFullYear();
+const session = month >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());
 let counter = 0;
 
 const notice = document.querySelector('.notice');
@@ -50,11 +59,18 @@ robotform.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
     e.submitter.classList.add('clk');
-    
-    const q1 = query(collection(db, 'robotics'), where('admNo', '==', admNo.value), limit(1));
+    const cfg_no = configs[7].indexOf(clsName.value);
+    const admission = admNo.value.replaceAll(' ', '').toUpperCase();
+
+    if (counter === 1) {
+
+        return;
+    }
+    chooseConfig(cfg_no);
+    const q1 = query(collection(db, 'robotics'), where('admNo', '==', admission), limit(1));
     const snap1 = await getDocs(q1);
     if (snap1.empty) {
-        const q2 = query(collection(db, 'session', String(session), 'student'), where('admission_no', '==', admNo.value), limit(1));
+        const q2 = query(collection(db, 'session', session, 'students'), where('admission_no', '==', admission), limit(1));
         const snap2 = await getDocs(q2);
         if (snap2.empty) {
             //error: student not found
@@ -63,11 +79,13 @@ robotform.addEventListener('submit', async (e) => {
             e.submitter.disabled = false;
             return;
         } else {
+            const found = snap2.docs[0].data();
+            const dob = found.dob ? Intl.DateTimeFormat('en-GB', {dateStyle: 'long'}).format(new Date(found.dob)) : 'unknown';
             const student = new Student(
-                snap2.docs[0].id,
-                snap2.docs[0].admission_no,
-                `${snap2.docs[0].last_name} ${snap2.docs[0].first_name}`,
-                Intl.DateTimeFormat('en-GB', {dateStyle: 'long'}).format(new Date(snap2.docs[0].dob)),
+                found.id,
+                `${found.last_name} ${found.first_name}`,
+                found.admission_no,
+                dob,
             );
             // await setDoc(doc(db, 'robotics', student.id), {
             //     admNo: student.admNo,
@@ -78,10 +96,13 @@ robotform.addEventListener('submit', async (e) => {
                 elem.toggleAttribute('readonly', true);
             });
             student.insertExpectations();
+            e.submitter.classList.remove('clk');
+            e.submitter.disabled = false;
         }
     } else {
         // snap1.docs[0].data
     }
+
     //if counter = 0, look for student in the backend and discover if he has already made payment
         //if payment, check if confirmed
             //if confirmed, tick e.submitter and display dialog[1]

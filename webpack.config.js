@@ -10,6 +10,18 @@ module.exports = {
     },
     watch: true
 }
+*/
+//ROOT hacks.js
+
+module.exports = {
+    mode: "development",
+    entry: "./form/form.js",
+    output: {
+        path: path.resolve(__dirname, "form"),
+        filename: "form_bundle.js"
+    },
+    watch: true
+}
 
 //ROOT hacks.js
 /*
@@ -203,7 +215,7 @@ module.exports = {
 }
 */
 // STAFFER broadsheet.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",
