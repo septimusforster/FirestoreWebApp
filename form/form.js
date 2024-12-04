@@ -34,6 +34,10 @@ class Student {
     }
     
     insertExpectations () {
+        robotbody.querySelectorAll('input, select, textarea').forEach(elem => {
+            elem.disabled = true;
+            elem.toggleAttribute('readonly', true);
+        });
         robotbody.insertAdjacentHTML('beforeend', `
             <input type="text" placeholder="${this.name}" disabled>
             <input type="text" placeholder="Born ${this.dob}" disabled>
@@ -98,7 +102,7 @@ robotform.addEventListener('submit', async (e) => {
 
     if (counter === 1) { //get proof of payment for upload
         const inputs = [...robotbody.querySelectorAll('input[type="checkbox"]:checked, textarea')].map(input => input.tagName.toLowerCase() == 'textarea' ? input.value : input.nextElementSibling.textContent);
-        console.log(student.id);
+        console.log('id', student.id);
         await setDoc(doc(db, 'robotics', student.id), {expectations: inputs}, {merge: true})
         robotbody.querySelectorAll('input, select, textarea').forEach(elem => {
             elem.disabled = true;
@@ -151,11 +155,8 @@ robotform.addEventListener('submit', async (e) => {
             await setDoc(doc(db, 'robotics', student.id), {
                 admNo: student.admNo,
                 fullname: student.name,
+                dob: student.dob,
                 isAcknowledged: false
-            });
-            robotbody.querySelectorAll('input, select, textarea').forEach(elem => {
-                elem.disabled = true;
-                elem.toggleAttribute('readonly', true);
             });
             student.insertExpectations();
             e.submitter.classList.remove('clk');
@@ -169,6 +170,16 @@ robotform.addEventListener('submit', async (e) => {
             dialog[1].querySelector('p:first-of-type').textContent = `Your payment ${today == otherDay ? 'was submitted earlier today.' : 'was submitted on ' + otherDay + '.'}`;
             robotform.style.display = 'none';
             dialog[1].show();
+        } else {
+            student = new Student(
+                snap1.docs[0].id,
+                `${found1.fullname}`,
+                found1.admNno,
+                found1.dob,
+            );
+            student.insertExpectations();
+            e.submitter.classList.remove('clk');
+            e.submitter.disabled = false;
         }
     }
 
