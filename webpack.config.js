@@ -11,14 +11,26 @@ module.exports = {
     watch: true
 }
 */
-//ROOT hacks.js
-
+//ROOT form.js
+/*
 module.exports = {
     mode: "development",
     entry: "./form/form.js",
     output: {
         path: path.resolve(__dirname, "form"),
         filename: "form_bundle.js"
+    },
+    watch: true
+}
+*/
+//ROOT acknowledgement.js
+
+module.exports = {
+    mode: "development",
+    entry: "./form/acknowledgement.js",
+    output: {
+        path: path.resolve(__dirname, "form"),
+        filename: "acknowledgement_bundle.js"
     },
     watch: true
 }
