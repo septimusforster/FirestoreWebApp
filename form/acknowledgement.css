@@ -215,4 +215,13 @@ div.image {
     .bubble {
         width: 80%;
     }
+    dialog {
+        min-width: 0;
+        width: 100%;
+    }
+    button.close {
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 8L8 16M8 8L16 16" stroke="%23000000" stroke-width="1" stroke-linecap="round"/></svg>');
+        height: 32px;
+        margin: 9px;
+    }
 }
