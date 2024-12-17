@@ -156,9 +156,7 @@ overall.forEach(ov => {
     if (ov) {
         let elem = 0, factor = 0;
         for (const x of Object.values(ov)) {
-            let [a=null,b=null,c=null,d=null,e=null] = x[term];
-            // elem += x[term].reduce((acc, val) => acc + val);
-            elem += a + b + c + d + e;
+            elem += x[term].reduce((acc, val) => acc + val);
             factor++;
         }
         const yy = elem/factor;
@@ -168,8 +166,6 @@ overall.forEach(ov => {
 });
 const xx = await subAverage.reduce((acc, cur) => acc + cur);
 const CLS_AVERAGE = (xx/classSize).toFixed(1);
-
-// console.log("subAverage:", subAverage);
 // get principal data
 const princDiv = document.getElementById('principal');
 princDiv.querySelector('p').textContent = principal.name;
@@ -248,7 +244,7 @@ async function eot() {
         thisTerm = eotData.this_term;
         term = ["First", "Second", "Third"].indexOf(eotData.this_term);
         percentile = eotData.percentile;
-        const nextTerm = percentile < 100 ? '' : eotData?.next_term || '';
+        const nextTerm = percentile < 100 ? '' : eotData?.next_term[term] || '';
         const session = eotData.session;
         const daysOpen = eotData.days_open[term];
         const stamp = [,'../img/24_25/stamp02.png','../img/24_25/stamp03.png'][term] || eotData.stamp;

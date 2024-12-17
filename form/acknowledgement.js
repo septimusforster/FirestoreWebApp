@@ -64,7 +64,7 @@ function insertPayload(data) {
         let x = new Date(dateTime).getMonth();
         if (_m !== x) {
             div = `
-            <div class="month">${months[x]}</div>
+                <div class="month">${months[x]}</div>
             `;
             _m = x;
         }
@@ -83,14 +83,71 @@ function insertPayload(data) {
     });
 }
 
+const image = document.querySelector('div.image');
 function confirmReceipt(idx) {
     const data = JSON.parse(sessionStorage.getItem(currentClass))[idx];
-    document.querySelector('div.image').style.backgroundImage = `url(${data.file}`;
+    image.style.backgroundImage = `url(${data.file}`;
     dialog[0].showModal();
 }
-//close dialog
-document.querySelector('button.close').addEventListener('click', () => dialog[0].close());
 
-document.addEventListener('beforeunload', () => {
-    sessionStorage.removeItem(currentClass);
+const buttonProperty = ['Left', 'Scroll Wheel', 'Right'];
+let zoomLvl = 50;
+let zoomed = false;
+image.onmousedown = function (e) {
+    e.preventDefault();
+
+    if (zoomed) return;
+    zoomed = true;
+    image.style.scale = '2';
+    image.style.cursor = 'grab';
+    /*
+    if (buttonProperty[e.button] == 'Left') {
+        // let xcoord = e.offsetX, ycoord = e.offsetY;
+        // image.style.backgroundPosition = `${xcoord}% ${ycoord}%`;
+    
+        if (image.style.cursor == 'zoom-in') {
+            console.log('ran zoom in')
+            if (zoomLvl == 300) return;
+            zoomLvl += 50;
+            image.style.backgroundSize = zoomLvl + '%';
+        } else {
+            if (zoomLvl == 100) return;
+            zoomLvl -= 50;
+            image.style.backgroundSize = zoomLvl + '%';
+        }
+    }
+    */
+}
+document.querySelector('#popover').addEventListener('toggle', (e) => {
+    console.log('Pop state:', e);
+})
+image.onmousemove = function (e) {
+    if (zoomed) {
+        console.log(e);
+        console.log(e.offsetX, e.offsetY)
+    }
+}
+// document.onkeydown = function (e) {
+//     if (e.shiftKey) {
+//         image.style.cursor = 'zoom-out';
+//         return;
+//     }
+// }
+// document.onkeyup = function (e) {
+//     if (!e.shiftKey) {
+//         image.style.cursor = 'zoom-in';
+//         return;
+//     }
+// }
+//close dialog
+document.querySelector('button.close').addEventListener('click', () => {
+    dialog[0].close();
+    image.style.backgroundSize = 100 + '%';
+    image.style.scale = '1';
+    zoomed = false;
 });
+
+// window.addEventListener('beforeunload', (e) => {
+//     e.preventDefault();
+//     sessionStorage.removeItem(currentClass);
+// });

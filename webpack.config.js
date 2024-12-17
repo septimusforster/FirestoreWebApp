@@ -24,7 +24,7 @@ module.exports = {
 }
 */
 //ROOT acknowledgement.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./form/acknowledgement.js",
@@ -72,7 +72,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
