@@ -44,19 +44,24 @@ for (const [k, v] of master_of_form) {
         window.alert('This class is empty.');
     } else {
         // snapDoc.docs.sort()
-        let scores = [];
+        let scores = [], score = [];
         const prom = snapDoc.docs.map(async sd => {
             await getDoc(doc(db, 'session', session, 'students', sd.id, 'scores', 'records')).then((res) => {
-                if (!res.exists()) return scores.push('0');
-                let st = Object.values(res.data());
-                let ph = 0;
-                for (const dt of st) {
-                    ph += dt[term].reduce((acc, cur) => acc + cur)
-                }
-                scores.push((ph/st.length).toFixed());
+                if (!res.exists()) return score.push('0');
+                score.push(res.data());
             });
         });
         await Promise.allSettled(prom);
+
+        score.forEach(data => {
+            let st = Object.values(data);
+            let ph = 0;
+            for (const dt of st) {
+                ph += dt[term].reduce((acc, cur) => acc + cur)
+            }
+            scores.push((ph/st.length).toFixed());
+        });
+
         document.querySelector("input[type='submit']").style.display = 'initial';
         //provide all scores and student docs for broadsheet
         let all_scores = scores, all_students = snapDoc;
