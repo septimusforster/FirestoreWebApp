@@ -44,16 +44,21 @@ for (const [k, v] of master_of_form) {
         window.alert('This class is empty.');
     } else {
         // snapDoc.docs.sort()
+        let snapDocs = [];
+        snapDoc.docs.forEach(docData => {
+            if (docData.data().admission_no.startsWith('DCA')) {
+                snapDocs.push({id: docData.id, dd: docData.data()});
+            }
+        });
         let scores = [], score = [];
-        const prom = snapDoc.docs.map(async sd => {
-            await getDoc(doc(db, 'session', session, 'students', sd.id, 'scores', 'records')).then((res) => {
-                if (!res.exists()) return score.push('0');
+        const prom = snapDocs.map(async ({ id }) => {
+            await getDoc(doc(db, 'session', session, 'students', id, 'scores', 'records')).then((res) => {
+                if (!res.exists()) return;
                 score.push(res.data());
             });
         });
         await Promise.allSettled(prom);
-
-        score.forEach(data => {
+        score.forEach((data, ix) => {
             let st = Object.values(data);
             let ph = 0;
             for (const dt of st) {
@@ -64,28 +69,29 @@ for (const [k, v] of master_of_form) {
 
         document.querySelector("input[type='submit']").style.display = 'initial';
         //provide all scores and student docs for broadsheet
-        let all_scores = scores, all_students = snapDoc;
+        let all_scores = scores, all_students = Object.values(snapDocs);
+        console.log(all_scores.length, all_students.length);
+
         sessionStorage.setItem('all_scores', all_scores);
         sessionStorage.setItem('all_students', all_students);
         
-        snapDoc.docs.forEach((sd, ix) => {
+        snapDocs.forEach((sd, ix) => {
             tbody.insertAdjacentHTML('beforeend', `
                 <tr>
                     <td>${ix+1}</td>
-                    <td>${sd.data().last_name +' '+ sd.data().first_name +' '+ sd.data().other_name}</td>
-                    <td><input type="text" name="${sd.id}" class="${sd.id}" autocomplete="off" placeholder="${sd.data().admission_no}"/></td>
-                    <td>${sd.data().gender}</td>
-                    <td>${sd.data().email}</td>
-                    <td>${sd.data().password}</td>
-                    <td><input type="number" name="${sd.id}" class="${sd.id}" min="0" max="99" pattern="[0-9]{1,2}" placeholder="${sd.data().days_present?.[term] || 0}"/></td>
-                    <td><input type="text" name="${sd.id}" class="${sd.id}" autocomplete="off" placeholder="${sd.data().comment?.[term] || ''}"/></td>
-                    <input type="hidden" value="[${sd.data().days_present || "0,0,0"}]">
+                    <td>${sd.dd.last_name +' '+ sd.dd.first_name +' '+ sd.dd.other_name}</td>
+                    <td><input type="text" name="${sd.id}" class="${sd.id}" autocomplete="off" placeholder="${sd.dd.admission_no}"/></td>
+                    <td>${sd.dd.gender}</td>
+                    <td>${sd.dd.email}</td>
+                    <td>${sd.dd.password}</td>
+                    <td><input type="number" name="${sd.id}" class="${sd.id}" min="0" max="99" pattern="[0-9]{1,2}" placeholder="${sd.dd.days_present?.[term] || 0}"/></td>
+                    <td><input type="text" name="${sd.id}" class="${sd.id}" autocomplete="off" placeholder="${sd.dd.comment?.[term] || ''}"/></td>
+                    <input type="hidden" value="[${sd.dd.days_present || "0,0,0"}]">
                     <td>${scores[ix]}</td>
                 </tr>
             `)
             // i++;
         });
-        
     }
     bodyDiv.style.display = 'none';
     document.querySelector('#load-icon').classList.remove('running');
