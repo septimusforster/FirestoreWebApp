@@ -61,13 +61,16 @@ function insertPayload(data) {
     let div = '', _m = '';
     data.forEach(d => {
         const { dateTime, fullname } = d;
+        /*
         let x = new Date(dateTime).getMonth();
+        console.log(x)
         if (_m !== x) {
             div = `
                 <div class="month">${months[x]}</div>
             `;
             _m = x;
         }
+        */
         div += `
             <div class="bubble">
                 <p>My name is <b>${fullname}</b>.</p>
@@ -90,6 +93,7 @@ function confirmReceipt(idx) {
     dialog[0].showModal();
 }
 
+/*
 const buttonProperty = ['Left', 'Scroll Wheel', 'Right'];
 let zoomLvl = 50;
 let zoomed = false;
@@ -116,17 +120,20 @@ image.onmousedown = function (e) {
             image.style.backgroundSize = zoomLvl + '%';
         }
     }
-    */
+    /
 }
+*/
 // document.querySelector('#popover').addEventListener('toggle', (e) => {
 //     console.log('Pop state:', e);
 // });
+/*
 image.onmousemove = function (e) {
     if (zoomed) {
         console.log(e);
         console.log(e.offsetX, e.offsetY)
     }
 }
+*/
 // document.onkeydown = function (e) {
 //     if (e.shiftKey) {
 //         image.style.cursor = 'zoom-out';
@@ -142,9 +149,9 @@ image.onmousemove = function (e) {
 //close dialog
 document.querySelector('button.close').addEventListener('click', () => {
     dialog[0].close();
-    image.style.backgroundSize = 100 + '%';
-    image.style.scale = '1';
-    zoomed = false;
+    // image.style.backgroundSize = 100 + '%';
+    // image.style.scale = '1';
+    // zoomed = false;
 });
 
 // window.addEventListener('beforeunload', (e) => {
