@@ -24,7 +24,7 @@ module.exports = {
 }
 */
 //ROOT acknowledgement.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./form/acknowledgement.js",
@@ -191,7 +191,7 @@ module.exports = {
 }
 */
 //STAFFER register.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/register.js",
@@ -201,7 +201,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STAFFER test.js
 /*
 module.exports = {

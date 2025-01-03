@@ -72,8 +72,8 @@ for (const [k, v] of master_of_form) {
         let all_scores = scores, all_students = Object.values(snapDocs);
         console.log(all_scores.length, all_students.length);
 
-        sessionStorage.setItem('all_scores', all_scores);
-        sessionStorage.setItem('all_students', all_students);
+        // sessionStorage.setItem('all_scores', all_scores);
+        // sessionStorage.setItem('all_students', all_students);
         
         snapDocs.forEach((sd, ix) => {
             tbody.insertAdjacentHTML('beforeend', `

@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, getDoc, doc, query, where, getDocs, limit, orderBy } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, limit, orderBy } from "firebase/firestore";
 import  configs from "../src/JSON/configurations.json" assert {type: 'json'};
 
 var app = initializeApp(configs[6]);
@@ -118,9 +118,9 @@ image.onmousedown = function (e) {
     }
     */
 }
-document.querySelector('#popover').addEventListener('toggle', (e) => {
-    console.log('Pop state:', e);
-})
+// document.querySelector('#popover').addEventListener('toggle', (e) => {
+//     console.log('Pop state:', e);
+// });
 image.onmousemove = function (e) {
     if (zoomed) {
         console.log(e);
