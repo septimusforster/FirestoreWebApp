@@ -17,14 +17,16 @@ const header = document.querySelector('header');
 const select = document.querySelector('select#cls');
 const main = document.querySelector('main');
 const dialog = document.querySelectorAll('dialog');
+let payload = [];
 
 //finding records
 select.addEventListener('change', async (e) => {
     if (e.target.selectedIndex) {
         e.target.disabled = true;
         header.classList.add('on');
-
+        
         const cname = currentClass = e.target.value;
+        /*
         let payload = JSON.parse(sessionStorage.getItem(cname));
         if (payload) {
             header.classList.replace('on', 'load');
@@ -32,6 +34,7 @@ select.addEventListener('change', async (e) => {
             e.target.disabled = false;
             return;
         }
+        */
 
         chooseConfig(configs[7].indexOf(cname));
         const q = query(collection(db, 'robotics'), orderBy('dateTime'))
@@ -45,8 +48,9 @@ select.addEventListener('change', async (e) => {
 
         payload = [];
         snap.docs.forEach(snp => payload.push(snp.data()));
-        sessionStorage.setItem(cname, JSON.stringify(payload));
-        insertPayload(payload);
+        // sessionStorage.setItem(cname, JSON.stringify(payload));
+        insertPayload(payload, cname);
+        // revokeObjURLs();
         header.classList.replace('on', 'off');
         // header.classList.add('off');
         e.target.disabled = false;
@@ -56,8 +60,8 @@ select.addEventListener('change', async (e) => {
 const months = [
     'January','February','March','April','May','June','July','August','September','October','November','December'
 ]
-function insertPayload(data) {
-    main.querySelectorAll('div').forEach(div => div.remove());  //reset main
+function insertPayload(data, classname) {
+    // main.querySelectorAll('div').forEach(div => div.remove());  //reset main
     let div = '', _m = '';
     data.forEach(d => {
         const { dateTime, fullname } = d;
@@ -78,6 +82,8 @@ function insertPayload(data) {
             </div>
         `;
     });
+    main.innerHTML = '';
+    document.querySelector('header > div > small').textContent = `/ paychat / ${classname}`;
     main.insertAdjacentHTML('beforeend', div);
     header.classList.add('off');
 
@@ -86,12 +92,27 @@ function insertPayload(data) {
     });
 }
 
+let urls = [];
 const image = document.querySelector('div.image');
 function confirmReceipt(idx) {
-    const data = JSON.parse(sessionStorage.getItem(currentClass))[idx];
-    image.style.backgroundImage = `url(${data.file}`;
-    dialog[0].showModal();
+    // const data = JSON.parse(sessionStorage.getItem(currentClass))[idx];
+    const data = payload[idx];
+    if (/application\/pdf/.test(data.file)) {
+        const answer = prompt('This receipt is in PDF format. Do you want to download it?', 'YES');
+        if (answer) {
+            const a = document.createElement('A');
+            a.href = data.file;
+            a.setAttribute('download', 'Receipt (PDF)');
+            a.click();
+        }
+    } else {
+        image.style.backgroundImage = `url(${data.file}`;
+        dialog[0].showModal();
+    }
 }
+// function revokeObjURLs() {
+//     if (urls.length) urls.forEach(url => URL.revokeObjectURLs(url));
+// }
 
 /*
 const buttonProperty = ['Left', 'Scroll Wheel', 'Right'];
