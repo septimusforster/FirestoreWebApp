@@ -39,7 +39,7 @@ studentsSnapshot.docs.forEach(result => {
 let overall = [];
 const scorePromises = studentIDs.map(async sid => {
     ///session/2024/students/0B8JuDYmgdQLPZBP9YAR/records/scores
-    await getDoc(doc(db, 'session', session, 'students', sid, 'scores', 'records')).then((res) => {
+    await getDoc(doc(db, 'session', session, 'students', sid, 'records', 'scores')).then((res) => {
         studentScores.push({sid, ...res.data()});
         overall.push(res.data());
     });

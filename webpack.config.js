@@ -24,7 +24,7 @@ module.exports = {
 }
 */
 //ROOT acknowledgement.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./form/acknowledgement.js",
@@ -34,7 +34,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT hacks.js
 /*
 module.exports = {
@@ -58,7 +58,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT reserved.js
 /*
 module.exports = {
@@ -72,7 +72,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/result.js",

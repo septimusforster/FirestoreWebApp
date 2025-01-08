@@ -34,7 +34,7 @@ const ss = JSON.parse(sessionStorage.snapshot);
 let eotData, term = 0, size = 0, toggleState;
 // calculate session
 const MONTH = new Date().getMonth();
-const session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+let session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
 // var colRef = collection(db, 'session', session, 'students');
 let refrs = {
     arm: doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu"),
