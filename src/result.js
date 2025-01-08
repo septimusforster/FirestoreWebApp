@@ -126,7 +126,7 @@ for (i = 0; i < ME.length; i++) {
     tbodyScores.insertAdjacentHTML('beforeend', `
         <tr>${td}</tr>
     `);
-    let cumm_td = '<td>-</td>', cumm = 0, count = 0, sc = Object.values(ME[i][1]);
+    let cumm_td = '', cumm = 0, count = 0, sc = Object.values(ME[i][1]);
     for (const x of sc) {
         let t = x.reduce((a, c) => a + c, 0);
         if (!t) continue;
@@ -138,9 +138,10 @@ for (i = 0; i < ME.length; i++) {
         } else if (term == 1) {
             cumm_td += `<td>${percentile < 100 ? '-' : t.toFixed(1) || '-'}</td>` + cumm_td;
         } else if(term == 2) {
-            cumm_td = `<td>${percentile < 100 ? '-' : t.toFixed(1) || '-'}</td>`;
+            cumm_td += `<td>${percentile < 100 ? '-' : t.toFixed(1) || '-'}</td>`;
         }
     }
+    // console.log(cumm_td)
     tbodyTerm.insertAdjacentHTML('beforeend', `
         <tr>
             ${cumm_td}
