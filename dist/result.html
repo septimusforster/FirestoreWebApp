@@ -7,6 +7,58 @@
     <script type="module" src="../src/result_bundle.js"></script>
 </head>
 <body>
+    <dialog popover="manual">
+        <div class="wrp">
+            <form>
+                <!--div class="gp">
+                    <label for="sess">Choose session</label>
+                    <select name="session" id="sess" required>
+                        <option value="">Session</option>
+                    </select>
+                </div>
+                <div class="gp">
+                    <label for="myclass">Choose class</label>
+                    <select name="myclass" id="myclass" required>
+                        <option value="">Class</option>
+                        <option value="JSS 1">JSS 1</option>
+                        <option value="JSS 2">JSS 2</option>
+                        <option value="JSS 3">JSS 3</option>
+                        <option value="SSS 1">SSS 1</option>
+                        <option value="SSS 2">SSS 2</option>
+                        <option value="SSS 3">SSS 3</option>
+                    </select>
+                </div>
+                <div class="gp">
+                    <label for="myarm">Choose arm</label>
+                    <select name="myarm" id="myarm" required>
+                        <option value="">Arm</option>
+                    </select>
+                </div-->
+                <div class="gp">
+                    <label for="trm">Choose term</label>
+                    <select name="term" id="trm" required>
+                        <option value="">Term</option>
+                        <option value="0">First</option>
+                        <option value="1">Second</option>
+                        <option value="2">Third</option>
+                    </select>
+                </div>
+                <div class="gp">
+                    <label for="res">Choose result type</label>
+                    <select name="result" id="res" required>
+                        <option value="100">End of Term</option>
+                        <option value="20">Mid-Term</option>
+                    </select>
+                </div>
+                <button>CHECK</button>
+            </form>
+            <div popover="manual" id="loadbar"><i></i></div>
+        </div>
+    </dialog>
+    <script>
+        // for (let s = 0; s < 2; s++) document.querySelector('select#sess').insertAdjacentHTML('beforeend', `<option value="${2024 + s}">${2023 + s}/${2024 + s}</option>`);
+        document.querySelector('dialog').showPopover();
+        </script>
     <header>
         <button type="button" id="pdf-btn">Download PDF</button>
     </header>

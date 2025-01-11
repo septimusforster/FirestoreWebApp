@@ -360,3 +360,66 @@ p#status {
         display: none;
     }
 }
+dialog[popover]::backdrop {
+    background-color: #7777ff;
+}
+div[popover]::backdrop {
+    background-color: rgba(0,0,0,.7);
+    backdrop-filter: blur(5px);
+}
+dialog {
+    outline: 0;
+    border: 0;
+    width: 400px;
+    margin: 170px auto 0;
+    padding: 1em;
+    background: none;
+    border-radius: 8px;
+    border: 1px solid #fff8;
+    overflow: hidden;
+}
+.wrp,
+.wrp > form > .gp {
+    padding: .5em;
+    display: flex;
+    flex-direction: column;
+}
+.wrp {gap: 2em;}
+.wrp > form > .gp {gap: .5em;}
+.gp > label {color: #fff;}
+.gp > select {
+    outline: none;
+    padding: .5em 1.4em;
+    border-radius: 5px;
+    border: 1px solid #fff5;
+    background-color: #fff;
+    box-shadow: 0 1px 3px #555;
+    font-size: initial;
+}
+.wrp > form > button {
+    display: block;
+    width: 70%;
+    margin: 50px auto 1em;
+    padding: .7em;
+    border-radius: 36px;
+    background-color: #7777ff;
+    color: #fff;
+    border: 2px solid #fff;
+    font-size: .8em;
+}
+#loadbar {
+    margin: auto;
+    width: 170px;
+    height: 3px;
+    border-radius: 15px;
+    background-color: #7777ff55;
+    border: 0;
+    overflow: hidden;
+}
+#loadbar > i {
+    display: block;
+    width: 5%;
+    height: 100%;
+    background-color: #fff;
+    transition: width .5s;
+}
