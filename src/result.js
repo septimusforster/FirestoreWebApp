@@ -14,7 +14,17 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-
+const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
+const tfootTerm = document.querySelector('#section-grade table:nth-child(1) tfoot');
+const tbodyTerm = document.querySelector('#section-grade > table:nth-of-type(2) tbody');
+const tfootCumm = document.querySelector('#section-grade > table:nth-of-type(2) tfoot');
+document.querySelector('[data-pop]').onclick = () => {
+    tfootCumm.querySelector('tr').innerHTML = '';
+    document.querySelector('dialog').showPopover();
+    tbodyTerm.innerHTML = '';
+    tbodyScores.innerHTML = '';
+    tfootTerm.innerHTML = '';
+}
 const ss = JSON.parse(sessionStorage.getItem('student'));
 const offered = ss.offered;
 const classSize = ss.size;
@@ -48,15 +58,15 @@ document.forms[0].addEventListener('submit', async (e) => {
     // myclass = configs[7].indexOf(fd.get('myclass'));
 
     try {
+        loaded(30);
         await eot();
-        loaded(24);
         const principal = eotData.princ;    //eotData.principal[term]
         
         const studentsRef = collection(db, 'session', session, 'students');
         const studentsQuery = query(studentsRef, where("arm", "==", arm));
+        loaded(40);
         const studentsSnapshot = await getDocs(studentsQuery);
         //second width
-        loaded(30);
         
         let studentIDs = [], studentScores = [];
         const DCA = 'DCA';
@@ -72,9 +82,9 @@ document.forms[0].addEventListener('submit', async (e) => {
                 overall.push(res.data());
             });
         });
+        loaded(22);
         await Promise.all(scorePromises);
         //third width
-        loaded(40);
         const x = studentScores.filter(a => a.sid === ss.id)[0]; //[0] retrieves only the first sid match by filter
         if (!x) throw new Error(`No student data for this arm ${arm} exists.`);
         const ME = Object.entries(x).sort();
@@ -85,14 +95,6 @@ document.forms[0].addEventListener('submit', async (e) => {
             document.querySelector('#status').style.display = 'none';
         }
         
-        const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
-        const tfootTerm = document.querySelector('#section-grade table:nth-child(1) tfoot');
-        const tbodyTerm = document.querySelector('#section-grade > table:nth-of-type(2) tbody');
-        const tfootCumm = document.querySelector('#section-grade > table:nth-of-type(2) tfoot');
-        tbodyTerm.innerHTML = '';
-        tbodyScores.innerHTML = '';
-        tfootTerm.innerHTML = '';
-        tfootCumm.querySelector('tr').innerHTML = '';
         let total = 0, i;
         let graderObject = {
             "A": 80/100*percentile, //consider using toFixed() to trim fractional part;
@@ -289,14 +291,15 @@ document.forms[0].addEventListener('submit', async (e) => {
         }
         //final width
         loaded(1);
+        loadbar.hidePopover();
         dialog.hidePopover();
         e.submitter.disabled = false;
         pt = 7;
         loaded(0);
-        // loadbar.hidePopover();
     } catch (err) {
         console.log(err.message);
         alert(`ERROR: Confirm your network connection and try again.`);
+        loadbar.hidePopover();
         dialog.hidePopover();
         pt = 7;
         loaded(0);
