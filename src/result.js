@@ -89,6 +89,10 @@ document.forms[0].addEventListener('submit', async (e) => {
         const tfootTerm = document.querySelector('#section-grade table:nth-child(1) tfoot');
         const tbodyTerm = document.querySelector('#section-grade > table:nth-of-type(2) tbody');
         const tfootCumm = document.querySelector('#section-grade > table:nth-of-type(2) tfoot');
+        tbodyTerm.innerHTML = '';
+        tbodyScores.innerHTML = '';
+        tfootTerm.innerHTML = '';
+        tfootCumm.querySelector('tr').innerHTML = '';
         let total = 0, i;
         let graderObject = {
             "A": 80/100*percentile, //consider using toFixed() to trim fractional part;
@@ -286,17 +290,22 @@ document.forms[0].addEventListener('submit', async (e) => {
         //final width
         loaded(1);
         dialog.hidePopover();
+        e.submitter.disabled = false;
+        pt = 7;
+        loaded(0);
         // loadbar.hidePopover();
     } catch (err) {
         console.log(err.message);
         alert(`ERROR: Confirm your network connection and try again.`);
         dialog.hidePopover();
+        pt = 7;
+        loaded(0);
         e.submitter.disabled = false;
     }
 });
 async function eot() {
     let teacherDiv = document.getElementById('teacher');
-    
+    chooseConfig(6);
     const eotRef = doc(db, 'EOT', session);
     await getDoc(eotRef).then(async (res) => {
         chooseConfig(myclass);
@@ -304,7 +313,7 @@ async function eot() {
         eotData = res.data();
         thisTerm = ['First', 'Second', 'Third'][term];
         const nextTerm = percentile < 100 ? '' : eotData?.next_term[term] || '';
-        const session = eotData.session;
+        const ssn = eotData.session;
         const daysOpen = eotData.days_open[term];
         const stamp = '../img/24_25/stamp03.png';
         // const stamp = [,'../img/24_25/stamp02.png','../img/24_25/stamp03.png'][term] || eotData.stamp;
@@ -334,7 +343,7 @@ async function eot() {
         }
         bioTable(regNo, fullName, gender, age, null, 1);
         bioTable(className, classSize, daysOpen, daysPresent, daysAbsent, 2);
-        bioTable(thisTerm, session, nextTerm, null, null, 3);        
+        bioTable(thisTerm, ssn, nextTerm, null, null, 3);        
 
         // set teacher's name and comment
         teacherDiv.querySelector('p').textContent = teacherName;

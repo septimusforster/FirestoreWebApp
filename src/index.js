@@ -74,6 +74,9 @@ await getDoc(eotRef).then(async (res) => { // load EOT
     sslnk.nextElementSibling.querySelectorAll('li').forEach(li => {
         li.addEventListener('click', (e) => {
             sslnk.textContent = session = li.textContent;
+            console.log('clicked');
+            myIframe.contentDocument.querySelector('#preview ul').innerHTML = '';
+            myIframe.contentDocument.querySelector('tbody').innerHTML = '';
         });
     });
     if (user !== 'guest user') {
