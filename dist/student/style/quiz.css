@@ -78,7 +78,7 @@ section > aside {position: relative;}
 section > aside:first-of-type > *:not(div#form, div#form + div) {text-align: center;padding: 1em;}
 button#submit-btn {color: #fff;background-color: #ff4500;padding: 1em;border-radius: 7px;}
 button#submit-btn.dsbd {background-color: rgba(0,0,0,.1)}
-section > aside:first-of-type > div:last-of-type {background-color: transparent;position: absolute;left: 50%;bottom: 0;transform: translate(-50%, 0%);}
+section > aside:first-of-type > div:last-of-type {background-color: transparent;position: fixed;left: 50%;bottom: 10px;transform: translateX(-50%);}
 div#form {padding: 0 1em;height: 520px;border-radius: 7px / 11px;overflow-y: scroll;position: fixed;width: 320px;margin: 0 10px;z-index: 1;}
 .fmgrp {width: 45px;overflow: hidden;color: #fff;background-color: rgba(0,0,0,.7);border-radius: 45px;transition: width .5s ease;}
 .fmgrp:not(:first-of-type, :last-of-type) {margin: 12px 0;}
