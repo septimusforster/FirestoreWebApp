@@ -83,12 +83,13 @@ if (JSON.parse(sessionStorage.getItem('snapshot')).data.username !== 'guestmode'
         loadBtns.forEach(btn => btn.disabled = true);
         e.submitter.classList.add('dsbd');
 
-        const [date, time, code, rating] = new FormData(dforms[1]).values();
+        const [date, time, code, duration, rating] = new FormData(dforms[1]).values();
         await updateDoc(doc(db, 'activities', 'test', subject, e.submitter.id), {
             startDate: date,
             startTime: time,
+            duration: Number(duration),
             code,
-            rating,
+            rating: Number(rating),
         })
         .then(val => {
             success.classList.add('shw');
@@ -105,6 +106,7 @@ if (JSON.parse(sessionStorage.getItem('snapshot')).data.username !== 'guestmode'
                     <input type="date" name="tstdate" id="tstdate" value="${v.startDate}" required/>
                     <input type="time" name="tsttime" id="tsttime" value="${v.startTime}" required/>
                     <input type="text" name="tstcode" id="tstcode" value="${v.code}" placeholder="Code" required/>
+                    <input type="text" name="tstduration" id="tstduration" value="${v.duration}" placeholder="Duration" required/>
                     <input type="text" name="tstrating" id="tstrating" value="${v.rating}" placeholder="Rating" required/>
                     <button class="loadbtn" id="${k}">Upload</button>
                 `;

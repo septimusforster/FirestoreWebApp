@@ -195,10 +195,10 @@ async function setIframeAttr(para1) {
                 data.push(obj.data());
             }
         });
-        size = data.filter(({admission_no}) => admission_no.toUpperCase().startsWith(DCA)).length;
-        console.log("size:", size)
+        size = data.filter(({admission_no}) => admission_no.toUpperCase().startsWith(DCA));
+        console.log("size:", size.length)
         // console.log(marked);
-        sessionStorage.setItem('preview', JSON.stringify(data));
+        sessionStorage.setItem('preview', JSON.stringify(size));
         // console.log('Done.')
     });
     myIframe.contentDocument.querySelector('tbody').innerHTML = '';
@@ -401,7 +401,7 @@ printBtn.onclick = async function () {
         formMaster = snap.get('fullName');
         // console.log(snap.id)
     })
-    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size, formMaster, session}));
+    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size: size.length, formMaster, session}));
     window.open('result.html', '_blank');
 }
 const photoBtn = document.querySelectorAll('.side-panel-toggle')[4];
