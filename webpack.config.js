@@ -1,6 +1,6 @@
 const path = require("path");
 //ROOT index.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/index.js",
@@ -10,7 +10,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT form.js
 /*
 module.exports = {
@@ -72,7 +72,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -82,7 +82,7 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT photos.js
 /*
 module.exports = {

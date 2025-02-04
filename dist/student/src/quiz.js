@@ -218,7 +218,6 @@ resultBtn.addEventListener('click', (e) => {
         progress += 1;
     }, 50);
 });
-
 /***** FUNCTIONS *****/
 async function startup(input, button) {
     button.disabled = true;
@@ -234,7 +233,7 @@ async function startup(input, button) {
         let ulimit = 15;   //15 i.e. 1500, school close time
         const d = new Date(testRef.docs[0].get('startDate')).setHours(Number(h), Number(m));
         const e = new Date(testRef.docs[0].get('startDate')).setHours(ulimit, Number(m) + dur);
-        if (d < dt && e > dt) {
+        if (!(ssSTUDENT.admission_no.startsWith('DCA')) || d < dt && e > dt) {
             ssTEST.chosen = testRef.docs[0].get('chosen');
             updateHeaderTree();
             startupDialog.classList.add('start');

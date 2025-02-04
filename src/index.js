@@ -188,10 +188,15 @@ async function setIframeAttr(para1) {
     const q = query(armRef, where("arm", "==", para1), orderBy("first_name"));   //startAfter() to be included
     await getDocs(q).then(docs => {
         docs.docs.forEach(obj => {
-            if (obj.data()?.admission_no.toUpperCase().includes(DCA)) data.push(obj.data());
-            if (['recruit'].includes(obj.data().arm.toLowerCase())) data.push({id: obj.id, ...obj.data()});
+            // if (obj.data()?.admission_no.toUpperCase().includes(DCA)) data.push(obj.data());
+            if (['recruit'].includes(obj.data().arm.toLowerCase())) {
+                data.push({id: obj.id, ...obj.data()});
+            } else {
+                data.push(obj.data());
+            }
         });
-        size = data.length;
+        size = data.filter(({admission_no}) => admission_no.toUpperCase().startsWith(DCA)).length;
+        console.log("size:", size)
         // console.log(marked);
         sessionStorage.setItem('preview', JSON.stringify(data));
         // console.log('Done.')
