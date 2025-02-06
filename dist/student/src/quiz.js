@@ -175,12 +175,14 @@ txtCode.addEventListener('keyup', async (e) => {
     if (e.key === 'Enter') await startup(e.target, dg0btns[1]);
 });
 //fullscreen exit
+/*
 document.addEventListener('fullscreenchange', (e) => {
     if (document.fullscreenElement === null) {
         timeElapsed = true;
         submitBtn.click();
     }
 });
+*/
 //submit test request btn
 const submitDialog = document.querySelector('dialog#subreq-dg');
 submitBtn.addEventListener('click', () => {
