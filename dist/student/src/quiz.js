@@ -364,12 +364,12 @@ async function saveScore () {
                 [SUBJECT]: {[term]: res}
             }, {merge: true});
             //save ANSWERED array with timestamp
-            const setref1 = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'CBT', ssSTUDENT.id), {
-                [ssTEST.startDate.replaceAll('-','').padStart(9,'D')]: {
+            const setref1 = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'CBT', SUBJECT), {
+                [`${ssTEST.startDate.replaceAll('-','').padStart(9,'D')}`]: {
                     'answers': answered,
                     'answered': answered.filter(an => Boolean(an)).length,
                     'didNotAnswer': didNotAnswer,
-                    'timeUsed': `${(dur - (time/60)).toFixed(1)} + min of ${dur}`,
+                    'timeUsed': `${(dur - (time/60)).toFixed(1)} of ${dur} mins`,
                     'dateModified': serverTimestamp()
                 }
             }, {merge: true});
