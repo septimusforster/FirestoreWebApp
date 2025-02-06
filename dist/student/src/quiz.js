@@ -174,6 +174,13 @@ dg0btns[1].addEventListener('click', async (e) => {
 txtCode.addEventListener('keyup', async (e) => {
     if (e.key === 'Enter') await startup(e.target, dg0btns[1]);
 });
+//fullscreen exit
+document.addEventListener('fullscreenchange', (e) => {
+    if (document.fullscreenElement === null) {
+        timeElapsed = true;
+        submitBtn.click();
+    }
+});
 //submit test request btn
 const submitDialog = document.querySelector('dialog#subreq-dg');
 submitBtn.addEventListener('click', () => {
@@ -358,11 +365,14 @@ async function saveScore () {
             }, {merge: true});
             //save ANSWERED array with timestamp
             const setref1 = transaction.set(doc(db, 'session', session, 'students', ssSTUDENT.id, 'CBT', ssSTUDENT.id), {
-                'Q': answered.length,
-                'A': answered,
-                'C': didNotAnswer,
-                'dateModified': serverTimestamp()
-            });
+                [ssTEST.startDate.replaceAll('-','').padStart(9,'D')]: {
+                    'answers': answered,
+                    'answered': answered.filter(an => Boolean(an)).length,
+                    'didNotAnswer': didNotAnswer,
+                    'timeUsed': `${(dur - (time/60)).toFixed(1)} + min of ${dur}`,
+                    'dateModified': serverTimestamp()
+                }
+            }, {merge: true});
             yesBtn.closest('dialog').close();
             yesBtn.classList.remove('clk');
             document.querySelector('#submitted-dg').show();
