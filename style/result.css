@@ -386,8 +386,15 @@ dialog {
 }
 .wrp {gap: 2em;}
 .wrp > form > .gp {gap: .5em;}
+.wrp > form > .gp:last-of-type {
+    display: none;
+}
+.wrp > form > .gp:last-of-type.on {
+    display: flex;
+}
 .gp > label {color: #fff;}
-.gp > select {
+.gp > select,
+.wrp > form > .gp:last-of-type > input {
     outline: none;
     padding: .5em 1.4em;
     border-radius: 5px;

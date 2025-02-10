@@ -14,6 +14,7 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
+
 const tbodyScores = document.querySelector('#section-grade table:nth-child(1) tbody');
 const tfootTerm = document.querySelector('#section-grade table:nth-child(1) tfoot');
 const tbodyTerm = document.querySelector('#section-grade > table:nth-of-type(2) tbody');
@@ -43,6 +44,11 @@ function loaded(ld) {
     loadbar.querySelector('i').style.width = pt + '%';
 }
 
+document.querySelector('select#res').addEventListener('change', (e) => {
+    document.querySelector('.wrp > form > .gp:last-of-type').classList.toggle('on', e.target.selectedIndex === 2);
+    document.querySelector('input#perc').value = e.target.value;
+});
+
 document.forms[0].addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
@@ -51,7 +57,8 @@ document.forms[0].addEventListener('submit', async (e) => {
     const fd = new FormData(e.target);
     // session = fd.get('session');
     term = fd.get('term');
-    percentile = Number(fd.get('result'));
+    percentile = Number(fd.get('perc'));
+
     myclass = configs[7].indexOf(ss.cls);
     arm = ss.arm;
     // arm = fd.get('myarm');
