@@ -177,12 +177,13 @@ function preload() {
 }
 
 const DCA = 'DCA';
+let data;
 async function setIframeAttr(para1) {
     //there are two hidden elems: the second one holds upass value
     myIframe.setAttribute('data-class-arm', para1);
     // hiddenElems[0].value = para1;
     if (sessionStorage.hasOwnProperty('preview')) sessionStorage.removeItem('preview');
-    let data = [];
+    data = [];
     // console.log(term)
     const armRef = collection(db, 'session', session, 'students');
     const q = query(armRef, where("arm", "==", para1), orderBy("first_name"));   //startAfter() to be included
@@ -386,22 +387,25 @@ yesBtn.onclick = function() {
 }
 const printBtn = document.querySelectorAll('.side-panel-toggle')[3];
 printBtn.onclick = async function () {
+    printBtn.disabled = true;
     const row = Number(myIframe.contentDocument.querySelector('table tr.active td:first-child').textContent);
     const preview = JSON.parse(sessionStorage.getItem('preview'));
     let cls = myIframe.contentDocument.querySelector('h3#students').textContent;
-    let arm = preview[row - 1].arm;
+    const r = row - (data.length - size.length) - 1;
+    let arm = preview[r].arm;
 
     chooseConfig(6);
     let formMaster = "masterOfForm." + cls;
     
     const q = query(collection(db, "staffCollection"), where(formMaster, "==", arm));
     const snapped = await getDocs(q);
+    printBtn.disabled = false;
     if (snapped.empty) return window.alert("This class has no form master. You can appoint one on the Reserved page.");
     snapped.docs.forEach(snap => {
         formMaster = snap.get('fullName');
         // console.log(snap.id)
     })
-    sessionStorage.setItem('student', JSON.stringify({...preview[row - 1], cls, size: size.length, formMaster, session}));
+    sessionStorage.setItem('student', JSON.stringify({...preview[r], cls, size: size.length, formMaster, session}));
     window.open('result.html', '_blank');
 }
 const photoBtn = document.querySelectorAll('.side-panel-toggle')[4];

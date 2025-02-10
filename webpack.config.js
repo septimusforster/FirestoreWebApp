@@ -72,7 +72,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -82,7 +82,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT photos.js
 /*
 module.exports = {
@@ -299,7 +299,7 @@ module.exports = {
 }
 */
 //STUDENT quiz.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/quiz.js",

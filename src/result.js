@@ -93,8 +93,9 @@ document.forms[0].addEventListener('submit', async (e) => {
         if (percentile < 100) {
             theadFirstRow.innerText = "Progressive Report";
             document.querySelector('#status').style.display = 'none';
+            //hide cumulative table
+            document.querySelector('#section-grade > table:nth-child(2)').style.display = 'none';
         }
-        
         let total = 0, i;
         let graderObject = {
             "A": 80/100*percentile, //consider using toFixed() to trim fractional part;
@@ -104,8 +105,10 @@ document.forms[0].addEventListener('submit', async (e) => {
             "E": 30/100*percentile,
             "F": 0/100*percentile,
         }
+
         for (i = 0; i < ME.length; i++) {
             var td = '';
+            if (!ME[i][1][term]) continue;
             let [...test] = ME[i][1][term];
             let subtotal = test.reduce((a,c) => a + c);
             switch (test.length) {
@@ -117,7 +120,6 @@ document.forms[0].addEventListener('submit', async (e) => {
                         <td>${test[1] || ''}</td>
                         <td>${test[2] || ''}</td>
                         <td>${test[3] || ''}</td>
-                        <td>${!subtotal ? '' : subtotal.toFixed(1)}</td>
                     `;
                     break;
                 case 5:
@@ -128,7 +130,6 @@ document.forms[0].addEventListener('submit', async (e) => {
                         <td>${test[1] || ''}</td>
                         <td>${test[2] || ''}</td>
                         <td>${test[3] + test[4] || ''}</td>
-                        <td>${!subtotal ? '' : subtotal.toFixed(1)}</td>
                     `;
                     break;
                 case 8:
@@ -139,11 +140,11 @@ document.forms[0].addEventListener('submit', async (e) => {
                         <td>${test[2] + test[3] || ''}</td>
                         <td>${test[4] + test[5] || ''}</td>
                         <td>${(test[6] + (test[7] || null)) || ''}</td>
-                        <td>${!subtotal ? '' : subtotal.toFixed(1)}</td>
                     `;
                     break;
             }
-            
+            td += `<td>${!subtotal ? '' : subtotal.toFixed(1)}</td>`;
+
             switch (true) {
                 case subtotal >= graderObject.A:
                     td += '<td>A</td><td>Excellent</td>';
@@ -168,10 +169,9 @@ document.forms[0].addEventListener('submit', async (e) => {
                     break;
             }
             total += subtotal;
-        
             let summation = [];
             for (let j = 0; j < studentScores.length; j++) {
-                if (studentScores[j][ME[i][0]] === undefined) continue;
+                if (studentScores[j][ME[i][0]][term] === undefined) continue;
                 let all = 0;
                 studentScores[j][ME[i][0]][term].forEach(n => all += n);
                 if (!all) continue;
@@ -194,6 +194,7 @@ document.forms[0].addEventListener('submit', async (e) => {
             let sc = Object.values(ME[i][1]);
 
             for (const x of sc) {
+                if (!x) continue;
                 let t = x.reduce((a, c) => a + c, 0);
                 cumm += t;
                 cumm_td.splice(count,1,t.toFixed(1));
@@ -208,12 +209,14 @@ document.forms[0].addEventListener('submit', async (e) => {
             `)
             // console.log(count, cumm)
         }
+        
         const ME_AVERAGE = (total / (ME.length)).toFixed(1);
         let subAverage = [];
         overall.forEach(ov => {
             if (ov) {
                 let elem = 0, factor = 0;
                 for (const x of Object.values(ov)) {
+                    if (!x[term]) continue;
                     elem += x[term].reduce((acc, val) => acc + val);
                     factor++;
                 }
@@ -221,6 +224,7 @@ document.forms[0].addEventListener('submit', async (e) => {
                 yy ? subAverage.push(yy) : false;
             }
         });
+
         const xx = await subAverage.reduce((acc, cur) => acc + cur);
         const CLS_AVERAGE = (xx/classSize).toFixed(1);
         // get principal data
@@ -289,6 +293,7 @@ document.forms[0].addEventListener('submit', async (e) => {
                 <td>${colNum == 3 ? (ft/ME.length).toFixed(1) : ft.toFixed(1) || ''}</td>
             `);
         }
+
         //final width
         loaded(1);
         loadbar.hidePopover();
@@ -297,8 +302,7 @@ document.forms[0].addEventListener('submit', async (e) => {
         pt = 7;
         loaded(0);
     } catch (err) {
-        console.log(err.message);
-        alert(`ERROR: Confirm your network connection and try again.`);
+        console.error(err.message);
         loadbar.hidePopover();
         dialog.hidePopover();
         pt = 7;
@@ -332,7 +336,7 @@ async function eot() {
         const comment = typeof ss.comment == "object" ? ss.comment?.[term] || '' : ss.comment;
 
         const d = Date.now() - new Date(ss.dob).getTime();
-        const age = new Date(d).getUTCFullYear() - 1970;
+        const age = (new Date(d).getUTCFullYear() - 1970) || '-';
 
         //load photo
         document.images[1].src = photo;
