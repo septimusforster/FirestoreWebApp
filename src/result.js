@@ -175,10 +175,11 @@ document.forms[0].addEventListener('submit', async (e) => {
                     td += '<td></td><td></td>';
                     break;
             }
+
             total += subtotal;
             let summation = [];
             for (let j = 0; j < studentScores.length; j++) {
-                if (studentScores[j][ME[i][0]][term] === undefined) continue;
+                if (studentScores[j]?.[ME[i][0]]?.[term] === undefined) continue;
                 let all = 0;
                 studentScores[j][ME[i][0]][term].forEach(n => all += n);
                 if (!all) continue;
@@ -216,7 +217,7 @@ document.forms[0].addEventListener('submit', async (e) => {
             `)
             // console.log(count, cumm)
         }
-        
+
         const ME_AVERAGE = (total / (ME.length)).toFixed(1);
         let subAverage = [];
         overall.forEach(ov => {
