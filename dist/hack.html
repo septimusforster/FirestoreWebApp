@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixes</title>
+    <link rel="stylesheet" href="../style/hack.css">
+</head>
+<body>
+    <header>
+        <span class="stn mnu mq">
+            <svg><use href="#menu"></use></svg>
+        </span>
+    </header>
+    <main>
+        <aside>
+            <svg><use href="#shield"></use></svg>
+            <p>Choose function</p>
+            <button type="button" class="chev_r">
+                <span>Nullify Zeros</span>
+                <svg><use href="#chevron"></use></svg>
+            </button>
+            <section>
+                <div class="wrp on">
+                    <form action="#">
+                        <div class="gp fst">
+                            <select name="ncls" id="ncls" required>
+                                <option value="">Choose Class</option>
+                                <option value="JSS 1">Junior 1</option>
+                                <option value="JSS 2">Junior 2</option>
+                                <option value="JSS 3">Junior 3</option>
+                                <option value="SSS 1">Senior 1</option>
+                                <option value="SSS 2">Senior 2</option>
+                                <option value="SSS 3">Senior 3</option>
+                            </select>
+                            <button class="arrw_r">
+                                <svg><use href="#arrow"></use></svg>
+                            </button>
+                        </div>
+                    </form>
+                    <form action="#">
+                        <div class="gp">
+                            <select name="nsub" id="nsub" required>
+                                <option value="">Choose Subject</option>
+                            </select>
+                        </div>
+                        <div class="gp">
+                            <select name="ntrm" id="ntrm" required>
+                                <option value="">Choose Term</option>
+                                <option value="0">First term</option>
+                                <option value="1">Second Term</option>
+                                <option value="2">Third Term</option>
+                            </select>
+                        </div>
+                        <div class="gp lst">
+                            <button class="runfunc">Run Function
+                                <div class="loader"></div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </aside>
+        <aside>
+            <div class="ahd">
+                <span class="stn chev_l mq">
+                    <svg><use href="#chevron"></use></svg>
+                </span>
+                <span>Names Affected</span>
+            </div>
+            <ol id="mylist">
+                
+            </ol>
+        </aside>
+    </main>
+    <footer></footer>
+    <div style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <symbol id="shield" viewBox="0 0 16 16" fill="none">
+                <path d="M4.35009 13.3929L8 16L11.6499 13.3929C13.7523 11.8912 15 9.46667 15 6.88306V3L8 0L1 3V6.88306C1 9.46667 2.24773 11.8912 4.35009 13.3929Z"/>
+            </symbol>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <symbol id="chevron" viewBox="0 0 24 24" fill="none">
+                <path d="M6 9L12 15L18 9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </symbol>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <symbol id="arrow" viewBox="0 0 52 52" data-name="Layer 1" id="Layer_1">
+                <path d="M50,24H6.83L27.41,3.41a2,2,0,0,0,0-2.82,2,2,0,0,0-2.82,0l-24,24a1.79,1.79,0,0,0-.25.31A1.19,1.19,0,0,0,.25,25c0,.07-.07.13-.1.2l-.06.2a.84.84,0,0,0,0,.17,2,2,0,0,0,0,.78.84.84,0,0,0,0,.17l.06.2c0,.07.07.13.1.2a1.19,1.19,0,0,0,.09.15,1.79,1.79,0,0,0,.25.31l24,24a2,2,0,1,0,2.82-2.82L6.83,28H50a2,2,0,0,0,0-4Z"/>
+            </symbol>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <symbol id="menu" viewBox="0 0 1024 1024" class="icon" version="1.1">
+                <path d="M320 89.6h640v76.8H320V89.6z m0 768h640v76.8H320v-76.8z m-256-768h128v76.8H64V89.6z m256 384h640v76.8H320V473.6z m-256 0h128v76.8H64V473.6z m0 384h128v76.8H64v-76.8z"/>
+            </symbol>
+        </svg>
+    </div>
+    <script type="module" src="hack_bundle.js"></script>
+</body>
+</html>

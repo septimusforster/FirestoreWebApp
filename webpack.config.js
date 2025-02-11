@@ -35,6 +35,18 @@ module.exports = {
     watch: true
 }
 */
+//ROOT hack.js
+
+module.exports = {
+    mode: "development",
+    entry: "./src/hack.js",
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "hack_bundle.js"
+    },
+    watch: true
+}
+
 //ROOT hacks.js
 /*
 module.exports = {
@@ -72,7 +84,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",

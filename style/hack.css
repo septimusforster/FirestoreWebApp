@@ -1,0 +1,271 @@
+.mq {
+    display: none;
+}
+:root {
+    --pry-txt-clr: #fff9;
+}
+* {margin: 0;padding: 0;box-sizing: border-box;font-family: system-ui;scroll-behavior: smooth;color: var(--pry-txt-clr);}
+button, select {
+    cursor: pointer;
+}
+button, input, select {
+    outline: none;
+    border: 0;
+    background-color: transparent;
+    font-size: 1em;
+}
+svg {
+    height: 24px;
+    width: 24px;
+}
+#shield {
+    fill: var(--pry-txt-clr);
+}
+body {
+    height: 100vh;
+    height: 100dvh;
+    display: grid;
+    grid-template-rows: minmax(70px, auto) 1fr minmax(70px, auto);
+    background-color: #222;
+}
+header {
+    padding: 0 1em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.stn.mq {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+}
+.stn.mnu > svg {
+    fill: #fff9;
+}
+main {
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    align-items: stretch;
+}
+button {
+    transition: .2s;
+}
+aside, .wrp, button {
+    transition: .3s;
+}
+aside:nth-child(1) {
+    flex: 1;
+    text-align: center;
+}
+aside:nth-child(1) > svg {
+    height: 36px;
+    width: 36px;
+    margin-bottom: 1em;
+    animation: spiny 2s linear infinite forwards;
+}
+aside:nth-child(1).off > svg {
+    animation: none;
+}
+@keyframes spiny {
+    100% {
+        rotate: y 360deg;
+    }
+}
+.chev_r {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    margin-top: .5em;
+    padding: 5px 14px;
+    border-radius: 21px;
+    border: 1px solid #fff5;
+}
+.chev_r:hover {
+    background-color: #fff1;
+}
+.chev_r > * {
+    line-height: 1;
+    color: #009578;
+    stroke: #009578;
+}
+.chev_r > svg {
+    rotate: z -90deg;
+}
+.chev_l > svg {
+    rotate: z 90deg;
+    stroke: #fff9;
+}
+aside:nth-child(1) section {
+    margin-top: 2em;
+    position: relative;
+}
+.wrp {
+    width: 30%;
+    /* opacity: 0; */
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.wrp.on {
+    opacity: 1;
+    pointer-events: fill;
+}
+.gp {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    margin: 1em auto 2em;
+    border-radius: 36px;
+    border: 1px solid #fff3;
+    padding-right: .5em;
+    position: relative;
+}
+.gp.fst::after {
+    position: absolute;
+    top: 50%;
+    right: -28px;
+    transform: translateY(-50%);
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    border: 2px solid;
+    border-color: #fff8 #fff8 transparent transparent;
+    animation: 1s linear infinite forwards;
+}
+@keyframes spin {
+    100% {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+.gp.fst.on::after {
+    animation-name: spin;
+    content: '';
+}
+.gp > select {
+    flex: 1;
+    padding: 14px 0;
+    margin-left: 2em;
+    background-color: #222; /*same as body*/
+}
+.gp > button:has(svg) {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+.gp > button:has(svg):hover {
+    background-color: #fff1;
+}
+.arrw_r {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.arrw_r > svg {
+    rotate: z 180deg;
+}
+#arrow {
+    fill: #fff5;
+}
+.gp.lst {
+    border: 0;
+    padding-right: 0;
+    margin: 1em auto;
+    position: relative;
+    overflow: hidden;
+}
+.gp.lst > button {
+    padding: 1em;
+    width: 100%;
+    display: block;
+    /* border-radius: 24px; */
+    background-color: #00957888;
+}
+.loader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0%;
+    height: 2px;
+    background-color: #fff9;
+    transition: .5s;
+}
+.loader.opq {
+    opacity: 0;
+}
+aside:nth-child(2) {
+    width: 25%;
+    opacity: 0;
+    transition: .3s;
+}
+aside:nth-child(2) > * {
+    padding: 1em;
+}
+aside:nth-child(2).on {
+    opacity: 1;
+}
+.ahd {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    font-weight: 500;
+    border-bottom: 1px solid #fff2;
+}
+ol {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+li {
+    padding: .7em;
+}
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #fff3;
+}
+form:nth-child(2) {
+    opacity: .3;
+    pointer-events: none;
+}
+form:nth-child(2).on {
+    opacity: 1;
+    pointer-events: fill;
+}
+code {
+    display: block;
+    text-align: center;
+}
+@media (width < 768px) {
+    .stn.mq {
+        display: flex;
+    }
+    main {
+        width: 100%;
+    }
+    aside:nth-child(2) {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        opacity: 1;
+        transition: .3s;
+        background-color: #221;
+    }
+    aside:nth-child(2).on {
+        right: 0;
+    }
+    .wrp {
+        width: 80%;
+    }
+    
+}
