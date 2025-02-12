@@ -102,6 +102,7 @@ await getDoc(eotRef).then(async (res) => { // load EOT
         document.querySelector('header > button.logout').insertAdjacentHTML('beforebegin', `
             <button type="button" class="link" onclick="location.href='./reserved.html'">Reserved</button>
             <button type="button" class="link" onclick="location.href='award.html'">Award</button>
+            <button type="button" class="link" onclick="location.href='hack.html'">Fix</button>
         `);
         const chkmode = document.querySelector('#chkmode');
         if ('guestmode' in eotData) {
