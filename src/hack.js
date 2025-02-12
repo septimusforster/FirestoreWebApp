@@ -94,10 +94,13 @@ let data = [], subject, term, currentSubject;
             data = [];  //reset data
             for (let i = 0; i < students.length; i++) {
                 let abbrArray = scores[i]?.[subject]?.[term];
-                if (!abbrArray || abbrArray.every(el => el !== 0)) continue;
-                let element = abbrArray.map(v => v === 0 ? null : v)
+                if (!abbrArray || abbrArray.every(el => el >= 4 || el === null)) continue;
+                let element = abbrArray.map(v => v < 4 ? null : v)
+                // if (!abbrArray || abbrArray.every(el => el !== 0)) continue;
+                // let element = abbrArray.map(v => v === 0 ? null : v)
                 data.push([students[i].id, students[i].name, element]);
             }
+            document.querySelector('.ahd > strong').innerHTML = data.length;
             //populate ol list
             mylist.innerHTML = '';
             if (!data.length) {

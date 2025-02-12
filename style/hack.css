@@ -32,7 +32,6 @@ header {
     padding: 0 1em;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
 }
 .stn.mq {
     height: 36px;
@@ -218,6 +217,9 @@ aside:nth-child(2).on {
     gap: 1em;
     font-weight: 500;
     border-bottom: 1px solid #fff2;
+}
+.ahd > strong {
+    margin-left: auto;
 }
 ol {
     max-height: 80vh;
