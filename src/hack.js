@@ -99,6 +99,7 @@ let data = [], subject, term, currentSubject;
                 data.push([students[i].id, students[i].name, element]);
             }
             //populate ol list
+            mylist.innerHTML = '';
             if (!data.length) {
                 mylist.innerHTML = '<code><i>None found.</i></code>';
                 return;
