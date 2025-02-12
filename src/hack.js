@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, collection, getDoc, getDocs, doc, updateDoc, query, where, orderBy, setDoc } from "firebase/firestore"
+import { getFirestore, collection, getDoc, getDocs, doc, query, where, orderBy, setDoc } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 const badge = document.querySelector('aside:nth-child(1)');
@@ -124,9 +124,6 @@ forms[1].addEventListener('submit', async (e) => {
 
     if (data.length) {
         try {
-            // for (const x of data) {
-            //     console.log(x)
-            // }
             for await (const x of data) {
                 await setDoc(doc(db, 'session', session, 'students', x[0], 'scores', 'records'), {
                     [subject]: {
