@@ -62,6 +62,7 @@ for (const [k, v] of master_of_form) {
             let st = Object.values(data);
             let ph = 0;
             for (const dt of st) {
+                if (!dt?.[term]) continue;
                 ph += dt[term].reduce((acc, cur) => acc + cur)
             }
             scores.push((ph/st.length).toFixed());
