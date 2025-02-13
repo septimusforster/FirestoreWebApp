@@ -17,12 +17,14 @@ function chooseConfig(num) {
 }
 
 db = getFirestore()
-let EOT, term, days_open, next_term, session;
-await getDoc(doc(db, "reserved", "EOT")).then(res => EOT = res.data());
+let EOT, term, days_open, next_term;
+// calculate session
+const MONTH = new Date().getMonth();
+let session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+await getDoc(doc(db, "EOT", session)).then(res => EOT = res.data());
 term = ["First", "Second", "Third"].indexOf(EOT?.this_term) || 0;
 days_open = EOT?.days_open || [0,0,0]; //the 3 elements of the array are for the three terms in a session
 next_term = EOT?.next_term || ['','',''];
-session = EOT?.session.slice(5) || '2025';
 // collection ref
 const jnrRef = doc(db, "reserved", "2aOQTzkCdD24EX8Yy518");
 const snrRef = doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq");
@@ -433,8 +435,7 @@ extForm.addEventListener('submit', async (e) => {
     if (formData.get("next_term")) {
         next_term.splice(term,1,formData.get("next_term"));
         data["next_term"] = next_term;
-    }
-
+    }   
     const reference = doc(db, "EOT", session);
     await setDoc(reference, data, {merge: true});
     window.alert("EOT resources successfully set.");
