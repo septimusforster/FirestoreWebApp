@@ -407,12 +407,13 @@ dialog {
     display: block;
     width: 70%;
     margin: 50px auto 1em;
-    padding: .7em;
+    padding: 1em .7em;
     border-radius: 36px;
     background-color: #7777ff;
     color: #fff;
     border: 2px solid #fff;
     font-size: .8em;
+    opacity: .3;
 }
 #loadbar {
     margin: auto;
