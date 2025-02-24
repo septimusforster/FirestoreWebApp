@@ -31,7 +31,9 @@ const offered = ss.offered;
 const classSize = ss.size;
 const promoStatus = ss?.promo_status;
 const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
-let eotData, thisTerm, term, percentile, myclass, arm = JSON.parse(sessionStorage.getItem('arm')).arms.sort(), session = ss.session;
+let eotData, thisTerm, term, percentile, arm = JSON.parse(sessionStorage.getItem('arm')).arms.sort(), session = ss.session;
+let myclass = configs[7].indexOf(ss.cls);
+
 // arm is first an array before it becomes a string in the submit event of the form
 // arm.forEach(arm => document.querySelector('select#myarm').insertAdjacentHTML('beforeend', `<option value="${arm}">${arm}</option>`));
 
@@ -45,6 +47,7 @@ function loaded(ld) {
 }
 
 document.querySelector('select#res').addEventListener('change', (e) => {
+    console.log("Changed");
     document.querySelector('.wrp > form > .gp:last-of-type').classList.toggle('on', e.target.selectedIndex === 2);
     document.querySelector('input#perc').value = e.target.value;
 });
@@ -53,17 +56,14 @@ document.forms[0].addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
     loadbar.showPopover();
-
+    
     const fd = new FormData(e.target);
     // session = fd.get('session');
     term = fd.get('term');
     percentile = Number(fd.get('perc'));
-
-    myclass = configs[7].indexOf(ss.cls);
+    
     arm = ss.arm;
-    // arm = fd.get('myarm');
-    // myclass = configs[7].indexOf(fd.get('myclass'));
-
+    
     try {
         loaded(30);
         await eot();
@@ -337,7 +337,7 @@ async function eot() {
         const photo = "../img/user.png" || ss.photo_src;
         const regNo = ss.admission_no;
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
-        const className = `${myclass + 7}th Grade ${arm}`;
+        const className = `${myclass + 7}th Grade ${ss.arm}`;
         const daysPresent = ss.days_present[term] || 0;
         const daysAbsent = daysOpen - daysPresent;
         const teacherName = ss.formMaster;

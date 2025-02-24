@@ -72,7 +72,7 @@ module.exports = {
 }
 */
 //ROOT reserved.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/reserved.js",
@@ -82,9 +82,9 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT result.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
