@@ -332,10 +332,19 @@ document.forms[0].addEventListener('submit', async (e) => {
         }
     }
 });
+// set teacher's name and comment
+const teacherDiv = document.getElementById('teacher');
+const teacherName = ss.formMaster;
+document.querySelector('select#trm').onchange = (e) => {
+    term = Number(e.target.value);
+    const comment = typeof ss.comment == "object" ? ss.comment?.[term] || '' : ss.comment;
+    teacherDiv.querySelector('p').textContent = teacherName;
+    teacherDiv.querySelector('blockquote').textContent = comment;
+}
+
 async function eot() {
     app = initializeApp(configs[6]);
     db = getFirestore(app);
-    let teacherDiv = document.getElementById('teacher');
     // chooseConfig(6);
     const eotRef = doc(db, 'EOT', session);
     await getDoc(eotRef).then(async (res) => {
@@ -353,26 +362,15 @@ async function eot() {
         const regNo = ss.admission_no;
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
         
-        const teacherName = ss.formMaster;
-        const comment = typeof ss.comment == "object" ? ss.comment?.[term] || '' : ss.comment;
-
         const d = Date.now() - new Date(ss.dob).getTime();
         const age = (new Date(d).getUTCFullYear() - 1970) || '-';
 
         //load photo
         document.images[1].src = photo;
-
-        
         bioTable(regNo, fullName, gender, age, null, 1);
-        
-
-        // set teacher's name and comment
-        teacherDiv.querySelector('p').textContent = teacherName;
-        teacherDiv.querySelector('blockquote').textContent = comment;
-
         // load stamp
         document.querySelector("img[alt='stamp']").src = stamp;
-    })
+    });
 }
 function bioTable(a, b, c, d, e, tb, idx = 0) {
     for (const arg of arguments) {
