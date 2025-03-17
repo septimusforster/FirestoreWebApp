@@ -1,16 +1,6 @@
 import { initializeApp, deleteApp } from "firebase/app";
 import { getFirestore, collection, collectionGroup, doc, getDoc, getDocs, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
-//fullscreen setup
-// document.addEventListener('DOMContentLoaded', (e) => {
-    
-// });
-// document.addEventListener('fullscreenchange', (e) => {
-//     if (document.fullscreenElement === null) {
-//         console.log(e);
-//     }
-// });
-
 const startupDialog = document.querySelector('#startup-dg');
 const scoreDialog = document.querySelector('#score-dg');
 
@@ -70,17 +60,34 @@ const getref = await getDoc(doc(db, 'session', session, 'students', ssSTUDENT.id
 const res = getref.get(SUBJECT)?.[term] || NULLS;
 const start = [,0,2,4,6][CATNO];
 
-if (res[start] != null) {   
-    yesBtn.classList.remove('clk');
-    yesBtn.closest('dialog').close();
-    const err = "This particular test has been sat for.";
-    const errnote = document.querySelector('.errnote');
+const errnote = document.querySelector('.errnote');
+function notice (err, secs=0) {
     errnote.querySelector('span').textContent = err;
     errnote.classList.add('shw');
-    const errID = setTimeout(() => {
-        errnote.classList.remove('shw');
-        clearTimeout(errID);
-    }, 5000);
+    if (secs) {
+        const errID = setTimeout(() => {
+            errnote.classList.remove('shw');
+            clearTimeout(errID);
+        }, secs);
+    }
+}
+//listen and handle refresh
+window.addEventListener('beforeunload', (e) => {
+    if (navigator.userActivation.hasBeenActive) {   //has user interacted with page even once
+        e.preventDefault();
+    }
+});
+//listen and handle online status
+window.addEventListener('offline', (e) => {
+    notice("You're offline.");
+});
+window.addEventListener('online', (e) => {
+    notice("You're offline.", 50);
+});
+if (res[start] != null) {
+    yesBtn.classList.remove('clk');
+    yesBtn.closest('dialog').close();
+    notice("This particular test has been sat for.", 5000);
 } else {
     startupDialog.show();
 }
@@ -186,6 +193,7 @@ document.addEventListener('fullscreenchange', (e) => {
 //submit test request btn
 const submitDialog = document.querySelector('dialog#subreq-dg');
 submitBtn.addEventListener('click', () => {
+    if (!navigator.onLine) return;
     if (timeElapsed) {
         submitDialog.querySelector('div > div:first-of-type').textContent = 'Submitting test...';
         submitDialog.querySelector('#oi-btns').children[0].style.visibility = 'hidden';
