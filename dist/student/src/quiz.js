@@ -72,11 +72,11 @@ function notice (err, secs=0) {
     }
 }
 //listen and handle refresh
-window.addEventListener('beforeunload', (e) => {
-    if (navigator.userActivation.hasBeenActive) {   //has user interacted with page even once
-        e.preventDefault();
-    }
-});
+// window.addEventListener('beforeunload', (e) => {
+//     if (navigator.userActivation.hasBeenActive) {   //has user interacted with page even once
+//         e.preventDefault();
+//     }
+// });
 //listen and handle online status
 window.addEventListener('offline', (e) => {
     notice("You're offline.");
@@ -96,7 +96,7 @@ clock.classList.remove('load');
 let didNotAnswer = 0;
 let answered = new Array(ssTEST.questions).fill(null);
 let dur = ssTEST.duration;
-let time = dur * 60;
+let time = JSON.parse(localStorage.getItem('dur')) || dur * 60;
 
 function updateHeaderTree () {
     //catNo
@@ -211,7 +211,8 @@ yesBtn.addEventListener('click', async (e) => {
     [form, submitBtn].forEach(elem => elem.classList.add('dsbd'));
     //stop timepiece
     timeElapsed = true;
-
+    //remove ls item 'dur'
+    localStorage.removeItem('dur');
     //calculate test mark
     markTest();
     //save test score
@@ -295,6 +296,8 @@ function updateFormTree (n) {
     const optBtns = document.querySelectorAll('.fmgrp > button');
     optBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
+            //save time
+            localStorage.setItem('dur',time);
             const par = e.target.parentElement;
             const chdrn = [...par.children];
             chdrn.forEach(c => c.classList.remove('slt'));
