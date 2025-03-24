@@ -84,13 +84,13 @@ window.addEventListener('offline', (e) => {
 window.addEventListener('online', (e) => {
     notice("You're offline.", 50);
 });
-if (res[start] != null) {
-    yesBtn.classList.remove('clk');
-    yesBtn.closest('dialog').close();
-    notice("This particular test has been sat for.", 5000);
-} else {
+// if (res[start] != null) {
+//     yesBtn.classList.remove('clk');
+//     yesBtn.closest('dialog').close();
+//     notice("This particular test has been sat for.", 5000);
+// } else {
     startupDialog.show();
-}
+// }
 clock.classList.remove('load');
 //const, var, let of FUNCTIONS
 let didNotAnswer = 0;
@@ -256,20 +256,20 @@ async function startup(input, button) {
         let ulimit = 15;   //15 i.e. 1500, school close time
         const d = new Date(testRef.docs[0].get('startDate')).setHours(Number(h), Number(m));
         const e = new Date(testRef.docs[0].get('startDate')).setHours(ulimit, Number(m) + dur);
-        if (!(ssSTUDENT.admission_no.toUpperCase().startsWith('DCA')) || d < dt && e > dt) {
+        // if (!(ssSTUDENT.admission_no.toUpperCase().startsWith('DCA')) || d < dt && e > dt) {
             ssTEST.chosen = testRef.docs[0].get('chosen');
             updateHeaderTree();
             startupDialog.classList.add('start');
             dg0btns[0].focus();
-        } else {
-            startupDialog.firstElementChild.firstElementChild.innerHTML = d > dt ? '<b>TEST PENDING.</b> However, ensure system time and date are correct.' : '<b>TEST ELAPSED.</b> However, ensure system time and date are correct.';
-            startupDialog.classList.add('error');
-            let tid = setTimeout(() => {
-                startupDialog.classList.remove('error');
-                button.disabled = false;
-                clearTimeout(tid);
-            }, 5000);
-        }
+        // } else {
+        //     startupDialog.firstElementChild.firstElementChild.innerHTML = d > dt ? '<b>TEST PENDING.</b> However, ensure system time and date are correct.' : '<b>TEST ELAPSED.</b> However, ensure system time and date are correct.';
+        //     startupDialog.classList.add('error');
+        //     let tid = setTimeout(() => {
+        //         startupDialog.classList.remove('error');
+        //         button.disabled = false;
+        //         clearTimeout(tid);
+        //     }, 5000);
+        // }
     } else {
         startupDialog.firstElementChild.firstElementChild.textContent = 'Invalid code.';
         startupDialog.classList.add('error');
