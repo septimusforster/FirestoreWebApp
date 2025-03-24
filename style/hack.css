@@ -148,7 +148,7 @@ aside:nth-child(1) section {
     animation-name: spin;
     content: '';
 }
-.gp > select {
+.gp > select, .gp > input {
     flex: 1;
     padding: 14px 0;
     margin-left: 2em;

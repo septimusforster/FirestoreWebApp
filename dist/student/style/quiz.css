@@ -386,6 +386,29 @@ dialog#submitted-dg button:hover {background-color: #FFFFFF;color: #009578;}
 @keyframes show {
     100% {left: 0%;opacity: 1}
 }
+[popover] {
+    outline: none;
+    border: 0;
+    top: 1em;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px #1a73d855;
+}
+#fraud::backdrop {
+    background-color: transparent;
+}
+#fraud > div {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    font-size: 90%;
+    padding: 1.4em 2em;
+    color: #1a73d8;
+}
+#fraud > div > i {
+    color: red;
+}
 @media screen and (max-width: 768px) {
     div#form {height: 620px}
 }

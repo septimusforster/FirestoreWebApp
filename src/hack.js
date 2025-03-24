@@ -84,35 +84,39 @@ forms[0].addEventListener('submit', async (e) => {
 const aside2 = document.querySelector('aside:nth-child(2)');
 const mylist = document.getElementById('mylist');
 let data = [], subject, term, currentSubject;
-[...document.querySelectorAll('select#nsub, select#ntrm')].forEach((slt, idx, arr) => {
+[...document.querySelectorAll('select#nsub, select#ntrm, input#subst')].forEach((slt, idx, arr) => {
     slt.addEventListener('change', (e) => {
-        if (scores && arr.every(mbr => mbr.value !== '')) {
-            aside2.classList.toggle('on', true);
-            //extract and display names
-            subject = arr[0].value, term = Number(arr[1].value);
-
-            data = [];  //reset data
-            for (let i = 0; i < students.length; i++) {
-                let abbrArray = scores[i]?.[subject]?.[term];
-                // if (!abbrArray || abbrArray.every(el => el >= 4 || el === null)) continue;
-                // let element = abbrArray.map(v => v < 4 ? null : v)
-                if (!abbrArray || abbrArray.every(el => el !== 0)) continue;
-                let element = abbrArray.map(v => v === 0 ? null : v)
-                data.push([students[i].id, students[i].name, element]);
+        let numb = idx === 2 ? parseInt(e.target.value) : null;
+        if (Number.isInteger(numb)) {
+            if (scores && arr.every(mbr => mbr.value !== '')) {
+                aside2.classList.toggle('on', true);
+                //extract and display names
+                subject = arr[0].value, term = Number(arr[1].value);
+                data = [];  //reset data
+                for (let i = 0; i < students.length; i++) {
+                    let abbrArray = scores[i]?.[subject]?.[term];
+                    // if (!abbrArray || abbrArray.every(el => el >= 4 || el === null)) continue;
+                    // let element = abbrArray.map(v => v < 4 ? null : v)
+                    // if (!abbrArray || abbrArray.every(el => el !== 0)) continue;
+                    // let element = abbrArray.map(v => v === 0 ? null : v)
+                    if (!abbrArray || abbrArray.every(el => el !== null)) continue;
+                    let element = abbrArray.map(v => v <= numb ? null : v);
+                    data.push([students[i].id, students[i].name, element]);
+                }
+                document.querySelector('.ahd > strong').innerHTML = data.length;
+                //populate ol list
+                mylist.innerHTML = '';
+                if (!data.length) {
+                    mylist.innerHTML = '<code><i>None found.</i></code>';
+                    return;
+                }
+                data.forEach(d => {
+                    mylist.insertAdjacentHTML('beforeend', `
+                        <li><small>${d[0]}</small><br><b>${d[1]}</b></li>
+                    `);
+                });
+                //activate Run Function
             }
-            document.querySelector('.ahd > strong').innerHTML = data.length;
-            //populate ol list
-            mylist.innerHTML = '';
-            if (!data.length) {
-                mylist.innerHTML = '<code><i>None found.</i></code>';
-                return;
-            }
-            data.forEach(d => {
-                mylist.insertAdjacentHTML('beforeend', `
-                    <li><small>${d[0]}</small><br><b>${d[1]}</b></li>
-                `);
-            });
-            //activate Run Function
         }
     });
 });
@@ -120,6 +124,8 @@ let data = [], subject, term, currentSubject;
 const loader = document.querySelector('.loader');
 forms[1].addEventListener('submit', async (e) => {
     e.preventDefault();
+    console.log(data);
+    /*
     e.submitter.disabled = true;
     if (loader.className.includes('opq')) loader.classList.remove('opq');
     let progress = 0;
@@ -149,6 +155,7 @@ forms[1].addEventListener('submit', async (e) => {
         e.submitter.disabled = false;
         alert ("No data available.");
     }
+    */
 });
 //toggle aside2
 document.querySelectorAll('.stn.mq').forEach(stn => {

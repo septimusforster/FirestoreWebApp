@@ -204,19 +204,24 @@ submitBtn.addEventListener('click', () => {
 //YES btn
 let mark = 0;
 yesBtn.addEventListener('click', async (e) => {
-    const par = e.target.parentElement;
-    const chdrn = [...par.children];
-    chdrn.forEach(ch => ch.disabled = true);
-    yesBtn.classList.add('clk');
-    [form, submitBtn].forEach(elem => elem.classList.add('dsbd'));
-    //stop timepiece
-    timeElapsed = true;
-    //remove ls item 'dur'
-    localStorage.removeItem('dur');
-    //calculate test mark
-    markTest();
-    //save test score
-    await saveScore();
+    if (!navigator.onLine) {
+        document.querySelector('#fraud').showPopover();
+        return;
+    } else {
+        const par = e.target.parentElement;
+        const chdrn = [...par.children];
+        chdrn.forEach(ch => ch.disabled = true);
+        yesBtn.classList.add('clk');
+        [form, submitBtn].forEach(elem => elem.classList.add('dsbd'));
+        //stop timepiece
+        timeElapsed = true;
+        //remove ls item 'dur'
+        localStorage.removeItem('dur');
+        //calculate test mark
+        markTest();
+        //save test score
+        await saveScore();
+    }
 });
 //result btn
 resultBtn.addEventListener('click', (e) => {
