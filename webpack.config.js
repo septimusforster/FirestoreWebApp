@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //ROOT hack.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/hack.js",
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT hacks.js
 /*
 module.exports = {
@@ -311,7 +311,7 @@ module.exports = {
 }
 */
 //STUDENT quiz.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/student/src/quiz.js",
