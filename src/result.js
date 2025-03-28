@@ -200,8 +200,8 @@ document.forms[0].addEventListener('submit', async (e) => {
                 tbodyScores.insertAdjacentHTML('beforeend', `
                     <tr>${td}</tr>
                 `);
-                let cumm_td = Array(3).fill(0), cumm = 0, count = 0, txt = '';
                 let sc = Object.values(ME[i][1]);
+                let cumm_td = Array(3).fill(0), cumm = 0, count = term < sc.length ? 0 : term/sc.length, txt = '';
     
                 for (const x of sc) {
                     if (!x) continue;
@@ -210,14 +210,19 @@ document.forms[0].addEventListener('submit', async (e) => {
                     cumm_td.splice(count,1,t.toFixed(1));
                     count++;
                 }
-                for(let w = 0; w < cumm_td.length; w++) term >= w ? txt += `<td>${cumm_td[w]}</td>` : txt += '<td>-</td>';
+                // for(let w = 0; w < cumm_td.length; w++) {
+                //     term >= w ? txt += `<td>${cumm_td[w]}</td>` : txt += '<td>-</td>';
+                //     console.log(txt);
+                // }
+                let m = cumm_td.map((mp, ix) => ix <= term ? mp : '-');
+                for (const c of m) txt += `<td>${c}</td>`;
+
                 tbodyTerm.insertAdjacentHTML('beforeend', `
                     <tr>
                         ${txt}
                         <td>${term < 2 || percentile < 100 ? '-' : (cumm/count).toFixed(1)}</td>
                     </tr>
-                `)
-                // console.log(count, cumm)
+                `);
             }
     
             const ME_AVERAGE = (total / (ME.length)).toFixed(1);
