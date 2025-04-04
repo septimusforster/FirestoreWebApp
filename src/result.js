@@ -145,10 +145,10 @@ document.forms[0].addEventListener('submit', async (e) => {
                         td += `
                             <td>${i+1}</td>
                             <td>${offered[ME[i][0]]}</td>
-                            <td>${test[0] + test[1] || ''}</td>
-                            <td>${test[2] + test[3] || ''}</td>
-                            <td>${test[4] + test[5] || ''}</td>
-                            <td>${(test[6] + (test[7] || null)) || ''}</td>
+                            <td>${(test[0] + test[1]).toFixed(1) || ''}</td>
+                            <td>${(test[2] + test[3]).toFixed(1) || ''}</td>
+                            <td>${(test[4] + test[5]).toFixed(1) || ''}</td>
+                            <td>${(test[6] + (test[7] || null)).toFixed(1) || ''}</td>
                         `;
                         break;
                 }
