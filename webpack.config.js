@@ -84,7 +84,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -168,7 +168,7 @@ module.exports = {
 }
 */
 //MEDICAL patients.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/medical/src/patients.js",

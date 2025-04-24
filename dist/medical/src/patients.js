@@ -3,7 +3,6 @@ import { getFirestore, collection, collectionGroup, addDoc, doc, getDoc, getDocs
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 let cfg = configs[9].appsettings;
-
 var app = initializeApp(cfg);
 var db = getFirestore(app);
 
@@ -97,13 +96,13 @@ viewBtns.forEach(btn => {
 });
 
 //FUNCTIONS:
-const yr = String(new Date(Date.now()).getUTCFullYear() + 1);   //current academic year
+const yr = String(new Date(Date.now()).getUTCFullYear());   //current academic year
 //to set backdrop
 function setBackdrop (b) {
     const pbody = parent.document.body.querySelector('.backdrop');
     pbody.classList.toggle('bkdrp', b);
 }
-
+console.log(yr);
 //add patient
 dialog[0].querySelector('form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -177,6 +176,8 @@ dialog[0].querySelector('form').addEventListener('submit', async (e) => {
 });
 //search for student
 const divTable = document.querySelector('div.table');
+const uihead = document.getElementById('uihead');
+const cmpl = dialog[1].querySelector('form textarea#complaint');
 let searchTerm, snapFOLDER = [],/* newVersion = false,*/ nodes = [];;
 search_form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -226,9 +227,14 @@ search_form.addEventListener('submit', async (e) => {
         // });
 
         //event for rows in divTable
-        divTable.querySelectorAll('.tr').forEach((tr, ix, rows) => {
+        divTable.querySelectorAll('.tr').forEach((tr, ix) => {
             tr.addEventListener('click', async (e) => {
-                rows.forEach(rw => tr.classList.toggle('clk', tr == rw));
+                divTable.querySelectorAll('.tr').forEach(rw => rw.classList.toggle('clk', tr == rw));
+                //clear new record textarea, form div after template; hide uihead
+                cmpl.value = '';
+                dialog[1].querySelectorAll('form > div').forEach(div => div.remove());
+                uihead.classList.remove('shw');
+
                 await sideAsset(snapFOLDER[ix]);
             });
         });
@@ -356,7 +362,6 @@ configs[9].categories.forEach((c, d) => {
     groupNames.push(o);
 });
 //close uihead
-const uihead = document.getElementById('uihead');
 uihead.firstElementChild.onclick = () => {
     dialog[1].querySelectorAll('form div.cb').forEach(cb => {
         cb.removeAttribute('data-cb');
@@ -437,7 +442,6 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
     }).reduce((pv, cv) => cv > pv ? cv : pv);
 
     //complaint
-    const cmpl = dialog[1].querySelector('form textarea#complaint').value;
     const newDate = new Date();
     const time = `${newDate.getDate()}${newDate.getMonth() + 1}${newDate.getFullYear()}`;
     let nowDate = Date.now();
@@ -463,7 +467,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
             await Promise.all(prom);
             //record the prescription
             transaction.set(doc(db, `patients${yr}`, cuData.id, 'record', time), {
-                cmpl,
+                cmpl: cmpl.value,
                 medic: JSON.parse(sessionStorage.getItem('data'))?.user || 'Unknown',
                 presc,
                 madeAt: nowDate,
