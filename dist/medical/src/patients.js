@@ -102,7 +102,7 @@ function setBackdrop (b) {
     const pbody = parent.document.body.querySelector('.backdrop');
     pbody.classList.toggle('bkdrp', b);
 }
-console.log(yr);
+console.log(yr, typeof yr);
 //add patient
 dialog[0].querySelector('form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -269,7 +269,7 @@ async function findMedRecords(fid) {
     let record = medFOLDER.filter(e => Object.keys(e)[0] == fid);
     //if found, insert into the DOM
     if (record.length) {
-        insertMedRecords(record[0]);
+        insertMedRecords(record[0], fid);
         return;
     };
     //else, await checking backend
@@ -286,33 +286,33 @@ async function findMedRecords(fid) {
         });
         record = {[fid]: fx};
         medFOLDER.unshift(record);
-        insertMedRecords(record);
+        insertMedRecords(record, fid);
         return;
     }
     pHR.classList.remove('load');
 }
-function insertMedRecords (rcd) {
+function insertMedRecords (rcd, rid) {
     sectionII.querySelectorAll('#rec_holder > div.records, #rec_holder code').forEach(div => div.remove());
-    
-    let records = Object.values(rcd);
-    records.forEach(rec => {
+
+    // let records = Object.values(rcd);
+    rcd[rid].forEach(rec => {
         const viewRecordClone = sectionII.querySelector('#rec_holder > template').content.cloneNode(true);
-        viewRecordClone.firstElementChild.children[0].textContent = Intl.DateTimeFormat('en-gb', {dateStyle: 'full'}).format(new Date(rec[0].madeAt));
-        viewRecordClone.firstElementChild.children[1].textContent = rec[0].cmpl;
+        viewRecordClone.firstElementChild.children[0].textContent = Intl.DateTimeFormat('en-gb', {dateStyle: 'full'}).format(new Date(rec.madeAt));
+        viewRecordClone.firstElementChild.children[1].textContent = rec.cmpl;
         sectionII.querySelector('#rec_holder').appendChild(viewRecordClone);
     });
 
     sectionII.querySelectorAll('#rec_holder > div.records > button').forEach((btn, idx) => {
         btn.addEventListener('click', (e) => {
             // console.log(records[idx][0].cmpl);
-            dialog[2].querySelector('.wrapper > div > .li:nth-child(2) > span:last-of-type').textContent = records[idx][0].cmpl;
+            dialog[2].querySelector('.wrapper > div > .li:nth-child(2) > span:last-of-type').textContent = rcd[rid][idx].cmpl;
             const elemPresc = dialog[2].querySelector('#prescription');
             const li = [...dialog[2].querySelectorAll('.li')];
 
             for (let l = 0; l < li.length; l++) {
                 if (elemPresc.nextElementSibling == li[l]) li[l].remove();
             }
-            const presc = Object.entries(records[idx][0].presc);
+            const presc = Object.entries(rcd[rid][idx].presc);
             for (const [p, q] of presc) {
                 elemPresc.insertAdjacentHTML('afterend', `
                     <div class="li">
@@ -324,6 +324,7 @@ function insertMedRecords (rcd) {
             dialog[2].showModal();
         });
     });
+
     pHR.classList.remove('load');
 }
 //search option buttons
@@ -429,21 +430,24 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
     e.submitter.classList.add('clk');
 
     let datA = [...dialog[1].querySelectorAll('.fm_part')].map(part => {
+        // let slct = [];
         let slct = [...part.querySelectorAll('select')].map((elem, idx) => {
             if (idx == 1) {
+                // slct.push([elem.previousElementSibling.value, elem.value, elem.children[elem.selectedIndex].textContent]);
                 return [elem.previousElementSibling.value, elem.value, elem.children[elem.selectedIndex].textContent];
             }
         });
         let inp = [...part.querySelectorAll('input')].map(elem => Number(elem.value) || elem.value);
         return [...slct, ...inp];
     });
+
     let highestDuration = [...dialog[1].querySelectorAll('.fm_part')].map(i => { //to get the highest duration of the medications
         return parseInt(i.querySelector('div > input:last-of-type').value);
     }).reduce((pv, cv) => cv > pv ? cv : pv);
 
     //complaint
-    const newDate = new Date();
-    const time = `${newDate.getDate()}${newDate.getMonth() + 1}${newDate.getFullYear()}`;
+    // const newDate = new Date();
+    // const time = `${newDate.getDate()}${newDate.getMonth() + 1}${newDate.getFullYear()}`;
     let nowDate = Date.now();
     //run a transaction to: [undefined, Array(3)=>category,id,drug, 1, 1, 1, '1 day']
 
@@ -457,7 +461,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
     }
 
     try {   //used in case of network error, we can reset the submit btn
-        let tx = await runTransaction(db, async transaction => {
+        await runTransaction(db, async transaction => {
             //find and subtract the requested drugs
             let prom = datA.map(data => {
                 transaction.update(doc(db, 'products', data[1][1]), {
@@ -466,7 +470,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
             });
             await Promise.all(prom);
             //record the prescription
-            transaction.set(doc(db, `patients${yr}`, cuData.id, 'record', time), {
+            transaction.set(doc(db, `patients${yr}`, cuData.id, 'record', String(nowDate)), {
                 cmpl: cmpl.value,
                 medic: JSON.parse(sessionStorage.getItem('data'))?.user || 'Unknown',
                 presc,
@@ -483,6 +487,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
         e.submitter.disabled = false;
         e.submitter.classList.remove('clk');
     }
+
     e.submitter.classList.replace('clk', 'fin');
     const id = setTimeout(() => {
         dialog[1].close();
@@ -494,71 +499,32 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
     }, 3000);
 });
 //share prescription
-let card, cardW, cardH;
 const shareBtn = dialog[2].querySelector('button.share');
 shareBtn.addEventListener('click', () => {
-    card = dialog[2].querySelector('.wrapper > div');
-    cardW = card.offsetWidth, cardH = card.offsetHeight;
-    dialog[2].close();
     dialog[3].showModal();
 });
-dialog[3].querySelectorAll('button').forEach((btn, idx, arr) => {
-    btn.addEventListener('click', () => {
+dialog[3].querySelectorAll('button').forEach((btn, idx) => {
+    btn.addEventListener('click', async () => {
         if (!idx) {
             dialog[3].close();
             dialog[2].showModal();
         } else {
-            arr.forEach(bt => {
-                bt.disabled = true;
-                bt.style.cursor = 'not-allowed';
-            });
-            card.style.width = cardW, card.style.height = cardH;
-            console.log(cardW, cardH);
-            console.log(card.style.width);
-
-            html2canvas(card, {}).then(function(canvas) {
-                var dataURL = canvas.toDataURL();
-                console.log(dataURL);
-                const img = document.createElement('img');
-                img.src = dataURL;
-                
-                dialog[3].appendChild(img);
-            })
-            /*
-            html2canvas(card, {
-                onrendered: function (canvas) {
-                    var imageData = canvas.toDataURL();
-                    var newData = imageData.replace(/^data:image\/jpg/, "data:application/octet-stream");
-                    console.log(imageData);
-
-                    const img = document.createElement('img');
-                    img.src = imageData;
-                    
-                    dialog[3].appendChild(img);
-                }
-            });
-*/
-            /*
-            if (!navigator.canShare(img)) {
-                console.log("This image cannot be shared.");
-                return;
-            }
+            btn.disabled = true;
+            btn.parentElement.classList.add('scs');
             try {
-                await navigator.share(img);
-                console.log("Shared successfully.");
-                arr.forEach(bt => {
-                    bt.disabled = false;
-                    bt.style.cursor = 'pointer';
-                });
-                dialog[3].close();
-                setBackdrop(false);
+                await navigator.share({title: 'DCA Clinic', text: '', url: `${location.origin}/dist/medical/onmed.html`});
+                btn.parentElement.classList.add('scss');
+                const tid = setTimeout(() => {
+                    dialog[3].close();
+                    btn.parentElement.classList.remove('scs','scss');
+                    clearTimeout(tid);
+                }, 2000);
             } catch (err) {
                 console.log(err);
+                btn.parentElement.classList.remove('scs','scss');
+            } finally {
+                btn.disabled = false;
             }
-                */
         }
-    })
+    });
 });
-// const inputs = [1,7,3,4];
-// const max = inputs.reduce((pv, cv) => cv > pv ? cv : pv);
-// console.log(max);

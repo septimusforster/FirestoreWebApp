@@ -309,7 +309,6 @@ shareBtn.addEventListener('click', async () => {
         console.log(err);
     }
 });
-
 /** HACKS for pharmacy.js **/
 //CREATE CATEGORY FOR EACH DRUG
 //get all docs on antibiotics/tablet injection

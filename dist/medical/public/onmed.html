@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnMed</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;font-size:100%;scroll-behavior:smooth;}
+        html,body{height:100vh;width:100vw;}
+        body{display:flex;align-items:center;justify-content:center;}
+        button{background:none;outline:none;border:0;}
+        button,.btn{cursor:pointer;}
+        button>*,.btn>*{pointer-events:none;}
+        #root{border:1px solid #ccc;width:512px;border-radius:14px;}
+        header{padding:2em 0 2em 4.5em;background-image:url('../img/pharmacy-symbol-svgrepo-com.svg');background-position:2em center;background-size:5%;background-repeat:no-repeat;position:relative;font-weight:500;}
+        header::after{content:'';position:absolute;top:1em;left:50%;transform:translateX(-50%);height:2em;width:2em;border-radius:50%;border:3px solid transparent;border-color:transparent #1a73e8 transparent transparent;/*animation:rotx 1s linear infinite forwards;*/}
+        @keyframes rotx {
+            from{transform:translateX(-50%) rotate(0deg);}
+            to{transform:translateX(-50%) rotate(360deg);}
+        }
+        #student{display:grid;grid-template-columns:30% 1fr;gap:.7em;padding:0 2em;}
+        .h4{font-weight:500;color:#333;}
+        #student>.h4{grid-column:span 2;opacity:.5;}
+        #student>span:nth-of-type(odd){opacity:.5;}
+        #student>span:nth-of-type(even){justify-self:end;}
+        #med{overflow-y:auto;max-height:400px;border-radius:14px;margin:2em;padding-bottom:.5em;background-color:#fafafa;position:relative;}
+        #med>*{padding:1em 2em;}
+        #med>.h4{border-bottom:1px dashed #ccc;position:sticky;top:0;width:100%;z-index:1;background-color:#fafafa;}
+        #med>.btn{color:#777;background-image:url('../img/chevron-forward-outline.svg');background-repeat:no-repeat;background-position:97% center;background-size:5%;}
+        #med>.btn:hover, #med>.btn.on{background-color:#f3f3f3;}
+        #med>.btn>div>i,.wrap>.h4>i{display:inline-block;height:1em;width:1em;border-radius:50%;background-color:#1a73e8;margin:0 .7em;background-image:url('../img/checkmark-outline.svg');background-position:center;}
+        footer{position:sticky;top:100%;padding:2em 0;}
+        button#vwa{display:block;margin:auto;color:#1a73e8;padding:.7em 1em;background-color:#1a73e811;border-radius:7px;}
+        ::backdrop{background-color:#0003;}
+        [popover]{background:none;outline:none;border:0;}
+        #details{width:360px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:14px;}
+        .wrap{background-color:#fff;padding:2em;min-height:250px;position:relative;}
+        .wrap>*{line-height:1.5;}
+        .wrap>.h4{margin-top:2em;}
+        .wrap>.x{position:absolute;right:1em;top:1em;height:1.5em;width:1.5em;border-radius:50%;background-image:url('../img/close-outline.svg');background-position:center;}
+        .wrap>.x:hover{background-color:#eee;}
+        .wrap>p{margin-top:2em;opacity:.7;}
+        @media (width <= 412px) {
+            #root{border:0;height:100%;}
+            #med{margin:2em 0 0;max-height:none;}
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <header>Clinic</header>
+        <main>
+            <div id="student">
+                <div class="h4">Student</div>
+                <span>Name</span><span>Henry Tandey</span>
+                <span>Class</span><span>JSS 2</span>
+            </div>
+            <div id="med">
+                <div class="h4"><span>Records</span></div>
+                <div class="btn">
+                    <div>Coughing</div>
+                    <div class="btn">Sunday, 19 May, 2000</div>
+                </div>
+                <div class="btn">
+                    <div>Coughing</div>
+                    <div class="btn">Sunday, 19 May, 2000</div>
+                </div>
+                <div class="btn">
+                    <div>Coughing</div>
+                    <div class="btn">Sunday, 19 May, 2000</div>
+                </div>
+                <div class="btn">
+                    <div>Coughing</div>
+                    <div class="btn">Sunday, 19 May, 2000</div>
+                </div>
+                <div class="btn">
+                    <div>Coughing<i></i></div>
+                    <div class="btn">Sunday, 19 May, 2000</div>
+                </div>
+                <div class="btn">
+                    <div>Coughing</div>
+                    <div class="btn">Sunday, 19 May, 2000</div>
+                </div>
+                <div class="btn">
+                    <div>Coughing</div>
+                    <div class="btn">Sunday, 19 May, 2000</div>
+                </div>
+                <div class="btn">
+                    <div>Coughing</div>
+                    <div class="btn">Sunday, 19 May, 2000</div>
+                </div>
+            </div>
+        </main>
+        <!-- <footer>
+            <button type="button" id="vwa">View All</button>
+        </footer> -->
+    </div>
+    <div id="details" popover="manual">
+        <div class="wrap">
+            <button type="button" class="x" popovertarget="details" popovertargetaction="hide"></button>
+            <div class="h4">Coughing<i></i></div>
+            <div>Sunday, 19 May, 2000</div>
+            <p>1 Panadol, 25 Paracetamol, 72 Syrup Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, perspiciatis.</p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('details').showPopover();
+    </script>
+</body>
+</html>
