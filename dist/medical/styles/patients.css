@@ -542,12 +542,19 @@ form[name="nw-pre"] > div {
 form[name="nw-pre"] > div > div:nth-child(2) {
     display: flex;
 }
-textarea#complaint {
+textarea#complaint, #diagnosis {
     width: 100%;
-    padding: 10px;
+    padding: 1em;
     border: 1px solid #ccc;
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 10px 0;
+}
+#medic {
+    padding:.5em;
+    text-align:center;
+    font-size:90%;
+    opacity:.7;
+    font-style:italic;
 }
 .fm_part {
     flex: 1;

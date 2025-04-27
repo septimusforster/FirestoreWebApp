@@ -178,6 +178,8 @@ dialog[0].querySelector('form').addEventListener('submit', async (e) => {
 const divTable = document.querySelector('div.table');
 const uihead = document.getElementById('uihead');
 const cmpl = dialog[1].querySelector('form textarea#complaint');
+const diagnosis = dialog[1].querySelector('form input#diagnosis');
+const medic = document.querySelector('#medic');
 let searchTerm, snapFOLDER = [],/* newVersion = false,*/ nodes = [];;
 search_form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -231,7 +233,8 @@ search_form.addEventListener('submit', async (e) => {
             tr.addEventListener('click', async (e) => {
                 divTable.querySelectorAll('.tr').forEach(rw => rw.classList.toggle('clk', tr == rw));
                 //clear new record textarea, form div after template; hide uihead
-                cmpl.value = '';
+                [cmpl,diagnosis].forEach(elm => elm.value = '');
+                medic.textContent = '';
                 dialog[1].querySelectorAll('form > div').forEach(div => div.remove());
                 uihead.classList.remove('shw');
 
@@ -304,8 +307,9 @@ function insertMedRecords (rcd, rid) {
 
     sectionII.querySelectorAll('#rec_holder > div.records > button').forEach((btn, idx) => {
         btn.addEventListener('click', (e) => {
-            // console.log(records[idx][0].cmpl);
             dialog[2].querySelector('.wrapper > div > .li:nth-child(2) > span:last-of-type').textContent = rcd[rid][idx].cmpl;
+            dialog[2].querySelector('.wrapper > div > .li:nth-child(3) > span:last-of-type').textContent = rcd[rid][idx]?.dgns || 'None';
+            medic.textContent = rcd[rid][idx].medic;
             const elemPresc = dialog[2].querySelector('#prescription');
             const li = [...dialog[2].querySelectorAll('.li')];
 
@@ -472,6 +476,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
             //record the prescription
             transaction.set(doc(db, `patients${yr}`, cuData.id, 'record', String(nowDate)), {
                 cmpl: cmpl.value,
+                dgns: diagnosis.value,
                 medic: JSON.parse(sessionStorage.getItem('data'))?.user || 'Unknown',
                 presc,
                 madeAt: nowDate,

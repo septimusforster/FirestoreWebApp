@@ -148,8 +148,8 @@
                 <div id="sid"><small>DCA/00/0002</small><br/><button type="button" id="addmed">Add Medication</button></div>
             </div>
             <form name="nw-pre" id="nw-pre" autocomplete="off">
-                <textarea name="complaint" id="complaint" rows="3" placeholder="Write complaint/info" required></textarea>
-                <!-- <input type="text" name="complaint" id="complaint" placeholder="Complaint/Info" required/> -->
+                <textarea name="complaint" id="complaint" rows="3" placeholder="Enter complaint" required></textarea>
+                <input type="text" name="diagnosis" id="diagnosis" placeholder="Enter diagnosis">
                 <template>
                     <div>
                         <div class="fm_part">
@@ -194,9 +194,13 @@
                 <div class="li">
                     <span>Complaint</span><span></span>
                 </div>
+                <div class="li">
+                    <span>Diagnosis</span><span></span>
+                </div>
                 <div id="prescription">PRESCRIPTION</div>
             </div>
             <footer>
+                <div id="medic"></div>
                 <button type="button" class="x_dial">CLOSE</button>
             </footer>
         </div>
