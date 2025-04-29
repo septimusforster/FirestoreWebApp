@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, collectionGroup, addDoc, doc, getDoc, getDocs, increment, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "firebase/firestore";
+import { getFirestore, collection, addDoc, deleteDoc, doc, getDoc, getDocs, increment, setDoc, updateDoc, query, where, and, or, serverTimestamp, orderBy, limit, runTransaction } from "firebase/firestore";
 import configs from "../../../src/JSON/configurations.json" assert {type: 'json'};
 
 let cfg = configs[9].appsettings;
@@ -87,7 +87,7 @@ addNewRecordBtn.onclick = function () {
     // this.parentElement.previousElementSibling.classList.remove('focus');
 };
 //View medical records button
-const viewBtns = document.querySelectorAll('button.view');
+const viewBtns = document.querySelectorAll('.view > button:nth-child(1)');
 viewBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         setBackdrop(true);
@@ -265,11 +265,11 @@ async function sideAsset (sdata) {
     await findMedRecords(sdata.id);
 }
 const pHR = document.querySelector('p.hr');
-let medFOLDER = [];
+let medFOLDER = [], record;
 async function findMedRecords(fid) {
     pHR.classList.add('load');
     //filter medFOLDER for id
-    let record = medFOLDER.filter(e => Object.keys(e)[0] == fid);
+    record = medFOLDER.filter(e => Object.keys(e)[0] == fid);
     //if found, insert into the DOM
     if (record.length) {
         insertMedRecords(record[0], fid);
@@ -294,6 +294,8 @@ async function findMedRecords(fid) {
     }
     pHR.classList.remove('load');
 }
+const delPop = document.getElementById('del-rcd');
+let medRec, medix;
 function insertMedRecords (rcd, rid) {
     sectionII.querySelectorAll('#rec_holder > div.records, #rec_holder code').forEach(div => div.remove());
 
@@ -302,10 +304,11 @@ function insertMedRecords (rcd, rid) {
         const viewRecordClone = sectionII.querySelector('#rec_holder > template').content.cloneNode(true);
         viewRecordClone.firstElementChild.children[0].textContent = Intl.DateTimeFormat('en-gb', {dateStyle: 'full'}).format(new Date(rec.madeAt));
         viewRecordClone.firstElementChild.children[1].textContent = rec.cmpl;
+        viewRecordClone.firstElementChild.querySelector('button.trash').setAttribute('data-stmp', rec.madeAt);
         sectionII.querySelector('#rec_holder').appendChild(viewRecordClone);
     });
 
-    sectionII.querySelectorAll('#rec_holder > div.records > button').forEach((btn, idx) => {
+    sectionII.querySelectorAll('#rec_holder .view > button:nth-child(1)').forEach((btn, idx) => {
         btn.addEventListener('click', (e) => {
             dialog[2].querySelector('.wrapper > div > .li:nth-child(2) > span:last-of-type').textContent = rcd[rid][idx].cmpl;
             dialog[2].querySelector('.wrapper > div > .li:nth-child(3) > span:last-of-type').textContent = rcd[rid][idx]?.dgns || 'None';
@@ -328,9 +331,47 @@ function insertMedRecords (rcd, rid) {
             dialog[2].showModal();
         });
     });
-
+    //prompt for deleting record
+    sectionII.querySelectorAll('#rec_holder .view > button:nth-child(2)').forEach((btn,rix) => {
+        btn.addEventListener('click', (e) => {
+            const fix = record[cuData.id].findIndex(x => x.madeAt == btn.dataset.stmp);
+            delPop.querySelector('.pwrp > div:nth-child(2)').textContent = record[cuData.id][fix].cmpl;
+            medRec = record[cuData.id][fix].madeAt, medix = fix;
+            delPop.showPopover();
+        });
+    });
     pHR.classList.remove('load');
 }
+//delete record
+delPop.querySelector('.del-rcd:nth-child(2)').addEventListener('click', async (e) => {
+    e.target.disabled = true;
+    delPop.querySelector('.pwrp').classList.add('on');
+
+    try {
+        await deleteDoc(doc(db, `patients${yr}`, cuData.id, 'record', String(medRec)));
+        delPop.hidePopover();
+        console.log(record)
+        let fl = record[cuData.id].filter(x => x.madeAt != medRec);
+        console.log(fl)
+        record[cuData.id] = fl;
+        sectionII.querySelectorAll('#rec_holder .records')[medix].remove();
+    } catch (err) {
+        console.log(err);
+    } finally {
+        delPop.querySelector('.pwrp').classList.remove('on');
+        e.target.disabled = false;
+    }
+});
+/*//add a medical staff
+const medstaff = {
+    uname: '@aikorecynthia',
+    user: 'Cynthia Aikore',
+    upass: 'AGATHA',
+    createdAt: Date.now(),
+    lastModified: serverTimestamp() 
+}
+await addDoc(collection(db, 'staff'), medstaff);
+*/
 //search option buttons
 const searchOptBtns = document.querySelectorAll('.search_opt button:not(.uibtn)');
 const search_form_submitter = document.querySelector('.fwd_arrow');
@@ -464,6 +505,13 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
         presc[datA[a][1][2]] = [morn,noon,even,dur].filter(x => x != "");
     }
 
+    const newMed = {
+        cmpl: cmpl.value,
+        dgns: diagnosis.value,
+        medic: JSON.parse(sessionStorage.getItem('data'))?.user || 'Unknown',
+        presc,
+        madeAt: nowDate,
+    };
     try {   //used in case of network error, we can reset the submit btn
         await runTransaction(db, async transaction => {
             //find and subtract the requested drugs
@@ -474,18 +522,14 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
             });
             await Promise.all(prom);
             //record the prescription
-            transaction.set(doc(db, `patients${yr}`, cuData.id, 'record', String(nowDate)), {
-                cmpl: cmpl.value,
-                dgns: diagnosis.value,
-                medic: JSON.parse(sessionStorage.getItem('data'))?.user || 'Unknown',
-                presc,
-                madeAt: nowDate,
-            }, {merge: true});
+            transaction.set(doc(db, `patients${yr}`, cuData.id, 'record', String(nowDate)), newMed, {merge: true});
             //update the patient's prescDate with Date.now();
             transaction.update(doc(db, `patients${yr}`, cuData.id), {
                 lastMedTime: nowDate + (highestDuration*24*60*60*1000),
             });
-        })
+        });
+        cuData.id in record ? record[cuData.id].push(newMed) : record = {[cuData.id]:[newMed]};
+        insertMedRecords(record, cuData.id);
     } catch (err) {
         console.log(err)
         //on err, reset e.submitter

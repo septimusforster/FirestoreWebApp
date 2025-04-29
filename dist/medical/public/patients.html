@@ -107,7 +107,10 @@
                     <div class="records">
                         <div>Thursday, 13 July, 1967</div>
                         <div>Abdominal pain</div>
-                        <button type="button" class="view">View</button>
+                        <div class="view">
+                            <button type="button">View</button>
+                            <button type="button" class="trash"></button>
+                        </div>
                     </div>
                 </template>
             </div>
@@ -212,6 +215,16 @@
             <button type="button">SHARE</button>
         </div>
     </dialog>
+    <div id="del-rcd" popover="manual">
+        <div class="pwrp">
+            <div class="h3">Delete Record</div>
+            <div></div>
+            <div>
+                <button type="button" class="del-rcd" popovertarget="del-rcd" popovertargetaction="hide">Cancel</button>
+                <button type="button" class="del-rcd">Delete</button>
+            </div>
+        </div>
+    </div>
     <script type="module" src="../src/patients_bundle.js"></script>
 </body>
 </html>
