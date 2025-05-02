@@ -267,7 +267,7 @@ div > h5 {
 }
 #ctable tbody tr td:nth-child(2) {
     min-width: 270px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 #ctable tbody tr td:not(:nth-child(3), :nth-child(4)),
 .label {

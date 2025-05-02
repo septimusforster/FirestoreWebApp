@@ -61,7 +61,7 @@ async function dataToTable (category) {
             let data = d.data();
             docs.push({[d.id]: data});
             let {drug, quantity, available, unit_number} = data;
-            let used = Number((available / unit_number).toFixed()) || 0;
+            let used = Number.isFinite((available / unit_number).toFixed()) ? (available / unit_number).toFixed() : 0;
             let tr = tempRow.content.cloneNode(true).children[0];
             for (let i = 1; i < 4; i++) tr.querySelector('td:nth-child('+i+')').textContent = [x+1, drug, `${used} / ${quantity}`][i-1];
             tr.querySelector('td > .bar').style.setProperty('--bar-width', (used * 100 / quantity) + '%');

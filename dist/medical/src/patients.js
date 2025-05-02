@@ -350,9 +350,9 @@ delPop.querySelector('.del-rcd:nth-child(2)').addEventListener('click', async (e
     try {
         await deleteDoc(doc(db, `patients${yr}`, cuData.id, 'record', String(medRec)));
         delPop.hidePopover();
-        console.log(record)
+        // console.log(record)
         let fl = record[cuData.id].filter(x => x.madeAt != medRec);
-        console.log(fl)
+        // console.log(fl)
         record[cuData.id] = fl;
         sectionII.querySelectorAll('#rec_holder .records')[medix].remove();
     } catch (err) {
@@ -517,7 +517,7 @@ dialog[1].querySelector('form').addEventListener('submit', async (e) => {
             //find and subtract the requested drugs
             let prom = datA.map(data => {
                 transaction.update(doc(db, 'products', data[1][1]), {
-                    available: increment(-(Number(data[2]) + Number(data[3]) + Number(data[4])))
+                    available: increment(-((data[2]+data[3]+data[4])*data[5]))
                 });
             });
             await Promise.all(prom);
