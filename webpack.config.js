@@ -10,9 +10,9 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //ROOT form.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./form/form.js",
@@ -22,7 +22,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT acknowledgement.js
 /*
 module.exports = {
@@ -168,7 +168,7 @@ module.exports = {
 }
 */
 //MEDICAL patients.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/medical/src/patients.js",
