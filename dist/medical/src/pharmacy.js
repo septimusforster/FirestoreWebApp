@@ -61,7 +61,7 @@ async function dataToTable (category) {
             let data = d.data();
             docs.push({[d.id]: data});
             let {drug, quantity, available, unit_number} = data;
-            let used = Number((available / unit_number).toFixed());
+            let used = Number.isFinite((available / unit_number).toFixed()) ? (available / unit_number).toFixed() : 0;
             let tr = tempRow.content.cloneNode(true).children[0];
             for (let i = 1; i < 4; i++) tr.querySelector('td:nth-child('+i+')').textContent = [x+1, drug, `${used} / ${quantity}`][i-1];
             tr.querySelector('td > .bar').style.setProperty('--bar-width', (used * 100 / quantity) + '%');
@@ -147,7 +147,7 @@ function plotpie (tr) {
     elem = docs[idx];
     let x = Object.values(elem)[0];
     let avail = Number((x.available / x.unit_number).toFixed());
-    let y = avail * 100 / x.quantity;
+    let y = (avail * 100 / x.quantity) || 0;
     document.querySelector('#preview .ttl').textContent = x.name;
     pie.querySelector('.val').style.setProperty('--con-grad', y + '%');
     pie.querySelector('.val').dataset.num = y + '%';
@@ -162,16 +162,16 @@ function insertDetails (data) {
     let obj = {
         'Product': ['product',drug],  //str 'name' is the field path actual name
         'Vendor': ['vendor',vendor],
-        [`Quantity (in ${container})`]: ['quantity',quantity],
-        [`Available (in ${unit_name})`]: ['available',available],
-        [`Unit per ${unit_name}`]: ['unit_number',Number((available / quantity).toFixed())],
+        'Quantity': ['quantity',quantity],
+        'Unit': ['available',available],
+        'Quantity per unit': ['unit_number',Number((available / quantity).toFixed())],
         'Description': ['desc',desc],
     }
 
     for (const [k, v] of Object.entries(obj)) {
         forms[1].insertAdjacentHTML('beforeend', `
             <div class="label" data-for="${v[0]}">${k}</div>
-            <div class="txtinput" contenteditable="false">${v[1] || 'Nil'}</div>
+            <div class="txtinput" contenteditable="false">${v[1] || 0}</div>
         `);
     }
 }
@@ -229,7 +229,7 @@ forms[0].addEventListener('submit', async (e) => {
     }
     const fd = new FormData(forms[0]);
     for (const [k, v] of fd.entries()) {
-        data[k] = Number(v) || v;
+        data[k] = Number(v) || v.trim();
     }
     //multiplier
     data['available'] = data.unit_number * data.quantity;
@@ -241,7 +241,7 @@ forms[0].addEventListener('submit', async (e) => {
             cname += data.name[i];
         }
         await setDoc(doc(db, 'category', cname), {
-            'prod': arrayUnion(data.drug),
+            'prod': arrayUnion({'ref': d.id, 'load': data.drug}),
         }, {merge: true});
         
         forms[0].reset();

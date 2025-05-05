@@ -156,7 +156,7 @@ module.exports = {
 }
 */
 //MEDICAL pharmacy.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/medical/src/pharmacy.js",
@@ -166,7 +166,11 @@ module.exports = {
     },
     watch: true
 }
+<<<<<<< HEAD
 */
+=======
+
+>>>>>>> caa12f7860e9cea4995489838ac87cdcce948465
 //MEDICAL patients.js
 /*
 module.exports = {

@@ -574,8 +574,8 @@ textarea#complaint, #diagnosis {
     transform:translate(-50%, -50%);
 }
 .pwrp {
-    width:360px;
-    padding:2em;
+    width:270px;
+    padding:1.5em;
     display:flex;
     flex-direction:column;
     gap:1em;
@@ -613,24 +613,21 @@ textarea#complaint, #diagnosis {
     font-weight:500;
     font-size:107%;
 }
-.pwrp>div:nth-child(2){
-    padding:1em 0;
-}
 .pwrp>div:nth-child(3) {
     display:flex;
     align-items:center;
-    justify-content:flex-end;
-    gap:1em;
+    justify-content:center;
+    margin-top:2em;
 }
 .del-rcd{
     padding: 1em 2em;
     color: #555;
-    font-weight:500;
+    font-weight:600;
     font-size:105%;
     border-radius:24px;
 }
 .del-rcd:hover{
-    background-color:#1a73e811;
+    background-color:#f3f3f3;
 }
 .del-rcd:nth-child(2){
     color: #ff4500;
