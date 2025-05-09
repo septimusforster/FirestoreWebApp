@@ -375,6 +375,7 @@ yesBtn.onclick = function() {
     // const operation = 'destroy';
     // const action = document.querySelector('dialog p.msg').textContent;
     const targetID = document.querySelectorAll('.side-panel-toggle')[1].value;
+    console.log(targetID);
     const msgDialog = document.querySelectorAll('dialog');
     msgDialog[0].close();
 
