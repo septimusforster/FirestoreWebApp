@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, collection, getDoc, doc, query, where, getDocs, collectionGroup } from "firebase/firestore"
+import { getFirestore, collection, getDoc, doc, query, where, and, getDocs, collectionGroup } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 // initialize firebase app
@@ -61,18 +61,17 @@ document.forms[0].addEventListener('submit', async (e) => {
         loadbar.showPopover();
         
         const fd = new FormData(e.target);
-        // session = fd.get('session');
         term = Number(fd.get('term'));
         percentile = Number(fd.get('perc'));
         
         arm = ss.arm;
-        
+        const thisYr = String(new Date().getFullYear()-1);
         try {
             loaded(30);
             const principal = eotData.princ;    //eotData.principal[term]
             
             const studentsRef = collection(db, 'session', session, 'students');
-            const studentsQuery = query(studentsRef, where("arm", "==", arm));
+            const studentsQuery = arm === "ENTRANCE" ? query(studentsRef, and(where("admission_year", ">=", thisYr), where("arm", "==", "ENTRANCE"))) : query(studentsRef, where("arm", "==", arm));
             loaded(40);
             const studentsSnapshot = await getDocs(studentsQuery);
             //second width
@@ -82,9 +81,9 @@ document.forms[0].addEventListener('submit', async (e) => {
             studentsSnapshot.docs.forEach(result => {
                 if (result.data().admission_no.toUpperCase().includes(DCA)) studentIDs.push(result.id);
             });
-            
+            console.log('real students:', studentsSnapshot.docs.length);
             let overall = [];
-            const path = session < 2025 ? 'records/scores' : 'scores/records'; 
+            const path = session < 2025 ? 'records/scores' : 'scores/records'; //because of human-being error
             const scorePromises = studentIDs.map(async sid => {
                 await getDoc(doc(db, 'session', session, 'students', sid, path)).then((res) => {
                     studentScores.push({sid, ...res.data()});

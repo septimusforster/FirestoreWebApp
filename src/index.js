@@ -396,16 +396,18 @@ printBtn.onclick = async function () {
     let arm = preview[r].arm;
 
     chooseConfig(6);
-    let formMaster = "masterOfForm." + cls;
+    let formMaster = '@septimusforster';
     
-    const q = query(collection(db, "staffCollection"), where(formMaster, "==", arm));
-    const snapped = await getDocs(q);
-    printBtn.disabled = false;
-    if (snapped.empty) return window.alert("This class has no form master. You can appoint one on the Reserved page.");
-    snapped.docs.forEach(snap => {
-        formMaster = snap.get('fullName');
-        // console.log(snap.id)
-    })
+    if (arm !== "ENTRANCE") {
+        const q = query(collection(db, "staffCollection"), where("masterOfForm."+cls, "==", arm));
+        const snapped = await getDocs(q);
+        printBtn.disabled = false;
+        if (snapped.empty) return window.alert("This class has no form master. You can appoint one on the Reserved page.");
+        snapped.docs.forEach(snap => {
+            formMaster = snap.get('fullName');
+            // console.log(snap.id)
+        });
+    }
     sessionStorage.setItem('student', JSON.stringify({...preview[r], cls, size: size.length, formMaster, session}));
     window.open('result.html', '_blank');
 }
