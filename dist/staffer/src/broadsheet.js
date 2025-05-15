@@ -173,6 +173,7 @@ async function setBroadSheet() {
 
     // insert total and average in tfoot tr
     insertFoot(totStr, aveStr, th);
+    studentTotal();
 }
 
 function insertFoot(a, t, th) {
@@ -206,7 +207,6 @@ function studentTotal () {
         document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(2)`).appendChild(wrapperDiv);
     });
 }
-studentTotal();
 
 // calculate position according to positionArray
 positionArray.sort((a, b) => a - b).reverse();
