@@ -239,7 +239,7 @@ module.exports = {
 }
 */
 // STAFFER broadsheet.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",
@@ -273,19 +273,19 @@ module.exports = {
     },
     watch: true
 }
-
+*/
 //STUDENT logon.js
-/*
+
 module.exports = {
     mode: "development",
-    entry: "./dist/student/src/logon.js",
+    entry: "./dist/student/logon.js",
     output: {
         path: path.resolve(__dirname, "./dist/student/src"),
         filename: "logon_bundle.js"
     },
     watch: true
 }
-*/
+
 //STUDENT temp.js
 /*
 module.exports = {

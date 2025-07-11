@@ -3,12 +3,12 @@
     "name": "Dynamax WebP",
     "icons": [
         {
-            "src": "DCA512.png",
+            "src": "../../../DCA512.png",
             "sizes": "512x512",
             "type": "image/png"
         },
         {
-            "src": "DCA190.png",
+            "src": "../../../DCA190.png",
             "sizes": "190x190",
             "type": "image/png"
         }
