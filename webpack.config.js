@@ -278,7 +278,7 @@ module.exports = {
 
 module.exports = {
     mode: "development",
-    entry: "./dist/student/logon.js",
+    entry: "./dist/student/src/logon.js",
     output: {
         path: path.resolve(__dirname, "./dist/student/src"),
         filename: "logon_bundle.js"
