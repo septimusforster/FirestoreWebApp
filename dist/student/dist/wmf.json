@@ -1,6 +1,6 @@
 {
-    "short_name": "DCA Portal",
-    "name": "Dynamax WebP",
+    "short_name": "DXWP",
+    "name": "DCA Portal",
     "icons": [
         {
             "src": "../../../DCA512.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "start_url": ".",
+    "start_url": "logon.html",
     "display_override": ["fullscreen", "window-controls-overlay", "minimal-ui"],
     "display": "standalone",
     "description": "DCA Student Portal",
