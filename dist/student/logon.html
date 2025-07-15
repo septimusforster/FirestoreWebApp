@@ -8,6 +8,12 @@
     <title>DCA Portal</title>
 </head>
 <body>
+    <script>
+        document.body.addEventListener('click', (e) => {
+            if (document.fullscreenElement) return;
+            document.documentElement.requestFullscreen({navigationUI:"hide"}).then(()=>console.log("Fullscreen activated."));
+        });
+    </script>
     <div class="svgs" style="display:none">
         <svg>
             <symbol id="eye-open" xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
@@ -69,6 +75,6 @@
             </div>
         </div>
     </div>
-    <script type="module" src="src/logon_bundle.js"></script>
+    <script type="module" src="src/log_bun.js"></script>
 </body>
 </html>

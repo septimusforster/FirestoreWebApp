@@ -263,25 +263,25 @@ module.exports = {
 }
 
 //STUDENT index.js
-/*
+*/
 module.exports = {
     mode: "development",
-    entry: "./dist/student/src/index.js",
+    entry: "./dist/student/index.js",
     output: {
         path: path.resolve(__dirname, "./dist/student/src"),
-        filename: "bundle.js"
+        filename: "idx_bun.js"
     },
     watch: true
 }
-*/
-//STUDENT logon.js
 
+//STUDENT logon.js
+/*
 module.exports = {
     mode: "development",
-    entry: "./dist/student/src/logon.js",
+    entry: "./dist/student/logon.js",
     output: {
         path: path.resolve(__dirname, "./dist/student/src"),
-        filename: "logon_bundle.js"
+        filename: "log_bun.js"
     },
     watch: true
 }

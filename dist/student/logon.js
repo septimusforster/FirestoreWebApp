@@ -42,7 +42,7 @@ document.querySelector('.btn.eye').onclick = function(){
 const notf = document.querySelector('.notf');
 const now = new Date();
 const ssn = (now.getMonth() > 9 ? now.getFullYear()+1 : now.getFullYear()).toString();
-let cls, offered, sid;
+let cls, offered, mois;
 
 fms.namedItem('login').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -63,10 +63,12 @@ fms.namedItem('login').addEventListener('submit', async (e) => {
                 const v = val.size;
 
                 if(v===1) {
-                    const d = val.docs.map(m => m.data())[0];
-                    sid = d.id;
-                    if(Object.hasOwn(d, 'offered')){
-                        location.replace('index.html');
+                    mois = val.docs.map(m => m.data())[0];
+                    if(Object.hasOwn(mois, 'offered')){
+                        userValidated();
+                        // await getDoc(doc(db, "session", ssn, "students", mois.id, 'scores', 'records')).then(val=>{
+                        //     console.log(val.data())
+                        // });
                     } else {
                         useApp(6);
                         //get subjects
@@ -74,7 +76,7 @@ fms.namedItem('login').addEventListener('submit', async (e) => {
                         offered = sbjs.data();
                         const stg = e.target.querySelector('#stg');
                         stg.innerHTML = '';
-                        e.target.querySelector('.nwstd').innerHTML = `<div>${d.last_name} ${d.first_name} ${d?.other_name ? d.other_name : ""}</div>`;
+                        e.target.querySelector('.nwstd').innerHTML = `<div>${mois.last_name} ${mois.first_name} ${mois?.other_name ? mois.other_name : ""}</div>`;
                         e.target.querySelector('legend').textContent = "Register subjects";
                 
                         e.submitter.disabled = false;
@@ -122,12 +124,12 @@ fms.namedItem('login').addEventListener('submit', async (e) => {
             popWarn.querySelector('.msg').textContent = `You have selected only ${sbr.length === 1 ? sbr.length + " subject" : sbr.length + " subjects"}. Do you wish to continue?`;
             popWarn.showPopover();
         } else {
-            await reg_sbj(sid);
+            await reg_sbj(mois.id);
         }
     }
 });
 //yesBtn event listener
-document.querySelector('.msg+div button:nth-child(2)').addEventListener('click', async (e) => await reg_sbj(sid));
+document.querySelector('.msg+div button:nth-child(2)').addEventListener('click', async (e) => await reg_sbj(mois.id));
 
 let data = {};
 async function reg_sbj(id){
@@ -139,6 +141,7 @@ async function reg_sbj(id){
     useApp(cls);
     try{
         await updateDoc(doc(db, "session", ssn, "students", id),{'offered':data});
+        mois['offered'] = data;
         notf.textContent = 'Logging in...';
         notf.classList.add('dp', 'ok');
         const tid = setTimeout(() => {
@@ -146,8 +149,13 @@ async function reg_sbj(id){
             e.submitter.disabled = false;
             clearTimeout(tid);
         }, 5000);
-        location.replace('index.html');
+        userValidated();
     }catch(err){
         console.log(err);
     }
+}
+function userValidated(){
+    delete mois.password, mois['cls'] = cls;
+    sessionStorage.setItem('mois', JSON.stringify(mois));
+    location.replace('index.html');
 }

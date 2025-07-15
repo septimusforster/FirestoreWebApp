@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <script>
+        document.body.addEventListener('click', (e) => {
+            if (document.fullscreenElement) return;
+            document.documentElement.requestFullscreen({navigationUI:"hide"}).then(()=>console.log("Fullscreen activated."));
+        });
+    </script>
     <main>
         <nav class="opn">
             <div id="top">
                 <span class="btn tab menu"></span>
                 <div id="me">
-                    <div>John Doe</div>
-                    <small>JSS 1</small>
+                    <div></div>
+                    <small></small>
                 </div>
                 <span id="uimg"></span>
             </div>
@@ -21,64 +27,34 @@
                 <div class="btn lnk">
                     <span class="btn tab cbt"></span>
                     <i>CBT
-                        <div class="sbj_mnu">
-                            <div>English Language</div>
-                            <div>Mathematics</div>
-                            <div>French</div>
-                        </div>
+                        <div class="sbj_mnu"></div>
                     </i>
+                </div>
+            </div>
+            <div id="bottom">
+                <div class="btn lnk">
+                    <span class="btn tab out"></span>
+                    <i>Logout</i>
                 </div>
             </div>
         </nav>
         <div id="main">
             <header>
-                <span>English Language</span>
+                <span></span>
             </header>
             <section>
-                <div class="btn tst opq">
+                <!-- <div class="btn tst">
                     <b>#1</b>
                     <span>
-                        <div>Wednesday, 14 July, 2025</div>
+                        <div>Tuesday, May 20, 2025</div>
+                        <div>CO9NX0W</div>
                         <div>
-                            <span data-tval="2">ppq:</span>
+                            <span data-tval="10">ppq:</span>
                             <span data-tval="20">qtn:</span>
-                            <span data-tval="60">min:</span>
+                            <span data-tval="20">min:</span>
                         </div>
                     </span>
-                </div>
-                <div class="btn tst">
-                    <b>#2</b>
-                    <span>
-                        <div>Monday, 14 September, 2025</div>
-                        <div>
-                            <span data-tval="2">ppq:</span>
-                            <span data-tval="20">qtn:</span>
-                            <span data-tval="60">min:</span>
-                        </div>
-                    </span>
-                </div>
-                <div class="btn tst opq">
-                    <b>#3</b>
-                    <span>
-                        <div>Tuesday, 8 August, 2025</div>
-                        <div>
-                            <span data-tval="2">ppq:</span>
-                            <span data-tval="20">qtn:</span>
-                            <span data-tval="60">min:</span>
-                        </div>
-                    </span>
-                </div>
-                <div class="btn tst">
-                    <b>#4</b>
-                    <span>
-                        <div>Friday, 9 June, 2025</div>
-                        <div>
-                            <span data-tval="2">ppq:</span>
-                            <span data-tval="20">qtn:</span>
-                            <span data-tval="60">min:</span>
-                        </div>
-                    </span>
-                </div>
+                </div> -->
             </section>
             <div id="pop_code" popover="manual">
                 <div class="wrp">
@@ -88,77 +64,55 @@
                             <button type="button" popovertarget="pop_code" popovertargetaction="hide">CANCEL</button>
                             <button>OK</button>
                         </div>
+                        <!-- <div class="pop_err">Incorrect code!</div> -->
                     </form>
-                    <div class="pop_err">Incorrect code!</div>
                 </div>
             </div>
-            <div id="screen">
-                <div id="scr_hr">
+            <div id="screen" style="display:none;">
+                <div class="scr_hr">
                     <span class="btn bck"></span>
-                    <span>English Language &bull; SSS 2 &bull; #4</span>
-                    <span id="tmer">00 : 00 : 00</span>
+                    <span></span>
+                    <span id="tmer">00 : 00</span>
                 </div>
-                <div id="scr_bd">
+                <div id="scr_bd" style="display:none;">
                     <div>
                         <div>
                             <span class="btn menu"></span>
-                            <span><i id="answd">4</i> of 8 attempted</span>
+                            <span><i id="answd">0</i> attempted</span>
                         </div>
-                        <div id="holder">
-
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                            <div class="ngrp">
-                                <span>1</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
-                            </div>
-                        </div>
+                        <div id="holder"></div>
                         <div id="sbt_tst">
-                            <button type="button">SUBMIT</button>
+                            <button type="button" popovertarget="sbt_pop" popovertargetaction="show">SUBMIT</button>
+                            <div id="sbt_pop" popover="manual">
+                                <div class="wrp">
+                                    <p>Are you sure want to submit the test?</p>
+                                    <div class="fm_ft">
+                                        <button type="button" popovertarget="sbt_pop" popovertargetaction="hide">No</button>
+                                        <button type="button" id="okay">Yes</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div></div>
+                    <div id="tst_img"></div>
                 </div>
                 <button type="button" id="ready">Start</button>
             </div>
+            <div id="rez_pop" popover="manual">
+                <div class="wrp">
+                    <div class="scr_hr">Score</div>
+                    <div class="scr_bar" data-unit="%">78</div>
+                    <div id="scor"><sup>27</sup> / <sub>30</sub></div>
+                    <button type="button" class="btn close" popovertarget="rez_pop" popovertargetaction="hide"></button>
+                </div>
+            </div>
+        </div>
+        <div class="loading"></div>
+        <div class="ntwk">
+            <i class="ico"></i>
+            <span>Network disconnected.</span>
         </div>
     </main>
-    <!-- <script>
-        document.getElementById('pop_code').showPopover();
-    </script> -->
-    <script type="module" src="index.js"></script>
+    <script type="module" src="src/idx_bun.js"></script>
 </body>
 </html>
