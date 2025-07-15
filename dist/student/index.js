@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, doc, getDoc, getDocs, setDoc, query, where, and, or } from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc,updateDoc, getDocs, setDoc, query, where, and, or } from "firebase/firestore";
 import configs from "../../src/JSON/configurations.json" assert {type: 'json'};
 
 var app, db;
@@ -39,6 +39,13 @@ const term = function(n){
 let mois = JSON.parse(sessionStorage.getItem('mois'));
 useApp(mois.cls);
 
+//listen and handle refresh
+window.addEventListener('beforeunload', (e) => {
+    if (navigator.userActivation.hasBeenActive) {   //has user interacted with page even once
+        e.preventDefault();
+        console.log("I cannot refresh.");
+    }
+});
 //get and store test array in fb_arr
 let start = '';
 let fb_arr = new Array(8).fill(null);

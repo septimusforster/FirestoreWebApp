@@ -20,3 +20,39 @@ self.addEventListener('message', async ({ data }) => {
         self.postMessage("Worker-based Error.");
     }
 });
+
+// for re-adding user score
+// await updateDoc(doc(db,"session",ssn,"students",mois.id,"scores","records"),{
+//     "BTEC": {
+//         "0": [
+//             null,
+//             9,
+//             null,
+//             9.5,
+//             null,
+//             10,
+//             null,
+//             64
+//         ],
+//         "1": [
+//             7,
+//             null,
+//             null,
+//             9,
+//             null,
+//             10,
+//             20,
+//             35
+//         ],
+//         "2": [
+//             6,
+//             null,
+//             1.5,
+//             5,
+//             null,
+//             null,
+//             null,
+//             null
+//         ]
+//     }
+// });
