@@ -406,7 +406,8 @@ button#ready:hover{
     overflow:hidden;
 }
 #holder{
-    max-height:512px;
+    max-height:630px; /*out-of-fullscreen*/
+    /* max-height:720px; */
     overflow-y:auto;
 }
 #scr_bd>div:nth-child(1)>div:nth-child(1),.ngrp{
@@ -483,7 +484,8 @@ span.btn.menu, .ngrp>*, .close{
     border-top:1px solid #eee;
     margin:0 0 0 10rem;
     width:100%;
-    height:800px;
+    height:800px; /*out-of-fullscreen*/
+    /* height:950px; */
     overflow-y:auto;
 }
 #tst_img>img{

@@ -72,10 +72,22 @@ const ME = document.getElementById('me');
 const pg_hdg = document.querySelector('header>span:nth-child(1)');
 const section = document.querySelector('section');
 const tmer = document.getElementById('tmer');
+const holder = document.getElementById('holder');
+const tstImg = document.getElementById('tst_img');
 const loading = document.querySelector('.loading');
 ME.firstElementChild.textContent = `${mois.last_name + " " + mois.first_name + " " + mois.other_name || ''}`;
 ME.lastElementChild.textContent = `${clsNames[mois.cls] + " " + mois.arm}`;
 const sbjMnu = document.querySelector('.sbj_mnu');
+//listen for fullscreen change
+document.body.addEventListener('fullscreenchange', (e) => {
+    if(document.fullscreenElement){
+        tstImg.setAttribute('style', 'height:900px;');
+        holder.setAttribute('style', 'max-height:720px;');
+    }else{
+        tstImg.removeAttribute('style');
+        holder.removeAttribute('style');
+    }
+})
 //get 'offered' from mois
 for(const k in mois.offered) sbjMnu.insertAdjacentHTML('beforeend', `<div data-ofd="${k}">${mois.offered[k]}</div>`);
 //sbj menu
@@ -140,7 +152,6 @@ section.addEventListener('click', (e) => {
 //select options
 let ans, runtm, test_over = false, choice = '', alpha = 'ABCDEF', fb_data;
 const answd = document.getElementById('answd');
-const holder = document.getElementById('holder');
 holder.addEventListener('click', forHolder);
 function forHolder(e){
     if (e.target.tagName === 'I') {
@@ -165,7 +176,7 @@ cde_fm.addEventListener('submit', (e) => {
     if(input_code.value !== c.code) return e.target.setAttribute('data-err', 'Incorrect code.');
     if(cstmp < gtm || cstmp > gdu) return e.target.setAttribute('data-err', 'Permission denied.');
     fb_data = fb_arr[ofd][term];
-    start = [1,3,5,7][c.catNo-1];
+    start = [0,2,4,6][c.catNo-1];
     if(fb_data[start] !== null){
         e.target.setAttribute('data-err','Test already sat for.');
     }else{
@@ -185,7 +196,6 @@ pop_code.addEventListener('toggle', (e) => {
 });
 //bck btn
 const readyBtn = document.getElementById('ready');
-const tstImg = document.getElementById('tst_img');
 document.querySelector('.btn.bck').onclick = function(){
     screen.setAttribute('style','display:none;');
     tstImg.removeAttribute('style'),tstImg.firstElementChild.setAttribute('src','');
