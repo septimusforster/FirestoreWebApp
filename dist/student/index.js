@@ -171,8 +171,8 @@ cde_fm.addEventListener('submit', (e) => {
     e.preventDefault();
     const c = cbts[ofd][ofd_n];
     const gtm = new Date(c.startDate+"T"+c.startTime) - (60*1000); //get start time, 1 min early
-    const gdu = new Date(gtm).setHours(14); //duration: school close
-    // const gdu = new Date(gtm).setHours(14) + (c.duration*60*1000); //duration: normal human beings
+    const gdu = new Date(gtm).setHours(15) + (c.duration*60*1000); //duration: school close
+    // const gdu = gtm + (c.duration*60*1000); //duration: normal human beings
     if(input_code.value !== c.code) return e.target.setAttribute('data-err', 'Incorrect code.');
     if(cstmp < gtm || cstmp > gdu) return e.target.setAttribute('data-err', 'Permission denied.');
     fb_data = fb_arr[ofd][term];
