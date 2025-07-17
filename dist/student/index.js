@@ -80,7 +80,7 @@ let fb_stamp = null, try_fetch = 0;
             ntwkChk('on','Files online.', 5000);
         }catch(err){
             try_fetch++;
-            try_fetch < 5 ? fetchStamp() : console.log(err);
+            try_fetch < 5 ? fetchStamp() : ntwkChk('off','Bad network. Restart the program.');
             // console.log(err);
         }
     }else{
@@ -143,17 +143,15 @@ function loadCBT(cbt){
     section.innerHTML='';
     cbt.forEach((d,x) => {
         section.insertAdjacentHTML('beforeend', `
-            <div class="btn tst">
-                <b>#${x+1}</b>
-                <span>
-                    <div>${Intl.DateTimeFormat('en-US', {dateStyle: 'full'}).format(new Date(d.startDate))}</div>
-                    <div>${d.code}</div>
-                    <div>
-                        <span data-tval="${d.rating}">ppq:</span>
-                        <span data-tval="${d.questions}">qtn:</span>
-                        <span data-tval="${d.duration}">min:</span>
-                    </div>
-                </span>
+            <div class="ui_card" data-cat="${d.catNo}">
+                <p>Assessment ${d.catNo}</p>
+                <p>${Intl.DateTimeFormat('en-US', {dateStyle: 'full'}).format(new Date(d.startDate))}</p>
+                <div class="code">
+                    ${Boolean(fb_stamp>new Date(d.startDate+'T'+d.startTime).getTime()-60000) || Boolean(fb_stamp<new Date(d.startDate+'T'+d.startTime).setHours(15) + (d.duration*60000)) ? "<code>NOT AVAILABLE</code>" : `<code>${d.code}</code><div class="btn copy">COPY</div>`}
+                </div>
+                <div class="actn">
+                    <span>${d.questions}</span><span>${d.rating}</span><span>${d.duration>60?Math.floor(d.duration/60)+','+d.duration%60:d.duration}</span>
+                </div>
             </div>
         `);
     });
@@ -164,10 +162,12 @@ const pop_code = document.getElementById('pop_code');
 const rez_pop = document.getElementById('rez_pop');
 const input_code = pop_code.querySelector('input#cde');
 section.addEventListener('click', (e) => {
-    const x = [...e.currentTarget.children].findIndex(ff => ff == e.target);
-    if ((e.target.className).includes('btn tst')) {
-        ofd_n = x;
-        input_code.setAttribute('placeholder', `Enter Code for #${x+1}`);
+    const x = e.target.closest('.ui_card').getAttribute('data-cat');
+    if ((e.target.className).includes('copy')) {
+        ofd_n = [...e.currentTarget.children].indexOf(e.target.closest('.ui_card'));
+        console.log(ofd_n);
+        input_code.setAttribute('placeholder', `Enter Code for #${x}`);
+        input_code.setAttribute('value', e.target.previousElementSibling.innerText);
         pop_code.showPopover();
     }
 });

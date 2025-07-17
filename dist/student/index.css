@@ -143,8 +143,84 @@ header>span{
 }
 section{
     padding:5rem 0 0;
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:3rem;
+    width:max-content;
 }
-.tst{
+.ui_card{
+    border-radius:14px;
+    padding:2rem;
+    width:330px;
+    box-shadow:0 5px 24px #eee;
+}
+/* .ui_card.opq{
+
+} */
+.ui_card>p:nth-child(1){
+    font-weight:500;
+}
+.ui_card>p:nth-child(2){
+    font-size:95%;
+    opacity:.5;
+}
+.ui_card>div{
+    margin-top:1rem;
+}
+.code{
+    padding:.3rem 0;
+    display:flex;
+    align-items: center;
+    gap:1rem;
+    font-weight:500;
+}
+code{
+    opacity:.5;
+    font-size:150%;
+    flex:1;
+    text-align:center;
+    letter-spacing:3px;
+}
+.btn.copy{
+    padding:.5rem 1rem;
+    border-radius:24px;
+    border:1px solid #1a73e8;
+    border-radius:24px;
+    color:#1a73e8;
+}
+.actn{
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+}
+.actn>span{
+    position:relative;
+    opacity:.5;
+    padding-left:1rem;
+}
+.actn>span::after{
+    content:'';
+    height:2rem;
+    width:2rem;
+    position:absolute;
+    left:-2rem;
+    left:-1rem;
+    top:50%;
+    transform:translateY(-50%);
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:70%;
+}
+.actn>span:nth-child(1)::after{
+    background-image:url('img/help-circle-outline.svg');
+}
+.actn>span:nth-child(2)::after{
+    background-image:url('img/sparkles-outline.svg');
+}
+.actn>span:nth-child(3)::after{
+    background-image:url('img/time-outline.svg');
+}
+/* .tst{
     width:fit-content;
     display:flex;
     align-items:center;
@@ -174,11 +250,11 @@ section{
     padding:1rem 1.3rem;
     font-weight:500;
     font-size:120%;
-}
+} */
 /* .tst>span>div{
     padding:.5rem 1rem .5rem 0;
 } */
-[data-tval]{
+/* [data-tval]{
     color:#777;
     font-family:consolas;
     margin-right:1rem;
@@ -189,8 +265,8 @@ section{
     font-weight:500;
     font-family:system-ui;
     color:var(--base-clr);
-}
-.tst:nth-of-type(1){
+} */
+/* .tst:nth-of-type(1){
     --base-clr:#7aadf0;
     background-color:#7aadf033;
 }
@@ -209,7 +285,7 @@ section{
 .tst.opq{
     opacity:.3;
     pointer-events:none !important;
-}
+} */
 ::backdrop{
     background-image:linear-gradient(to bottom, #3337, #3333);
 }
