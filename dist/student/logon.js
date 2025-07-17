@@ -15,14 +15,20 @@ document.addEventListener('DOMContentLoaded', (e) => {
     //check online availability
     amionline();
 });
-window.addEventListener('online', (e) => {
-    amionline();
-});
+window.addEventListener('online', amionline);
+window.addEventListener('offline', amionline);
+
+const myZone = new Date(Date.now()).getTimezoneOffset();
+const timeDOM = document.getElementById('time');
 function amionline() {
     if (navigator.onLine) {
-        document.getElementById('time').innerHTML = `<div>${Intl.DateTimeFormat('en-US', {dateStyle: 'full'}).format(Date.now())}</div>`;
+        if(myZone === -60){
+            timeDOM.innerHTML = `<div>${Intl.DateTimeFormat('en-US', {dateStyle: 'full'}).format(Date.now())}</div>`;
+        }else{
+            timeDOM.innerHTML = `<div>Please check your system time.</div>`;
+        }
     } else {
-        document.getElementById('time').innerHTML = "<span id='offline'></span><span>Offline</span>";
+        timeDOM.innerHTML = "<span id='offline'></span><span>Offline</span>";
         document.querySelectorAll('.opq').forEach(opq => opq ? opq.classList.remove('opq') : false);
     }
 }
@@ -61,7 +67,7 @@ fms.namedItem('login').addEventListener('submit', async (e) => {
             await getDocs(q)
             .then(async val => {
                 const v = val.size;
-
+                if(myZone !== -60) throw Error("Time zone mismatch.",{cause: true});
                 if(v===1) {
                     mois = val.docs.map(m => m.data())[0];
                     if(Object.hasOwn(mois, 'offered')){
@@ -94,7 +100,7 @@ fms.namedItem('login').addEventListener('submit', async (e) => {
                         }
                     }
                 } else if (v===0) {
-                    throw Error("Wrong Email/Admission Number or Password.", {cause: true}); 
+                    throw Error("Wrong Email/Admission Number or Password.", {cause: true});
                 } else if (v>1){
                     throw Error(`Failed(${v}): multiple users found.`, {cause: true});
                 }
@@ -107,7 +113,7 @@ fms.namedItem('login').addEventListener('submit', async (e) => {
                     notf.classList.remove('dp', 'err', 'ok');
                     e.submitter.disabled = false;
                     clearTimeout(sid);
-                }, 7000);
+                }, 3000);
             } else {
                 console.log(err);
             }

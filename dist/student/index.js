@@ -9,15 +9,20 @@ function useApp(n){
     db = getFirestore(app);
 }
 //nav lnks drp dwn mnu
-document.querySelectorAll('.lnk>i').forEach((lk,lx,ls) => lk.addEventListener('click', (e) => {
+document.querySelectorAll('.lnk>i').forEach((lk,lx,ls) => lk.addEventListener('mouseenter', (e) => {
     if(lk.className.includes('dp')) lk.classList.remove('dp');
     ls.forEach(elt => elt.classList.toggle('dp', e.target == elt));
-    if (e.target.previousElementSibling.className.includes('out')){
-        //logout
-        localStorage.clear();
-        location.replace('logon.html');
-    }
+    // if (e.target.previousElementSibling.className.includes('out')){
+    // }
 }));
+document.querySelectorAll('.lnk>i').forEach((lk,lx,ls) => lk.addEventListener('mouseleave', (e) => {
+    lk.classList.remove('dp');
+}));
+//logout
+document.querySelector('.tab.out+i').addEventListener('click', (e) => {
+    localStorage.clear();
+    location.replace('logon.html');
+});
 //nav tabs
 document.querySelector('nav').addEventListener('click', (e) => {
     if (e.target.className.includes('tab')) e.currentTarget.classList.toggle('opn');

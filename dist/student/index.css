@@ -43,7 +43,7 @@ nav.opn{
 nav>#top{
     margin-bottom:3rem;
     display:flex;
-    align-items:flex-start;
+    align-items:center;
     justify-content:space-between;
     gap:1rem;
 }
@@ -75,15 +75,11 @@ span#uimg{
 .out{
     background-image:url(img/log-out-outline.svg);
 }
-div#me{
-    min-width: 60%;
-    max-width:190px;
-    padding-top:.6rem;
-}
 div#me>div{
     text-wrap:nowrap;
     text-overflow:ellipsis;
     overflow:hidden;
+    font-weight:500;
 }
 div#me>small{
     opacity:.7;
