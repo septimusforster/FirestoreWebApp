@@ -10,7 +10,7 @@
     <script>
         document.body.addEventListener('click', (e) => {
             if (document.fullscreenElement) return;
-            document.documentElement.requestFullscreen({navigationUI:"hide"}).then(()=>console.log("Fullscreen activated."));
+            document.documentElement.requestFullscreen({navigationUI:"hide"});
         });
     </script>
     <main>

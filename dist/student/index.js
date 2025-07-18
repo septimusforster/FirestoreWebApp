@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, doc, getDoc,updateDoc, getDocs, setDoc, query, where, and, or } from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc,updateDoc, getDocs, setDoc, query, where, and, or, serverTimestamp} from "firebase/firestore";
 import configs from "../../src/JSON/configurations.json" assert {type: 'json'};
 
 var app, db;
@@ -43,18 +43,17 @@ const term = function(n){
 }(now);
 let mois = JSON.parse(sessionStorage.getItem('mois'));
 useApp(mois.cls);
-
 //listen and handle refresh
 window.addEventListener('beforeunload', (e) => {
     if (navigator.userActivation.hasBeenActive) {   //has user interacted with page even once
         e.preventDefault();
-        console.log("I cannot refresh.");
+        console.log("Reload rejected.");
     }
 });
 //get and store test array in fb_arr
 let start = '';
 let fb_arr = new Array(8).fill(null);
-(function postWorker(){
+(async function postWorker(){
     const wkr = new Worker(new URL('worker.js', import.meta.url));
     wkr.postMessage({mois, ssn});
     wkr.onmessage = (e) => {
@@ -68,6 +67,24 @@ let fb_arr = new Array(8).fill(null);
             ntwkChk('on','Connection established.', 5000);
             fb_arr = e.data;
         }
+    }
+})();
+//fetch server timestamp
+let fb_stamp = null, try_fetch = 0;
+(async function fetchStamp(){
+    if (!fb_stamp) {
+        try{
+            await updateDoc(doc(db, 'session',ssn,'students',mois.id),{'modAt': serverTimestamp()});
+            const millisec = (await getDoc(doc(db,'session',ssn,'students',mois.id))).get('modAt').seconds;
+            fb_stamp = parseInt(millisec+'000');
+            ntwkChk('on','Files online.', 5000);
+        }catch(err){
+            try_fetch++;
+            try_fetch < 5 ? fetchStamp() : console.log(err);
+            // console.log(err);
+        }
+    }else{
+        fetchStamp();
     }
 })();
 
@@ -178,8 +195,10 @@ cde_fm.addEventListener('submit', (e) => {
     const gtm = new Date(c.startDate+"T"+c.startTime) - (60*1000); //get start time, 1 min early
     const gdu = new Date(gtm).setHours(15) + (c.duration*60*1000); //duration: school close
     // const gdu = gtm + (c.duration*60*1000); //duration: normal human beings
+
     if(input_code.value !== c.code) return e.target.setAttribute('data-err', 'Incorrect code.');
-    if(cstmp < gtm || cstmp > gdu) return e.target.setAttribute('data-err', 'Permission denied.');
+    if(fb_stamp < gtm || fb_stamp > gdu) return e.target.setAttribute('data-err', 'Permission denied.');
+
     fb_data = fb_arr[ofd][term];
     start = [0,2,4,6][c.catNo-1];
     if(fb_data[start] !== null){
