@@ -8,16 +8,6 @@ function useApp(n){
     app = initializeApp(configs[n]);
     db = getFirestore(app);
 }
-//nav lnks drp dwn mnu
-document.querySelectorAll('.lnk>i').forEach((lk,lx,ls) => lk.addEventListener('mouseenter', (e) => {
-    if(lk.className.includes('dp')) lk.classList.remove('dp');
-    ls.forEach(elt => elt.classList.toggle('dp', e.target == elt));
-    // if (e.target.previousElementSibling.className.includes('out')){
-    // }
-}));
-document.querySelectorAll('.lnk>i').forEach((lk,lx,ls) => lk.addEventListener('mouseleave', (e) => {
-    lk.classList.remove('dp');
-}));
 //logout
 document.querySelector('.tab.out+i').addEventListener('click', (e) => {
     localStorage.clear();
@@ -78,6 +68,17 @@ let fb_stamp = null, try_fetch = 0;
             const millisec = (await getDoc(doc(db,'session',ssn,'students',mois.id))).get('modAt').seconds;
             fb_stamp = parseInt(millisec+'000');
             ntwkChk('on','Files online.', 5000);
+            
+            //nav lnks drp dwn mnu
+            document.querySelectorAll('.lnk>i').forEach((lk,lx,ls) => lk.addEventListener('mouseenter', (e) => {
+                if(lk.className.includes('dp')) lk.classList.remove('dp');
+                ls.forEach(elt => elt.classList.toggle('dp', e.target == elt));
+                // if (e.target.previousElementSibling.className.includes('out')){
+                // }
+            }));
+            document.querySelectorAll('.lnk>i').forEach((lk,lx,ls) => lk.addEventListener('mouseleave', (e) => {
+                lk.classList.remove('dp');
+            }));
         }catch(err){
             try_fetch++;
             try_fetch < 5 ? fetchStamp() : ntwkChk('off','Bad network. Restart the program.');
@@ -87,7 +88,6 @@ let fb_stamp = null, try_fetch = 0;
         fetchStamp();
     }
 })();
-
 //update ME
 const clsNames = ['7th Grade','8th Grade','9th Grade','10th Grade','11th Grade','12th Grade'];
 const ME = document.getElementById('me');
@@ -141,13 +141,14 @@ sbjMnu.addEventListener('click', async (e) => {
 });
 function loadCBT(cbt){
     section.innerHTML='';
+    // console.log(fb_stamp);
     cbt.forEach((d,x) => {
         section.insertAdjacentHTML('beforeend', `
             <div class="ui_card" data-cat="${d.catNo}">
                 <p>Assessment ${d.catNo}</p>
                 <p>${Intl.DateTimeFormat('en-US', {dateStyle: 'full'}).format(new Date(d.startDate))}</p>
                 <div class="code">
-                    ${Boolean(fb_stamp>new Date(d.startDate+'T'+d.startTime).getTime()-60000) || Boolean(fb_stamp<new Date(d.startDate+'T'+d.startTime).setHours(15) + (d.duration*60000)) ? "<code>NOT AVAILABLE</code>" : `<code>${d.code}</code><div class="btn copy">COPY</div>`}
+                    ${Boolean(fb_stamp>new Date(d.startDate+'T'+d.startTime).getTime()-60000) && Boolean(fb_stamp<new Date(d.startDate+'T'+d.startTime).setHours(15) + (d.duration*60000)) ? `<code>${d.code}</code><div class="btn copy">COPY</div>` : "<code>NOT AVAILABLE</code>"}
                 </div>
                 <div class="actn">
                     <span>${d.questions}</span><span>${d.rating}</span><span>${d.duration>60?Math.floor(d.duration/60)+','+d.duration%60:d.duration}</span>
