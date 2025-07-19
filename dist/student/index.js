@@ -163,8 +163,8 @@ const pop_code = document.getElementById('pop_code');
 const rez_pop = document.getElementById('rez_pop');
 const input_code = pop_code.querySelector('input#cde');
 section.addEventListener('click', (e) => {
-    const x = e.target.closest('.ui_card').getAttribute('data-cat');
     if ((e.target.className).includes('copy')) {
+        const x = e.target.closest('.ui_card').getAttribute('data-cat');
         ofd_n = [...e.currentTarget.children].indexOf(e.target.closest('.ui_card'));
         console.log(ofd_n);
         input_code.setAttribute('placeholder', `Enter Code for #${x}`);
@@ -223,7 +223,7 @@ pop_code.addEventListener('toggle', (e) => {
 const readyBtn = document.getElementById('ready');
 document.querySelector('.btn.bck').onclick = function(){
     screen.setAttribute('style','display:none;');
-    tstImg.removeAttribute('style'),tstImg.firstElementChild.setAttribute('src','');
+    tstImg.removeAttribute('style'),tstImg.innerHTML='';
     tmer.removeAttribute('style'),tmer.innerHTML='';
     answd.innerHTML=0;
     holder.innerHTML='';
@@ -274,7 +274,7 @@ readyBtn.addEventListener('click', (e) => {
             }
             answd.innerText = num;
         }
-        document.getElementById('tst_img').appendChild(img_file);
+        tstImg.appendChild(img_file);
         document.getElementById('scr_bd').removeAttribute('style');
         //start timer
         const cid = setInterval(() => {

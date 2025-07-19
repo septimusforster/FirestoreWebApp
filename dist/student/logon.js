@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', (e) => {
     //check online availability
     amionline();
 });
-window.addEventListener('online', amionline);
-window.addEventListener('offline', amionline);
+window.addEventListener('online', amionline, false);
+window.addEventListener('offline', amionline, false);
 
 const myZone = new Date(Date.now()).getTimezoneOffset();
 const timeDOM = document.getElementById('time');
@@ -30,6 +30,7 @@ function amionline() {
     } else {
         timeDOM.innerHTML = "<span id='offline'></span><span>Offline</span>";
         document.querySelectorAll('.opq').forEach(opq => opq ? opq.classList.remove('opq') : false);
+        return;
     }
 }
 const popWarn = document.getElementById('pop_warn');
@@ -53,6 +54,17 @@ let cls, offered, mois;
 fms.namedItem('login').addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
+    if(!navigator.onLine){
+        notf.textContent = 'Network Error.';
+        notf.classList.add('dp', 'err');
+        const sid = setTimeout(() => {
+            notf.classList.remove('dp', 'err', 'ok');
+            e.submitter.disabled = false;
+            clearTimeout(sid);
+        }, 3000);
+        e.submitter.disabled = false;
+        return;
+    }
     if (e.target.name === 'login') {//WARNING: user-defined name
         e.target.classList.add('opq');
         const f0 = new FormData(e.target);
