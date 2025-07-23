@@ -10,30 +10,6 @@
     <dialog popover="manual">
         <div class="wrp">
             <form>
-                <!--div class="gp">
-                    <label for="sess">Choose session</label>
-                    <select name="session" id="sess" required>
-                        <option value="">Session</option>
-                    </select>
-                </div>
-                <div class="gp">
-                    <label for="myclass">Choose class</label>
-                    <select name="myclass" id="myclass" required>
-                        <option value="">Class</option>
-                        <option value="JSS 1">JSS 1</option>
-                        <option value="JSS 2">JSS 2</option>
-                        <option value="JSS 3">JSS 3</option>
-                        <option value="SSS 1">SSS 1</option>
-                        <option value="SSS 2">SSS 2</option>
-                        <option value="SSS 3">SSS 3</option>
-                    </select>
-                </div>
-                <div class="gp">
-                    <label for="myarm">Choose arm</label>
-                    <select name="myarm" id="myarm" required>
-                        <option value="">Arm</option>
-                    </select>
-                </div-->
                 <div class="gp">
                     <label for="trm">Choose term</label>
                     <select name="term" id="trm" required>
@@ -61,9 +37,8 @@
         </div>
     </dialog>
     <script>
-        // for (let s = 0; s < 2; s++) document.querySelector('select#sess').insertAdjacentHTML('beforeend', `<option value="${2024 + s}">${2023 + s}/${2024 + s}</option>`);
         document.querySelector('dialog').showPopover();
-        </script>
+    </script>
     <header>
         <button type="button" id="pdf-btn">Download PDF</button>
         <button type="button" data-pop="Term dialog">
@@ -249,17 +224,17 @@
                         <tr>
                             <td>Promoted</td>
                             <td>59% and above</td>
-                            <td>3 credits and above in 5 core subjects</td>
+                            <td>A student must have at least 3 credits (including Mathematics and English) in the 5 core subjects.</td>
                         </tr>
                         <tr>
                             <td>Probation</td>
                             <td>50% to 58%</td>
-                            <td>2 credits and below in 5 core subjects</td>
+                            <td>A student with 2 credits in the 5 core subjects can be placed on probation only if they have at least a credit in either Mathematics or English Studies.</td>
                         </tr>
                         <tr>
                             <td>Not promoted</td>
                             <td>49% and below</td>
-                            <td>No credit in all 5 core subjects</td>
+                            <td>A student who fails to earn any credit in all 5 core subjects or does not have at least a credit in Mathematics and English Studies will not be promoted.</td>
                         </tr>
                     </tbody>
                 </table>

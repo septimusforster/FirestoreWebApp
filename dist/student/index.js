@@ -148,7 +148,7 @@ function loadCBT(cbt){
                 <p>Assessment ${d.catNo}</p>
                 <p>${Intl.DateTimeFormat('en-US', {dateStyle: 'full'}).format(new Date(d.startDate))}</p>
                 <div class="code">
-                    ${Boolean(fb_stamp>new Date(d.startDate+'T'+d.startTime).getTime()-60000) && Boolean(fb_stamp<new Date(d.startDate+'T'+d.startTime).setHours(15) + (d.duration*60000)) ? `<code>${d.code}</code><div class="btn copy">COPY</div>` : "<code>NOT AVAILABLE</code>"}
+                    ${Boolean(fb_stamp>new Date(d.startDate+'T'+d.startTime).getTime()-60e3) && Boolean(fb_stamp<new Date(d.startDate+'T'+d.startTime).setHours(15) + (d.duration*60e3)) ? `<code>${d.code}</code><div class="btn copy">COPY</div>` : "<code>NOT AVAILABLE</code>"}
                 </div>
                 <div class="actn">
                     <span>${d.questions}</span><span>${d.rating}</span><span>${d.duration>60?Math.floor(d.duration/60)+','+d.duration%60:d.duration}</span>
@@ -193,8 +193,8 @@ const cde_fm = fms.namedItem('cde_fm');
 cde_fm.addEventListener('submit', (e) => {
     e.preventDefault();
     const c = cbts[ofd][ofd_n];
-    const gtm = new Date(c.startDate+"T"+c.startTime) - (60*1000); //get start time, 1 min early
-    const gdu = new Date(gtm).setHours(15) + (c.duration*60*1000); //duration: school close
+    const gtm = new Date(c.startDate+"T"+c.startTime)-60e3; //get start time, 1 min early
+    const gdu = new Date(gtm).setHours(15) + (c.duration*60e3); //duration: school close
     // const gdu = gtm + (c.duration*60*1000); //duration: normal human beings
 
     if(input_code.value !== c.code) return e.target.setAttribute('data-err', 'Incorrect code.');

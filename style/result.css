@@ -238,6 +238,8 @@ td, .h4 {
 #section-footer {
     display: flex;
     flex-wrap: wrap;
+    align-items:flex-start;
+    justify-content:space-between;
     background-color: #f1f1f1;
     gap: 1em;
 }
@@ -250,7 +252,7 @@ td, .h4 {
     font-weight: bold;
 }
 #section-footer > div:last-child {
-    margin: 0 auto;
+    flex:1;
 }
 #section-footer > div > div:not(.h4) {
     padding: 7px 30px;
@@ -279,6 +281,7 @@ blockquote::before {
     color: #777;
 }
 #section-footer > div {
+    padding:1rem;
     border-radius: 7px;
     background-color: #fff;
 }
@@ -309,6 +312,9 @@ blockquote::before {
 #section-footer tbody tr td, .h4 {
     padding: 2px 14px;
     vertical-align: baseline;
+}
+#section-footer tbody tr td:nth-child(2){
+    width:150px;
 }
 img[alt="stamp"] {
     width: 140px;
