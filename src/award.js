@@ -94,7 +94,8 @@ const classDialog = document.getElementById("class-dialog");
 const closeDialogBtn = document.getElementById("close-dialog");
 awardBtn.onclick = () => {classDialog.showModal()};
 closeDialogBtn.onclick = () => {classDialog.close()};
-
+const now = new Date();
+const ssn = (now.getMonth() > 9 ? now.getFullYear()+1 : now.getFullYear()).toString();
 //populate table header with the [abbr] of the subjects
 const table = document.querySelector("table");
 const thead = table.querySelector('thead');
@@ -135,7 +136,7 @@ classForm.addEventListener("submit", async (e) => {
     chooseConfig(classes.indexOf(className));
     //fetch from collection "students"
     let IDs = [];
-    const q1 = query(collection(db, "students"), where("arm", "!=", null));  //and where("days_present","array-contains","null")
+    const q1 = query(collection(db, 'session', ssn, 'students'), where("arm", "!=", null));  //and where("days_present","array-contains","null")
     const studentSnap = await getDocs(q1);
     studentSnap.docs.forEach(s => {
         IDs.push(s.id);
@@ -144,12 +145,12 @@ classForm.addEventListener("submit", async (e) => {
     //fetch from collection "scores"
     let scoresSnap = [];
     const p1 = IDs.map(async id => {
-        await getDoc(doc(db, "scores", id)).then(snap => scoresSnap.push(snap.data()));
+        await getDoc(doc(db, 'session', ssn, 'students', id, 'scores', 'records')).then(snap => scoresSnap.push(snap.data()));
     });
     await Promise.all(p1);
 
     loader.innerText = 'Loading...it may seem eternally...';
-    let term = ["First","Second","Third"].indexOf(EOT.data().this_term);
+    let term = ["first","second","third"].indexOf(EOT.data().this_term.toLowerCase());
 
     // populate tbody with student name and total score for each subject
     const benchmark = abbr_unmutated.length;

@@ -84,7 +84,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -120,7 +120,7 @@ module.exports = {
 }
 */
 //ROOT award.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/award.js",
@@ -130,7 +130,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+/*
 //ROOT recruitment.js
 /*
 module.exports = {

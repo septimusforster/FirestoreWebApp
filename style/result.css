@@ -262,7 +262,7 @@ td, .h4 {
     position: relative;
 }
 div:has(#percent){
-    padding:0 !important;
+    padding:0 0 1rem 0 !important;
 }
 .h4 {margin-bottom: 1em;text-align:center;}
 blockquote {
@@ -321,7 +321,6 @@ blockquote::before {
 }
 img[alt="stamp"] {
     width: 140px;
-    transform: rotate(-20deg);
 }
 p#percent {
     font-size: 1em;

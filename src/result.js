@@ -236,7 +236,7 @@ document.forms[0].addEventListener('submit', async (e) => {
                     let elem = 0, factor = 0;
                     for (const x of Object.values(ov)) {
                         if (!x[term]) continue;
-                        elem += x[term].reduce((acc, val) => acc + val);
+                        elem += x[term].reduce((acc, val) => acc + val,0);
                         factor++;
                     }
                     const yy = elem/factor;
@@ -244,7 +244,7 @@ document.forms[0].addEventListener('submit', async (e) => {
                 }
             });
     
-            const xx = await subAverage.reduce((acc, cur) => acc + cur);
+            const xx = await subAverage.reduce((acc, cur) => acc + cur,0);
             const CLS_AVERAGE = (xx/classSize).toFixed(1);
             // get principal data
             const princDiv = document.getElementById('principal');
@@ -364,8 +364,6 @@ async function eot() {
         eotData = res.data();
         
         const stamp = '../img/24_25/stamp03.png';
-        // const stamp = [,'../img/24_25/stamp02.png','../img/24_25/stamp03.png'][term] || eotData.stamp;
-
         // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
         const photo = "../img/user.png" || ss.photo_src;
         const regNo = ss.admission_no;
