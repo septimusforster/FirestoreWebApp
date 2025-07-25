@@ -84,7 +84,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -263,7 +263,7 @@ module.exports = {
 }
 
 //STUDENT index.js
-*/
+/
 module.exports = {
     mode: "development",
     entry: "./dist/student/index.js",

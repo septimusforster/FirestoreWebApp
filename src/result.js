@@ -209,17 +209,22 @@ document.forms[0].addEventListener('submit', async (e) => {
                     cumm_td.splice(count,1,t.toFixed(1));
                     count++;
                 }
+
                 // for(let w = 0; w < cumm_td.length; w++) {
                 //     term >= w ? txt += `<td>${cumm_td[w]}</td>` : txt += '<td>-</td>';
                 //     console.log(txt);
                 // }
                 let m = cumm_td.map((mp, ix) => ix <= term ? mp : '-');
-                for (const c of m) txt += `<td>${c}</td>`;
+                let how_many_terms  = 0;
+                for (const c of m) {
+                    txt += `<td>${c}</td>`;
+                    c > 0.9 ? how_many_terms++ : false;
+                }
 
                 tbodyTerm.insertAdjacentHTML('beforeend', `
                     <tr>
                         ${txt}
-                        <td>${term < 2 || percentile < 100 ? '-' : (cumm/count).toFixed(1)}</td>
+                        <td>${term < 2 || percentile < 100 ? '-' : (cumm/how_many_terms).toFixed(1)}</td>
                     </tr>
                 `);
             }

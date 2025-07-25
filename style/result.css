@@ -261,6 +261,9 @@ td, .h4 {
     color: #555;
     position: relative;
 }
+div:has(#percent){
+    padding:0 !important;
+}
 .h4 {margin-bottom: 1em;text-align:center;}
 blockquote {
     padding: 10px 20px;
