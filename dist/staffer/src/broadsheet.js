@@ -143,7 +143,11 @@ async function setBroadSheet() {
                     for (let j = 0; j < slice; j++) tds += "<td></td>";
                 }
                 let s = v[term]?.reduce((a,c) => a + c) || 0;
-                if(k in core) core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0)).toFixed(1);
+                if(masterClass.startsWith('SSS')){
+                    if(k in core) core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0)).toFixed(1);
+                }else{
+                    core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0)).toFixed(1);
+                }
                 rt += s;
                 tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
                 f = idx + 1;
@@ -157,6 +161,7 @@ async function setBroadSheet() {
             <tr id="${IDs[i]}">${tds}</tr>
         `)
     });
+    // if(){
     promotion.forEach(p => {
         for(const sb in p) p[sb] == 0 ? delete p[sb] : p[sb] = Number((p[sb] / 3).toFixed(1));
     })
@@ -310,21 +315,24 @@ document.getElementById('promo-btn').onclick = function(){
     promPop.showPopover();
 }
 function isPromoted(){
+    const cell = document.querySelectorAll('main tbody tr td:nth-child(2)');
     if(term == 2) {
         if(/^JSS/.test(masterClass)){ //JSS class
-                
-            // if(core_lower < 49){
-            //     return percent.textContent = 'Not promoted.';
-            // }else if(core_lower <= 58){
-            //     return percent.textContent = 'Probation.';
-            // }else{
-            //     return percent.textContent = 'Promoted.';
-            // }
+            promotion.forEach((o,ox) => {
+                let ol = Object.values(o);
+                let rol = (ol.reduce((v,w) => v + w, 0)) / ol.length;
+                if(rol < 49){
+                    cell[ox].insertAdjacentHTML('afterbegin', '<code>Not Promoted.</code><br>'), nprm++;
+                }else if(rol <= 58){
+                    cell[ox].insertAdjacentHTML('afterbegin', '<code>Probation.</code><br>'), prob++;
+                }else{
+                    cell[ox].insertAdjacentHTML('afterbegin', '<code>Promoted.</code><br>'), prom++;
+                }
+            })
         }
         if(masterClass.startsWith('SSS')){ //SSS class
             // for(const s in core) if(core[s] < 1) delete core[s];
             //     const {MTH, ENG, ...others} = core;
-            const cell = document.querySelectorAll('main tbody tr td:nth-child(2)');
             promotion.forEach((p2,px) => {
                 const {MTH, ENG, ...others} = p2;
                 if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
