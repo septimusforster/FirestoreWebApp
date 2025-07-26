@@ -30,6 +30,7 @@ const ss = JSON.parse(sessionStorage.getItem('student'));
 const offered = ss.offered;
 const classSize = ss.size;
 const promoStatus = ss?.promo_status;
+const percent = document.getElementById('percent');
 const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
 let eotData, thisTerm, term, percentile, arm = JSON.parse(sessionStorage.getItem('arm')).arms.sort(), session = ss.session;
 let myclass = configs[7].indexOf(ss.cls);
@@ -51,7 +52,10 @@ document.querySelector('select#res').addEventListener('change', (e) => {
     document.querySelector('.wrp > form > .gp:last-of-type').classList.toggle('on', e.target.selectedIndex === 2);
     document.querySelector('input#perc').value = e.target.value;
 });
-let eotReadyStatus;
+let eotReadyStatus,
+    core = {MTH:0, ENG:0, LIT:0, CIV:0, GOV:0, PHY:0, CHEM:0, ACCT:0, COMM:0},
+    core_lower = 0;
+
 await eot();
 document.forms[0].addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -221,10 +225,13 @@ document.forms[0].addEventListener('submit', async (e) => {
                     c > 0.9 ? how_many_terms++ : false;
                 }
 
+                //search out core subjects
+                how_many_terms = (cumm/how_many_terms).toFixed(1);
+                if(ME[i][0] in core) core[ME[i][0]] = how_many_terms;
                 tbodyTerm.insertAdjacentHTML('beforeend', `
                     <tr>
                         ${txt}
-                        <td>${term < 2 || percentile < 100 ? '-' : (cumm/how_many_terms).toFixed(1)}</td>
+                        <td>${term < 2 || percentile < 100 ? '-' : how_many_terms}</td>
                     </tr>
                 `);
             }
@@ -249,41 +256,39 @@ document.forms[0].addEventListener('submit', async (e) => {
             // get principal data
             const princDiv = document.getElementById('principal');
             princDiv.querySelector('p').textContent = principal.name;
-            const percent = document.getElementById('percent');
             let term_grade, cumm_grade;
-            let promoTerm = term == 2 ? promoStatus || 'N/A' : 0;
+            // let promoTerm = term == 2 ? promoStatus || 'N/A' : 0;
             let principalComment;
             if (promoStatus?.toLowerCase() === 'not promoted') principalComment = 'Advised to repeat.'; //if not promoted, princComment should be ADVISED TO REPEAT
-            // ME_AVERAGE = ((total * 100) / (scores.length * 100)).toFixed();
             switch (true) {
                 case ME_AVERAGE >= graderObject.A:
                     princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.A;
-                    percent.textContent = promoTerm || 'A';
+                    // percent.textContent = isPromoted() || 'A';
                     term_grade = 'A';
                     break;
                 case ME_AVERAGE >= graderObject.B:
                     princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.B;
-                    percent.textContent = promoTerm || 'B';
+                    // percent.textContent = isPromoted() || 'B';
                     term_grade = 'B';
                     break;
                 case ME_AVERAGE >= graderObject.C:
                     princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.C;
-                    percent.textContent = promoTerm || 'C';
+                    // percent.textContent = isPromoted() || 'C';
                     term_grade = 'C';
                     break;
                 case ME_AVERAGE >= graderObject.D:
                     princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.D;
-                    percent.textContent = promoTerm || 'D';
+                    // percent.textContent = isPromoted() || 'D';
                     term_grade = 'D';
                     break;
                 case ME_AVERAGE >= graderObject.E:
                     princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.E;
-                    percent.textContent = promoTerm || 'E';
+                    // percent.textContent = isPromoted() || 'E';
                     term_grade = 'E';
                     break;
                 case ME_AVERAGE >= graderObject.F:
                     princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.F;
-                    percent.textContent = promoTerm || 'F';
+                    // percent.textContent = isPromoted() || 'F';
                     term_grade = 'F';
                     break;
             }
@@ -308,11 +313,12 @@ document.forms[0].addEventListener('submit', async (e) => {
                 tds.forEach(td => {
                     if(!(td.innerText == '-' || td.innerText == undefined)) ft += Number(td.innerText);
                 });
+                core_lower = colNum == 3 ? (ft/ME.length).toFixed(1) : ft.toFixed(1) || '';
                 tfootCumm.querySelector('tr').insertAdjacentHTML('beforeend', `
-                    <td>${colNum == 3 ? (ft/ME.length).toFixed(1) : ft.toFixed(1) || ''}</td>
+                    <td>${core_lower}</td>
                 `);
             }
-            
+            isPromoted();
         } catch (err) {
             console.error(err.message);
             loadbar.hidePopover();
@@ -364,7 +370,6 @@ async function eot() {
         eotData = res.data();
         
         const stamp = '../img/24_25/stamp03.png';
-        // const photo = "../img/7503204_user_profile_account_person_avatar_icon.png" || ss.photo_src;
         const photo = "../img/user.png" || ss.photo_src;
         const regNo = ss.admission_no;
         const gender = 'Male Female'.split(' ').filter(x => x.startsWith(ss.gender))[0];
@@ -401,3 +406,23 @@ function generatePDF () {
     html2pdf().set(opt).from(main).save();
 }
 pdfBtn.addEventListener('click', generatePDF);
+function isPromoted(){
+    if(term == 2) {
+        if(/^JSS/.test(ss.cls)){ //JSS class
+            if(core_lower < 49){
+                return percent.textContent = 'Not promoted.';
+            }else if(core_lower <= 58){
+                return percent.textContent = 'Probation.';
+            }else{
+                return percent.textContent = 'Promoted.';
+            }
+        }
+        if(ss.cls.startsWith('SSS')){ //SSS class
+            for(const s in core) if(core[s] < 1) delete core[s];
+            //
+        }
+    }else{
+        const criteria = [80,65,50,40,30,0];
+        percent.textContent = ['A','B','C','D','E','F'].indexOf(criteria.findIndex(c => c <= core_lower))
+    }
+}
