@@ -29,17 +29,12 @@ document.querySelector('[data-pop]').onclick = () => {
 const ss = JSON.parse(sessionStorage.getItem('student'));
 const offered = ss.offered;
 const classSize = ss.size;
-const promoStatus = ss?.promo_status;
 const percent = document.getElementById('percent');
 const fullName = ss.last_name.concat(' ', ss.other_name, ' ', ss.first_name);
 let eotData, thisTerm, term, percentile, arm = JSON.parse(sessionStorage.getItem('arm')).arms.sort(), session = ss.session;
 let myclass = configs[7].indexOf(ss.cls);
 let className = '', daysOpen = '', daysPresent = '', daysAbsent = '', ssn = '', nextTerm = '';
 
-// arm is first an array before it becomes a string in the submit event of the form
-// arm.forEach(arm => document.querySelector('select#myarm').insertAdjacentHTML('beforeend', `<option value="${arm}">${arm}</option>`));
-
-// let n;
 const dialog = document.querySelector('dialog');
 const loadbar = dialog.querySelector('#loadbar');
 let pt = 7;
@@ -256,39 +251,30 @@ document.forms[0].addEventListener('submit', async (e) => {
             // get principal data
             const princDiv = document.getElementById('principal');
             princDiv.querySelector('p').textContent = principal.name;
-            let term_grade, cumm_grade;
-            // let promoTerm = term == 2 ? promoStatus || 'N/A' : 0;
-            let principalComment;
-            if (promoStatus?.toLowerCase() === 'not promoted') principalComment = 'Advised to repeat.'; //if not promoted, princComment should be ADVISED TO REPEAT
+            let term_grade;
             switch (true) {
                 case ME_AVERAGE >= graderObject.A:
-                    princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.A;
-                    // percent.textContent = isPromoted() || 'A';
+                    princDiv.querySelector('blockquote').textContent = principal.comments.A;
                     term_grade = 'A';
                     break;
                 case ME_AVERAGE >= graderObject.B:
-                    princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.B;
-                    // percent.textContent = isPromoted() || 'B';
+                    princDiv.querySelector('blockquote').textContent = principal.comments.B;
                     term_grade = 'B';
                     break;
                 case ME_AVERAGE >= graderObject.C:
-                    princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.C;
-                    // percent.textContent = isPromoted() || 'C';
+                    princDiv.querySelector('blockquote').textContent = principal.comments.C;
                     term_grade = 'C';
                     break;
                 case ME_AVERAGE >= graderObject.D:
-                    princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.D;
-                    // percent.textContent = isPromoted() || 'D';
+                    princDiv.querySelector('blockquote').textContent = principal.comments.D;
                     term_grade = 'D';
                     break;
                 case ME_AVERAGE >= graderObject.E:
-                    princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.E;
-                    // percent.textContent = isPromoted() || 'E';
+                    princDiv.querySelector('blockquote').textContent = principal.comments.E;
                     term_grade = 'E';
                     break;
                 case ME_AVERAGE >= graderObject.F:
-                    princDiv.querySelector('blockquote').textContent = principalComment || principal.comments.F;
-                    // percent.textContent = isPromoted() || 'F';
+                    princDiv.querySelector('blockquote').textContent = principal.comments.F;
                     term_grade = 'F';
                     break;
             }
@@ -419,10 +405,19 @@ function isPromoted(){
         }
         if(ss.cls.startsWith('SSS')){ //SSS class
             for(const s in core) if(core[s] < 1) delete core[s];
-            //
+             const {MTH, ENG, ...others} = core;
+            if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
+                percent.textContent = 'Promoted.';
+            }else if((MTH >= 50 || ENG >= 50) && Object.values(core).filter(n => n >= 50).length >= 2){
+                percent.textContent = 'Probation';
+            }else if(Object.values(core).every(n => n < 50) || (MTH < 50 && ENG < 50)){
+                percent.textContent = 'Not promoted.';
+            }
         }
     }else{
-        const criteria = [80,65,50,40,30,0];
-        percent.textContent = ['A','B','C','D','E','F'].indexOf(criteria.findIndex(c => c <= core_lower))
+        console.log(core_lower);
+        const criteria = [80,65,50,40,30,0,];
+        const status = ['A','B','C','D','E','F'].indexOf(criteria.findIndex(c => c <= core_lower));
+        percent.textContent = status == -1 ? 'N/A' : status;
     }
 }
