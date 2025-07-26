@@ -84,7 +84,7 @@ module.exports = {
 }
 */
 //ROOT result.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -239,7 +239,7 @@ module.exports = {
 }
 */
 // STAFFER broadsheet.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",

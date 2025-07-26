@@ -71,7 +71,7 @@ formSettings.addEventListener('submit',(e) => {
         }
     };
 });
-let IDs = [], names = [];
+let IDs = [], names = [], promotion = [];
 const table = document.querySelector('table');
 async function setBroadSheet() {
     // console.log(jrsub.data());
@@ -135,6 +135,7 @@ async function setBroadSheet() {
         let scoreEntries = Object.entries(obj).sort();
         let f = 0;  //rt: running total
         if (obj) {
+            let core = {MTH:0, ENG:0, LIT:0, CIV:0, GOV:0, PHY:0, CHEM:0, ACCT:0, COMM:0};
             for (const [k, v] of scoreEntries) {
                 let idx = abbr_unmutated.indexOf(k);
                 let slice = idx - f;
@@ -142,10 +143,12 @@ async function setBroadSheet() {
                     for (let j = 0; j < slice; j++) tds += "<td></td>";
                 }
                 let s = v[term]?.reduce((a,c) => a + c) || 0;
+                if(k in core) core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0)).toFixed(1);
                 rt += s;
                 tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
                 f = idx + 1;
             }
+            promotion.push(core);
         }
         for (f; f < benchmark + 1; f++) {
             f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/scoreEntries.length).toFixed(1)}</td>`;
@@ -154,7 +157,10 @@ async function setBroadSheet() {
             <tr id="${IDs[i]}">${tds}</tr>
         `)
     });
-    
+    promotion.forEach(p => {
+        for(const sb in p) p[sb] == 0 ? delete p[sb] : p[sb] = Number((p[sb] / 3).toFixed(1));
+    })
+    isPromoted();
     // compute total and average for each subject and store in td string
     let aveStr = '', totStr = '';
     abbr.forEach((ab,ix) => {
@@ -238,10 +244,10 @@ newLabel.append(newInput, labelTxt);
 document.querySelector("header").appendChild(newLabel);
 
 //for setting promotion status
+/*
 const dialogs = document.querySelectorAll("dialog");
 const promoTabBody = document.querySelector("table#promo-tab tbody");
 const promoForm = document.querySelector("form#promo-form");
-
 let computedProm = false;
 let newBtn = document.createElement("button");
 newBtn.type = "button";
@@ -272,6 +278,7 @@ newBtn.addEventListener("click", (e) => {
 document.querySelector("header").appendChild(newBtn);
 
 //promotion status form submission
+/*
 promoForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     e.submitter.disabled = true;
@@ -291,6 +298,49 @@ promoForm.addEventListener("submit", async (e) => {
     e.submitter.style.cursor = 'pointer';
     closeBtn.click();
 });
-
+*/
 const closeBtn = document.querySelector("input#close");
 closeBtn.addEventListener('click', () => closeBtn.closest('dialog').close());
+
+//promo btn
+let prom=0,prob=0,nprm=0;
+const promPop = document.getElementById('promo-pop');
+document.getElementById('promo-btn').onclick = function(){
+    promPop.querySelectorAll('.wrp>div').forEach((div, dvx) => div.textContent = `${['Promoted', 'Probation', 'Not Promoted'][dvx]} --- ${[prom,prob,nprm][dvx]}`)
+    promPop.showPopover();
+}
+function isPromoted(){
+    if(term == 2) {
+        if(/^JSS/.test(masterClass)){ //JSS class
+                
+            // if(core_lower < 49){
+            //     return percent.textContent = 'Not promoted.';
+            // }else if(core_lower <= 58){
+            //     return percent.textContent = 'Probation.';
+            // }else{
+            //     return percent.textContent = 'Promoted.';
+            // }
+        }
+        if(masterClass.startsWith('SSS')){ //SSS class
+            // for(const s in core) if(core[s] < 1) delete core[s];
+            //     const {MTH, ENG, ...others} = core;
+            const cell = document.querySelectorAll('main tbody tr td:nth-child(2)');
+            promotion.forEach((p2,px) => {
+                const {MTH, ENG, ...others} = p2;
+                if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
+                    cell[px].insertAdjacentHTML('afterbegin', '<code>Promoted.</code><br>'), prom++;
+                }else if((MTH >= 50 || ENG >= 50) && Object.values(p2).filter(n => n >= 50).length >= 2){
+                    cell[px].insertAdjacentHTML('afterbegin', '<code>Probation.</code><br>'), prob++;
+                }else if(Object.values(p2).every(n => n < 50) || (MTH < 50 && ENG < 50)){
+                    cell[px].insertAdjacentHTML('afterbegin', '<code>Not promoted.</code><br>'), nprm++;
+                }
+            })
+        }
+    }else{
+        false;
+        // console.log(core_lower);
+        // const criteria = [80,65,50,40,30,0,];
+        // const status = ['A','B','C','D','E','F'].indexOf(criteria.findIndex(c => c <= core_lower));
+        // percent.textContent = status == -1 ? 'N/A' : status;
+    }
+}

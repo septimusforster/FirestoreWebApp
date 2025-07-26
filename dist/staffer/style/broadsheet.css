@@ -128,3 +128,29 @@ button.x:hover{
 .wrp>.err.on{
     bottom:0;
 }
+code{
+    color:#333;
+}
+#promo-btn{
+    position:absolute;
+    top:1rem;
+    left:50%;
+    transform:translateX(-50%);
+}
+#promo-pop{
+    pointer-events:none;
+}
+#promo-pop>.wrp{
+    padding:2rem;
+    background-color:#fff;
+    width:330px;
+    pointer-events:all;
+}
+#promo-pop>.wrp>div{
+    padding:1.3rem 2rem;
+    border-radius:7px;
+    box-shadow:0 7px 24px #eee;
+    margin:.8rem 0 1.6rem;
+    font-weight: 500;
+    font-size:105%;
+}
