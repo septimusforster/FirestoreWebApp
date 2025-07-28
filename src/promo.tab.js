@@ -28,7 +28,7 @@ let master_props = {    //very critical here, the order of the properties
     'MASTER': ss_props?.MASTER || '',
 }
 
-let promoMsg, promoID;
+let promoID;
 const changeFormBtn = document.querySelector('button#change_form');
 const logoutBtn = document.querySelector('button#logout');
 const loginDialog = document.querySelector('dialog#login_dg');
@@ -64,7 +64,7 @@ function insertData (master, students) {
                 <td>${ME.last_name} ${ME.first_name} ${ME.other_name}</td>
                 <td>${ME.admission_year}</td>
                 <td>
-                    <button type="button"></button><button type="button"></button>
+                    <button type="button"></button><button type="button"></button><button type="button"></button>
                 </td>
             </tr>    
         `);
@@ -73,12 +73,13 @@ function insertData (master, students) {
     document.querySelector('footer > div > div').firstElementChild.textContent = xy.length;
     promoteBtnsHandler();
 }
-
+let promoIndex;
 function promoteBtnsHandler () {
     const prBtns = document.querySelectorAll('tr > td > button');
-    prBtns.forEach(btn => {
+    prBtns.forEach((btn, btx) => {
         btn.addEventListener('click', () => {
-            promoteHandler(btn)
+            promoIndex = [...btn.closest('td').querySelectorAll('button')].indexOf(btn);
+            promoteHandler(btn.closest('td'), promoIndex);
         });
     });
 }
@@ -247,26 +248,31 @@ admin_form.addEventListener('submit', async (e) => {
 });
 
 let old_form, new_form, new_session = Number(master_props.SESSION) + 1;
-function promoteHandler(btn) {
-    const STUDENT_NAME = btn.parentElement.parentElement.children[2].textContent;
-    const ADM_NO = btn.parentElement.parentElement.children[1].textContent;
+function promoteHandler(td, btx) {
+    const STUDENT_NAME = td.closest('tr').children[2].textContent;
+    const ADM_NO = td.closest('tr').children[1].textContent;
     old_form = master_props.FORM_NAME;
     new_form = configs[7][configs[7].indexOf(old_form) + 1];
     
     Object.entries(std_props).some(([key, val]) => {if (val.admission_no == ADM_NO) promoID = key});
-
-    if (btn == btn.parentElement.firstElementChild) {
-        //apply promote formatting
-        promoMsg = true;
-        container.firstElementChild.firstElementChild.textContent = `promote ${STUDENT_NAME} to ${new_form}`;
-        container.lastElementChild.lastElementChild.firstElementChild.textContent = 'PROMOTE';
-        container.classList.replace('rpt', 'prm') ? true : container.classList.add('prm');
-    } else {
-        //apply repeat formatting
-        promoMsg = false;
-        container.firstElementChild.firstElementChild.textContent =  `repeat ${STUDENT_NAME} in ${old_form}`;
-        container.lastElementChild.lastElementChild.firstElementChild.textContent = 'REPEAT';
-        container.classList.replace('prm', 'rpt') ? true : container.classList.add('rpt');
+    switch (btx) {
+        case 0:
+            container.firstElementChild.firstElementChild.textContent = `promote ${STUDENT_NAME} to ${new_form}`;
+            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'PROMOTE';
+            container.classList.replace('rpt', 'prm') ? true : container.classList.add('prm');
+            break;
+        case 1:
+            container.firstElementChild.firstElementChild.textContent = `set ${STUDENT_NAME} on probation`;
+            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'PROBATION';
+            container.classList.remove('rpt', 'prm');
+            break;
+        case 2:
+            container.firstElementChild.firstElementChild.textContent =  `repeat ${STUDENT_NAME} in ${old_form}`;
+            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'REPEAT';
+            container.classList.replace('prm', 'rpt') ? true : container.classList.add('rpt');
+            break;
+        default:
+            break;
     }
     prDialog.showModal();
 }
@@ -277,15 +283,21 @@ const carouselBtn = container.querySelector('div > button:last-of-type');
 carouselBtn.addEventListener('click', async (e) => {
     carouselBtn.disabled = true, carouselBtn.previousElementSibling.disabled = true;
     carouselBtn.classList.add('clk');
-    notify.lastElementChild.textContent = promoMsg ? 'PROMOTED' : 'REPEATED';
+    notify.lastElementChild.textContent = ['PROMOTED','PROBATED','REPEATED'][promoIndex];
     //check if result already exists
-    if (promoMsg) {
-        //check nxt session for data
-        await finalPromotionHandler(new_form, promoMsg);
-    } else {
-        await finalPromotionHandler(old_form, promoMsg);
-    }
-    
+    switch (promoIndex) {
+        case 0:
+            await finalPromotionHandler(new_form, 'PROMOTED');
+            break;
+        case 1:
+            await finalPromotionHandler(old_form, 'PROBATION');
+            break;
+        case 2:
+            await finalPromotionHandler(old_form, 'REPEATED');
+            break;
+        default:
+            break;
+    }    
 });
 
 let x = new Array(8);
@@ -294,7 +306,7 @@ const NULLS = {
     0: x, 1: x, 2: x,
 }
 
-async function finalPromotionHandler (form_state, promomsg_bool) {
+async function finalPromotionHandler (form_state, promomsg) {
     chooseConfig(configs[configs[7].indexOf(form_state)]);
     // console.log(promoID);
     const promoteDoc = await getDoc(doc(db, 'session', String(new_session), 'students', promoID));
@@ -313,21 +325,24 @@ async function finalPromotionHandler (form_state, promomsg_bool) {
         //create empty 'comments', 'days_present' and 'promo_status'
         data['comment'] = {0: '', 1: '', 2: ''};
         data['days_present'] = [0,0,0];
-        data['promo_status'] = null;
 
         //create empty "records" of student subjects
         let records = {};
         for (let k of Object.keys(data.offered)) records[k] = NULLS;
         
         //check if old_form is JSS 3
-        if (old_form == configs[7][2] && promomsg_bool) {
+        if(old_form == configs[7][2]) {
             delete data['offered'];
             records = {};   //reset records
         }
-        
-        //setDoc to STUDENTS collection and thereafter SCORES collection
-        await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);
-        await setDoc(doc(db, 'session', String(new_session), 'students', promoID, 'scores', 'records'), records);
+        if (promomsg == 'PROMOTED' || promomsg == 'REPEATED') {
+            //setDoc to STUDENTS collection and thereafter SCORES collection
+            await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);
+            await setDoc(doc(db, 'session', String(new_session), 'students', promoID, 'scores', 'records'), records);
+        }
+        await updateDoc(doc(db, 'session', master_props.SESSION, 'students', promoID), {
+            promo_status: promomsg
+        });
     }
 
     carouselBtn.closest('dialog').close();

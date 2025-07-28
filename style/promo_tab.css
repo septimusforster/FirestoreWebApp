@@ -70,7 +70,19 @@ tbody tr > td > button:nth-child(1) {
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="%231a73e8" version="1.1" id="Layer_1" width="2em" height="2em" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><g><path d="M50.5,19.881c-1.104,0-2,0.896-2,2V72.17L33.193,56.609c-0.781-0.781-1.922-0.781-2.703,0   c-0.781,0.78-0.719,2.047,0.062,2.828l18.883,18.857c0.375,0.375,0.899,0.586,1.43,0.586s1.047-0.211,1.422-0.586l18.857-18.857   c0.781-0.781,0.783-2.048,0.002-2.828c-0.781-0.781-2.296-0.781-3.077,0L52.5,71.933V21.881C52.5,20.776,51.604,19.881,50.5,19.881   z"/></g></svg>');
     transform: rotate(180deg);
 }
-tbody tr > td > button:nth-child(2) {
+tbody tr > td > button:nth-child(2){
+    position:relative;
+}
+tbody tr > td > button:nth-child(2)::after{
+    content:'';
+    position:absolute;
+    left:calc(50% + 2.5px);
+    top:50%;
+    border:5px solid;
+    border-color:transparent transparent transparent #777;
+    transform:translate(-50%, -50%);
+}
+tbody tr > td > button:nth-child(3) {
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="%23ff4500" version="1.1" id="Layer_1" width="2em" height="2em" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><g><path d="M50.5,19.881c-1.104,0-2,0.896-2,2V72.17L33.193,56.609c-0.781-0.781-1.922-0.781-2.703,0   c-0.781,0.78-0.719,2.047,0.062,2.828l18.883,18.857c0.375,0.375,0.899,0.586,1.43,0.586s1.047-0.211,1.422-0.586l18.857-18.857   c0.781-0.781,0.783-2.048,0.002-2.828c-0.781-0.781-2.296-0.781-3.077,0L52.5,71.933V21.881C52.5,20.776,51.604,19.881,50.5,19.881   z"/></g></svg>');
 }
 footer {
@@ -88,14 +100,14 @@ footer {
 div.notify, .err_div {
     gap: 10px;
     opacity: 0;
-    position: absolute;
+    position: fixed;
     border: 4px solid #444;
     border-radius: 12px;
     padding: 7px 17px;
     background-color: rgba(0,0,0,.7);
     transition: .2s ease;
 }
-div.notify {bottom: 0%;left: 5%;z-index: -1;}
+div.notify {bottom: 7%;left: 5%;z-index: -1;}
 .err_div {
     width: 75%;
     background-color: #444;
