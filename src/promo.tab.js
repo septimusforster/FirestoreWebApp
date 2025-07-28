@@ -20,10 +20,10 @@ function chooseConfig(projConfig) {
 // initiating key params
 let ss_props = JSON.parse(sessionStorage.getItem('master_util'));
 let std_props = JSON.parse(sessionStorage.getItem('std_util'));
-
+ const MONTH = new Date().getMonth();
 let master_props = {    //very critical here, the order of the properties
     'FORM_ARM': ss_props?.FORM_ARM || '',
-    'SESSION': '2024',
+    'SESSION': MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear()),
     'FORM_NAME': ss_props?.FORM_NAME || '',
     'MASTER': ss_props?.MASTER || '',
 }
