@@ -308,7 +308,7 @@ const NULLS = {
 
 async function finalPromotionHandler (form_state, promomsg) {
     chooseConfig(configs[configs[7].indexOf(form_state)]);
-    // console.log(promoID);
+    console.log(promomsg);
     const promoteDoc = await getDoc(doc(db, 'session', String(new_session), 'students', promoID));
     if (promoteDoc.exists()) {
         container.nextElementSibling.lastElementChild.textContent = "Task already achieved.";
@@ -335,14 +335,14 @@ async function finalPromotionHandler (form_state, promomsg) {
             delete data['offered'];
             records = {};   //reset records
         }
-        if (promomsg == 'PROMOTED' || promomsg == 'REPEATED') {
+        await updateDoc(doc(db, 'session', master_props.SESSION, 'students', promoID), {
+            promo_status: promomsg
+        });
+        if (promomsg == 'PROMOTED') {
             //setDoc to STUDENTS collection and thereafter SCORES collection
             await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);
             await setDoc(doc(db, 'session', String(new_session), 'students', promoID, 'scores', 'records'), records);
         }
-        await updateDoc(doc(db, 'session', master_props.SESSION, 'students', promoID), {
-            promo_status: promomsg
-        });
     }
 
     carouselBtn.closest('dialog').close();
