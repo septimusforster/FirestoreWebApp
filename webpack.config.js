@@ -144,7 +144,7 @@ module.exports = {
 }
 */
 //ROOT promo.tab.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/promo.tab.js",
@@ -239,7 +239,7 @@ module.exports = {
 }
 */
 // STAFFER broadsheet.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",

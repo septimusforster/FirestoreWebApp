@@ -71,7 +71,7 @@ formSettings.addEventListener('submit',(e) => {
         }
     };
 });
-let IDs = [], names = [], promotion = [];
+let IDs = [], names = [], promotion = [], studentSnap;
 const table = document.querySelector('table');
 async function setBroadSheet() {
     // console.log(jrsub.data());
@@ -93,11 +93,11 @@ async function setBroadSheet() {
     chooseConfig(configs[7].indexOf(masterClass));
     IDs = [], names = [];
     const q1 = query(collection(db, 'session', session, 'students'), where("arm", "==", masterArm), orderBy("last_name"));  //and where("days_present","array-contains","null")
-    const studentSnap = await getDocs(q1);
+    studentSnap = await getDocs(q1);
     studentSnap.docs.forEach(s => {
         if (['demo'].includes(masterClass.toLowerCase()) || s.data()?.admission_no.toUpperCase().includes(school)) {
             IDs.push(s.id);
-            names.push(`${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`)
+            names.push({na: `${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`, nb: s.data()?.promo_status || null})
         }
     });
     //get scores with the provided IDs
@@ -128,8 +128,8 @@ async function setBroadSheet() {
     // populate tbody with student name and total score for each subject
     tbody.innerHTML=''; //reset tbody
     const benchmark = abbr_unmutated.length;
-    names.forEach((n, i) => {
-        let tds = `<td>${i+1}</td><td>${n}</td>`;
+    names.forEach(({na, nb}, i) => {
+        let tds = `<td>${i+1}</td><td>${na}</td>`;
         const obj = scoresSnap[i];
         let rt = 0;
         let scoreEntries = Object.entries(obj).sort();
@@ -145,7 +145,7 @@ async function setBroadSheet() {
                 let s = v[term]?.reduce((a,c) => a + c) || 0;
                 const ck = Object.values(v);
                 if(masterClass.startsWith('SSS')){
-                    if(k in core) core[k] = (ck.flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1);
+                    if(k in core) core[k] = (ck.flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1)
                 }else{
                     core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1);
                 }
@@ -163,7 +163,6 @@ async function setBroadSheet() {
         `)
     });
     promotion.forEach(p => {
-        // ca == 0 ? delete crr[cx] : crr[cx][ca] = Number(crr[cx][ca] / cb).toFixed(1);
         for(const sb in p) p[sb] == 0 ? delete p[sb] : p[sb] = Number(p[sb]);
     });
     isPromoted();
@@ -333,13 +332,21 @@ function isPromoted(){
         }
         if(masterClass.startsWith('SSS')){ //SSS class
             promotion.forEach((p2,px) => {
-                const {MTH, ENG, ...others} = p2;
-                if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
-                    cell[px].insertAdjacentHTML('afterbegin', '<code>Promoted.</code><br>'), prom++;
-                }else if((MTH >= 50 || ENG >= 50) && Object.values(p2).filter(n => n >= 50).length >= 2){
-                    cell[px].insertAdjacentHTML('afterbegin', '<code>Probation.</code><br>'), prob++;
-                }else if(Object.values(p2).every(n => n < 50) || (MTH < 50 && ENG < 50)){
-                    cell[px].insertAdjacentHTML('afterbegin', '<code>Not promoted.</code><br>'), nprm++;
+                const nb = names[px]['nb'];
+                if(nb !== null){
+                    cell[px].insertAdjacentHTML('afterbegin', `<code>${nb}.</code><br>`);
+                    if(nb.toLowerCase() === 'promoted') prom++;
+                    if(nb.toLowerCase() === 'probation') prob++
+                    if(nb.toLowerCase() === 'repeated') nprm++;
+                }else{
+                    const {MTH, ENG, ...others} = p2;
+                    if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
+                        cell[px].insertAdjacentHTML('afterbegin', '<code>Promoted.</code><br>'), prom++;
+                    }else if((MTH >= 50 || ENG >= 50) && Object.values(p2).filter(n => n >= 50).length >= 2){
+                        cell[px].insertAdjacentHTML('afterbegin', '<code>Probation.</code><br>'), prob++;
+                    }else if(Object.values(p2).every(n => n < 50) || (MTH < 50 && ENG < 50)){
+                        cell[px].insertAdjacentHTML('afterbegin', '<code>Not promoted.</code><br>'), nprm++;
+                    }
                 }
             })
         }
