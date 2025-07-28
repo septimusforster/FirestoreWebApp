@@ -395,9 +395,9 @@ pdfBtn.addEventListener('click', generatePDF);
 function isPromoted(){
     if(term == 2) {
         if(/^JSS/.test(ss.cls)){ //JSS class
-            if(core_lower < 49){
+            if(core_lower < 49.4){
                 return percent.textContent = 'Not promoted.';
-            }else if(core_lower <= 58){
+            }else if(core_lower >= 49.5 && core_lower <= 54.5){
                 return percent.textContent = 'Probation.';
             }else{
                 return percent.textContent = 'Promoted.';

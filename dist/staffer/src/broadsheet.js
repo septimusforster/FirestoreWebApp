@@ -143,10 +143,11 @@ async function setBroadSheet() {
                     for (let j = 0; j < slice; j++) tds += "<td></td>";
                 }
                 let s = v[term]?.reduce((a,c) => a + c) || 0;
+                const ck = Object.values(v);
                 if(masterClass.startsWith('SSS')){
-                    if(k in core) core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0)).toFixed(1);
+                    if(k in core) core[k] = (ck.flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1);
                 }else{
-                    core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0)).toFixed(1);
+                    core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1);
                 }
                 rt += s;
                 tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
@@ -161,10 +162,10 @@ async function setBroadSheet() {
             <tr id="${IDs[i]}">${tds}</tr>
         `)
     });
-    // if(){
     promotion.forEach(p => {
-        for(const sb in p) p[sb] == 0 ? delete p[sb] : p[sb] = Number((p[sb] / 3).toFixed(1));
-    })
+        // ca == 0 ? delete crr[cx] : crr[cx][ca] = Number(crr[cx][ca] / cb).toFixed(1);
+        for(const sb in p) p[sb] == 0 ? delete p[sb] : p[sb] = Number(p[sb]);
+    });
     isPromoted();
     // compute total and average for each subject and store in td string
     let aveStr = '', totStr = '';
@@ -321,18 +322,16 @@ function isPromoted(){
             promotion.forEach((o,ox) => {
                 let ol = Object.values(o);
                 let rol = (ol.reduce((v,w) => v + w, 0)) / ol.length;
-                if(rol < 49){
+                if(rol < 49.4){
                     cell[ox].insertAdjacentHTML('afterbegin', '<code>Not Promoted.</code><br>'), nprm++;
-                }else if(rol <= 58){
+                }else if(rol >= 49.5 && rol <= 54.5){
                     cell[ox].insertAdjacentHTML('afterbegin', '<code>Probation.</code><br>'), prob++;
                 }else{
                     cell[ox].insertAdjacentHTML('afterbegin', '<code>Promoted.</code><br>'), prom++;
                 }
-            })
+            });
         }
         if(masterClass.startsWith('SSS')){ //SSS class
-            // for(const s in core) if(core[s] < 1) delete core[s];
-            //     const {MTH, ENG, ...others} = core;
             promotion.forEach((p2,px) => {
                 const {MTH, ENG, ...others} = p2;
                 if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
