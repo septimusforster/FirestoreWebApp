@@ -338,7 +338,7 @@ async function finalPromotionHandler (form_state, promomsg) {
         await updateDoc(doc(db, 'session', master_props.SESSION, 'students', promoID), {
             promo_status: promomsg
         });
-        if (promomsg == 'PROMOTED') {
+        if (promomsg == 'PROMOTED' || promomsg == 'REPEATED'){
             //setDoc to STUDENTS collection and thereafter SCORES collection
             await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);
             await setDoc(doc(db, 'session', String(new_session), 'students', promoID, 'scores', 'records'), records);
