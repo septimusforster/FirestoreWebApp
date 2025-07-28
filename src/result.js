@@ -52,6 +52,7 @@ let eotReadyStatus,
     core_lower = 0;
 
 await eot();
+let studentIDs = [], studentScores = [];
 document.forms[0].addEventListener('submit', async (e) => {
     e.preventDefault();
     if (eotReadyStatus) {
@@ -74,16 +75,15 @@ document.forms[0].addEventListener('submit', async (e) => {
             loaded(40);
             const studentsSnapshot = await getDocs(studentsQuery);
             //second width
-            
-            let studentIDs = [], studentScores = [];
+
             const DCA = 'DCA';
             studentsSnapshot.docs.forEach(result => {
-                if (result.data().admission_no.toUpperCase().includes(DCA)) studentIDs.push(result.id);
+                if (result.data().admission_no.toUpperCase().includes(DCA)) studentIDs.push({sid: result.id, promo: result.data()?.promo_status || null});
             });
             console.log('real students:', studentsSnapshot.docs.length);
             let overall = [];
             const path = session < 2025 ? 'records/scores' : 'scores/records'; //because of human-being error
-            const scorePromises = studentIDs.map(async sid => {
+            const scorePromises = studentIDs.map(async ({sid}) => {
                 await getDoc(doc(db, 'session', session, 'students', sid, path)).then((res) => {
                     studentScores.push({sid, ...res.data()});
                     overall.push(res.data());
@@ -404,14 +404,19 @@ function isPromoted(){
             }
         }
         if(ss.cls.startsWith('SSS')){ //SSS class
-            for(const s in core) if(core[s] < 1) delete core[s];
-             const {MTH, ENG, ...others} = core;
-            if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
-                percent.textContent = 'Promoted.';
-            }else if((MTH >= 50 || ENG >= 50) && Object.values(core).filter(n => n >= 50).length >= 2){
-                percent.textContent = 'Probation';
-            }else if(Object.values(core).every(n => n < 50) || (MTH < 50 && ENG < 50)){
-                percent.textContent = 'Not promoted.';
+            const promo = studentIDs.find(({sid}) => sid == ss.id).promo;
+            if(promo !== null) {
+                percent.textContent = promo;
+            }else{
+                for(const s in core) if(core[s] < 1) delete core[s];
+                 const {MTH, ENG, ...others} = core;
+                if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
+                    percent.textContent = 'Promoted.';
+                }else if((MTH >= 50 || ENG >= 50) && Object.values(core).filter(n => n >= 50).length >= 2){
+                    percent.textContent = 'Probation';
+                }else if(Object.values(core).every(n => n < 50) || (MTH < 50 && ENG < 50)){
+                    percent.textContent = 'Not promoted.';
+                }
             }
         }
     }else{

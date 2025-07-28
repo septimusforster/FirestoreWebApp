@@ -326,6 +326,7 @@ p#percent {
     font-size: 1em;
     font-weight: 500;
     position: relative;
+    text-transform:capitalize;
 }
 p#percent::before {
     content: '';
