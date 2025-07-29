@@ -321,7 +321,7 @@ function isPromoted(){
             promotion.forEach((o,ox) => {
                 let ol = Object.values(o);
                 let rol = (ol.reduce((v,w) => v + w, 0)) / ol.length;
-                if(rol < 49.4){
+                if(rol <= 49.4){
                     cell[ox].insertAdjacentHTML('afterbegin', '<code>Not Promoted.</code><br>'), nprm++;
                 }else if(rol >= 49.5 && rol <= 54.5){
                     cell[ox].insertAdjacentHTML('afterbegin', '<code>Probation.</code><br>'), prob++;

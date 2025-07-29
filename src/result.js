@@ -400,7 +400,6 @@ function isPromoted(){
             }else if(core_lower >= 49.5 && core_lower <= 54.5){
                 return percent.textContent = 'Probation.';
             }else{
-                console.log('core_lower', core_lower);
                 return percent.textContent = 'Promoted.';
             }
         }
