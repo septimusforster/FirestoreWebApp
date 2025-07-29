@@ -35,9 +35,6 @@ const loginDialog = document.querySelector('dialog#login_dg');
 const adminDialog = document.querySelector('dialog#admin_dg');
 const prDialog = document.getElementById('pr_dg');
 const container = prDialog.querySelector('div.container');
-// const container_login = loginDialog.querySelector('div.container');
-// const container_admin = adminDialog.querySelector('div.container');
-// const err_div = loginDialog.querySelector('.err_div');
 
 //logout handler
 logoutBtn.onclick = () => {
@@ -61,7 +58,7 @@ function insertData (master, students) {
             <tr>
                 <td>${ix+1}</td>
                 <td>${ME.admission_no}</td>
-                <td>${ME.last_name} ${ME.first_name} ${ME.other_name}</td>
+                <td class="${['prom','prob','rept',''].at(['PROMOTED','PROBATION','REPEATED'].indexOf(ME?.promo_status))}">${ME.last_name} ${ME.first_name} ${ME.other_name}</td>
                 <td>${ME.admission_year}</td>
                 <td>
                     <button type="button"></button><button type="button"></button><button type="button"></button>

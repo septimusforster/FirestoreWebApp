@@ -251,3 +251,12 @@ dialog#pr_dg > div.container > div > button.clk:last-of-type > span.carousel {
     opacity: 1;
     animation-name: carousel;
 }
+.prom{
+    color:#009578;
+}
+.prob{
+    color:#800080;
+}
+.rept{
+    color:#e35;
+}
