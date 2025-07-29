@@ -307,8 +307,8 @@ const NULLS = {
 }
 
 async function finalPromotionHandler (form_state, promomsg) {
-    chooseConfig(configs[configs[7].indexOf(form_state)]);
-    console.log(promomsg);
+    chooseConfig(configs[configs[7].indexOf(old_form)]);
+    console.log(promomsg, master_props.SESSION);
     const promoteDoc = await getDoc(doc(db, 'session', String(new_session), 'students', promoID));
     if (promoteDoc.exists()) {
         container.nextElementSibling.lastElementChild.textContent = "Task already achieved.";
@@ -325,6 +325,7 @@ async function finalPromotionHandler (form_state, promomsg) {
         //create empty 'comments', 'days_present' and 'promo_status'
         data['comment'] = {0: '', 1: '', 2: ''};
         data['days_present'] = [0,0,0];
+        data['promo_status'] = null;
 
         //create empty "records" of student subjects
         let records = {};
@@ -339,6 +340,7 @@ async function finalPromotionHandler (form_state, promomsg) {
             promo_status: promomsg
         });
         if (promomsg == 'PROMOTED' || promomsg == 'REPEATED'){
+            chooseConfig(configs[configs[7].indexOf(form_state)]);
             //setDoc to STUDENTS collection and thereafter SCORES collection
             await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);
             await setDoc(doc(db, 'session', String(new_session), 'students', promoID, 'scores', 'records'), records);
