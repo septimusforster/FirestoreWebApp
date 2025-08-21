@@ -45,17 +45,18 @@ const subDatalist = document.querySelector('datalist#subject');
 const classDatalist = document.querySelector('datalist#class');
 // establish classrooms taught
 const classes = ss.data.classroomsTaught.sort();
+classes.push('Demo'); //appended Demo class
 classes.forEach(cls => {
     classDatalist.insertAdjacentHTML('beforeend', `
         <option value="${cls}"></option>
     `)
-})
+});
 let abbr = {};
 // establish subjects taught
 const subjects = ss.data.subjectsTaught;
 subjects.forEach((sbs, idx) => {
     let obj = Object.entries(sbs);
-    subDatalist.insertAdjacentHTML('beforeend', `
+    subDatalist.insertAdjacentHTML('afterbegin', `
         <option data-id="${idx}" id="${obj[0][0]}" value="${obj[0][0]}">${obj[0][1]}</option>
     `)
     abbr[obj[0][0]] = obj[0][1];

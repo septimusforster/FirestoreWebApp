@@ -36,6 +36,18 @@ module.exports = {
 }
 */
 //ROOT hack.js
+
+module.exports = {
+    mode: "development",
+    entry: "./src/hack.js",
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "hack_bundle.js"
+    },
+    watch: true
+}
+
+//ROOT hack.js
 /*
 module.exports = {
     mode: "development",
@@ -47,18 +59,6 @@ module.exports = {
     watch: true
 }
 
-//ROOT hacks.js
-/*
-module.exports = {
-    mode: "development",
-    entry: "./src/hacks.js",
-    output: {
-        path: path.resolve(__dirname, "dist"),
-        filename: "hacks_bundle.js"
-    },
-    watch: true
-}
-*/
 //ROOT hacks_ssn.js
 /*
 module.exports = {
@@ -132,7 +132,7 @@ module.exports = {
 }
 */
 //ROOT recruitment.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./src/recruitment.js",
@@ -237,7 +237,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 // STAFFER broadsheet.js
 /*
 module.exports = {

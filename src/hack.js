@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, collection, getDoc, getDocs, doc, query, where, orderBy, setDoc } from "firebase/firestore"
+import { getFirestore, collection, getDoc, getDocs, updateDoc, doc, query, where, orderBy, setDoc } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 const badge = document.querySelector('aside:nth-child(1)');
@@ -17,7 +17,38 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
+/*igb:14, gov:70*/
+/*recruitment HACK*/
+chooseConfig(8);
+console.time('getDocs')
+const snap = await getDocs(query(collection(db, 'students'), where('offered.ICT', '==', 'Computer Studies (sec)')));
+// ids = ids.filter(f => f !== false);
+console.timeEnd('getDocs');
+console.log(snap.docs.length)
+if(snap.docs.length){
+    console.time('updateDocs');
+    // for (const d of Object.values(snap.docs)){
+    // await setDoc(doc(db, 'session', '2025', 'students',x.id),x.data(),{merge: true});
+    const prom = Object.values(snap.docs).map(async d => {
+        await setDoc(doc(db, 'session', '2025', 'students', d.id),d.data(), {merge:true})
+    });
+    await Promise.allSettled(prom);
+    console.timeEnd('updateDocs');
+}
+// let ids = [];
+// const snapshot = snap.docs.forEach((d,x) => {
+//     Object.values(d.data().offered)[0] == 'Igbo' ? ids.push(d.id) : false;
+// });
+// if(ids.length){
+//     for await (const id of ids){
+//         await updateDoc(doc(db, 'students', id),{
+//             offered: {IGB: 'Igbo Language'}
+//         })
+//     }
+//     console.log('done')
+// }
 
+/*
 //load subject parameters
 const subIDs = {
     jjid: '2aOQTzkCdD24EX8Yy518',
@@ -163,3 +194,4 @@ document.querySelectorAll('.stn.mq').forEach(stn => {
         aside2.classList.toggle('on');
     });
 });
+*/
