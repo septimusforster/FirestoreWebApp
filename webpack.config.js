@@ -132,7 +132,7 @@ module.exports = {
 }
 */
 //ROOT recruitment.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/recruitment.js",
@@ -142,7 +142,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT promo.tab.js
 /*
 module.exports = {
@@ -239,7 +239,7 @@ module.exports = {
 }
 */
 // STAFFER broadsheet.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",

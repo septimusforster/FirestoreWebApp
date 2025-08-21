@@ -22,7 +22,7 @@ const form = document.querySelector('div#form');
 //STORE TEST DURATION MILLISECONDS IN CACHE TO EXPIRE AFTERWARDS
 // const SUBJECT = new URL(location.href).searchParams.get('sb');
 const loc = location.href.lastIndexOf('=');
-const SUBJECT = location.href.slice(loc + 1);
+const SUBJECT = atob(location.href.slice(loc + 1));
 const CATNO = parseInt(new URL(location.href).searchParams.get('ct'));
 
 //SESSION STORAGE ITEMS

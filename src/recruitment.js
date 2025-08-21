@@ -62,7 +62,8 @@ copyBtn.addEventListener('click', (e) => {
 const examBtn = document.querySelector('#exm-btn');
 examBtn.addEventListener('click', (e) => {
     testJSParams(udata, abbr, user);
-    location.href = `/dist/student/dist/test.html?ct=${catNo}&uid=${uid}&sb=${btoa(abbr)}`;
+    location.href = `/dist/student/dist/quiz.html?ct=${catNo}&uid=${uid}&sb=${btoa(abbr)}`;
+    // location.href = `/dist/student/index.html?ct=${catNo}&uid=${uid}&sb=${btoa(abbr)}`;
 });
 
 // const arms = ['Brilliance','Classic','Distinction','Excellence','Genius','Merit','Perfection','Radiance'];
@@ -79,6 +80,8 @@ forms[0].addEventListener('submit', async (e) => {
     fd.delete('offered');
     obj['createdAt'] = serverTimestamp();
     obj['arm'] = 'Recruit';
+    obj['admission_no'] = fd.get('phone');
+    fd.delete('phone');
     // obj['arm'] = arms[rndIdx];
     console.log(obj.arm);
     for (const [k, v] of fd.entries()) {
@@ -86,7 +89,7 @@ forms[0].addEventListener('submit', async (e) => {
     }
     // console.log(obj);
     //check if phone number exists
-    const userSnap = await getDocs(query(collection(db, 'students'), where('phone', '==', obj.phone), limit(1)));
+    const userSnap = await getDocs(query(collection(db, 'students'), where('admission_no', '==', obj.admission_no), limit(1)));
     if (userSnap.empty) {
         const snapshot = await addDoc(collection(db, "students"), obj).then(async student => {
             uid = student.id;
@@ -125,7 +128,7 @@ forms[1].addEventListener('submit', async (e) => {
     e.submitter.style.cursor = 'not-allowed';
 
     const phone = document.querySelector('input#uphone').value;
-    const userSnap = await getDocs(query(collection(db, 'students'), where('phone', '==', phone), limit(1)));
+    const userSnap = await getDocs(query(collection(db, 'students'), where('admission_no', '==', phone), limit(1)));
     if (userSnap.empty) {
         alert(`Sorry. The user with phone number ${phone} does not exist.`);
         e.submitter.disabled = false;

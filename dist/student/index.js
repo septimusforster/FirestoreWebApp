@@ -17,7 +17,7 @@ document.querySelector('.tab.out+i').addEventListener('click', (e) => {
 document.querySelector('nav').addEventListener('click', (e) => {
     if (e.target.className.includes('tab')) e.currentTarget.classList.toggle('opn');
 })
-/*#!? get curr timestamp*/
+/*get curr timestamp*/
 const cstmp = Date.now();
 let now = new Date(cstmp);
 const ssn = (now.getMonth() > 9 ? now.getFullYear()+1 : now.getFullYear()).toString();
