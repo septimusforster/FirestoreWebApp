@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, collection, getDoc, getDocs, updateDoc, doc, query, where, orderBy, setDoc } from "firebase/firestore"
+import { getFirestore, getCountFromServer, collection, startAfter, getDoc, getDocs, updateDoc, doc, query, where, orderBy, setDoc, limit } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 const badge = document.querySelector('aside:nth-child(1)');
@@ -17,8 +17,32 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-/*igb:14, gov:70*/
-/*recruitment HACK*/
+
+chooseConfig(6)
+let lastSnapshot, cursorFetch;
+
+const myBtn = document.createElement('button');
+myBtn.className = 'fbtn';
+myBtn.setAttribute('style', 'width:fit-content;position:fixed;right:2rem;top:2rem;');
+myBtn.textContent = "fetch staff collection";
+myBtn.addEventListener('click', async (e) => {
+    console.time("Collecting staff")
+    if(lastSnapshot){
+        cursorFetch = await getDocs(query(collection(db, 'staffCollection'), limit(30), startAfter(lastSnapshot)));
+    }else{
+        cursorFetch = await getDocs(query(collection(db, 'staffCollection'), limit(30)));
+        lastSnapshot = cursorFetch.docs.at(-1);
+    }
+    console.timeEnd("Collecting staff")
+    let myDocs = [];
+    cursorFetch.docs.forEach(d => {
+        const { fullName, username, password, classroomsTaught,subjectsTaught } = d.data();
+    });
+    console.log(myDocs)
+});
+document.body.appendChild(myBtn);
+/*
+/*recruitment HACK/
 chooseConfig(8);
 console.time('getDocs')
 const snap = await getDocs(query(collection(db, 'students'), where('offered.ICT', '==', 'Computer Studies (sec)')));
@@ -47,7 +71,7 @@ if(snap.docs.length){
 //     }
 //     console.log('done')
 // }
-
+*/
 /*
 //load subject parameters
 const subIDs = {

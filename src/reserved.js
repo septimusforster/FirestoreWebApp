@@ -20,7 +20,12 @@ db = getFirestore()
 let EOT, term, days_open, next_term;
 // calculate session
 const MONTH = new Date().getMonth();
-let session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+let session = MONTH >= 8 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+console.log(session)
+//insert session
+for(let s=2023; s <= Number(session); s++){
+    document.querySelector('datalist#sessions').insertAdjacentHTML('beforeend', `<option value="${s}/${s+1}"></option>`)
+}
 await getDoc(doc(db, "EOT", session)).then(res => EOT = res.data());
 term = ["First", "Second", "Third"].indexOf(EOT?.this_term) || 0;
 days_open = EOT?.days_open || [0,0,0]; //the 3 elements of the array are for the three terms in a session
@@ -462,7 +467,7 @@ stampForm.addEventListener('submit', async (e) => {
     const dest = ref(storage, "img/" + fileName);
     await uploadBytes(dest, file).then(async res => {
         await getDownloadURL(res.ref).then(async url => {
-            await updateDoc(doc(db, "EOT", session), { stamp: url });
+            await updateDoc(doc(db, "EOT", session), {stamp:{[term]: url}});
             window.alert("Stamp upload successful.")
         })
     })

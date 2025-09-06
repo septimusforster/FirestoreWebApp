@@ -2,7 +2,7 @@
     display: none;
 }
 :root {
-    --pry-txt-clr: #fff9;
+    --pry-txt-clr: #fffa;
 }
 * {margin: 0;padding: 0;box-sizing: border-box;font-family: system-ui;scroll-behavior: smooth;color: var(--pry-txt-clr);}
 button, select {
@@ -181,7 +181,8 @@ aside:nth-child(1) section {
     position: relative;
     overflow: hidden;
 }
-.gp.lst > button {
+.gp.lst > button,
+.fbtn {
     padding: 1em;
     width: 100%;
     display: block;

@@ -34,19 +34,19 @@ const ss = JSON.parse(sessionStorage.snapshot);
 let eotData, term = 0, size = 0, toggleState;
 // calculate session
 const MONTH = new Date().getMonth();
-let session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+let session = MONTH >= 8 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+
+for(let s = 2024; s <= Number(session); s++){
+    document.querySelector('#ssl menu').insertAdjacentHTML('beforeend', `<li>${s}</li>`);
+    document.querySelector('select#yrs').insertAdjacentHTML('beforeend', `<option value="${s}">${s}</option>`)
+}
 // var colRef = collection(db, 'session', session, 'students');
 let refrs = {
     arm: doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu"),
     jrSubs: doc(db, "reserved", "2aOQTzkCdD24EX8Yy518"),
     srSubs: doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq")
 }
-// store user ID from url or sessionStorage snapshot
-/*
-let url = new URL(location.href);
-let params = new URLSearchParams(url.search);
-let uid = params.get('uid') || ss.id;
-*/
+
 const eotRef = doc(db, 'EOT', session);
 const leftNav = document.querySelector('.left-nav');
 let menu;
@@ -59,6 +59,7 @@ window.addEventListener('click', (e) => {
 await getDoc(eotRef).then(async (res) => { // load EOT
     eotData = res.data();
     term = ["First","Second","Third"].indexOf(eotData.this_term);
+    console.log(eotData?.this_term);
     //chk gmode
     const cities = ['ZAGREB', 'COPENHAGEN', 'PRAGUE', 'MOSCOW', 'SOBIBOR', 'WARSAW', 'TELAVIV'];
     const c = Math.floor(Math.random() * cities.length);
@@ -74,7 +75,6 @@ await getDoc(eotRef).then(async (res) => { // load EOT
     sslnk.nextElementSibling.querySelectorAll('li').forEach(li => {
         li.addEventListener('click', (e) => {
             sslnk.textContent = session = li.textContent;
-            console.log('clicked');
             myIframe.contentDocument.querySelector('#preview ul').innerHTML = '';
             myIframe.contentDocument.querySelector('tbody').innerHTML = '';
         });
@@ -263,7 +263,7 @@ function randomKey() {
     }
     return password;
 };
-
+console.log(session)
 const fm_createStudent = document.forms.createStudent;
 fm_createStudent.addEventListener('submit', (e) => {
     e.preventDefault();
