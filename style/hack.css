@@ -269,6 +269,17 @@ code {
     }
     .wrp {
         width: 80%;
-    }
-    
+    }   
+}
+pre{
+    display:block;
+    position:fixed;
+    top:50%;
+    left:0;
+    transform:translateY(-50%);
+    width:100%;
+    max-height:70dvh;
+    background-color:#444;
+    color:#fff;
+    overflow-y:auto;
 }

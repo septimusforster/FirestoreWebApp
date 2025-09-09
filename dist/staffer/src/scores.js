@@ -16,7 +16,8 @@ db = getFirestore()
 let eotDates, term;
 // calculate session
 const MONTH = new Date().getMonth();
-const session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+const session = MONTH >= 8 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
+console.log(session);
 async function eot() {
     const eotRef = doc(db, 'EOT', session);
     await getDoc(eotRef).then(async (res) => {

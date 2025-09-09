@@ -17,28 +17,41 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-
-chooseConfig(6)
+const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 5;
+chooseConfig(clx); //projects
 let lastSnapshot, cursorFetch;
+const count = await getCountFromServer(collection(db, 'session/2026/students'));
+console.log("Total Number of Students:", count.data().count);
 
+let fetches = 0;
 const myBtn = document.createElement('button');
 myBtn.className = 'fbtn';
 myBtn.setAttribute('style', 'width:fit-content;position:fixed;right:2rem;top:2rem;');
-myBtn.textContent = "fetch staff collection";
+myBtn.textContent = `Fetch ${classroom[clx]} collection`;
+const pre = document.querySelector('pre');
+
 myBtn.addEventListener('click', async (e) => {
-    console.time("Collecting staff")
+    console.time(`Collecting ${classroom[clx]}`);
     if(lastSnapshot){
-        cursorFetch = await getDocs(query(collection(db, 'staffCollection'), limit(30), startAfter(lastSnapshot)));
+        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), limit(30), startAfter(lastSnapshot)));
     }else{
-        cursorFetch = await getDocs(query(collection(db, 'staffCollection'), limit(30)));
-        lastSnapshot = cursorFetch.docs.at(-1);
+        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), limit(30)));
     }
-    console.timeEnd("Collecting staff")
-    let myDocs = [];
+    lastSnapshot = cursorFetch.docs.at(-1);
+    fetches++;
+    console.log("Times fetched:", fetches);
+    console.timeEnd(`Collecting ${classroom[clx]}`)
+    let students = '';
+    console.log(cursorFetch.docs.length)
     cursorFetch.docs.forEach(d => {
-        const { fullName, username, password, classroomsTaught,subjectsTaught } = d.data();
+        const { admission_no, admission_year, arm, dob, first_name, last_name, other_name, gender, id, offered, password } = d.data();
+        let sbjs = {};
+        if(offered){
+            for(const sb of Object.keys(offered).sort()) sbjs[sb] = {0:[],1:[],2:[]};
+            students += "\n" + JSON.stringify({stid:admission_no,enrolled:admission_year,arm, dob,fname:first_name,lname:last_name,oname:other_name,gender,_id:id,sbjs,pwd:password,createdAt:{"$$date":1756885851668},updatedAt:{"$$date":1756885851668}});
+        }
     });
-    console.log(myDocs)
+    pre.innerText += students;
 });
 document.body.appendChild(myBtn);
 /*

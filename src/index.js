@@ -40,6 +40,8 @@ for(let s = 2024; s <= Number(session); s++){
     document.querySelector('#ssl menu').insertAdjacentHTML('beforeend', `<li>${s}</li>`);
     document.querySelector('select#yrs').insertAdjacentHTML('beforeend', `<option value="${s}">${s}</option>`)
 }
+const sslnk = document.querySelector('.sslnk');
+sslnk.innerText = session;
 // var colRef = collection(db, 'session', session, 'students');
 let refrs = {
     arm: doc(db, "reserved", "6Za7vGAeWbnkvCIuVNlu"),
@@ -65,7 +67,7 @@ await getDoc(eotRef).then(async (res) => { // load EOT
     const c = Math.floor(Math.random() * cities.length);
     const city = cities[c];
     const user = ss.data.fullName.toLowerCase();
-    let adminmode = false, adminSetup = document.querySelector('#admin-setup'), sslnk = document.querySelector('.sslnk');
+    let adminmode = false, adminSetup = document.querySelector('#admin-setup');
     //session link: ssl
     adminSetup.classList.add('opq');
     sslnk.addEventListener('click', (e) => {
@@ -263,7 +265,7 @@ function randomKey() {
     }
     return password;
 };
-console.log(session)
+
 const fm_createStudent = document.forms.createStudent;
 fm_createStudent.addEventListener('submit', (e) => {
     e.preventDefault();
