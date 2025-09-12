@@ -143,7 +143,7 @@ async function getStudents (cls, arm, cont, err) {
             students[val.id] = val.data();
         });
         sessionStorage.setItem('std_util', JSON.stringify(students));
-        std_props = JSON.parse(sessionStorage.getItem('std_util'));
+        std_props = students;
 
         insertData(master_props, std_props);
         promoteBtnsHandler();
@@ -271,6 +271,7 @@ function promoteHandler(td, btx) {
         default:
             break;
     }
+    // console.log(promoID, new_form, new_session)
     prDialog.showModal();
 }
 
@@ -305,7 +306,6 @@ const NULLS = {
 
 async function finalPromotionHandler (form_state, promomsg) {
     chooseConfig(configs[configs[7].indexOf(old_form)]);
-    console.log(promomsg, master_props.SESSION);
     const promoteDoc = await getDoc(doc(db, 'session', String(new_session), 'students', promoID));
     if (promoteDoc.exists()) {
         container.nextElementSibling.lastElementChild.textContent = "Task already achieved.";

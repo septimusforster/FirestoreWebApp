@@ -153,7 +153,7 @@ h3{
     text-align:center;
 }
 .fmg{
-    border-bottom:1px solid #eee;
+    border:1px solid #eee;
     margin-bottom:1.3rem;
     display:flex;
     align-items:center;
