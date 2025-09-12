@@ -1,0 +1,76 @@
+select{appearance:none;color:#555;}
+div.slt::after{content:'';background-repeat:no-repeat;background-size:50%;background-position:center;}
+#table{flex:1;height:90%;}
+#tbody {
+    height: 100%;
+    overflow-y: auto;
+}
+aside{flex-basis:20%;padding:1rem;}
+div.lbl{font-weight:500;}
+div.slt{display:flex;margin:.3rem 0 1.8rem;border:1px solid #eee;border-radius:4px;position:relative;overflow:hidden;}
+div.slt::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%) rotate(90deg);padding:1rem;background-image:url(../../student/img/chevron-forward-outline.svg);pointer-events:none;}
+div.slt>select{padding:.7rem 1.4rem;flex:1;}
+.ftr{position:sticky;top:100%;padding:1rem 0;}
+.ftr button{
+    opacity:1;
+    font-family:system-ui,sans-serif;
+    padding:.8rem 0;
+    border-radius:4px;
+    font-size:100%;
+    font-weight:500;
+    transition:opacity 250ms ease-out;
+    color: #fff;
+    background:#1a73e8;
+}
+#upd-btn {
+    width: 200px;
+}
+button#load-btn {
+    width:100%;
+}
+.ftr button:hover{
+    opacity:.9;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin:1rem 0;
+}
+thead{
+    background:#eee;
+    position:sticky;
+    top:0;
+    z-index:2;
+}
+th{
+    font-weight:500;
+}
+th.perm{
+    background:#777;
+    color:#fff;
+}
+thead th{
+    text-align:left;
+}
+th, td{
+    padding:.5rem 1rem;
+}
+th:nth-child(n + 4),
+td:nth-child(n + 4){
+    text-align:center;
+}
+tr th:nth-child(2),
+tr td:nth-child(2){
+    text-wrap:nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    width:300px;
+    font-weight:500;
+}
+tr td:nth-child(3){
+    font-size:90%;
+    opacity:.7;
+}
+tbody tr:nth-child(even){
+    background:linear-gradient(to right, #f1f1f1, #fcfcfc);
+}

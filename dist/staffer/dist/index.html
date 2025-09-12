@@ -5,135 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="TeacherID" id="tID">
     <title>Educator portal</title>
+    <link rel="stylesheet" href="../style/main.css">
     <link rel="stylesheet" href="../style/index.css">
 </head>
 <body>
-    <div class="wrapper">
-        <header class="header">
-            <button type="button" class="navbtn afterward" onclick="location.reload()">Home</button>
-            <button type="button" class="navbtn" onclick="location.assign('scores.html')">Scores</button>
-            <button type="button" id="register-btn" class="navbtn" style="display: none;">Register</button>
-            <button type="button" id="broadsheet-btn" onclick="location.assign('broadsheet.html')" class="navbtn" style="display: none;">BroadSheet</button>
+    <div id="container">
+        <header class="fx-aic gp4">
+            <span id="nav-title">Home</span>
+            <nav class="fx-aic-jcc">
+                <a class="on" href="index.html">Home</a>
+                <a href="score.html">Scoring</a>
+                <a href="register.html">Register</a>
+                <a href="broadsheet.html">Broadsheet</a>
+            </nav>
         </header>
-        <div class="body">
-            <div id="profile-wrapper">
-                <h2>Profile</h2>
-                <p id="avatar">
-                    <img src="../img/avatar_male_man_portrait_icon.png" height="100" width="100" alt="Photo">
-                </p>
-                <div class="profile" style="display: none;">
-                    <span>Name</span><span></span><hr>
-                    <span>Alias</span><span></span><hr>
-                    <span>Classes</span><span></span><hr>
-                    <span>Subject</span><span></span>
+        <main class="fx-ais-jcc">
+            <aside>
+                <div class="user fx-aic gp1">
+                    <div id="avatar" class="bg-nop bg-pc-s7"></div>
+                    <div>
+                        <p>USERNAME</p>
+                        <small>Full name</small>
+                    </div>
                 </div>
-                <img src="../img/185095_settings_icon.png" alt="settings-icon">
-            </div>
-            <div id="upload-wrapper">
-                <h2>Upload</h2>
-                <form action="#" name="formEl">
-                    <div class="input-group">
-                        <label for="categoryId">Activity</label>
-                        <select name="category" id="categoryId" required>
-                            <option value="">Choose activity</option>
-                            <option value="note">Note</option>
-                            <option value="exercise">Exercise</option>
-                            <option value="test">Test</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label for="theClassroomId">Classroom</label>
-                        <select name="theClassroom" id="theClassroomId" required>
-                            <option value="">Choose classroom</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label for="theSubjectId">Subject</label>
-                        <select name="theSubject" id="theSubjectId" required>
-                            <option value="">Choose subject</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <!-- <input type="file" name="theFile" id="fileId" accept=".doc,.docx,application/msword,.pdf,image/*" /> -->
-                        <input type="file" name="theFile" id="fileId" accept=".pdf,image/*" />
-                        <label id="docpicker" for="fileId">Choose file.<span style="font-size: 50px;">&#128462;</span></label>
-                        <p id="file-selected"></p>
-                    </div>
-                    <div class="input-group">
-                        <label for="infoId">Comments (optional): <span>200 remaining</span></label>
-                        <textarea name="info" id="infoId" maxlength="200" cols="30" rows="10" placeholder="Additional comments."></textarea>
-                    </div>
-                    <!-- <input type="hidden" name="theAuthorId" value="000000"> -->
-                    <div class="input-group">
-                        <input type="submit" value="Upload">
-                    </div>
-                </form>
-            </div>
-            <div id="documents-wrapper">
-                <h2>Documents</h2>
+            </aside>
+            <aside class="fx-aic-jcc">
                 <div>
-                    <span id="mode">Delete mode:</span>
-                    <label class="switch" for="modes">
-                        <input type="checkbox" name="modes" id="modes">
-                        <span class="slider"></span>
-                    </label>
-                    <button type="submit" value="delete">Run</button>
+                    <b>🚧</b>
+                    <p>Site under maintenance</p>
+                    <code></code>
                 </div>
-                <div>
-                </div>
-                <div>
-                    <form name="fm-viewdocs">
-                        <!-- <label>Select activity, class and subject to view uploads.</label><br/>
-                        <select name="catview" required>
-                            <option value="">Choose activity</option>
-                            <option value="note">Note</option>
-                            <option value="exercise">Exercise</option>
-                            <option value="test">Test</option>
-                        </select>
-                        <select name="classname" id="classname" required>
-                            <option value="">Class</option>
-                        </select> -->
-                        <select name="subjectname" id="subjectname" required>
-                            <option value="">Subject</option>
-                        </select>
-                        <input type="submit" value="View">
-                    </form>
-                </div>
-            </div>
-        </div>
-        <dialog id="to-download">
-            <output></output><hr><br>
-            <a href="#" onclick="this.parentElement.close()"></a>
-            <a href="#" onclick="this.parentElement.close()" download></a>
-        </dialog>
-        <dialog id="to-delete">
-            <output></output>
-            <a href="#" onclick="this.parentElement.close()"></a>
-        </dialog>
-        <dialog id="settings">
-            <form name="fm-settings">
-                <div>
-                    <h2>Profile settings</h2><i onclick="closeModal(this)">&times;</i>
-                </div>
-                <p>You may edit your desired settings and leave other information as untouched, before you click "Submit".</p>
-                <label for="fullName">Change full name</label>
-                <input type="text" name="fullName" id="fullName" placeholder="Full name" autocomplete="off"/>
-                <label for="username">Change username/alias</label>
-                <input type="text" name="currentUsername" id="currentUsername" placeholder="Enter current username" autocomplete="off" data-value=""/>
-                <input type="text" name="username" id="username" placeholder="Enter new username" autocomplete="off" class="true" disabled/>
-                <label for="password">Change password</label>
-                <input type="password" name="currentPassword" id="currentPassword" placeholder="Enter current password" data-value=""/>
-                <input type="password" name="password" id="password" placeholder="Enter new password" disabled class="true"/>
-                <label for="hide-unhide">
-                    <input type="checkbox" name="hide-unhide" id="hide-unhide" />Show/hide passwords
-                </label>
-                <input type="submit" value="Submit">
-            </form>
-        </dialog>
-        <footer class="footer">Dynamax | &copy; 2018</footer>
+            </aside>
+        </main>
     </div>
-    <script type="module" src="../src/bundle.js"></script>
     <script>
+        let storage = JSON.parse(sessionStorage.getItem('snapshotId'));
+        //insert username and fullname
+        if(storage){
+            const userContainer = document.querySelector('#avatar+div');
+            userContainer.querySelectorAll('p, small').forEach((el, ex) => {
+                ex ? el.textContent = storage.data.fullName : el.textContent = storage.data.username;
+            })
+        }
+
+        const codeEl = document.querySelector('aside code');
+        codeEl.textContent = btoa(Date.now().toString());
+        function* myGenFunc(){
+            yield codeEl.textContent = new Date().toISOString();
+            yield codeEl.textContent = "'Til somewhere around Christmas of '27.";
+        }
+        let yd = myGenFunc();
+        codeEl.addEventListener('click', () => yd.next());
+    </script>
+    <!-- <script>
         const fileId = document.querySelector('#fileId');
         const fileSelected = document.querySelector('#file-selected');
         fileId.onchange = (e) => {
@@ -202,6 +126,6 @@
         registerBtn.onclick = function () {
             location.href = './register.html';
         }
-    </script>
+    </script> -->
 </body>
 </html>

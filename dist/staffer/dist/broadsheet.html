@@ -5,16 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Broad Sheet</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html, body {
-            font: 14px system-ui;
-        }
         ::-webkit-scrollbar {
-            width: 7px;
+            width: 5px;
             background-color: transparent;
         }
         ::-webkit-scrollbar-track {
@@ -27,54 +19,6 @@
         }
         ::-webkit-scrollbar-thumb {
             background-color: #555;
-        }
-        header {
-            font-weight: bold;
-            text-align: center;
-            padding: .8em;
-            color: #555;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1em;
-        }
-        header > span {
-            height: .7em;
-            width: .7em;
-            border-radius: 50%;
-            outline: 0px solid #c9f5ec;
-            background-color: #009578;
-            animation-duration: 1500ms;
-            animation-iteration-count: infinite;
-            animation-timing-function: ease;
-            animation-fill-mode: backwards;
-        }
-        @keyframes flasher {
-            from {
-                outline-width: 0px;
-            }
-            to {
-                outline-width: 10px;
-            }
-        }
-        header > span.flashing {
-            animation-name: flasher;
-        }
-        .opq {
-            opacity: 1;
-        }
-        main {
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-        div.container {
-            width: fit-content;
-            max-height: 95vh;
-            /* overflow-x: hidden; */
-            overflow-y: scroll;
-            margin: auto;
-            border: 1px solid #ccc;
-            border-radius: 10px 10px 0 0;
         }
         table {
             border-collapse: collapse;
@@ -125,14 +69,8 @@
         }
         tfoot tr {
             font-weight: bold;
-        }
-        tfoot tr td:not(:nth-child(2)) {
             text-align: center;
             writing-mode: tb;
-        }
-        tfoot tr:last-of-type td {
-            writing-mode: initial;
-            padding: 2em;
         }
         tbody tr td:nth-child(2) {
             display: flex;
@@ -144,6 +82,9 @@
         }
         td > div {
             margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
         }
         div.snum {
             padding: 0 .5em;
@@ -172,7 +113,6 @@
             opacity: 1;
             transform: translateY(0px);
         }
-        button#promo-btn,
         #popBtn {
             padding: .9em 2em;
             font-size: 1em;
@@ -183,7 +123,6 @@
             background-color: #a4a4a421;
             transition: background-color 150ms ease;
         }
-        button#promo-btn:hover,
         #popBtn:hover {
             background-color: #2b2a2a21;
         }
@@ -211,8 +150,7 @@
         }
         input[type='radio'],
         input[type='button'],
-        input[type='submit'],
-        button {
+        input[type='submit'] {
             cursor: pointer;
         }
         input#close, input#submit {
@@ -297,25 +235,55 @@
             button#promo-btn, header label {display: none;}
         }
     </style>
+    <link rel="stylesheet" href="../style/main.css">
     <link rel="stylesheet" href="../style/broadsheet.css">
 </head>
 <body>
-    <header></header>
-    <main class="opq">
-        <div class="container">
-            <table>
-                <thead><tr></tr></thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Broad Sheet</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </main>
-    <button id="promo-btn">Promotions</button>
+    <div id="container">
+        <header class="fx-aic gp4">
+            <span id="nav-title">BROADSHEET</span>
+            <nav class="fx-aic-jcc">
+                <a href="index.html">Home</a>
+                <a href="score.html">Scoring</a>
+                <a href="register.html">Register</a>
+                <a  class="on" href="broadsheet.html">Broadsheet</a>
+            </nav>
+            <div class="hellip_dpdn">
+                <button class="hellip">&hellip;</button>
+                <div class="dpdn_mnu">
+                    <button id="promo-btn">Promotions</button>
+                    <button id="chng-sesn">Change Session</button>
+                    <hr>
+                    <button id="revl-pos">Reveal Position</button>
+                </div>
+            </div>
+        </header>
+        <aside>
+            <div class="user fx-aic gp1">
+                <div id="avatar" class="bg-nop bg-pc-s7"></div>
+                <div>
+                    <p></p>
+                    <small></small>
+                </div>
+            </div>
+        </aside>
+        <main inert>
+            <div id="tableau">
+                <table>
+                    <thead><tr></tr></thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <!-- <tr>
+                            <td>Broad Sheet</td>
+                        </tr> -->
+                    </tfoot>
+                </table>
+            </div>
+        </main>
+        <div id="notf" class="fx-aic gp1"><p></p></div> 
+    </div>
+
     <div popover id="promo-pop">
         <div class="wrp">
             <div></div>
@@ -351,7 +319,7 @@
         </form>
     </dialog>
     <div popover="manual" id="popsettings">
-        <div class="wrp on">
+        <div class="wrp">
             <div class="h4">
                 <span>Broadsheet Settings</span>
                 <button type="button" class="x" popovertarget="popsettings" popovertargetaction="hide"></button>
@@ -367,20 +335,15 @@
                 <label for="ssn">Session</label>
                 <select name="ssn" id="ssn" required>
                     <option value="">Choose Session</option>
-                    <option value="2024">2023/2024</option>
-                    <option value="2025">2024/2025</option>
                 </select>
-                <button>LOAD</button>
+                <button>LOAD BROADSHEET</button>
             </form>
-            <div class="err">
+            <!-- <div class="err">
                 <span>&excl;</span>
                 <i>ERROR: Access Denied.</i>
-            </div>
+            </div> -->
         </div>
     </div>
-    <script>
-        document.getElementById('popsettings').showPopover();
-    </script>
     <script type="module" src="../src/broadsheet_bundle.js"></script>
 </body>
 </html>

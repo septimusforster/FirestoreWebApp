@@ -144,7 +144,7 @@ module.exports = {
 }
 
 //ROOT promo.tab.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/promo.tab.js",
@@ -201,9 +201,9 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //STAFFER register.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/register.js",
@@ -226,20 +226,20 @@ module.exports = {
     watch: true
 }
 */
-// STAFFER scores.js
-
+// STAFFER score.js
+/*
 module.exports = {
     mode: "development",
-    entry: "./dist/staffer/src/scores.js",
+    entry: "./dist/staffer/src/score.js",
     output: {
         path: path.resolve(__dirname, "./dist/staffer/src"),
-        filename: "scores_bundle.js"
+        filename: "score_bundle.js"
     },
     watch: true
 }
 
 // STAFFER broadsheet.js
-/*
+*/
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",
