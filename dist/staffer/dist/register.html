@@ -47,6 +47,34 @@
         </div>
         <footer></footer>
     </main>
+    <button type="button" id="sbj_chg_btn" popovertarget="sbj_chg" popovertargetaction="show">Change of Subject</button>
+    <div popover="manual" id="sbj_chg">
+        <div class="pop_wrp">
+            <div class="pop_hdr">
+                <span>Change of Subject</span>
+                <button type="button" class="ex" popovertarget="sbj_chg" popovertargetaction="hide">CLOSE</button>
+            </div>
+            <div class="table">
+                <div class="thead">
+                    <b>#</b>
+                    <span>Name</span><span>Reg No</span>
+                </div>
+                <div class="tbody"></div>
+                <div class="tfoot">
+                    <div class="slt_all">
+                        <span>Select all of Column</span>
+                        <select name="all" id="all">
+                            <option value="">---</option>
+                        </select>
+                        <label for="entire">Select/Deselect entire column</label>
+                        <input type="checkbox" name="entire" id="entire">
+                    </div>
+                    <button type="button" id="cos_btn"><span>SAVE</span></button>
+                </div>
+            </div>
+            <div class="notf"></div>
+        </div>
+    </div>
     <script type="module" src="../src/register_bundle.js"></script>
 </body>
 </html>
