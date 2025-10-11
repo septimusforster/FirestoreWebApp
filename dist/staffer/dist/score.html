@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../style/main.css">
+        <link rel="stylesheet" href="../style/score.css">
+        <title>Scoring</title>
+    </head>
+    <body>
+        <div id="container">
+            <header class="fx-aic gp4">
+                <span id="nav-title">SCORING</span>
+                <nav class="fx-aic-jcc">
+                    <a href="index.html">Home</a>
+                    <a class="on" href="score.html">Scoring</a>
+                    <a href="register.html">Register</a>
+                    <a href="broadsheet.html">Broadsheet</a>
+                </nav>
+            </header>
+            <main class="fx-aifs gp1" inert>
+                <div id="table">
+                    <div id="thead">class > arm > subject</div>
+                    <div id="tbody">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NAME</th>
+                                    <th>ADM &numero;</th>
+                                    <th>C1</th>
+                                    <th>P1</th>
+                                    <th>C2</th>
+                                    <th>P2</th>
+                                    <th>C3</th>
+                                    <th>P3</th>
+                                    <th>CX</th>
+                                    <th>PX</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ftr">
+                        <button type="button" id="upd-btn" disabled>UPDATE</button>
+                    </div>
+                </div>
+                <aside>
+                    <form id="load">
+                        <div class="lbl" data-for="sbj">Choose subject</div>
+                        <div class="slt">
+                            <select name="sbj" id="sbj" required>
+                                <option value="">---</option>
+                            </select>
+                        </div>
+                        <div class="lbl" data-for="cls">Choose class</div>
+                        <div class="slt">
+                            <select name="cls" id="cls" required>
+                                <option value="">---</option>
+                            </select>
+                        </div>
+                        <div class="lbl" data-for="arm">Choose arm</div>
+                        <div class="slt">
+                            <select name="arm" id="arm" required>
+                                <option value="">---</option>
+                            </select>
+                        </div>
+                        <div class="ftr">
+                            <button id="load-btn">LOAD</button>
+                        </div>
+                    </form>
+                </aside>
+            </main>
+            <div id="notf" class="fx-aic gp1"><p>Message</p></div>    
+        </div>
+        <script type="module" src="../src/score_bundle.js"></script>
+    </body>
+</html>

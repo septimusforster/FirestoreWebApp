@@ -7,7 +7,8 @@ const arrwBtn = document.querySelector('.arrw_r');
 arrwBtn.disabled = true;
 
 // initialize firebase app
-var app = initializeApp(configs[6])
+// var app = initializeApp(configs[6])
+var app = initializeApp(configs[9].appsettings);
 // init services
 var db = getFirestore();
 
@@ -17,45 +18,59 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 0;
-const offered = {
-    AGR: "Agricultural Science",
-    BSC: "Basic Science",
-    BTEC: "Basic Technology",
-    BUS: "Business Studies",
-    CCA: "Cultural and Creative Arts",
-    CIV: "Civic Education",
-    CRS: "Christian Religious Studies",
-    ENG: "English Language",
-    FRE: "French",
-    HAU: "Hausa Language",
-    HECO: "Home Economics",
-    HIS: "History",
-    ICT: "Computer Studies",
-    IGB: "Igbo Language",
-    MTH: "Mathematics",
-    MUS: "Music",
-    PHE: "Physical and Health Education",
-    SOS: "Social Studies",
-    YOR: "Yoruba",
-    ACCT: "Financial Accounting",
-    BIO: "Biology",
-    CCP: "Catering Craft Practice",
-    CHE: "Chemistry",
-    COM: "Commmerce",
-    ECO: "Economics",
-    FDN: "Foods and Nutrition",
-    FMAT: "Further Mathematics",
-    FSH: "Fisheries",
-    GEO: "Geography",
-    GOV: "Government",
-    LIT: "Literature",
-    MKT: "Marketing",
-    PHY: "Physics",
-    TD: "Technical Drawing",
-    TOU: "Tourism",
-    VIS: "Visual Arts",
-};
+const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 4;
+// const offered = {
+//     AGR: "Agricultural Science",
+//     BSC: "Basic Science",
+//     BTEC: "Basic Technology",
+//     BUS: "Business Studies",
+//     CCA: "Cultural and Creative Arts",
+//     CIV: "Civic Education",
+//     CRS: "Christian Religious Studies",
+//     ENG: "English Language",
+//     FRE: "French",
+//     HAU: "Hausa Language",
+//     HECO: "Home Economics",
+//     HIS: "History",
+//     ICT: "Computer Studies",
+//     IGB: "Igbo Language",
+//     MTH: "Mathematics",
+//     MUS: "Music",
+//     PHE: "Physical and Health Education",
+//     SOS: "Social Studies",
+//     YOR: "Yoruba",
+//     ACCT: "Financial Accounting",
+//     BIO: "Biology",
+//     CCP: "Catering Craft Practice",
+//     CHE: "Chemistry",
+//     COM: "Commmerce",
+//     ECO: "Economics",
+//     FDN: "Foods and Nutrition",
+//     FMAT: "Further Mathematics",
+//     FSH: "Fisheries",
+//     GEO: "Geography",
+//     GOV: "Government",
+//     LIT: "Literature",
+//     MKT: "Marketing",
+//     PHY: "Physics",
+//     TD: "Technical Drawing",
+//     TOU: "Tourism",
+//     VIS: "Visual Arts",
+// };
+/*
+let products = [];
+const snped = await getDocs(query(collection(db, 'patients2025')));
+// snped.docs.forEach(d => products.push({[d.id]: d.data()}));
+const prom = snped.docs.map(async m => {
+    const newDocs = await getDocs(query(collection(db, 'patients2025',m.id,'record')));
+    products.push([...newDocs.docs].map(n => {
+        return {[m.id]: n.data()}
+    }))
+})
+await Promise.all(prom).then((res, rej) => {
+    console.log(products)
+})
+*/
 
 chooseConfig(clx); //projects
 let lastSnapshot, cursorFetch;
@@ -68,6 +83,7 @@ myBtn.className = 'fbtn';
 myBtn.setAttribute('style', 'width:fit-content;position:fixed;right:2rem;top:2rem;');
 myBtn.textContent = `Fetch ${classroom[clx]} collection`;
 const pre = document.querySelector('pre');
+let snapshots = [];
 
 myBtn.addEventListener('click', async (e) => {
     console.time(`Collecting ${classroom[clx]}`);
@@ -82,14 +98,31 @@ myBtn.addEventListener('click', async (e) => {
     console.timeEnd(`Collecting ${classroom[clx]}`)
     let students = '';
     console.log(cursorFetch.docs.length)
+    /*
+    const prom = [...cursorFetch.docs].map(async m => {
+        const snapped = await getDoc(doc(db, 'session/2025/students',m.id,'scores','records'));
+        snapshots.push({[m.id]: snapped.data()})
+    })
+    await Promise.all(prom).then((resolve, reject) => {
+        const x = Math.ceil(fetches*30/count.data().count);
+        console.log('x', x)
+        if(fetches === 4) console.log(snapshots)
+    })
+    */
+    
     cursorFetch.docs.forEach(d => {
-        const { admission_no, admission_year, arm, dob, first_name, last_name, other_name, gender, id, password } = d.data();
+        const { admission_no, admission_year, arm, dob, first_name, last_name, other_name, gender, record=null, id, password } = d.data();
         let sbjs = {};
-        if(offered){
-            for(const sb of Object.keys(offered).sort()) sbjs[sb] = {0:[],1:[],2:[]};
-            students += "\n" + JSON.stringify({stid:admission_no,enrolled:admission_year,arm, dob,fname:first_name,lname:last_name,oname:other_name,gender,_id:id,sbjs,pwd:password,createdAt:{"$$date":1756885851668},updatedAt:{"$$date":1756885851668}});
+        if(record){
+            // for(const sb of Object.keys(record).sort()) sbjs[sb] = {0:[],1:[],2:[]};
+            for(const sb in record) sbjs[sb] = record[sb];
+            students += JSON.stringify({stid:admission_no,enrolled:admission_year,arm, dob,fname:first_name,lname:last_name,oname:other_name,gender,_id:id,sbjs,pwd:password,createdAt:{"$$date":1756885851668},updatedAt:{"$$date":1759689934583}}) + ",\n";
         }
     });
+    /*
+    cursorFetch.docs.forEach(c => snapshots.push(c.data()))
+    if(fetches === 4)console.log(snapshots);
+    */
     pre.innerText += students;
 });
 document.body.appendChild(myBtn);

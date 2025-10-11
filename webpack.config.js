@@ -203,7 +203,7 @@ module.exports = {
 }
 */
 //STAFFER register.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/register.js",
@@ -226,14 +226,14 @@ module.exports = {
     watch: true
 }
 */
-// STAFFER scores.js
-/*
+// STAFFER score.js
+
 module.exports = {
     mode: "development",
-    entry: "./dist/staffer/src/scores.js",
+    entry: "./dist/staffer/src/score.js",
     output: {
         path: path.resolve(__dirname, "./dist/staffer/src"),
-        filename: "scores_bundle.js"
+        filename: "score_bundle.js"
     },
     watch: true
 }
