@@ -27,7 +27,7 @@ const term = function(n){
     if(n <= 3) return 1; //second term
     if(n <= 7) return 2; //third term
     return 0; //first term
-}(new Date(Date.now()).getMonth());
+}(MONTH);
 
 let storage = JSON.parse(sessionStorage.getItem('snapshotId'));
 //insert params

@@ -176,7 +176,10 @@ loginForm.addEventListener('submit', async (e) => {
         e.submitter.style.cursor = 'pointer';
     } else {
         loginForm.reset();
-        querySnapshot.docs.forEach(doc => sessionStorage.setItem('snapshotId', JSON.stringify({id: doc.id, data: doc.data()})));
+        querySnapshot.docs.forEach(doc => {
+            delete doc.data().password;
+            sessionStorage.setItem('snapshotId', JSON.stringify({id: doc.id, data: doc.data()}))
+        });
         location.href = 'index.html';
     }
 })
@@ -195,10 +198,9 @@ loginForm2.addEventListener('submit', async (e) => {
         e.submitter.disabled = false;
         e.submitter.style.cursor = 'pointer';
     } else {
-        let uid;
         querySnapshot.docs.forEach(doc => {
-            uid = doc.id;
-            sessionStorage.setItem('snapshot', JSON.stringify({id: uid, data: doc.data()}));
+            delete doc.data().password;
+            sessionStorage.setItem('snapshot', JSON.stringify({id: doc.id, data: doc.data()}));
         });
         loginForm2.reset();
         location.href = '../../USADEYZHluYW1heAib.html'.concat('?uid=',uid);

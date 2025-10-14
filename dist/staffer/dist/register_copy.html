@@ -3,38 +3,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="../style/main.css">
     <link rel="stylesheet" href="../style/register.css">
 </head>
 <body>
-    <div id="container">
-        <header class="fx-aic gp4">
-            <span id="nav-title">REGISTER</span>
-            <nav class="fx-aic-jcc">
-                <a href="index.html">Home</a>
-                <a href="score.html">Scoring</a>
-                <a class="on" href="register.html">Register</a>
-                <a href="broadsheet.html">Broadsheet</a>
-            </nav>
-            <button type="button" id="sbj_chg_btn" popovertarget="sbj_chg" popovertargetaction="show">Subject selection</button>
-        </header>
-        <aside>
-            <div class="user fx-aic gp1">
-                <div id="avatar" class="bg-nop bg-pc-s7"></div>
-                <div>
-                    <p></p>
-                    <small></small>
-                </div>
+    <main>
+        <header>
+            <div class="header">
+                <button type="button" class="navbtn" onclick="history.go(-1)">Home</button><button type="button" onclick="history.go(0)" class="navbtn afterward">Register</button>
             </div>
-        </aside>
-        <main inert>
-            <!-- <form name="formRegister" id="table"> -->
+            <div class="header">
+                <span></span><span>&bullet;</span><span></span>
+            </div>
+            <!-- <a href="#"><img src="../img/3669170_home_ic_icon.png" alt="home-icon"></a> -->
+        </header>
+        <div class="body">
+            <div>
+                <span id="load-icon"></span>
+                <span>Finding students</span>
+            </div>
+            <form name="formRegister" id="formRegister">
                 <table>
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>SN</th>
                             <th>Name</th>
-                            <th>Adm. &numero;</th>
+                            <th>Admission No</th>
                             <th>Gender</th>
                             <th>Username</th>
                             <th>Code</th>
@@ -44,19 +37,21 @@
                         </tr>
                     </thead>
                     <tbody>
+                        
                     </tbody>
                 </table>
-                <div class="ftr">
-                    <button id="fm-btn" disabled>SUBMIT</button>
+                <div class="table__footer">
+                    <input type="submit" value="SUBMIT">
                 </div>
-            <!-- </form> -->
-        </main>
-    </div>
-    <div id="notf" class="fx-aic gp1"><p></p></div>
+            </form>
+        </div>
+        <footer></footer>
+    </main>
+    <button type="button" id="sbj_chg_btn" popovertarget="sbj_chg" popovertargetaction="show">Change of Subject</button>
     <div popover="manual" id="sbj_chg">
         <div class="pop_wrp">
             <div class="pop_hdr">
-                <span>Subject Selection</span>
+                <span>Change of Subject</span>
                 <button type="button" class="ex" popovertarget="sbj_chg" popovertargetaction="hide">CLOSE</button>
             </div>
             <div class="table">
@@ -77,6 +72,7 @@
                     <button type="button" id="cos_btn"><span>SAVE</span></button>
                 </div>
             </div>
+            <div class="notf"></div>
         </div>
     </div>
     <script type="module" src="../src/register_bundle.js"></script>

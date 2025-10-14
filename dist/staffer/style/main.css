@@ -10,6 +10,9 @@
     --pry-clr-transp:#1a73e811;
     --round-shape:50%;
 }
+::backdrop{
+    background:#3335;
+}
 .gp1{gap:var(--gp1)}
 /* .gp4{gap:calc(var(--gp1) * 2)} */
 .gp4{gap:calc(var(--gp1) * 4)}
@@ -23,11 +26,35 @@
     background-position:center;
     background-size:70%;
 }
+a,button,::after,::before{transition:200ms ease;}
+[disabled]{
+    background:#eee5 !important;
+    color:#888 !important;
+    pointer-events:none;
+}
+select,button{display:block;outline:none;background:none;border:0;cursor:pointer;}
 html,body{height:100dvh;font-family:system-ui,sans-serif;font-size:0.95rem;color:#555;}
 #container{height:100%;width:50%;min-width:1250px;margin:auto;display:grid;grid-template-rows:minmax(2rem, 5rem) 80%;}
-header,main{padding:1rem;}
+header, main{padding:1rem;}
 #nav-title{font-size:150%;}
 a{text-decoration:none;color:unset;padding:.7rem 1rem;position:relative;}
+main[inert] #table>*, main[inert] > aside{
+    opacity:.3;
+}
+main[inert] #table::after{
+    content:'';
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -50%);
+    height:1.2rem;
+    width:1.2rem;
+    border-radius:var(--round-shape);
+    border:3px solid #eee;
+    border-top-color:var(--pry-clr);
+    animation:turn 1s linear infinite;
+}
+main>*{position:relative;}
 nav{margin:auto;}
 nav>a::after{content:'';position:absolute;bottom:0;left:0;height:2px;background:var(--pry-clr);}
 nav>a:hover{color:var(--pry-clr);}
@@ -49,4 +76,31 @@ nav>a.on::after{width:100%;}
 [contenteditable]:hover,
 [contenteditable]:focus{
     border-color:#ccc;
+}
+#notf {
+    min-width:220px;
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    top:-10%;
+    padding:1rem 2rem;
+    box-shadow:0 5px 24px #aaa;
+    color:#f3f3f3;
+    background:#333;
+    border:1px solid #555;
+    font-size:104%;
+    transition:top 200ms ease;
+}
+#notf::before{
+    content:'✔️';
+    line-height:1;
+    background:#009578;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+#notf.err::before{
+    content:'❌';
+    background:hsl(0, 100%, 40%);
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
