@@ -1,3 +1,97 @@
+#container{
+    grid-template-rows:minmax(2rem, 5rem) 7% 86%;
+    &>aside{
+        padding:1rem;
+    }
+}
+header,main{
+    width:80%;
+}
+.hellip_dpdn{
+    position:relative;
+    overflow:hidden;
+}
+.hellip_dpdn>button{
+    font-size:100%;
+    font-weight:700;
+    color:#888;
+    padding:.5rem;
+    border:1px solid;
+    border-radius:5px;
+    line-height:1;
+}
+.dpdn_mnu{
+    position:absolute;
+    right:0;
+    top:100%;
+    padding:.3rem 0;
+    border-radius:7px;
+    box-shadow:0 3px 12px #ccc;
+    transition:top 200ms ease-out;
+    background:#fff;
+    z-index:2;
+    &>button{
+        width:100%;
+        padding:.7rem 2.5rem;
+        text-align:left;
+        position:relative;
+        text-wrap:nowrap;
+        color:#777;
+    }
+    &>button:hover{
+        background-color:#f5f5f5;
+    }
+    &>hr{
+        height:1px;
+        border:0;
+        background:#eee;
+        margin:.3rem 0;
+    }
+    &>hr+button.on::before{
+        content:'✔️';
+        position:absolute;
+        left:.7rem;
+        line-height:1;
+        background:#1a73e8;
+        background-clip:text;
+        -webkit-text-fill-color:transparent;
+    }
+}
+.hellip_dpdn:has(button:focus){
+    overflow:visible;
+}
+.hellip_dpdn:has(button:focus) .dpdn_mnu{
+    top:calc(100% + .7rem);
+}
+#avatar{
+    background-image:url(../img/person.svg);
+    border-radius:var(--round-shape);
+    border:1px solid #ccc;
+}
+main[inert] table{
+    opacity:.3;
+}
+main[inert] table::after{
+    content:'';
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -50%);
+    height:1.2rem;
+    width:1.2rem;
+    border-radius:var(--round-shape);
+    border:3px solid #eee;
+    border-top-color:var(--pry-clr);
+    animation:turn 1s linear infinite;
+}
+#tableau{
+    height:95%;
+    overflow-y:auto;
+    border:1px solid #ddd;
+}
+
+
+
 [popover]{
     outline:none;
     border:0;
@@ -10,7 +104,7 @@
     left:50%;
     top:50%;
     transform:translate(-50%,-50%);
-    width:350px;
+    width:300px;
     padding:0 1rem;
     border-radius:14px;
     overflow:hidden;
@@ -50,15 +144,8 @@
     align-items:center;
     justify-content:space-between;
     padding:.5rem 0 .5rem .5rem;
-    border-bottom:1px solid #ccc;
     font-size:110%;
     font-weight:500;
-}
-button{
-    background:none;
-    border:0;
-    outline:none;
-    transition: all .2s;
 }
 button.x{
     width:3rem;
@@ -76,34 +163,34 @@ button.x:hover{
     display:flex;
     flex-direction:column;
     row-gap:.5rem;
-    padding:2rem;
+    padding:1rem;
 }
 .wrp>form>label{
     margin-left:unset;
     cursor:auto;
-    font-weight:500%;
-    font-size:107%;
+    font-weight:500;
 }
 .wrp>form>select{
-    padding:1rem;
-    font-size:100%;
-    border-radius:12px;
-    border:1px solid #eee;
-    margin-bottom:1rem;
-    color:#777;
+    padding:.8rem;
+    border-radius:5px;
+    margin-bottom:.8rem;
+    color:#888;
+    border:1px solid;
 }
-.wrp>form>button{
-    padding:1.4rem 1.7rem;
-    margin:1rem 0 2rem;
-    border-radius:12px;
-    background-color:#009578;
-    color:#fff;
-    font-weight:500;
+.wrp>form>button {
+    padding: 1rem 1.7rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    background-color: #0b715d;
+    color: #fff;
+    font-weight: 500;
+    font-family: system-ui;
+    font-size: 100%;
 }
 .wrp>form>button:hover{
     box-shadow:0 3px 24px #ccc;
 }
-.wrp>.err{
+/* .wrp>.err{
     position: absolute;
     bottom:-100%;
     left:0;
@@ -127,16 +214,16 @@ button.x:hover{
 }
 .wrp>.err.on{
     bottom:0;
-}
+} */
 code{
     color:#333;
 }
-#promo-btn{
+/* #promo-btn{
     position:absolute;
     top:1rem;
     left:50%;
     transform:translateX(-50%);
-}
+} */
 #promo-pop{
     pointer-events:none;
 }

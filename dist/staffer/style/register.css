@@ -22,6 +22,10 @@ main[inert] table::after{
     border-radius:var(--round-shape);
     border:1px solid #ccc;
 }
+div#tableau {
+    height: 84%;
+    overflow: auto;
+}
 table{
     width:100%;
     border-collapse:collapse;
