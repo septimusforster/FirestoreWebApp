@@ -198,8 +198,10 @@ loginForm2.addEventListener('submit', async (e) => {
         e.submitter.disabled = false;
         e.submitter.style.cursor = 'pointer';
     } else {
+        let uid;
         querySnapshot.docs.forEach(doc => {
             delete doc.data().password;
+            uid = doc.id;
             sessionStorage.setItem('snapshot', JSON.stringify({id: doc.id, data: doc.data()}));
         });
         loginForm2.reset();
