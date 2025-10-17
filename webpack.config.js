@@ -191,7 +191,7 @@ module.exports = {
 }
 */
 //STAFFER logon.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/logon.js",
@@ -227,7 +227,7 @@ module.exports = {
 }
 */
 // STAFFER score.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/score.js",
@@ -239,7 +239,7 @@ module.exports = {
 }
 
 // STAFFER broadsheet.js
-
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",

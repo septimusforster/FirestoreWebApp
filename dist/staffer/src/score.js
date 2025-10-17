@@ -37,8 +37,8 @@ if(storage){
     const loadForm = document.forms.namedItem('load');
     const table = document.querySelector('table>tbody');
     //insert subjects, cls, arms
-    for(const c of storage.classroomsTaught) loadForm.querySelector('select#cls').insertAdjacentHTML('beforeend', `<option value="${configs[7].indexOf(c)}">${c}</option>`);
-    for(const [sb, abr] of Object.entries(storage.subjectsTaught[0])) loadForm.querySelector('select#sbj').insertAdjacentHTML('beforeend', `<option value="${sb}">${abr}</option>`);
+    for(const c of storage.classroomsTaught.sort()) loadForm.querySelector('select#cls').insertAdjacentHTML('beforeend', `<option value="${configs[7].indexOf(c)}">${c}</option>`);
+    for(const s of storage.subjectsTaught.sort((a, b) => Object.values(a)[0].localeCompare(Object.values(b)[0]))) loadForm.querySelector('select#sbj').insertAdjacentHTML('beforeend', `<option value="${Object.keys(s)[0]}">${Object.values(s)[0]}</option>`);
     arms.forEach(a => loadForm.querySelector('select#arm').insertAdjacentHTML('beforeend', `<option>${a}</option>`));
 
     // adding permission

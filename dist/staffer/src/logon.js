@@ -202,7 +202,7 @@ loginForm2.addEventListener('submit', async (e) => {
         querySnapshot.docs.forEach(doc => {
             delete doc.data().password;
             uid = doc.id;
-            sessionStorage.setItem('snapshot', JSON.stringify({id: doc.id, data: doc.data()}));
+            sessionStorage.setItem('snapshotId', JSON.stringify({id: doc.id, data: doc.data()}));
         });
         loginForm2.reset();
         location.href = '../../USADEYZHluYW1heAib.html'.concat('?uid=',uid);

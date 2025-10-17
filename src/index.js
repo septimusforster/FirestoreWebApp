@@ -29,7 +29,7 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-const ss = JSON.parse(sessionStorage.snapshot);
+const ss = JSON.parse(sessionStorage.snapshotId);
 
 let eotData, term = 0, size = 0, toggleState;
 // calculate session
@@ -484,7 +484,7 @@ if (caap) {
 }
 //logout handler
 document.querySelector('header > button.logout').addEventListener('click', () => {
-    sessionStorage.removeItem('snapshot');
+    sessionStorage.removeItem('snapshotId');
     window.location.replace('./login-cat.html');
 });
 //promotion button

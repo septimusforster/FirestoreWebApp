@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Card</title>
+    <link rel="stylesheet" href="../style/report.css">
+</head>
+<body>
+    <div id="container">
+        <header class="fx aic">
+            <a href="#home" class="fx aic">Home</a>
+            <div class="breadcrumb fx aic">
+                <span>Report Card</span><i class="svg chev"></i>
+                <span>Session</span><i class="svg chev"></i>
+                <span>
+                    <button type="button" class="fx aic">2025 / 2026 - 1st</button>
+                    <form action="#">
+                        <div class="lbl">Select session & term</div>
+                        <div class="slt">
+                            <button type="button">2025 / 2026 - 1st</button>
+                            <div class="dpdn fx ais">
+                                <div>
+                                    <input type="radio" name="snn" id="snn0" value="2023">
+                                    <label for="snn0">2025/2026</label>
+                                    <input type="radio" name="snn" id="snn1" value="2024">
+                                    <label for="snn1">2025/2026</label>
+                                    <input type="radio" name="snn" id="snn2" value="2025">
+                                    <label for="snn2">2025/2026</label>
+                                </div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </form>
+                </span>
+            </div>
+            <div class="cdk-overlay-backdrop"></div>
+            <div id="notf" class="fx aic"><p>Here is a message.</p></div>
+        </header>
+    </div>
+    <script src="../src/report.js"></script>
+</body>
+</html>

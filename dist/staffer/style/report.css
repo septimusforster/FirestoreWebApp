@@ -1,0 +1,166 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    /* user-select:none; */
+}
+.fx{display:flex;}
+.aic{align-items:center;}
+.aifs{align-items:flex-start;}
+.jcc{justify-content:center;}
+.fxdc{flex-direction:column;}
+.btn,button{cursor:pointer;background:none;outline:none;border:0;}
+.svg{
+    height:1rem;
+    width:1rem;
+    background-repeat:no-repeat;
+    background-position:center;
+    /* background-size:70%; */
+}
+html,body{
+    height:100dvh;
+    font-family:system-ui, sans-serif;
+    color:#444;
+}
+#container{
+    height:100%;
+    &:has(.breadcrumb.on) .cdk-overlay-backdrop{
+        display: block;
+        position: absolute;
+        left:0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #0000;
+        pointer-events:auto;
+    }
+}
+header{
+    gap:5rem;
+    padding:.3rem 1rem;
+}
+header > a{
+    text-decoration:none;
+    color:unset;
+    gap:.4rem;
+    padding:1rem;
+    color:rgb(108, 71, 1);
+    &::before{
+        content:'🏠';
+    }
+}
+.breadcrumb{
+    line-height: 1;
+    gap:.5rem;
+    color:#888;
+    overflow:hidden;
+    &>i.chev{
+        background-image:url(../../student/img/chevron-forward-outline.svg);
+    }
+    &>span{
+        position:relative;
+        z-index:10;
+    }
+    &>span>button{
+        padding:.7rem 1rem .7rem 1.4rem;
+        gap:.3rem;
+        min-width:140px;
+        border-radius:24px;
+        border:1px solid;
+        color:#777;
+        font-weight:600;
+        background:#fff;
+        &::after{
+            content:'';
+            background-image:url(../../student/img/chevron-forward-outline.svg);
+            background-repeat:no-repeat;
+            background-position:center;
+            height:1rem;
+            width:1rem;
+            transform:rotate(90deg);
+            margin-left:auto;
+        }
+    }
+    & form{
+        position:absolute;
+        box-shadow:0 4px 20px #eee;
+        border:1px solid #aaa;
+        background:#fff;
+        transition:transform 200ms ease-out;
+    }
+    &.on{
+        overflow:visible;
+    }
+    &.on form{
+        transform:translateY(.5rem);
+        z-index:3;
+    }
+}
+.dpdn input[type=radio]{
+    width:0;
+}
+.dpdn input[type=radio]:checked+label{
+    background:#3333;
+}
+#notf {
+    min-width:220px;
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    top:-10%;
+    border-radius:7px;
+    padding:1rem 2rem;
+    box-shadow:0 5px 24px #aaa;
+    color:#f3f3f3;
+    background:#333e;
+    border:1px solid #555;
+    font-size:104%;
+    gap:1rem;
+    transition:top 200ms ease;
+}
+#notf::before{
+    content:'✔️';
+    line-height:1;
+    background:#009578;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+#notf.err::before{
+    content:'❌';
+    background:hsl(0, 100%, 40%);
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+/*firebase custom menu backdrop*/
+/*
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: .4!important;
+}
+.cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing, .cdk-high-contrast-active .cdk-overlay-transparent-backdrop {
+    opacity: 0;
+    visibility: visible;
+}
+.cdk-overlay-transparent-backdrop {
+    transition: visibility 1ms linear,opacity 1ms linear;
+    visibility: hidden;
+    opacity: 1;
+}
+.cdk-overlay-backdrop-showing {
+    opacity: 1;
+}
+.cdk-overlay-backdrop {
+    pointer-events: none;
+}
+.cdk-overlay-backdrop {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    opacity: 0;
+    touch-action: manipulation;
+    z-index: 1;
+    transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+} */
