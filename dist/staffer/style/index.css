@@ -18,3 +18,10 @@ main > aside:nth-of-type(2) > div{
         opacity:.5;
     }
 }
+button#logout{
+    height:2rem;
+    width:2rem;
+    background-image:url(../../student/img/log-out-outline.svg);
+    background-position:center;
+    background-repeat:no-repeat;
+}

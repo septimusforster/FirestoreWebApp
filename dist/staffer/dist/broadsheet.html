@@ -234,6 +234,13 @@
             thead, tfoot {position: initial}
             button#promo-btn, header label {display: none;}
         }
+        button#logout{
+            height:2rem;
+            width:2rem;
+            background-image:url(../../student/img/log-out-outline.svg);
+            background-position:center;
+            background-repeat:no-repeat;
+        }
     </style>
     <link rel="stylesheet" href="../style/main.css">
     <link rel="stylesheet" href="../style/broadsheet.css">
@@ -257,6 +264,7 @@
                     <button id="revl-pos">Reveal Position</button>
                 </div>
             </div>
+            <button type="button" id="logout" title="logout"></button>
         </header>
         <aside>
             <div class="user fx-aic gp1">
@@ -338,12 +346,9 @@
                 </select>
                 <button>LOAD BROADSHEET</button>
             </form>
-            <!-- <div class="err">
-                <span>&excl;</span>
-                <i>ERROR: Access Denied.</i>
-            </div> -->
         </div>
     </div>
+    <script src="../src/main.js"></script>
     <script type="module" src="../src/broadsheet_bundle.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 #container{
-    grid-template-rows:minmax(2rem, 5rem) auto 1fr;
+    grid-template-rows:minmax(2rem, 5rem) 5% 85%;
 }
 main[inert] table{
     opacity:.3;
@@ -259,4 +259,11 @@ select#all{
     border-radius:5px;
     border:1px solid #555;
     cursor:pointer;
+}
+button#logout{
+    height:2rem;
+    width:2rem;
+    background-image:url(../../student/img/log-out-outline.svg);
+    background-position:center;
+    background-repeat:no-repeat;
 }

@@ -99,6 +99,10 @@ header > a{
 .dpdn input[type=radio]{
     width:0;
 }
+.dpdn label{
+    display:block;
+    padding:.3rem 1rem;
+}
 .dpdn input[type=radio]:checked+label{
     background:#3333;
 }

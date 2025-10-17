@@ -74,3 +74,10 @@ tr td:nth-child(3){
 tbody tr:nth-child(even){
     background:linear-gradient(to right, #f1f1f1, #fcfcfc);
 }
+button#logout{
+    height:2rem;
+    width:2rem;
+    background-image:url(../../student/img/log-out-outline.svg);
+    background-position:center;
+    background-repeat:no-repeat;
+}

@@ -16,8 +16,8 @@ const MONTH = new Date().getMonth();
 const session = MONTH >= 9 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
 
 const eot = await getDoc(doc(db, 'EOT', session));
-let perm = eot.data().perm;
-perm = perm.toString(2);
+let perm = eot.data().perm.toString(2);
+perm = perm.padStart(8,'0');
 
 let arms = await getDoc(doc(db, 'reserved', '6Za7vGAeWbnkvCIuVNlu'));
 arms = arms.data().arms.sort();
