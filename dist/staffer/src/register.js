@@ -97,7 +97,7 @@ if(ss && 'masterOfForm' in ss.data){
     };
     const SUBJ = Object.keys(ss.data.masterOfForm)[0].startsWith('JSS') ? jnrSubs : snrSubs;
     
-    let snapDocs = [];
+    let snapDocs = [], snappedChange = [];
     chooseConfig(classArray.indexOf(master[0]))
     const q = query(collection(db, 'session', session, 'students'), where("arm", "==", master[1]));
     const snapDoc = await getDocs(q);
@@ -109,8 +109,9 @@ if(ss && 'masterOfForm' in ss.data){
         // snapDoc.docs.sort()
         let sorted = snapDoc.docs.sort((a,b) => a.data().last_name.localeCompare(b.data().last_name));
         sorted.forEach(d => {
-            if (d.data().admission_no.startsWith('DCA') && 'record' in d.data()) {
-                snapDocs.push({id:d.id, dd:d.data()});
+            if (d.data().admission_no.startsWith('DCA')) {
+                snappedChange.push({id:d.id, dd:d.data()});
+                if('record' in d.data()) snapDocs.push({id:d.id, dd:d.data()});
             }
         });
 
@@ -236,7 +237,7 @@ if(ss && 'masterOfForm' in ss.data){
         count++;
         selectAll.insertAdjacentHTML('beforeend', `<option value="${count}">${count}</option>`);
     }
-    snapDocs.forEach((snp, snx) => {
+    snappedChange.forEach((snp, snx) => {
         const iTags = Object.keys(SUBJ).reduce((a,c) => snp.dd?.record && c in snp.dd?.record ? a + '<i class="i"></i>' : a + '<i></i>' ,'');
         popTbody.insertAdjacentHTML('beforeend', `
             <div class="tr">
@@ -267,7 +268,7 @@ if(ss && 'masterOfForm' in ss.data){
         cosBtn.disabled = true;
         COSpopWrap.setAttribute('inert','');
     
-        snapDocs.forEach((snp, snx) => {
+        snappedChange.forEach((snp, snx) => {
             const u = tbodyChildren[snx].querySelectorAll('i');
             const v = Object.keys(SUBJ).filter((ff, fx) => {
                 if(snp.dd?.record){
@@ -283,7 +284,6 @@ if(ss && 'masterOfForm' in ss.data){
                 for(const o of v) obj[o] = {[term]: Array(8).fill(null)}
                 CHANGE_OF_SUBJECT.push({[snp.id]: obj});
             }
-            // CHANGE_OF_SUBJECT = CHANGE_OF_SUBJECT.
         });
         // console.log(CHANGE_OF_SUBJECT);
         const prom = CHANGE_OF_SUBJECT.map(async obj => {

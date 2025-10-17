@@ -96,11 +96,15 @@ header > a{
         z-index:3;
     }
 }
+.dpdn > div{
+    flex-direction:column;
+}
 .dpdn input[type=radio]{
     width:0;
 }
 .dpdn label{
     display:block;
+    width:100%;
     padding:.3rem 1rem;
 }
 .dpdn input[type=radio]:checked+label{
