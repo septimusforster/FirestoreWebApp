@@ -46,7 +46,8 @@ if(storage){
 
     let data, mySub, myClass, myArm; //subject, class, arm
     function loadTable(info){
-        document.getElementById('thead').textContent = `${configs[7][myClass]} ${myArm} - ${storage.subjectsTaught[0][mySub]}`;
+        // document.getElementById('thead').textContent = `${configs[7][myClass]} ${myArm} - ${storage.subjectsTaught[0][mySub]}`;
+        document.getElementById('thead').textContent = `${configs[7][myClass]} ${myArm} - ${Object.values(storage.subjectsTaught.filter(s => mySub in s)[0])[0]}`;
         table.innerHTML='';
 
         for(let i = 0; i < info.length; i++){

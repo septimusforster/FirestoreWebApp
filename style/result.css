@@ -1,11 +1,11 @@
-html, body, * {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font: 18px system-ui, sans-serif;
+    font-family:system-ui, sans-serif;
 }
 body {
-    background-color: #7777ff;
+    background-color: #f0f4f9;
     user-select: none;
 }
 button {
@@ -14,14 +14,55 @@ button {
     border: none;
 }
 header {
-    padding: 20px;
-    text-align: center;
+    padding:2rem 0 0;
+    width:53%;
+    min-width:1000px;
+    margin:0 auto 2rem;
+    position:sticky;
+    top:0;
+    z-index:3;
+    background:inherit;
+    display:flex;
+    align-items:center;
+    border-bottom: 1px solid #ccc;
+    &>a{
+        text-decoration: none;
+        color: #555;
+        padding: .8rem 1.4rem;
+        position:relative;
+    }
+    &>a:nth-of-type(5){
+        margin-right:auto;
+    }
+    &>a::after{content:'';position:absolute;bottom:0;left:0;height:2px;background:#1a73e8;}
+    &>a:hover{color:#1a73e8;}
+    &>a.on{color:#1a73e8;}
+    &>a.on::after{width:100%;}
+    &>button{
+        background:#fff;
+        margin:0 .5rem;
+    }
+    &>button:not(#logout){
+        padding:.8rem 2rem;
+        border-radius:36px;
+        border:1px solid #ccc;
+        font-weight:500;
+    }
+    &>#pdf-btn{
+        background:#e35;
+        color:#fff;
+    }
 }
-#pdf-btn {
-    padding: 12px 24px;
-    border-radius: 5px;
-    background-color: darkorange;
-    color: #fff;
+button.svg{
+    height:2.3rem;
+    width:2.3rem;
+    border-radius:50%;
+    background-repeat:no-repeat;
+    background-size:80%;
+}
+button#logout{
+    background-position:75% center;
+    background-image:url(../dist/student/img/log-out-outline.svg);
 }
 main {
     min-width: 700px;
@@ -370,7 +411,7 @@ p#status {
     }
 }
 dialog[popover]::backdrop {
-    background-color: #7777ff;
+    background: #f0f4f9
 }
 div[popover]::backdrop {
     background-color: rgba(0,0,0,.7);
@@ -379,13 +420,25 @@ div[popover]::backdrop {
 dialog {
     outline: 0;
     border: 0;
-    width: 400px;
+    width: 307px;
     margin: 170px auto 0;
     padding: 1em;
-    background: none;
+    background:#fff;
     border-radius: 8px;
-    border: 1px solid #fff8;
     overflow: hidden;
+}
+dialog button.svg{
+    background-image:url(../dist/student/img/close-outline.svg);
+    background-position:center;
+    background-size:50%;
+}
+dialog button#close{
+    position:fixed;
+    right:2rem;
+    top:2rem;
+    height:3rem;
+    width:3rem;
+    background-color:#ccc5;
 }
 .wrp,
 .wrp > form > .gp {
@@ -393,36 +446,43 @@ dialog {
     display: flex;
     flex-direction: column;
 }
-.wrp {gap: 2em;}
-.wrp > form > .gp {gap: .5em;}
+.wrp {
+    gap: 2em;
+    padding:1rem;
+}
+.wrp > form > .gp {
+    gap: .5em;
+}
+/* 
 .wrp > form > .gp:last-of-type {
     display: none;
-}
-.wrp > form > .gp:last-of-type.on {
+} */
+/* .wrp > form > .gp:last-of-type.on {
     display: flex;
-}
-.gp > label {color: #fff;}
-.gp > select,
+} */
+.gp > label {color: #555;font-weight:500;}
+.gp > select, .gp > input,
 .wrp > form > .gp:last-of-type > input {
     outline: none;
-    padding: .5em 1.4em;
-    border-radius: 5px;
-    border: 1px solid #fff5;
-    background-color: #fff;
-    box-shadow: 0 1px 3px #555;
-    font-size: initial;
+    padding: .7em 1.4em;
+    border-radius: 4px;
+    color:#777;
+    font-weight:500;
+    border:1px solid #ddd;
+}
+[disabled]{
+    opacity:.5;
 }
 .wrp > form > button {
     display: block;
-    width: 70%;
-    margin: 50px auto 1em;
-    padding: 1em .7em;
-    border-radius: 36px;
-    background-color: #7777ff;
+    width: 100%;
+    margin: 2rem auto 0;
+    padding: 1rem 0;
+    border-radius: 4px;
+    background-color: #1a73e8;
     color: #fff;
-    border: 2px solid #fff;
-    font-size: .8em;
-    opacity: .3;
+    font-weight:500;
+    font-size:100%;
 }
 #loadbar {
     margin: auto;
@@ -440,7 +500,7 @@ dialog {
     background-color: #fff;
     transition: width .5s;
 }
-button:has(svg) {
+/* button:has(svg) {
     position: fixed;
     right: 200px;
     top: 30px;
@@ -477,4 +537,4 @@ button:has(svg):hover::after {
 button > svg {
     height: 24px;
     width: 24px;
-}
+} */
