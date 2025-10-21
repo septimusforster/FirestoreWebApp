@@ -43,7 +43,7 @@ header {
         margin:0 .5rem;
     }
     &>button:not(#logout){
-        padding:.8rem 2rem;
+        padding:.5rem 2rem;
         border-radius:36px;
         border:1px solid #ccc;
         font-weight:500;
@@ -51,6 +51,7 @@ header {
     &>#pdf-btn{
         background:#e35;
         color:#fff;
+        border:1px solid #e35 !important;
     }
 }
 button.svg{
@@ -453,20 +454,13 @@ dialog button#close{
 .wrp > form > .gp {
     gap: .5em;
 }
-/* 
-.wrp > form > .gp:last-of-type {
-    display: none;
-} */
-/* .wrp > form > .gp:last-of-type.on {
-    display: flex;
-} */
 .gp > label {color: #555;font-weight:500;}
 .gp > select, .gp > input,
 .wrp > form > .gp:last-of-type > input {
     outline: none;
-    padding: .7em 1.4em;
+    padding: .9em 1.4em;
     border-radius: 4px;
-    color:#777;
+    color:#444;
     font-weight:500;
     border:1px solid #ddd;
 }
@@ -500,41 +494,63 @@ dialog button#close{
     background-color: #fff;
     transition: width .5s;
 }
-/* button:has(svg) {
-    position: fixed;
-    right: 200px;
-    top: 30px;
+footer {
+    position: sticky;
+    background: #fff7;
+    border:2px solid #1a73e8;
+    bottom: 3rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    height: 48px;
-    width: 48px;
-    border-radius: 50%;
-    background-color: #fff;
-    outline: none;
-    box-shadow: 0 3px 18px #3337;
-    z-index: 1;
+    gap: 1rem;
+    padding: .5rem;
+    width: fit-content;
+    border-radius: 36px;
+    margin: 0 auto;
+    color: #555;
+    &>button{
+        background:#ddd;
+        background-position:center;
+        background-size:50% !important;
+    }
+    &>button.chev{
+        background-image:url(../dist/student/img/chevron-forward-outline.svg);
+    }
+    &>button.chev:nth-of-type(1){
+        transform:rotate(-180deg);
+    }
+    &>button.jump-to{
+        background-image:url(../dist/student/img/arrow-redo-outline.svg);
+    }
+    &>button.jump-to.on+input{
+        visibility:visible;
+    }
+    &>span{
+        font-size:107%;
+        padding:0 1rem;
+    }
+    &>span>i{
+        font-weight:500;
+        font-size:112%;
+    }
+    &>input{
+        visibility:hidden;
+        position:absolute;
+        left:calc(100% + 1rem);
+        top:50%;
+        transform:translateY(-50%);
+        width:fit-content;
+        padding:.5rem;
+        text-align:center;
+        line-height:2;
+        border:2px solid #e35;
+        outline:2px solid #fff;
+        width:100px;
+        font-size:100%;
+        font-weight:500;
+        border-radius:36px;
+        transition: 200ms ease-out;
+    }
 }
-button:has(svg)::after {
-    opacity: 0;
-    transform: scale(.8);
-    content: attr(data-pop);
-    position: absolute;
-    top: 120%;
-    left: -70%;
-    background-color: #0008;
-    width: max-content;
-    padding: 5px 15px;
-    color: #fff;
-    border-radius: 8px;
-    transition: .1s ease;
-    pointer-events: none;
+input::placeholder{
+    color:#aaa;
 }
-button:has(svg):hover::after {
-    transform: scale(1);
-    opacity: 1;
-}
-button > svg {
-    height: 24px;
-    width: 24px;
-} */
