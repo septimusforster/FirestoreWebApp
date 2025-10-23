@@ -46,7 +46,6 @@ if(storage){
 
     let data, mySub, myClass, myArm; //subject, class, arm
     function loadTable(info){
-        // document.getElementById('thead').textContent = `${configs[7][myClass]} ${myArm} - ${storage.subjectsTaught[0][mySub]}`;
         document.getElementById('thead').textContent = `${configs[7][myClass]} ${myArm} - ${Object.values(storage.subjectsTaught.filter(s => mySub in s)[0])[0]}`;
         table.innerHTML='';
 
@@ -57,8 +56,8 @@ if(storage){
             table.insertAdjacentHTML('beforeend', `
                 <tr id="${info[i].id}">
                     <td>${i+1}</td>
-                    <td>${info[i].last_name} ${info[i].first_name} ${info[i]?.other_name || ''}</td>
-                    <td>${info[i].admission_no}</td>
+                    <td>${info[i].fn}</td>
+                    <td>${info[i].ano}</td>
                     ${td}
                 </tr>
             `);
@@ -83,8 +82,15 @@ if(storage){
             [mySub, myClass, myArm] = fd.values();
             chooseConfig(parseInt(myClass));
             const neoSnap = await getDocs(query(collection(db, `session/${session}/students`), where('arm', '==', myArm)));
-            data = [...neoSnap.docs].map(m => m.data()).sort((a,b) => a.last_name.localeCompare(b.last_name));
-            document.querySelector('#table .ftr>button').toggleAttribute('disabled',!data.length);
+            data = [...neoSnap.docs].map(m => {
+                return {
+                    id: m.id,
+                    fn: `${m.data().last_name} ${m.data().first_name} ${m.data()?.other_name || ''}`,
+                    ano: m.data().admission_no,
+                    record: m.data().record
+                }
+            }).sort((a,b) => a.fn.localeCompare(b.fn));
+            document.querySelector('#table .ftr>button').toggleAttribute('disabled', !data.length);
             loadTable(data)
         }
         main.removeAttribute('inert');
@@ -101,13 +107,20 @@ if(storage){
             main.setAttribute('inert','');
             chooseConfig(parseInt(myClass));
             try{
+                const idxx = {};
                 const prom = [...trows].map(async m => {
                     const d = [...m.querySelectorAll('td:nth-child(n+4)')].map(td => td.textContent === '-' ? null : Number(td.textContent));
+                    idxx[m.id] = d;
                     await runTransaction(db, async (transaction) => {
                         await transaction.update(doc(db, 'session', session, 'students', m.id),{[`record.${mySub}.${term}`]:d})
                     });
                 });
                 await Promise.all(prom).then(() => {
+                    data = data.map(d => {
+                        if(!(d.id in idxx)) return d;
+                        d['record'][mySub][term] = idxx[d.id];
+                        return d;
+                    })
                     notify(`Updation successful. (${prom.length})`);
                 })
             }catch(err){
