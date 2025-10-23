@@ -81,3 +81,7 @@ button#logout{
     background-position:center;
     background-repeat:no-repeat;
 }
+tr.w{
+    font-weight:500;
+    color:#114b96;
+}

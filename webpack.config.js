@@ -84,7 +84,7 @@ module.exports = {
 }
 
 //ROOT result.js
-*/
+
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -227,7 +227,7 @@ module.exports = {
 }
 */
 // STAFFER score.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/score.js",

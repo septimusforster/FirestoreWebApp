@@ -95,6 +95,7 @@ section {
 #section-header img[alt="photo"] {
     width: 120px;
     border-radius: 50%;
+    opacity:.5;
 }
 #section-bio {
     display: flex;

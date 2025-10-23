@@ -94,7 +94,7 @@ if(storage){
     document.querySelector('button#upd-btn').addEventListener('click', async (e) => {
         const trows = table.querySelectorAll('tr.w');
         if(!trows.length){
-            alert("Nothing to update.");
+            notify("Nothing to update.", true);
             return;
         }else{
             e.target.disabled = true;
@@ -108,7 +108,7 @@ if(storage){
                     });
                 });
                 await Promise.all(prom).then(() => {
-                    notify('Updation successful.');
+                    notify(`Updation successful. (${prom.length})`);
                 })
             }catch(err){
                 if(err){
@@ -118,6 +118,7 @@ if(storage){
             }finally{
                 main.removeAttribute('inert');
                 e.target.disabled = false;
+                trows.forEach(w => w.classList.remove('w'));
             }
         }
     });
