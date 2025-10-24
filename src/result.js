@@ -57,8 +57,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             e.target.nextElementSibling.disabled = true;
         }
     });
-    let eotReadyStatus,
-        core = {MTH:0, ENG:0, LIT:0, CIV:0, GOV:0, PHY:0, CHEM:0, ACCT:0, COMM:0},
+    let core = {MTH:0, ENG:0, LIT:0, CIV:0, GOV:0, PHY:0, CHEM:0, ACCT:0, COMM:0},
         core_lower = 0;
 
     await eot();
@@ -68,6 +67,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     const teacherDiv = document.getElementById('teacher');
     const princDiv = document.getElementById('principal');
     // set both teacher and principal name
+    if(ss.data.isAdmin) teacherDiv.querySelector('p').setAttribute('contenteditable','');
     teacherDiv.querySelector('p').textContent = ss.data?.fullName || '';
     princDiv.querySelector('p').textContent = eotData?.princ.name || '';
 
@@ -82,7 +82,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         for(let el = 1; el <= 4; el++)
             document.querySelectorAll(`#section-bio table:nth-child(1) tr td:nth-child(2)`)[el-1].textContent = [admission_no, fullName, 'Male Female'.split(' ').filter(x => x.startsWith(gender))[0], new Date(Date.now() - new Date(dob).getTime()).getUTCFullYear() - 1970 || ''][el-1];
         for(let el = 1; el <= 5; el++)
-            document.querySelectorAll(`#section-bio table:nth-child(2) tr td:nth-child(2)`)[el-1].textContent = [`${configs[7].indexOf(FORM) + 7}th Grade ${ARM}`, size, daysOpen, days_present[term], daysOpen - days_present[term] || ''][el-1];
+            document.querySelectorAll(`#section-bio table:nth-child(2) tr td:nth-child(2)`)[el-1].textContent = [`${configs[7].indexOf(FORM) + 7}th Grade ${ARM}`, size, daysOpen, days_present[term], daysOpen - days_present[term] || 0][el-1];
         for(let el = 1; el <= 3; el++)
             document.querySelectorAll(`#section-bio table:nth-child(3) tr td:nth-child(2)`)[el-1].textContent = [['First', 'Second', 'Third'][term], `${session-1}/${session}`, percentile < 100 ? '' : eotData?.next_term?.[term] || ''][el-1];
         
@@ -366,7 +366,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         await getDoc(eotRef).then(async (res) => {
             document.forms[0].querySelector('button').style.opacity = 1;
             eotData = res.data();
-
+            daysOpen = eotData?.days_open[term] || 0;
             const photo = "../img/user.png" || ss.photo_src;
     
             //load photo
