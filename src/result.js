@@ -225,27 +225,27 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         let term_grade;
         switch (true) {
             case ME_AVERAGE >= graderObject.A:
-                princDiv.querySelector('blockquote').textContent = principal?.comments?.A || '';
+                princDiv.querySelector('blockquote').textContent = eotData.princ?.comments?.A || '';
                 term_grade = 'A';
                 break;
             case ME_AVERAGE >= graderObject.B:
-                princDiv.querySelector('blockquote').textContent = principal?.comments?.B || '';
+                princDiv.querySelector('blockquote').textContent = eotData.princ?.comments?.B || '';
                 term_grade = 'B';
                 break;
             case ME_AVERAGE >= graderObject.C:
-                princDiv.querySelector('blockquote').textContent = principal?.comments?.C || '';
+                princDiv.querySelector('blockquote').textContent = eotData.princ?.comments?.C || '';
                 term_grade = 'C';
                 break;
             case ME_AVERAGE >= graderObject.D:
-                princDiv.querySelector('blockquote').textContent = principal?.comments?.D || '';
+                princDiv.querySelector('blockquote').textContent = eotData.princ?.comments?.D || '';
                 term_grade = 'D';
                 break;
             case ME_AVERAGE >= graderObject.E:
-                princDiv.querySelector('blockquote').textContent = principal?.comments?.E || '';
+                princDiv.querySelector('blockquote').textContent = eotData.princ?.comments?.E || '';
                 term_grade = 'E';
                 break;
             case ME_AVERAGE >= graderObject.F:
-                princDiv.querySelector('blockquote').textContent = principal?.comments?.F || '';
+                princDiv.querySelector('blockquote').textContent = eotData.princ?.comments?.F || '';
                 term_grade = 'F';
                 break;
         }
@@ -323,7 +323,6 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         try {
             chooseConfig(configs[7].indexOf(FORM))
             loaded(30);
-            const principal = eotData.princ;    //eotData.principal[term]
             
             const studentsRef = collection(db, 'session', session, 'students');
             const studentsQuery = ARM == "ENTRANCE" ? query(studentsRef, and(where("admission_year", ">=", new Date().getFullYear()), where("arm", "==", "ENTRANCE"))) : query(studentsRef, where("arm", "==", ARM), orderBy('last_name'));
