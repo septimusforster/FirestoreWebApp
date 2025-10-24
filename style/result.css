@@ -111,7 +111,7 @@ section {
     text-transform: uppercase;
 }
 .small {
-    font-size: 15px;
+    font-size: 90%;
 }
 .small, .overstats {
     font-weight: 500;
@@ -304,6 +304,14 @@ td, .h4 {
     color: #555;
     position: relative;
 }
+#teacher, #principal{
+    &>p{
+        text-align:right;
+    }
+    &>small{
+        font-weight:500;
+    }
+}
 div:has(#percent){
     padding:0 0 1rem 0 !important;
 }
@@ -402,7 +410,6 @@ p#percent::after {
 }
 .float__right {
     float: right;
-    text-align: right;
 }
 p#status {
     font-size: .7rem;

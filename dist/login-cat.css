@@ -9,8 +9,10 @@
 	position: relative;
 	width: 100vw;
 	height: 100vh;
-	background-image: url(/dist/staffer/img/6.jpg);
+	background-image: url(/dist/staffer/img/Minimalist-Background-HD.png);
+	background-repeat:no-repeat;
 	background-size: cover;
+	background-position:center;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
@@ -19,7 +21,10 @@
 	font-size: 14px;
 	color: #555;
   }
-
+  p{
+	color:#fff;
+	font-size:120%;
+  }
   .image {
 	display: flex;
 	flex-direction: column;
@@ -33,7 +38,6 @@
 }
 .ima {
 	width: 18rem;
-	/* border: 1px solid blue; */
   }
 
   .login-cat {
@@ -43,26 +47,13 @@
 	box-sizing: border-box;
 	margin-left: 90px;
 	margin-right: 100px;
-	/* border: 1px solid turquoise; */
 	border-radius: 10px;
   }
-
-  /* #log-btn {
-	width: 100%;
-	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: 1.4em;
-	color: aqua;
-	padding: 20px;
-	border: none;
-	cursor: pointer;
-  } */
-
   #log-btn {
 	outline: none;
 	border: 0;
-	font-size: 1.2em;
+	font-size: 1rem;
+	font-weight:500;
 	width: 300px;
 	margin: auto;
 	padding: 14px;

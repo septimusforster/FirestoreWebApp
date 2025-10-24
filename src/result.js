@@ -31,10 +31,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     let FORM = master[0];
     let ARM = master[1];
     const percent = document.getElementById('percent');
-    let fullName;
-    let eotData, percentile, offd;
-    // let myclass = configs[7].indexOf(FORM);
-    let size = '', daysOpen = '';
+    let fullName, eotData, percentile, offd, size = 0, daysOpen = 0;
     
     const dialog = document.querySelector('dialog');
     const loadbar = dialog.querySelector('#loadbar');
@@ -65,21 +62,27 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         core_lower = 0;
 
     await eot();
-    let page = 0;
-    let studentIDs = [], studentData;
+
+    let studentIDs = [], studentData, page = 0;
+
+    const teacherDiv = document.getElementById('teacher');
+    const princDiv = document.getElementById('principal');
+    // set both teacher and principal name
+    teacherDiv.querySelector('p').textContent = ss.data?.fullName || '';
+    princDiv.querySelector('p').textContent = eotData?.princ.name || '';
 
     function computeData(page){
         document.querySelector('footer span').innerHTML = `<i>${page+1}</i> of ${size}`;
         const {
             admission_no, last_name, first_name, other_name='', gender, dob,
-            days_present, record
+            days_present, record, comment
         } = studentData[page];
 
         fullName = `${last_name} ${first_name} ${other_name}`;
         for(let el = 1; el <= 4; el++)
-            document.querySelectorAll(`#section-bio table:nth-child(1) tr td:nth-child(2)`)[el-1].textContent = [admission_no, fullName, 'Male Female'.split(' ').filter(x => x.startsWith(gender))[0], new Date(Date.now() - new Date(dob).getTime()).getUTCFullYear() - 1970][el-1];
+            document.querySelectorAll(`#section-bio table:nth-child(1) tr td:nth-child(2)`)[el-1].textContent = [admission_no, fullName, 'Male Female'.split(' ').filter(x => x.startsWith(gender))[0], new Date(Date.now() - new Date(dob).getTime()).getUTCFullYear() - 1970 || ''][el-1];
         for(let el = 1; el <= 5; el++)
-            document.querySelectorAll(`#section-bio table:nth-child(2) tr td:nth-child(2)`)[el-1].textContent = [`${configs[7].indexOf(FORM) + 7}th Grade ${ARM}`, size, daysOpen, days_present[term], daysOpen - days_present[term]][el-1];
+            document.querySelectorAll(`#section-bio table:nth-child(2) tr td:nth-child(2)`)[el-1].textContent = [`${configs[7].indexOf(FORM) + 7}th Grade ${ARM}`, size, daysOpen, days_present[term], daysOpen - days_present[term] || ''][el-1];
         for(let el = 1; el <= 3; el++)
             document.querySelectorAll(`#section-bio table:nth-child(3) tr td:nth-child(2)`)[el-1].textContent = [['First', 'Second', 'Third'][term], `${session-1}/${session}`, percentile < 100 ? '' : eotData?.next_term?.[term] || ''][el-1];
         
@@ -164,11 +167,6 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
                 let all = studentData[j]['record'][ME[i][0]][term].reduce((a, c) => a + c);
                 if (!all) continue;
                 summation.push(all);
-                // if (studentData[j]?.[ME[i][0]]?.[term] === undefined) continue;
-                // let all = 0;
-                // studentData[j][ME[i][0]][term].forEach(n => all += n);
-                // if (!all) continue;
-                // summation.push(all);
             };
             const bool = summation.length;
             let max = bool ? Math.max(...summation).toFixed(1) : '';
@@ -209,7 +207,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         }
 
         const ME_AVERAGE = (total / (ME.length)).toFixed(1);
-        let subAverage = [], overall = [];
+        let subAverage = [];
    
         studentData.forEach(({record}, rx) => {
             let elem = 0, factor = 0;
@@ -224,9 +222,6 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
 
         const xx = subAverage.reduce((acc, cur) => acc + cur,0);
         const CLS_AVERAGE = (xx/size).toFixed(1);
-        // get principal data
-        const princDiv = document.getElementById('principal');
-        princDiv.querySelector('p').textContent = principal.name;
         let term_grade;
         switch (true) {
             case ME_AVERAGE >= graderObject.A:
@@ -281,12 +276,14 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             `);
         }
         isPromoted();
+        //set teacher's comment
+        teacherDiv.querySelector('blockquote').textContent = comment[term];
     }
     //page navigation
     document.querySelectorAll('button.chev').forEach((btn, btx) => {
         btn.addEventListener('click', (e) => {
             btn.disabled = true;
-            if(btx && page < size){
+            if(btx && page <= size){
                 page++;
             }else if(page >= 1){
                 page--;
@@ -299,97 +296,85 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     document.querySelector('button.jump-to').onclick = function(){this.classList.toggle('on')};
     document.querySelector('input#jump-to').addEventListener('change', (e) => {
         const val = Number(e.target.value);
-        if(val !== '' && typeof val === 'number' && (val > 0 && val < size)) {
+        if(val !== '' && typeof val === 'number' && (val > 0 && val <= size)) {
             page = val-1;
             computeData(page);
         }
     });
     document.forms.namedItem('rez_fom').addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (eotReadyStatus) {
-    
-            e.submitter.disabled = true;
-            loadbar.showPopover();
-            const fd = new FormData(e.target);
-            
-            session = fd.get('snn') || session;
-            FORM = fd.get('cls') || FORM;
-            ARM = fd.get('arm') || ARM;
-            term = fd.get('term') || term;
-            percentile = Number(fd.get('res')) ? Number(fd.get('res')) : Number(fd.get('oth'));
+        if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
 
-            document.querySelector('dialog').hidePopover();
-            // console.log(session, FORM, ARM, term, percentile, oth);
-            chooseConfig(6);
-            const sbjs = await getDoc(FORM.startsWith('JS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
-            offd = sbjs.data();
-            try {
-                chooseConfig(configs[7].indexOf(FORM))
-                loaded(30);
-                const principal = eotData.princ;    //eotData.principal[term]
-                
-                const studentsRef = collection(db, 'session', session, 'students');
-                const studentsQuery = ARM == "ENTRANCE" ? query(studentsRef, and(where("admission_year", ">=", new Date().getFullYear()), where("arm", "==", "ENTRANCE"))) : query(studentsRef, where("arm", "==", ARM), orderBy('last_name'));
-                loaded(40);
-                const studentsSnapshot = await getDocs(studentsQuery);
-                //second width
-                const DCA = 'DCA';
-                studentData = [];
-                studentsSnapshot.docs.forEach(d => {
-                    if (d.data().admission_no.toUpperCase().includes(DCA) && 'record' in d.data()) {
-                        studentData.push(d.data());
-                    }
-                });
-                page = 0;
-                size = studentData.length;
-                //compute and insert entire data
-                computeData(page);
-            } catch (err) {
-                console.error(err.message);
-                loadbar.hidePopover();
-                dialog.hidePopover();
-                pt = 7;
-                loaded(0);
-                e.submitter.disabled = false;
-            } finally {
-                loaded(1);
-                loadbar.hidePopover();
-                dialog.hidePopover();
-                e.submitter.disabled = false;
-                pt = 7;
-                loaded(0);
-            }
+        e.submitter.disabled = true;
+        loadbar.showPopover();
+        const fd = new FormData(e.target);
+        
+        session = fd.get('snn') || session;
+        FORM = fd.get('cls') || FORM;
+        ARM = fd.get('arm') || ARM;
+        term = fd.get('term') || term;
+        percentile = Number(fd.get('res')) ? Number(fd.get('res')) : Number(fd.get('oth'));
+
+        document.querySelector('dialog').hidePopover();
+        // console.log(session, FORM, ARM, term, percentile, oth);
+        chooseConfig(6);
+        const sbjs = await getDoc(FORM.startsWith('JS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
+        offd = sbjs.data();
+        try {
+            chooseConfig(configs[7].indexOf(FORM))
+            loaded(30);
+            const principal = eotData.princ;    //eotData.principal[term]
+            
+            const studentsRef = collection(db, 'session', session, 'students');
+            const studentsQuery = ARM == "ENTRANCE" ? query(studentsRef, and(where("admission_year", ">=", new Date().getFullYear()), where("arm", "==", "ENTRANCE"))) : query(studentsRef, where("arm", "==", ARM), orderBy('last_name'));
+            loaded(40);
+            const studentsSnapshot = await getDocs(studentsQuery);
+            //second width
+            const DCA = 'DCA';
+            studentData = [];
+            studentsSnapshot.docs.forEach(d => {
+                if (d.data().admission_no.toUpperCase().includes(DCA) && 'record' in d.data()) {
+                    studentData.push(d.data());
+                }
+            });
+            page = 0;
+            size = studentData.length;
+            //compute and insert entire data
+            computeData(page);
+        } catch (err) {
+            console.error(err.message);
+            loadbar.hidePopover();
+            dialog.hidePopover();
+            pt = 7;
+            loaded(0);
+            e.submitter.disabled = false;
+        } finally {
+            loaded(1);
+            loadbar.hidePopover();
+            dialog.hidePopover();
+            e.submitter.disabled = false;
+            pt = 7;
+            loaded(0);
         }
     });
-    // set teacher's name and comment
-    const teacherDiv = document.getElementById('teacher');
-    const teacherName = ss.formMaster;
-    document.querySelector('select#trm').onchange = (e) => {
-        term = Number(e.target.value);
-        const comment = typeof ss.comment == "object" ? ss.comment?.[term] || '' : ss.comment;
-        teacherDiv.querySelector('p').textContent = teacherName;
-        teacherDiv.querySelector('blockquote').textContent = comment;
-    }
     
     async function eot() {
         app = initializeApp(configs[6]);
         db = getFirestore(app);
-        // chooseConfig(6);
+
         const eotRef = doc(db, 'EOT', session);
         await getDoc(eotRef).then(async (res) => {
-            eotReadyStatus = 'ok';
             document.forms[0].querySelector('button').style.opacity = 1;
-            // chooseConfig(configs[7].indexOf(FORM));
-            // store dates in eotDates
             eotData = res.data();
-            
-            const stamp = '../img/24_25/stamp03.png';
+
             const photo = "../img/user.png" || ss.photo_src;
     
             //load photo
             document.images[1].src = photo;
             // load stamp
-            document.querySelector("img[alt='stamp']").src = stamp;
+            // const stamp = res.data()?.stamp?.[term];
+            const stamp = "../img/24_25/Principal Stamp 1st Term 2025.png";
+            if(stamp) document.querySelector("img[alt='stamp']").src = stamp;
         });
     }
     const pdfBtn = document.getElementById('pdf-btn');

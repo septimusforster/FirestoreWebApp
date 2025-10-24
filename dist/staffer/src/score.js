@@ -122,6 +122,7 @@ if(storage){
                         return d;
                     })
                     notify(`Updation successful. (${prom.length})`);
+                    trows.forEach(w => w.classList.remove('w'));
                 })
             }catch(err){
                 if(err){
@@ -131,7 +132,6 @@ if(storage){
             }finally{
                 main.removeAttribute('inert');
                 e.target.disabled = false;
-                trows.forEach(w => w.classList.remove('w'));
             }
         }
     });
