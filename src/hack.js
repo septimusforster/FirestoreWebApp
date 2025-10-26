@@ -74,7 +74,7 @@ await Promise.all(prom).then((res, rej) => {
 
 chooseConfig(clx); //projects
 let lastSnapshot, cursorFetch;
-const count = await getCountFromServer(collection(db, 'session/2026/students'));
+const count = await getCountFromServer(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE')));
 console.log("Total Number of Students:", count.data().count);
 
 let fetches = 0;
@@ -84,13 +84,13 @@ myBtn.setAttribute('style', 'width:fit-content;position:fixed;right:2rem;top:2re
 myBtn.textContent = `Fetch ${classroom[clx]} collection`;
 const pre = document.querySelector('pre');
 let snapshots = [];
-
+const now = Date.now();
 myBtn.addEventListener('click', async (e) => {
     console.time(`Collecting ${classroom[clx]}`);
     if(lastSnapshot){
-        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), limit(30), startAfter(lastSnapshot)));
+        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30), startAfter(lastSnapshot)));
     }else{
-        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), limit(30)));
+        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30)));
     }
     lastSnapshot = cursorFetch.docs.at(-1);
     fetches++;
@@ -116,7 +116,7 @@ myBtn.addEventListener('click', async (e) => {
         if(record){
             // for(const sb of Object.keys(record).sort()) sbjs[sb] = {0:[],1:[],2:[]};
             for(const sb in record) sbjs[sb] = record[sb];
-            students += JSON.stringify({stid:admission_no,enrolled:admission_year,arm, dob,fname:first_name,lname:last_name,oname:other_name,gender,_id:id,sbjs,pwd:password,createdAt:{"$$date":1756885851668},updatedAt:{"$$date":1759689934583}}) + ",\n";
+            students += JSON.stringify({stid:admission_no,enrolled:admission_year,arm, dob,fname:first_name,lname:last_name,oname:other_name,gender,_id:id,sbjs,pwd:password,createdAt:{"$$date":1756885851668},updatedAt:{"$$date":now}}) + "\n";
         }
     });
     /*

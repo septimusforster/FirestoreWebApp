@@ -283,9 +283,9 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     document.querySelectorAll('button.chev').forEach((btn, btx) => {
         btn.addEventListener('click', (e) => {
             btn.disabled = true;
-            if(btx && page <= size){
+            if(btx && page < size-1){
                 page++;
-            }else if(page >= 1){
+            }else if(!btx && page >= 1){
                 page--;
             }
             computeData(page);
@@ -329,6 +329,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             loaded(40);
             const studentsSnapshot = await getDocs(studentsQuery);
             //second width
+            if(studentsSnapshot.empty) return alert("No student exists.")
             const DCA = 'DCA';
             studentData = [];
             studentsSnapshot.docs.forEach(d => {
