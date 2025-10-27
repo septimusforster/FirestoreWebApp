@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, getCountFromServer, collection, startAfter, getDoc, getDocs, updateDoc, doc, query, where, orderBy, setDoc, limit } from "firebase/firestore"
+import { getFirestore, getCountFromServer, collection, startAfter, getDoc, getDocs, updateDoc, doc, query, where, orderBy, setDoc, limit, runTransaction } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 const badge = document.querySelector('aside:nth-child(1)');
@@ -74,7 +74,7 @@ await Promise.all(prom).then((res, rej) => {
 
 chooseConfig(clx); //projects
 let lastSnapshot, cursorFetch;
-const count = await getCountFromServer(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE')));
+const count = await getCountFromServer(query(collection(db, 'session/2025/students'), where('arm', '!=', 'ENTRANCE')));
 console.log("Total Number of Students:", count.data().count);
 
 let fetches = 0;
@@ -82,50 +82,92 @@ const myBtn = document.createElement('button');
 myBtn.className = 'fbtn';
 myBtn.setAttribute('style', 'width:fit-content;position:fixed;right:2rem;top:2rem;');
 myBtn.textContent = `Fetch ${classroom[clx]} collection`;
-const pre = document.querySelector('pre');
-let snapshots = [];
-const now = Date.now();
+
 myBtn.addEventListener('click', async (e) => {
     console.time(`Collecting ${classroom[clx]}`);
     if(lastSnapshot){
-        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30), startAfter(lastSnapshot)));
+        cursorFetch = await getDocs(query(collection(db, 'session/2025/students'), where('arm', '!=', 'ENTRANCE'), limit(30), startAfter(lastSnapshot)));
     }else{
-        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30)));
+        cursorFetch = await getDocs(query(collection(db, 'session/2025/students'), where('arm', '!=', 'ENTRANCE'), limit(30)));
     }
     lastSnapshot = cursorFetch.docs.at(-1);
     fetches++;
     console.log("Times fetched:", fetches);
     console.timeEnd(`Collecting ${classroom[clx]}`)
-    let students = '';
+
     console.log(cursorFetch.docs.length)
-    /*
+
     const prom = [...cursorFetch.docs].map(async m => {
-        const snapped = await getDoc(doc(db, 'session/2025/students',m.id,'scores','records'));
-        snapshots.push({[m.id]: snapped.data()})
+        try{
+            await runTransaction(db, async (transaction) => {
+                const d = await transaction.get(doc(db, 'session/2025/students',m.id,'scores','records'))
+                const record = d.data();
+                await transaction.update(doc(db, 'session/2025/students',m.id), {record})
+            })
+        }catch (err) {
+            console.log(err);
+        }
+        // const snapped = await getDoc(doc(db, 'session/2025/students',m.id,'scores','records'));
+        // snapshots.push({[m.id]: snapped.data()})
     })
     await Promise.all(prom).then((resolve, reject) => {
-        const x = Math.ceil(fetches*30/count.data().count);
-        console.log('x', x)
-        if(fetches === 4) console.log(snapshots)
+        console.log(resolve.length, 'done.');
     })
-    */
-    
-    cursorFetch.docs.forEach(d => {
-        const { admission_no, admission_year, arm, dob, first_name, last_name, other_name, gender, record=null, id, password } = d.data();
-        let sbjs = {};
-        if(record){
-            // for(const sb of Object.keys(record).sort()) sbjs[sb] = {0:[],1:[],2:[]};
-            for(const sb in record) sbjs[sb] = record[sb];
-            students += JSON.stringify({stid:admission_no,enrolled:admission_year,arm, dob,fname:first_name,lname:last_name,oname:other_name,gender,_id:id,sbjs,pwd:password,createdAt:{"$$date":1756885851668},updatedAt:{"$$date":now}}) + "\n";
-        }
-    });
-    /*
-    cursorFetch.docs.forEach(c => snapshots.push(c.data()))
-    if(fetches === 4)console.log(snapshots);
-    */
-    pre.innerText += students;
 });
 document.body.appendChild(myBtn);
+// let lastSnapshot, cursorFetch;
+// const count = await getCountFromServer(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE')));
+// console.log("Total Number of Students:", count.data().count);
+
+// let fetches = 0;
+// const myBtn = document.createElement('button');
+// myBtn.className = 'fbtn';
+// myBtn.setAttribute('style', 'width:fit-content;position:fixed;right:2rem;top:2rem;');
+// myBtn.textContent = `Fetch ${classroom[clx]} collection`;
+// const pre = document.querySelector('pre');
+// let snapshots = [];
+// const now = Date.now();
+// myBtn.addEventListener('click', async (e) => {
+//     console.time(`Collecting ${classroom[clx]}`);
+//     if(lastSnapshot){
+//         cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30), startAfter(lastSnapshot)));
+//     }else{
+//         cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30)));
+//     }
+//     lastSnapshot = cursorFetch.docs.at(-1);
+//     fetches++;
+//     console.log("Times fetched:", fetches);
+//     console.timeEnd(`Collecting ${classroom[clx]}`)
+//     let students = '';
+//     console.log(cursorFetch.docs.length)
+//     /*
+//     const prom = [...cursorFetch.docs].map(async m => {
+//         const snapped = await getDoc(doc(db, 'session/2025/students',m.id,'scores','records'));
+//         snapshots.push({[m.id]: snapped.data()})
+//     })
+//     await Promise.all(prom).then((resolve, reject) => {
+//         const x = Math.ceil(fetches*30/count.data().count);
+//         console.log('x', x)
+//         if(fetches === 4) console.log(snapshots)
+//     })
+//     */
+    
+//     cursorFetch.docs.forEach(d => {
+//         const { admission_no, admission_year, arm, dob, first_name, last_name, other_name, gender, record=null, id, password } = d.data();
+//         let sbjs = {};
+//         if(record){
+//             // for(const sb of Object.keys(record).sort()) sbjs[sb] = {0:[],1:[],2:[]};
+//             for(const sb in record) sbjs[sb] = record[sb];
+//             students += JSON.stringify({stid:admission_no,enrolled:admission_year,arm, dob,fname:first_name,lname:last_name,oname:other_name,gender,_id:id,sbjs,pwd:password,createdAt:{"$$date":1756885851668},updatedAt:{"$$date":now}}) + "\n";
+//         }
+//     });
+//     /*
+//     cursorFetch.docs.forEach(c => snapshots.push(c.data()))
+//     if(fetches === 4)console.log(snapshots);
+//     */
+//     pre.innerText += students;
+// });
+// document.body.appendChild(myBtn);
 /*
 /*recruitment HACK/
 chooseConfig(8);

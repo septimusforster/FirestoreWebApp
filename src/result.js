@@ -60,9 +60,9 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     let core = {MTH:0, ENG:0, LIT:0, CIV:0, GOV:0, PHY:0, CHEM:0, ACCT:0, COMM:0},
         core_lower = 0;
 
-    await eot();
+    if('masterOfForm' in ss.data) await eot();
 
-    let studentIDs = [], studentData, page = 0;
+    let studentData, page = 0;
 
     const teacherDiv = document.getElementById('teacher');
     const princDiv = document.getElementById('principal');
@@ -101,7 +101,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             "E": 30/100*percentile,
             "F": 0/100*percentile,
         }
-        tbodyScores.innerHTML = '', tbodyTerm.innerHTML = '', tfootTerm.innerHTML = '';
+        tbodyScores.innerHTML = '', tbodyTerm.innerHTML = '', tfootTerm.innerHTML = '', tfootCumm.querySelector('tr').innerHTML = '';
         const ME = Object.entries(record).sort((a, b) => offd[a[0]].localeCompare(offd[b[0]]));
         for (i = 0; i < ME.length; i++) {
             var td = `<td>${i+1}</td><td>${offd[ME[i][0]]}</td>`;
@@ -127,9 +127,9 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
                     break;
                 case 8:
                     td += `
-                        <td>${(test[0] + test[1]) || ''}</td>
-                        <td>${(test[2] + test[3]) || ''}</td>
-                        <td>${(test[4] + test[5]) || ''}</td>
+                        <td>${Number.isInteger((test[0] + test[1])) ? test[0] + test[1] : (test[0] + test[1]).toFixed(1) || ''}</td>
+                        <td>${Number.isInteger((test[2] + test[3])) ? test[2] + test[3]: (test[2] + test[3]).toFixed(1) || ''}</td>
+                        <td>${Number.isInteger((test[4] + test[5])) ? test[4] + test[5]: (test[4] + test[5]).toFixed(1) || ''}</td>
                         <td>${(test[6] + (test[7] || null)).toFixed(1) || ''}</td>
                     `;
                     break;
@@ -303,24 +303,25 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     });
     document.forms.namedItem('rez_fom').addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
+        // if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
 
         e.submitter.disabled = true;
         loadbar.showPopover();
         const fd = new FormData(e.target);
         
-        session = fd.get('snn') || session;
+        chooseConfig(6);
+        const sbjs = await getDoc(FORM.startsWith('JS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
+        offd = sbjs.data();
+        session = fd.get('snn');
         FORM = fd.get('cls') || FORM;
         ARM = fd.get('arm') || ARM;
         term = fd.get('term') || term;
         percentile = Number(fd.get('res')) ? Number(fd.get('res')) : Number(fd.get('oth'));
-
+        
+        await eot();
         document.querySelector('dialog').hidePopover();
         // console.log(session, FORM, ARM, term, percentile, oth);
-        chooseConfig(6);
-        const sbjs = await getDoc(FORM.startsWith('JS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
-        offd = sbjs.data();
-        try {
+        // try {
             chooseConfig(configs[7].indexOf(FORM))
             loaded(30);
             
@@ -341,21 +342,21 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             size = studentData.length;
             //compute and insert entire data
             computeData(page);
-        } catch (err) {
-            console.error(err.message);
+        // } catch (err) {
+            // console.error(err.message);
             loadbar.hidePopover();
             dialog.hidePopover();
             pt = 7;
             loaded(0);
             e.submitter.disabled = false;
-        } finally {
+        // } finally {
             loaded(1);
             loadbar.hidePopover();
             dialog.hidePopover();
             e.submitter.disabled = false;
             pt = 7;
             loaded(0);
-        }
+        // }
     });
     
     async function eot() {
@@ -364,11 +365,11 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
 
         const eotRef = doc(db, 'EOT', session);
         await getDoc(eotRef).then(async (res) => {
+            console.log(session)
             document.forms[0].querySelector('button').style.opacity = 1;
             eotData = res.data();
             daysOpen = eotData?.days_open[term] || 0;
             const photo = "../img/user.png" || ss.photo_src;
-    
             //load photo
             document.images[1].src = photo;
             // load stamp
@@ -394,7 +395,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     pdfBtn.addEventListener('click', generatePDF);
     function isPromoted(){
         if(term == 2) {
-            if(/^JSS/.test(ss.cls)){ //JSS class
+            if(FORM.startsWith('JSS')){ //JSS class
                 if(core_lower <= 49.4){
                     return percent.textContent = 'Not promoted.';
                 }else if(core_lower >= 49.5 && core_lower <= 54.5){
@@ -403,9 +404,9 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
                     return percent.textContent = 'Promoted.';
                 }
             }
-            if(ss.cls.startsWith('SSS')){ //SSS class
-                const promo = studentIDs.find(({sid}) => sid == ss.id).promo;
-                if(promo !== null) {
+            if(FORM.startsWith('SSS')){ //SSS class
+                const promo = studentData[page]?.promo;
+                if(promo) {
                     percent.textContent = promo;
                 }else{
                     for(const s in core) if(core[s] < 1) delete core[s];
