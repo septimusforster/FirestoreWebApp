@@ -36,7 +36,7 @@ module.exports = {
 }
 */
 //ROOT hack.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/hack.js",
@@ -84,7 +84,7 @@ module.exports = {
 }
 
 //ROOT result.js
-*/
+
 module.exports = {
     mode: "development",
     entry: "./src/result.js",

@@ -20,9 +20,10 @@ let perm = eot.data().perm.toString(2);
 perm = perm.padStart(8,'0');
 
 let arms = await getDoc(doc(db, 'reserved', '6Za7vGAeWbnkvCIuVNlu'));
+let offd = {};
+
 arms = arms.data().arms.sort();
 const main = document.querySelector('main');
-main.removeAttribute('inert');
 const term = function(n){
     if(n <= 3) return 1; //second term
     if(n <= 7) return 2; //third term
@@ -30,15 +31,24 @@ const term = function(n){
 }(MONTH);
 
 let storage = JSON.parse(sessionStorage.getItem('snapshotId'));
+const loadForm = document.forms.namedItem('load');
 //insert params
 if(storage){
     storage = storage.data;
+    if(storage.isAdmin){
+        const jnrSubs = await getDoc(doc(db, 'reserved/2aOQTzkCdD24EX8Yy518'));
+        const snrSubs = await getDoc(doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
+        offd = Object.assign(snrSubs.data(), jnrSubs.data());
 
-    const loadForm = document.forms.namedItem('load');
+        for(const o of Object.entries(offd).sort((a,b) => a[1].localeCompare(b[1])))
+            loadForm.querySelector('select#sbj').insertAdjacentHTML('beforeend', `<option value="${o[0]}">${o[1]}</option>`);
+    }else{
+        for(const s of storage.subjectsTaught.sort((a, b) => Object.values(a)[0].localeCompare(Object.values(b)[0]))) loadForm.querySelector('select#sbj').insertAdjacentHTML('beforeend', `<option value="${Object.keys(s)[0]}">${Object.values(s)[0]}</option>`);
+    }
+    main.removeAttribute('inert');
     const table = document.querySelector('table>tbody');
     //insert subjects, cls, arms
     for(const c of storage.classroomsTaught.sort()) loadForm.querySelector('select#cls').insertAdjacentHTML('beforeend', `<option value="${configs[7].indexOf(c)}">${c}</option>`);
-    for(const s of storage.subjectsTaught.sort((a, b) => Object.values(a)[0].localeCompare(Object.values(b)[0]))) loadForm.querySelector('select#sbj').insertAdjacentHTML('beforeend', `<option value="${Object.keys(s)[0]}">${Object.values(s)[0]}</option>`);
     arms.forEach(a => loadForm.querySelector('select#arm').insertAdjacentHTML('beforeend', `<option>${a}</option>`));
 
     // adding permission
@@ -46,7 +56,8 @@ if(storage){
 
     let data, mySub, myClass, myArm; //subject, class, arm
     function loadTable(info){
-        document.getElementById('thead').textContent = `${configs[7][myClass]} ${myArm} - ${Object.values(storage.subjectsTaught.filter(s => mySub in s)[0])[0]}`;
+        console.log(mySub)
+        document.getElementById('thead').textContent = `${configs[7][myClass]} ${myArm} - ${offd?.[mySub] || Object.values(storage.subjectsTaught.filter(s => mySub in s)[0])[0]}`;
         table.innerHTML='';
 
         for(let i = 0; i < info.length; i++){

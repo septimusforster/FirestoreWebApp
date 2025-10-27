@@ -74,7 +74,7 @@ await Promise.all(prom).then((res, rej) => {
 
 chooseConfig(clx); //projects
 let lastSnapshot, cursorFetch;
-const count = await getCountFromServer(query(collection(db, 'session/2025/students'), where('arm', '!=', 'ENTRANCE')));
+const count = await getCountFromServer(query(collection(db, 'session/2024/students'), where('arm', '!=', 'ENTRANCE')));
 console.log("Total Number of Students:", count.data().count);
 
 let fetches = 0;
@@ -86,9 +86,9 @@ myBtn.textContent = `Fetch ${classroom[clx]} collection`;
 myBtn.addEventListener('click', async (e) => {
     console.time(`Collecting ${classroom[clx]}`);
     if(lastSnapshot){
-        cursorFetch = await getDocs(query(collection(db, 'session/2025/students'), where('arm', '!=', 'ENTRANCE'), limit(30), startAfter(lastSnapshot)));
+        cursorFetch = await getDocs(query(collection(db, 'session/2024/students'), where('arm', '!=', 'ENTRANCE'), limit(30), startAfter(lastSnapshot)));
     }else{
-        cursorFetch = await getDocs(query(collection(db, 'session/2025/students'), where('arm', '!=', 'ENTRANCE'), limit(30)));
+        cursorFetch = await getDocs(query(collection(db, 'session/2024/students'), where('arm', '!=', 'ENTRANCE'), limit(30)));
     }
     lastSnapshot = cursorFetch.docs.at(-1);
     fetches++;
@@ -100,9 +100,9 @@ myBtn.addEventListener('click', async (e) => {
     const prom = [...cursorFetch.docs].map(async m => {
         try{
             await runTransaction(db, async (transaction) => {
-                const d = await transaction.get(doc(db, 'session/2025/students',m.id,'scores','records'))
+                const d = await transaction.get(doc(db, 'session/2024/students',m.id,'records','scores'))
                 const record = d.data();
-                await transaction.update(doc(db, 'session/2025/students',m.id), {record})
+                await transaction.update(doc(db, 'session/2024/students',m.id), {record})
             })
         }catch (err) {
             console.log(err);
