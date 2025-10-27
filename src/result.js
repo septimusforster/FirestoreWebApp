@@ -303,8 +303,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     });
     document.forms.namedItem('rez_fom').addEventListener('submit', async (e) => {
         e.preventDefault();
-        // if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
-
+        
         e.submitter.disabled = true;
         loadbar.showPopover();
         const fd = new FormData(e.target);
@@ -312,13 +311,14 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         chooseConfig(6);
         const sbjs = await getDoc(FORM.startsWith('JS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
         offd = sbjs.data();
-        session = fd.get('snn');
+        session = fd.get('snn') || session;
         FORM = fd.get('cls') || FORM;
         ARM = fd.get('arm') || ARM;
         term = fd.get('term') || term;
         percentile = Number(fd.get('res')) ? Number(fd.get('res')) : Number(fd.get('oth'));
         
-        await eot();
+        if(ss.data?.isAdmin) await eot();
+        if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
         document.querySelector('dialog').hidePopover();
         // console.log(session, FORM, ARM, term, percentile, oth);
         // try {
