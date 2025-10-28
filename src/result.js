@@ -27,7 +27,7 @@ if(document.querySelector('select#snn'))
     for (let sn = 2024; sn <= Number(session); sn++) document.querySelector('select#snn').insertAdjacentHTML('beforeend', `<option value="${sn}">${sn-1}/${sn}</option>`);
 const ss = JSON.parse(sessionStorage.getItem('snapshotId'));
 if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
-    const master = ss.data?.masterOfForm ? Object.entries(ss.data.masterOfForm)[0] : 'blah!';
+    const master = ss.data?.masterOfForm ? Object.entries(ss.data.masterOfForm)[0] : '';
     let FORM = master[0];
     let ARM = master[1];
     const percent = document.getElementById('percent');
@@ -309,10 +309,11 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         const fd = new FormData(e.target);
         
         chooseConfig(6);
-        const sbjs = await getDoc(FORM.startsWith('JS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
-        offd = sbjs.data();
-        session = fd.get('snn') || session;
         FORM = fd.get('cls') || FORM;
+        const sbjs = await getDoc(FORM.includes('JSS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
+        offd = sbjs.data();
+        
+        session = fd.get('snn') || session;
         ARM = fd.get('arm') || ARM;
         term = fd.get('term') || term;
         percentile = Number(fd.get('res')) ? Number(fd.get('res')) : Number(fd.get('oth'));
@@ -321,7 +322,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
         document.querySelector('dialog').hidePopover();
         // console.log(session, FORM, ARM, term, percentile, oth);
-        // try {
+        try {
             chooseConfig(configs[7].indexOf(FORM))
             loaded(30);
             
@@ -342,21 +343,21 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             size = studentData.length;
             //compute and insert entire data
             computeData(page);
-        // } catch (err) {
-            // console.error(err.message);
+        } catch (err) {
+            console.error(err.message);
             loadbar.hidePopover();
             dialog.hidePopover();
             pt = 7;
             loaded(0);
             e.submitter.disabled = false;
-        // } finally {
+        } finally {
             loaded(1);
             loadbar.hidePopover();
             dialog.hidePopover();
             e.submitter.disabled = false;
             pt = 7;
             loaded(0);
-        // }
+        }
     });
     
     async function eot() {

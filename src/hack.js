@@ -102,7 +102,7 @@ myBtn.addEventListener('click', async (e) => {
             await runTransaction(db, async (transaction) => {
                 const d = await transaction.get(doc(db, 'session/2024/students',m.id,'records','scores'))
                 const record = d.data();
-                await transaction.update(doc(db, 'session/2024/students',m.id), {record})
+                if(record) await transaction.update(doc(db, 'session/2024/students',m.id), {record})
             })
         }catch (err) {
             console.log(err);
