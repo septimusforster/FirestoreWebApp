@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, getCountFromServer, collection, startAfter, getDoc, getDocs, updateDoc, doc, query, where, orderBy, setDoc, limit, runTransaction } from "firebase/firestore"
+import { getFirestore, getCountFromServer, collection, startAfter, getDoc, getDocs, updateDoc, doc, query, where, orderBy, setDoc, limit, runTransaction, deleteField } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 const badge = document.querySelector('aside:nth-child(1)');
@@ -18,7 +18,7 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 4;
+const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 0;
 // const offered = {
 //     AGR: "Agricultural Science",
 //     BSC: "Basic Science",
@@ -73,9 +73,31 @@ await Promise.all(prom).then((res, rej) => {
 */
 
 chooseConfig(clx); //projects
+
+
 let lastSnapshot, cursorFetch;
-const count = await getCountFromServer(query(collection(db, 'session/2024/students'), where('arm', '!=', 'ENTRANCE')));
+// const count = await getCountFromServer(query(collection(db, 'session/2024/students'), where('arm', '!=', 'ENTRANCE')));
+const count = await getCountFromServer(query(collection(db, 'session/2026/students'), where('arm', '==', 'Distinction')));
 console.log("Total Number of Students:", count.data().count);
+
+const snapped = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '==', 'Distinction')));
+
+const DISTINCTION = snapped.docs.map(async dis => {
+    await runTransaction(db, async (transaction) => {
+        if(dis.id !== 'Se5FLPWHPHONOyXWXVok'){
+            const {record} = dis.data();
+            delete record['IGB'];
+            delete record['YOR'];
+            await transaction.update(doc(db, 'session/2026/students', dis.id),{record});
+        }
+    })
+});
+
+await Promise.all(DISTINCTION).then((resolve, reject) => {
+    console.log(resolve.length, "done.");
+})
+
+/*
 
 let fetches = 0;
 const myBtn = document.createElement('button');
@@ -115,6 +137,7 @@ myBtn.addEventListener('click', async (e) => {
     })
 });
 document.body.appendChild(myBtn);
+*/
 // let lastSnapshot, cursorFetch;
 // const count = await getCountFromServer(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE')));
 // console.log("Total Number of Students:", count.data().count);

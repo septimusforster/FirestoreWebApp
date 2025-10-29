@@ -62,12 +62,10 @@ if(ss && 'masterOfForm' in ss.data){
         HECO: "Home Economics",
         HIS: "History",
         ICT: "Computer Studies",
-        IGB: "Igbo Language",
         MTH: "Mathematics",
         MUS: "Music",
         PHE: "Physical and Health Education",
         SOS: "Social Studies",
-        YOR: "Yoruba"
     };
     const snrSubs = {
         ACCT: "Financial Accounting",
@@ -281,11 +279,15 @@ if(ss && 'masterOfForm' in ss.data){
             });
             if(v.length) {
                 let obj = {};
-                for(const o of v) obj[o] = {[term]: Array(8).fill(null)}
+                // for(const o of v) obj[o] = {[term]: Array(8).fill(null)} //ORIGINAL FOR LOOP
+                for(const o of v) { //EXPERIMENTAL FOR LOOP
+                    snp.dd?.record && o in snp.dd.record ? obj[0] = snp.dd.record[o] : obj[o] = {[term]: Array(8).fill(null)}
+                }
                 CHANGE_OF_SUBJECT.push({[snp.id]: obj});
             }
         });
-        // console.log(CHANGE_OF_SUBJECT);
+        console.log(CHANGE_OF_SUBJECT);
+        /*
         const prom = CHANGE_OF_SUBJECT.map(async obj => {
             await setDoc(doc(db, 'session', session, 'students', Object.keys(obj)[0]), {
                 'record':Object.values(obj)[0]
@@ -305,5 +307,6 @@ if(ss && 'masterOfForm' in ss.data){
             }
             notify('Selection saved.');
         });
+        */
     });
 }

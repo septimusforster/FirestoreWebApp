@@ -24,7 +24,6 @@ header {
     background:inherit;
     display:flex;
     align-items:center;
-    border-bottom: 1px solid #ccc;
     &>a{
         text-decoration: none;
         color: #555;

@@ -322,7 +322,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
         document.querySelector('dialog').hidePopover();
         // console.log(session, FORM, ARM, term, percentile, oth);
-        try {
+        // try {
             chooseConfig(configs[7].indexOf(FORM))
             loaded(30);
             
@@ -343,21 +343,21 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             size = studentData.length;
             //compute and insert entire data
             computeData(page);
-        } catch (err) {
-            console.error(err.message);
+        // } catch (err) {
+        //     console.error(err.message);
             loadbar.hidePopover();
             dialog.hidePopover();
             pt = 7;
             loaded(0);
             e.submitter.disabled = false;
-        } finally {
+        // } finally {
             loaded(1);
             loadbar.hidePopover();
             dialog.hidePopover();
             e.submitter.disabled = false;
             pt = 7;
             loaded(0);
-        }
+        // }
     });
     
     async function eot() {

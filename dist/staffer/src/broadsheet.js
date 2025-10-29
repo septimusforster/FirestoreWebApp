@@ -121,16 +121,7 @@ if(ss && 'masterOfForm' in ss.data){
                 names.push({na: `${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`, nb: s.data()?.promo_status || null});
             }
         });
-        //get scores with the provided IDs
 
-        /*
-        const path = session < 2025 ? 'records/scores' : 'scores/records'; //because of human-being error
-        const p1 = IDs.map(async id => {
-            await getDoc(doc(db, 'session', session, 'students', id, path)).then(snap => scoresSnap.push(snap.data()));
-        });
-        await Promise.all(p1);
-        */
-        // console.log(scoresSnap.length, scoresSnap[0]);
         const tbody = table.querySelector('tbody');
         
         //populate table header with the [abbr] of the subjects
