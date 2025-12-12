@@ -366,9 +366,9 @@ blockquote::before {
     padding: 2px 14px;
     vertical-align: baseline;
 }
-#section-footer tbody tr td:nth-child(2){
+/* #section-footer tbody tr td:nth-child(2){
     width:150px;
-}
+} */
 img[alt="stamp"] {
     width: 140px;
 }

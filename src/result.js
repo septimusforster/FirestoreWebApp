@@ -375,7 +375,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             document.images[1].src = photo;
             // load stamp
             // const stamp = res.data()?.stamp?.[term];
-            const stamp = "../img/24_25/Principal Stamp 1st Term 2025.png";
+            const stamp = "../img/24_25/stamp01_25.png";
             if(stamp) document.querySelector("img[alt='stamp']").src = stamp;
         });
     }

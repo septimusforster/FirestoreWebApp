@@ -18,7 +18,7 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 0;
+const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 5;
 // const offered = {
 //     AGR: "Agricultural Science",
 //     BSC: "Basic Science",
@@ -74,37 +74,16 @@ await Promise.all(prom).then((res, rej) => {
 
 chooseConfig(clx); //projects
 
-
 let lastSnapshot, cursorFetch;
-// const count = await getCountFromServer(query(collection(db, 'session/2024/students'), where('arm', '!=', 'ENTRANCE')));
-const count = await getCountFromServer(query(collection(db, 'session/2026/students'), where('arm', '==', 'Distinction')));
+const count = await getCountFromServer(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE')));
 console.log("Total Number of Students:", count.data().count);
-
-const snapped = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '==', 'Distinction')));
-
-const DISTINCTION = snapped.docs.map(async dis => {
-    await runTransaction(db, async (transaction) => {
-        if(dis.id !== 'Se5FLPWHPHONOyXWXVok'){
-            const {record} = dis.data();
-            delete record['IGB'];
-            delete record['YOR'];
-            await transaction.update(doc(db, 'session/2026/students', dis.id),{record});
-        }
-    })
-});
-
-await Promise.all(DISTINCTION).then((resolve, reject) => {
-    console.log(resolve.length, "done.");
-})
-
-/*
 
 let fetches = 0;
 const myBtn = document.createElement('button');
 myBtn.className = 'fbtn';
 myBtn.setAttribute('style', 'width:fit-content;position:fixed;right:2rem;top:2rem;');
 myBtn.textContent = `Fetch ${classroom[clx]} collection`;
-
+/*
 myBtn.addEventListener('click', async (e) => {
     console.time(`Collecting ${classroom[clx]}`);
     if(lastSnapshot){
@@ -138,61 +117,39 @@ myBtn.addEventListener('click', async (e) => {
 });
 document.body.appendChild(myBtn);
 */
-// let lastSnapshot, cursorFetch;
-// const count = await getCountFromServer(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE')));
-// console.log("Total Number of Students:", count.data().count);
 
-// let fetches = 0;
-// const myBtn = document.createElement('button');
-// myBtn.className = 'fbtn';
-// myBtn.setAttribute('style', 'width:fit-content;position:fixed;right:2rem;top:2rem;');
-// myBtn.textContent = `Fetch ${classroom[clx]} collection`;
-// const pre = document.querySelector('pre');
-// let snapshots = [];
-// const now = Date.now();
-// myBtn.addEventListener('click', async (e) => {
-//     console.time(`Collecting ${classroom[clx]}`);
-//     if(lastSnapshot){
-//         cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30), startAfter(lastSnapshot)));
-//     }else{
-//         cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30)));
-//     }
-//     lastSnapshot = cursorFetch.docs.at(-1);
-//     fetches++;
-//     console.log("Times fetched:", fetches);
-//     console.timeEnd(`Collecting ${classroom[clx]}`)
-//     let students = '';
-//     console.log(cursorFetch.docs.length)
-//     /*
-//     const prom = [...cursorFetch.docs].map(async m => {
-//         const snapped = await getDoc(doc(db, 'session/2025/students',m.id,'scores','records'));
-//         snapshots.push({[m.id]: snapped.data()})
-//     })
-//     await Promise.all(prom).then((resolve, reject) => {
-//         const x = Math.ceil(fetches*30/count.data().count);
-//         console.log('x', x)
-//         if(fetches === 4) console.log(snapshots)
-//     })
-//     */
+const pre = document.querySelector('pre');
+let snapshots = [];
+const now = Date.now();
+
+myBtn.addEventListener('click', async (e) => {
+    console.time(`${classroom[clx]}`);
+    if(lastSnapshot){
+        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30), startAfter(lastSnapshot)));
+    }else{
+        cursorFetch = await getDocs(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE'), limit(30)));
+    }
+    lastSnapshot = cursorFetch.docs.at(-1);
+    fetches++;
+    console.log("Times fetched:", fetches, "\n", "Data:", cursorFetch.docs.length);
+    console.timeEnd(`${classroom[clx]}`)
+    let students = '';
     
-//     cursorFetch.docs.forEach(d => {
-//         const { admission_no, admission_year, arm, dob, first_name, last_name, other_name, gender, record=null, id, password } = d.data();
-//         let sbjs = {};
-//         if(record){
-//             // for(const sb of Object.keys(record).sort()) sbjs[sb] = {0:[],1:[],2:[]};
-//             for(const sb in record) sbjs[sb] = record[sb];
-//             students += JSON.stringify({stid:admission_no,enrolled:admission_year,arm, dob,fname:first_name,lname:last_name,oname:other_name,gender,_id:id,sbjs,pwd:password,createdAt:{"$$date":1756885851668},updatedAt:{"$$date":now}}) + "\n";
-//         }
-//     });
-//     /*
-//     cursorFetch.docs.forEach(c => snapshots.push(c.data()))
-//     if(fetches === 4)console.log(snapshots);
-//     */
-//     pre.innerText += students;
-// });
-// document.body.appendChild(myBtn);
+    cursorFetch.docs.forEach(d => {
+        const { admission_no, admission_year, arm, dob, first_name, last_name, other_name, gender, record=null, id, password } = d.data();
+        let sbjs = {};
+        if(record){
+            // for(const sb of Object.keys(record).sort()) sbjs[sb] = {0:[],1:[],2:[]};
+            for(const sb in record) sbjs[sb] = record[sb];
+            students += JSON.stringify({stid:admission_no,enrolled:admission_year,arm, dob,fname:first_name,lname:last_name,oname:other_name,gender,_id:id,sbjs,pwd:password,createdAt:{"$$date":1756885851668},updatedAt:{"$$date":now}}) + "\n";
+        }
+    });
+    pre.innerText += students;
+});
+document.body.appendChild(myBtn);
+
 /*
-/*recruitment HACK/
+recruitment HACK/
 chooseConfig(8);
 console.time('getDocs')
 const snap = await getDocs(query(collection(db, 'students'), where('offered.ICT', '==', 'Computer Studies (sec)')));
