@@ -82,7 +82,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT result.js
 
 module.exports = {
@@ -203,7 +203,7 @@ module.exports = {
 }
 
 //STAFFER register.js
-
+*/
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/register.js",

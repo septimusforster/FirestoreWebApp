@@ -25,6 +25,7 @@ let offd = {};
 arms = arms.data().arms.sort();
 const main = document.querySelector('main');
 const term = function(n){
+    if(eot.data().this_term) return ["First","Second","Third"].indexOf(eot.data().this_term);
     if(n <= 3) return 1; //second term
     if(n <= 7) return 2; //third term
     return 0; //first term
@@ -56,13 +57,12 @@ if(storage){
 
     let data, mySub, myClass, myArm; //subject, class, arm
     function loadTable(info){
-        console.log(mySub)
         document.getElementById('thead').textContent = `${configs[7][myClass]} ${myArm} - ${offd?.[mySub] || Object.values(storage.subjectsTaught.filter(s => mySub in s)[0])[0]}`;
         table.innerHTML='';
 
         for(let i = 0; i < info.length; i++){
             if(!info[i]?.record || !info[i].record[mySub]) continue;
-            const elems = info[i].record[mySub][term];
+            const elems = info[i].record[mySub][term] || Array(8).fill(null); //indicating a new term
             const td = elems.reduce((a,c,x) => c === null ? a + `<td${perm[x] == 1 ? ' contenteditable' : ''}>-</td>` : a + `<td${perm[x] == 1 ? ' contenteditable' : ''}>${c}</td>`,'');
             table.insertAdjacentHTML('beforeend', `
                 <tr id="${info[i].id}">
@@ -93,6 +93,7 @@ if(storage){
             [mySub, myClass, myArm] = fd.values();
             chooseConfig(parseInt(myClass));
             const neoSnap = await getDocs(query(collection(db, `session/${session}/students`), where('arm', '==', myArm)));
+
             data = [...neoSnap.docs].map(m => {
                 return {
                     id: m.id,
@@ -102,7 +103,7 @@ if(storage){
                 }
             }).sort((a,b) => a.fn.localeCompare(b.fn));
             document.querySelector('#table .ftr>button').toggleAttribute('disabled', !data.length);
-            loadTable(data)
+            loadTable(data);
         }
         main.removeAttribute('inert');
         e.submitter.disabled = false;

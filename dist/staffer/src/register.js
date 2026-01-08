@@ -10,7 +10,6 @@ const classArray = ["JSS 1","JSS 2","JSS 3","SSS 1","SSS 2","SSS 3"];
 var app = initializeApp(configs[6]);
 // init services
 var db = getFirestore(app);
-let eot, term;
 // calculate session
 const MONTH = new Date().getMonth();
 const session = MONTH >= 8 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());   //SEPTEMBER, which marks the turn of the session
@@ -24,15 +23,14 @@ function notify(msg, err=false){
         notf.removeAttribute('style');
     }, 4500);
 }
-const eotRef = doc(db, 'EOT', session);
-await getDoc(eotRef).then((res) => eot = res.data());
-term = ["First", "Second", "Third"].indexOf(eot.this_term) || function(n){
+const eot = await getDoc(doc(db, 'EOT', session));
+const term = function(n){
+    if(eot.data().this_term) return ["First","Second","Third"].indexOf(eot.data().this_term);
     if(n <= 3) return 1; //second term
     if(n <= 7) return 2; //third term
     return 0; //first term
 }(MONTH);
 const main = document.querySelector('main');
-
 function chooseConfig(projNum) {
     deleteApp(app);
     app = initializeApp(configs[projNum]);
