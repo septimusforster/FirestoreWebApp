@@ -12,7 +12,6 @@ function chooseConfig(projNum) {
 }
 const jrsub = await getDoc(doc(db, "reserved", "2aOQTzkCdD24EX8Yy518"));
 const srsub = await getDoc(doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq"));
-
 // calculate session
 const MONTH = new Date().getMonth();
 let session = MONTH >= 8 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());
