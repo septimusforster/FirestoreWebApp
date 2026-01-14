@@ -17,11 +17,6 @@ function chooseConfig(num) {
 const MONTH = new Date().getMonth();
 let session = MONTH >= 8 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());
 
-let term = function(n){
-    if(n <= 3) return 1; //second term
-    if(n <= 7) return 2; //third term
-    return 0; //first term
-}(MONTH);
 //add sessions
 if(document.querySelector('select#snn'))
     for (let sn = 2024; sn <= Number(session); sn++) document.querySelector('select#snn').insertAdjacentHTML('beforeend', `<option value="${sn}">${sn-1}/${sn}</option>`);
@@ -58,10 +53,9 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         }
     });
     let core = {MTH:0, ENG:0, LIT:0, CIV:0, GOV:0, PHY:0, CHEM:0, ACCT:0, COMM:0},
-        core_lower = 0;
+        core_lower = 0, term;
 
     if('masterOfForm' in ss.data) await eot();
-
     let studentData, page = 0;
 
     const teacherDiv = document.getElementById('teacher');
@@ -366,10 +360,15 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
 
         const eotRef = doc(db, 'EOT', session);
         await getDoc(eotRef).then(async (res) => {
-            console.log(session)
-            document.forms[0].querySelector('button').style.opacity = 1;
             eotData = res.data();
-            daysOpen = eotData?.days_open[term] || 0;
+            const t = ["First","Second","Third"].indexOf(eotData?.this_term);
+            term = t !== -1 ? t : function(n){
+                if(n <= 3) return 1; //second term
+                if(n <= 7) return 2; //third term
+                return 0; //first term
+            }(MONTH);
+            document.forms[0].querySelector('button').style.opacity = 1;
+            daysOpen = eotData?.days_open[term];
             const photo = "../img/user.png" || ss.photo_src;
             //load photo
             document.images[1].src = photo;

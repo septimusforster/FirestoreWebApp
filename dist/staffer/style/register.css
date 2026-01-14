@@ -25,6 +25,9 @@ main[inert] table::after{
 div#tableau {
     height: 84%;
     overflow: auto;
+    border-bottom:3px solid #1a73e8;
+    border-radius:14px 14px 0 0;
+    box-shadow:0 30px 60px rgba(0,0,0,.2);
 }
 table{
     width:100%;
