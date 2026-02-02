@@ -311,6 +311,11 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         ARM = fd.get('arm') || ARM;
         term = fd.get('term') || term;
         percentile = Number(fd.get('res')) ? Number(fd.get('res')) : Number(fd.get('oth'));
+
+        daysOpen = eotData?.days_open[term];
+        //load stamp
+        const stamp = `../img/stamp${String(parseInt(term) + 1).padStart(2,'0')}_${session}.png`;
+        if(stamp) document.querySelector("img[alt='stamp']").src = stamp;
         
         if(ss.data?.isAdmin) await eot();
         if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
@@ -368,14 +373,9 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
                 return 0; //first term
             }(MONTH);
             document.forms[0].querySelector('button').style.opacity = 1;
-            daysOpen = eotData?.days_open[term];
             const photo = "../img/user.png" || ss.photo_src;
             //load photo
             document.images[1].src = photo;
-            // load stamp
-            // const stamp = res.data()?.stamp?.[term];
-            const stamp = "../img/24_25/stamp01_25.png";
-            if(stamp) document.querySelector("img[alt='stamp']").src = stamp;
         });
     }
     const pdfBtn = document.getElementById('pdf-btn');
