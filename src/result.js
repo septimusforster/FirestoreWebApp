@@ -295,6 +295,14 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             computeData(page);
         }
     });
+    // const stampImg = document.querySelector("img[alt='stamp']");
+    const stampImg = document.createElement('img');
+    stampImg.alt = 'stamp';
+    stampImg.addEventListener('error', (e) => {
+        stampImg.src = `../img/universal.png`;
+    });
+    document.querySelector('#section-footer > div:nth-child(2)').appendChild(stampImg);
+
     document.forms.namedItem('rez_fom').addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -315,7 +323,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         daysOpen = eotData?.days_open[term];
         //load stamp
         const stamp = `../img/stamp${String(parseInt(term) + 1).padStart(2,'0')}_${session}.png`;
-        if(stamp) document.querySelector("img[alt='stamp']").src = stamp;
+        stampImg.src = stamp;
         
         if(ss.data?.isAdmin) await eot();
         if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
