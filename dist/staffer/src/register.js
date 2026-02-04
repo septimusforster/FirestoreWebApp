@@ -24,7 +24,7 @@ function notify(msg, err=false){
     }, 4500);
 }
 const eot = await getDoc(doc(db, 'EOT', session));
-const term = function(n){
+let term = function(n){
     if(eot.data().this_term) return ["First","Second","Third"].indexOf(eot.data().this_term);
     if(n <= 3) return 1; //second term
     if(n <= 7) return 2; //third term
@@ -110,7 +110,8 @@ if(ss && 'masterOfForm' in ss.data){
                 if('record' in d.data()) snapDocs.push({id:d.id, dd:d.data()});
             }
         });
-
+        // check if 'term' is safe
+        if(!Object.values(snapDocs[0].dd.record)[0][term]) term--;
         snapDocs.map((m, mx) => {
             let len = Object.values(m.dd.record);
             let tot = len.map(l => l[term].reduce((a,c) => a + c)).reduce((b, d) => b + d);
@@ -121,12 +122,13 @@ if(ss && 'masterOfForm' in ss.data){
                     <td>${mx+1}</td>
                     <td>${m.dd.last_name} ${m.dd.first_name} ${m.dd?.other_name || ''}</td>
                     <td>${m.dd.admission_no}</td>
+                    <td>${m.dd.dob}</td>
                     <td>${m.dd.gender}</td>
                     <td>${m.dd.email}</td>
                     <td>${m.dd.password}</td>
                     <td contenteditable>${m.dd.days_present[term] || 0}</td>
                     <td contenteditable>${m.dd.comment[term] || '&hellip;'}</td>
-                    <td>${avg}</td>
+                    <td>${tot.toFixed()} / ${avg}</td>
                 </tr>
             `);
         });

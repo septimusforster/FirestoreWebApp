@@ -69,7 +69,7 @@ tr td:nth-child(3){
 tbody tr:nth-child(even){
     background:linear-gradient(to right, #f1f1f1, #fcfcfc);
 }
-tbody tr td:nth-child(8){
+tbody tr td:nth-child(9){
     text-wrap:nowrap;
     overflow:hidden;
     /* min-width:100px; */
