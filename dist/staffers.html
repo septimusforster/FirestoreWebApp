@@ -43,7 +43,7 @@
                     <th title="Password">PWD</th>
                     <!-- <th title="Master of Form">MOF</th> -->
                     <th title="Classes Taught">CT</th>
-                    <!-- <th title="Subjects Taught">ST</th> -->
+                    <th title="Form Teacher">Form Teacher</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,6 +65,7 @@
                 <td>${val[1].username}</td>
                 <td>${val[1].password}</td>
                 <td>${val[1].classroomsTaught}</td>
+                <td>${val[1]?.masterOfForm ? Object.entries(val[1].masterOfForm)[0].join(", ") : 'No'}
             `);
             td++;
         }

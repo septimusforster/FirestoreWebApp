@@ -93,7 +93,7 @@ if(ss && 'masterOfForm' in ss.data){
     };
     const SUBJ = Object.keys(ss.data.masterOfForm)[0].startsWith('JSS') ? jnrSubs : snrSubs;
     
-    let snapDocs = [], snappedChange = [];
+    let snapDocs = [], snappedChange = [], term_reversed = false;
     chooseConfig(classArray.indexOf(master[0]))
     const q = query(collection(db, 'session', session, 'students'), where("arm", "==", master[1]));
     const snapDoc = await getDocs(q);
@@ -111,7 +111,11 @@ if(ss && 'masterOfForm' in ss.data){
             }
         });
         // check if 'term' is safe
-        if(!Object.values(snapDocs[0].dd.record)[0][term]) term--;
+        if(!Object.values(snapDocs[0].dd.record)[0][term]) {
+            term--;
+            term_reversed = true;
+        }
+
         snapDocs.map((m, mx) => {
             let len = Object.values(m.dd.record);
             let tot = len.map(l => l[term].reduce((a,c) => a + c)).reduce((b, d) => b + d);
@@ -266,6 +270,7 @@ if(ss && 'masterOfForm' in ss.data){
         cosBtn.disabled = true;
         COSpopWrap.setAttribute('inert','');
     
+        if(term_reversed) term++;
         snappedChange.forEach((snp, snx) => {
             const u = tbodyChildren[snx].querySelectorAll('i');
             const v = Object.keys(SUBJ).filter((ff, fx) => {
@@ -286,8 +291,7 @@ if(ss && 'masterOfForm' in ss.data){
                 CHANGE_OF_SUBJECT.push({[snp.id]: obj});
             }
         });
-        console.log(CHANGE_OF_SUBJECT);
-        /*
+        
         const prom = CHANGE_OF_SUBJECT.map(async obj => {
             await setDoc(doc(db, 'session', session, 'students', Object.keys(obj)[0]), {
                 'record':Object.values(obj)[0]
@@ -307,6 +311,5 @@ if(ss && 'masterOfForm' in ss.data){
             }
             notify('Selection saved.');
         });
-        */
     });
 }
