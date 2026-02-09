@@ -118,7 +118,7 @@ if(ss && 'masterOfForm' in ss.data){
 
         snapDocs.map((m, mx) => {
             let len = Object.values(m.dd.record);
-            let tot = len.map(l => l[term].reduce((a,c) => a + c)).reduce((b, d) => b + d);
+            let tot = len.map(l => l?.[term] ? l[term].reduce((a,c) => a + c) : 0).reduce((b, d) => b + d);
             let avg = ((tot*100)/(len.length*100)).toFixed();
 
             tbody.insertAdjacentHTML('beforeend', `
@@ -150,7 +150,7 @@ if(ss && 'masterOfForm' in ss.data){
             // chooseConfig(parseInt(myClass));
             try{
                 const prom = [...trows].map(async m => {
-                    const d = [...m.querySelectorAll('td:nth-child(7),td:nth-child(8)')].map(td => Number(td.textContent) || td.textContent);
+                    const d = [...m.querySelectorAll('td:nth-child(8),td:nth-child(9)')].map(td => Number(td.textContent) || td.textContent);
                     const {days_present} = snapDocs.find(f => f.id == m.id).dd;
                     days_present.splice(term, 1, d[0]);
 
