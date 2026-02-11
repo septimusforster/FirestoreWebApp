@@ -133,13 +133,13 @@ if(storage){
                         d['record'][mySub][term] = idxx[d.id];
                         return d;
                     })
-                    notify(`Updation successful. (${prom.length})`);
+                    notify(`Updated successfully. (${prom.length})`);
                     trows.forEach(w => w.classList.remove('w'));
                 })
             }catch(err){
                 if(err){
                     console.log(err);
-                    notify('Error during updation.',true);
+                    notify('Error updating score.',true);
                 }
             }finally{
                 main.removeAttribute('inert');

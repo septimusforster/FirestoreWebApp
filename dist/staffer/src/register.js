@@ -162,12 +162,12 @@ if(ss && 'masterOfForm' in ss.data){
                     });
                 });
                 await Promise.all(prom).then(() => {
-                    notify('Updation successful.');
+                    notify('Updated successfully.');
                 })
             }catch(err){
                 if(err){
                     console.log(err);
-                    notify('Error submitting record.',true);
+                    notify('Error updating record.',true);
                 }
             }finally{
                 main.removeAttribute('inert');
