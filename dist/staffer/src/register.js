@@ -174,58 +174,7 @@ if(ss && 'masterOfForm' in ss.data){
                 e.target.disabled = false;
             }
         })
-    }
-    /*
-    const formRegister = document.forms.formRegister;
-    formRegister.addEventListener('change', (e) => {
-        let inputs = document.getElementsByClassName(e.target.name);
-        for (const a of inputs) {
-            if (a.value == '') a.value = a.placeholder;
-        }
-        const hidden = e.target.parentElement.parentElement.children[8];    //children[8] is hidden <input>
-        hidden.setAttribute("name", e.target.name);
-        if (e.target.type == "number") {
-            let x = JSON.parse(hidden.getAttribute("value"));
-            x.splice(term, 1, Number(e.target.value));
-            // console.log(x);
-            hidden.value = JSON.stringify(x);
-        }
-    })
-    formRegister.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        e.submitter.disabled = true;
-        e.submitter.style.opacity = '.5';
-        const formData = new FormData(formRegister);
-        let inputs = {};
-        
-        for (const pair of formData.entries()) {
-            if (!pair[1]) continue;
-            const arr = formData.getAll(pair[0]);
-            let dp = Number(arr[1]);
-            let data = {
-                days_present: JSON.parse(arr[3]),
-                comment: {
-                    [term]: arr[2]
-                }
-            };
-            inputs[pair[0]] = data;
-        }
-        // console.log(inputs);
-        const entries = Object.entries(inputs);
-        console.log("Entries:", entries);
-    
-        const promises = entries.map(async cb => {
-            await setDoc(doc(db, 'session', session, 'students', cb[0]), cb[1], { merge: true });
-        })
-        await Promise.allSettled(promises);
-        // location.reload();
-    
-        window.alert("Success!");
-        e.submitter.disabled = false;
-        e.submitter.style.opacity = '1';
-    });
-    */
-    
+    }    
     //change of subjects
     const COSpopWrap = document.querySelector('#sbj_chg>.pop_wrp');
     const thead = COSpopWrap.querySelector('.thead');
@@ -291,7 +240,8 @@ if(ss && 'masterOfForm' in ss.data){
                 CHANGE_OF_SUBJECT.push({[snp.id]: obj});
             }
         });
-        
+        console.log(CHANGE_OF_SUBJECT);
+        /*
         const prom = CHANGE_OF_SUBJECT.map(async obj => {
             await setDoc(doc(db, 'session', session, 'students', Object.keys(obj)[0]), {
                 'record':Object.values(obj)[0]
@@ -311,5 +261,6 @@ if(ss && 'masterOfForm' in ss.data){
             }
             notify('Selection saved.');
         });
+        */
     });
 }

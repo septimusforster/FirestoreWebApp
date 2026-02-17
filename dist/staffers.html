@@ -152,9 +152,7 @@
             scale:1.3;
         }
         #del-btn {
-            display: flex;
-            align-items:center;
-            justify-content:center;
+            display:block;
             color: #e35;
             font-weight: 500;
             width: 70%;
@@ -164,11 +162,16 @@
             background: #e351;
             padding: .8rem !important;
             transition:var(--transition-all);
+            position:relative;
         }
         #del-btn:hover{
             background:#e352;
         }
         #spinner{
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform:translate(-50%, -50%);
             height:1.5rem;
             width:1.5rem;
             border-radius:50%;
@@ -205,20 +208,17 @@
             margin-left:auto;
             height:2.5rem;
             width:2.5rem;
-            background:linear-gradient(to left, #555, #444);
+            background:#555;
             border-radius:50%;
         }
         #notf i.btn svg{
             scale:1.3;
         }
         #obs{
-            /* width:2px; */
             min-height:70px;
             background:none;
             pointer-events:none;
-            display:flex;
-            align-items:center;
-            justify-content:center;
+            position:relative;
         }
     </style>
 </head>
@@ -266,12 +266,6 @@
         </div>
     </div>
     <footer>
-        <!-- <div id="notf">
-            <span>Mr Kevin Jordan mercy and me</span> deleted
-            <i class="btn" onclick="this.closest('#notf').remove();">
-                <svg><use href="#close"></use></svg>
-            </i>
-        </div> -->
     </footer>
     <script type="module">
         import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
@@ -286,13 +280,42 @@
         }
         let app = initializeApp(fbconfig);
         let db = getFirestore();
-        document.addEventListener('DOMContentLoaded', e => {
+        document.addEventListener('DOMContentLoaded', async e => {
+            let tr = 0;
             const tbody = document.querySelector('table tbody');
-            // const ss = JSON.parse(sessionStorage.getItem('staffDetails'));
-            // const arr = Object.entries(ss);
-            
             const main = document.querySelector('main');
             const obsElem = document.getElementById('obs');
+            const spinnerKeyframe = [
+                {transform: "translate(-50%, -50%) rotate(0deg)"},
+                {transform: "translate(-50%, -50%) rotate(360deg)"},
+            ];
+            const spinnerTimeline = {
+                duration: 1000,
+                easing: "linear",
+                iterations: 'Infinity'
+            }
+            const notfKeyframe = [
+                {opacity: "0", transform: "translateX(.5rem)"},
+                {opacity: "1", transform: "translateX(1.5rem)"},
+            ];
+            const notfTimeline = {
+                duration: 100,
+                easing: "linear",
+                fill: "forwards",
+                // iterations: ""
+            }
+            const tableRowKeyframe = [
+                {opacity:1, transform: "translateX(0px)"},
+                {opacity:0, transform: "translateX(10px)"}
+            ];
+            const tableRowTimeline = {
+                duration: 200,
+                easing: "linear",
+                fill: "forwards"
+            };
+
+            main.insertAdjacentHTML('beforeend', '<div id="spinner"></div>');
+            main.querySelector('#spinner').animate(spinnerKeyframe, spinnerTimeline);
             //set up Intersection Observer
             const observerOption = {
                 root: main,
@@ -302,14 +325,13 @@
             const observer = new IntersectionObserver(handleIntersection, observerOption);
             observer.observe(obsElem);
 
-            let lastSnapshot, udata, datas = [];
-            // const uData = await getDocs(query(collection(db, 'staffCollection'), where('code', '!=', 'USADEY')));
+            let lastSnapshot, datas = [];
             async function fetchData(){
                 let udata;
                 if(lastSnapshot){
-                    udata = await getDocs(query(collection(db, 'staffCollection'), limit(10), orderBy('fullName'), startAfter(lastSnapshot)));
+                    udata = await getDocs(query(collection(db, 'staffCollection'), limit(30), orderBy('fullName'), startAfter(lastSnapshot)));
                 }else{
-                    udata = await getDocs(query(collection(db, 'staffCollection'), limit(10), orderBy('fullName')));
+                    udata = await getDocs(query(collection(db, 'staffCollection'), limit(30), orderBy('fullName')));
                     obsElem.removeAttribute('style');
                 }
                 if(udata.docs.length){
@@ -319,13 +341,13 @@
                     })
                     insertData(udata);
                 }else{
-                    notf("No more record found.");
+                    notf("No more record found.", true);
                     // obsElem.remove();
-                    console.log("Observer has been unobserved.");
                     observer.unobserve(obsElem);
                 }
             }
-            fetchData();
+            await fetchData();
+            main.querySelector('#spinner').remove();
 
             function handleIntersection(entries, observer){
                 entries.forEach(async entry => {
@@ -338,9 +360,9 @@
                     }
                 })
             }
-            let tr = 1;
             function insertData(data){
                 data.docs.forEach(val => {
+                    tr++;
                     tbody.insertAdjacentHTML('beforeend', `
                         <tr id="${val.id}">
                             <td>${tr}</td>
@@ -361,15 +383,14 @@
                             </td>
                         </tr>
                     `);
-                    tr++;
                 });
             }
             // trash listener
             const trashPopover = document.getElementById('trash-user');
             let uid, usn;
-            trashPopover.onclick = function(e){
-                console.log(e.target.id, this.id);
-            }
+            // trashPopover.onclick = function(e){
+            //     console.log(e.target.id, this.id);
+            // }
             tbody.addEventListener('click', e => {
                 if(e.target.hasAttribute('data-trash')){ // trashing user
                     uid = e.target.closest('tr').id;
@@ -392,26 +413,6 @@
                 }
             });
             // del-btn handler
-            const spinnerKeyframe = [
-                {rotate: "z 0deg"},
-                {rotate: "z 360deg"},
-            ];
-            const spinnerTimeline = {
-                duration: 1000,
-                easing: "linear",
-                iterations: 'Infinity'
-            }
-            const notfKeyframe = [
-                {opacity: "0", transform: "translateX(.5rem)"},
-                {opacity: "1", transform: "translateX(1.5rem)"},
-            ];
-            const notfTimeline = {
-                duration: 100,
-                easing: "linear",
-                fill: "forwards",
-                // iterations: ""
-            }
-            
             const footer = document.querySelector('footer');
             const delBtn = document.getElementById('del-btn');
             delBtn.addEventListener('click', async (e) => {
@@ -422,12 +423,25 @@
 
                 // delete user
                 try{
-                    const userRef = doc(db, 'staffCollection', uid);
-                    await deleteDoc(userRef);
-                    notf(usn);
+                    // const userRef = doc(db, 'staffCollection', uid);
+                    // await deleteDoc(userRef);
+                    // animate tableRow removal
+                    const tRow = document.getElementById(`${uid}`);
+                    tRow.animate(tableRowKeyframe, tableRowTimeline);
+                    const timeoutID = setTimeout(() => {
+                        tr--;
+                        tRow.remove();
+                        const idx = datas.findIndex(x => x.id == uid);
+                        for(let i = idx + 1; i <= tr; i++){
+                            tbody.querySelector(`tr:nth-child(${i}) > td:nth-child(1)`).textContent = i;
+                        }
+                        datas.splice(idx,1);
+                    }, 1000);
+
+                    notf(`${usn}`);
                 } catch (err) {
                     console.log(err);
-                    notf(usn, true);
+                    notf(`Error deleting ${usn}`, true);
                 } finally{
                     trashPopover.hidePopover();
                     delBtn.innerHTML = delTxt;
@@ -439,7 +453,7 @@
             function notf(msg, hasError = false){
                 footer.innerHTML = `
                     <div id="notf" ${hasError ? 'class="err"' : null}">
-                        ${hasError ? `<span>Error deleting ${msg}</span>` : `<span>${msg}&nbsp;</span>deleted`}
+                        ${hasError ? `<span>${msg}</span>` : `<span>${msg}</span>&nbsp;deleted`}
                         <i class="btn" onclick="this.closest('#notf').remove();">
                             <svg><use href="#close"></use></svg>
                         </i>
