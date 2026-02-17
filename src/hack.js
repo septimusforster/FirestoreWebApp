@@ -18,7 +18,13 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 5;
+const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 4;
+chooseConfig(clx); //projects
+
+const q = query(collection(db, 'session/2026/students'), where('arm', '==', 'Genius'));
+const snapshot = await getDocs(q);
+console.log([...snapshot.docs][0].data().record)
+
 // const offered = {
 //     AGR: "Agricultural Science",
 //     BSC: "Basic Science",
@@ -71,9 +77,7 @@ await Promise.all(prom).then((res, rej) => {
     console.log(products)
 })
 */
-
-chooseConfig(clx); //projects
-
+/*
 let lastSnapshot, cursorFetch;
 const count = await getCountFromServer(query(collection(db, 'session/2026/students'), where('arm', '!=', 'ENTRANCE')));
 console.log("Total Number of Students:", count.data().count);
@@ -83,6 +87,7 @@ const myBtn = document.createElement('button');
 myBtn.className = 'fbtn';
 myBtn.setAttribute('style', 'width:fit-content;position:fixed;right:2rem;top:2rem;');
 myBtn.textContent = `Fetch ${classroom[clx]} collection`;
+*/
 /*
 myBtn.addEventListener('click', async (e) => {
     console.time(`Collecting ${classroom[clx]}`);
@@ -117,7 +122,7 @@ myBtn.addEventListener('click', async (e) => {
 });
 document.body.appendChild(myBtn);
 */
-
+/*
 const pre = document.querySelector('pre');
 let snapshots = [];
 const now = Date.now();
@@ -147,6 +152,7 @@ myBtn.addEventListener('click', async (e) => {
     pre.innerText += students;
 });
 document.body.appendChild(myBtn);
+*/
 
 /*
 recruitment HACK/

@@ -1,12 +1,12 @@
 node_modules/
 All_firebase_firestore_functions.txt
 hacks_bundle.js
-hacks.js
+src/hacks.js
 hacks.html
 hacks_ssn.html
 hacks_ssn.js
 reserved.html
-webpack.config.js
+/webpack.config.js
 test - Copy.html
 test - Copy.js
 import_for_export

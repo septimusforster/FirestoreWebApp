@@ -281,6 +281,7 @@
         let app = initializeApp(fbconfig);
         let db = getFirestore();
         document.addEventListener('DOMContentLoaded', async e => {
+            if(JSON.parse(sessionStorage.getItem('snapshotId')).data.code !== 'USADEY') return;
             let tr = 0;
             const tbody = document.querySelector('table tbody');
             const main = document.querySelector('main');
@@ -423,8 +424,8 @@
 
                 // delete user
                 try{
-                    // const userRef = doc(db, 'staffCollection', uid);
-                    // await deleteDoc(userRef);
+                    const userRef = doc(db, 'staffCollection', uid);
+                    await deleteDoc(userRef);
                     // animate tableRow removal
                     const tRow = document.getElementById(`${uid}`);
                     tRow.animate(tableRowKeyframe, tableRowTimeline);

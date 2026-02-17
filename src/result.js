@@ -97,9 +97,11 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         }
         tbodyScores.innerHTML = '', tbodyTerm.innerHTML = '', tfootTerm.innerHTML = '', tfootCumm.querySelector('tr').innerHTML = '';
         const ME = Object.entries(record).sort((a, b) => offd[a[0]].localeCompare(offd[b[0]]));
+        let rowCount = 0;
         for (i = 0; i < ME.length; i++) {
-            var td = `<td>${i+1}</td><td>${offd[ME[i][0]]}</td>`;
             if (!ME[i][1][term]) continue;
+            rowCount++;
+            var td = `<td>${rowCount}</td><td>${offd[ME[i][0]]}</td>`;
             let [...test] = ME[i][1][term];
             let subtotal = test.reduce((a,c) => a + c);
             switch (test.length) {
@@ -200,7 +202,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             `);
         }
 
-        const ME_AVERAGE = (total / (ME.length)).toFixed(1);
+        const ME_AVERAGE = (total / rowCount).toFixed(1);
         let subAverage = [];
    
         studentData.forEach(({record}, rx) => {

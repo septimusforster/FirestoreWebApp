@@ -240,8 +240,7 @@ if(ss && 'masterOfForm' in ss.data){
                 CHANGE_OF_SUBJECT.push({[snp.id]: obj});
             }
         });
-        console.log(CHANGE_OF_SUBJECT);
-        /*
+
         const prom = CHANGE_OF_SUBJECT.map(async obj => {
             await setDoc(doc(db, 'session', session, 'students', Object.keys(obj)[0]), {
                 'record':Object.values(obj)[0]
@@ -261,6 +260,5 @@ if(ss && 'masterOfForm' in ss.data){
             }
             notify('Selection saved.');
         });
-        */
     });
 }

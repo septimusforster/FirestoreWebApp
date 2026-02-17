@@ -34,21 +34,9 @@ module.exports = {
     },
     watch: true
 }
-*/
+*
 //ROOT hack.js
-/*
-module.exports = {
-    mode: "development",
-    entry: "./src/hack.js",
-    output: {
-        path: path.resolve(__dirname, "dist"),
-        filename: "hack_bundle.js"
-    },
-    watch: true
-}
-
-//ROOT hack.js
-/*
+*
 module.exports = {
     mode: "development",
     entry: "./src/hack.js",
@@ -84,7 +72,7 @@ module.exports = {
 }
 
 //ROOT result.js
-
+*/
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -203,7 +191,7 @@ module.exports = {
 }
 
 //STAFFER register.js
-*/
+*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/register.js",
