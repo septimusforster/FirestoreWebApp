@@ -186,6 +186,9 @@ table {
 #section-grade > table:nth-of-type(2) {
     flex-basis: 250px;
 }
+#section-grade > table:nth-of-type(2) tr td:nth-child(1) { /* remove */
+    visibility: hidden;
+}
 #section-grade > table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }

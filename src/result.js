@@ -1,7 +1,6 @@
 import { initializeApp, deleteApp } from "firebase/app"
 import { getFirestore, collection, getDoc, doc, query, where, and, getDocs, collectionGroup, orderBy } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
-
 // initialize firebase app
 var app;// = initializeApp();
 // init services
@@ -343,11 +342,14 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             if(studentsSnapshot.empty) return alert("No student exists.")
             const DCA = 'DCA';
             studentData = [];
-            studentsSnapshot.docs.forEach(d => {
-                if (d.data().admission_no.toUpperCase().includes(DCA) && 'record' in d.data()) {
-                    studentData.push(d.data());
+            for(let s = 0; s < studentsSnapshot.docs.length; s++){
+                if(studentsSnapshot.docs[s].data()?.blocked?.includes(String(term))) continue;
+                if (studentsSnapshot.docs[s].data().admission_no.toUpperCase().includes(DCA) && 'record' in studentsSnapshot.docs[s].data()) {
+                    studentData.push(studentsSnapshot.docs[s].data());
                 }
-            });
+            }
+            // studentsSnapshot.docs.forEach(d => {
+            // });
             page = 0;
             size = studentData.length;
             //compute and insert entire data
