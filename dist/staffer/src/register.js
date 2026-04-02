@@ -30,6 +30,7 @@ let term = function(n){
     if(n <= 7) return 2; //third term
     return 0; //first term
 }(MONTH);
+
 const main = document.querySelector('main');
 function chooseConfig(projNum) {
     deleteApp(app);
@@ -110,20 +111,17 @@ if(ss && 'masterOfForm' in ss.data){
                 if('record' in d.data()) snapDocs.push({id:d.id, dd:d.data()});
             }
         });
-        // check if 'term' is safe
-        if(!Object.values(snapDocs[0].dd.record)[0][term]) {
-            term--;
-            term_reversed = true;
-        }
 
-        snapDocs.map((m, mx) => {
+        for(let rc = 0; rc < snapDocs.length; rc++){
+            const m = snapDocs[rc];
+            if(!m?.dd?.record) continue;
             let len = Object.values(m.dd.record);
             let tot = len.map(l => l?.[term] ? l[term].reduce((a,c) => a + c) : 0).reduce((b, d) => b + d);
             let avg = ((tot*100)/(len.length*100)).toFixed();
-
+    
             tbody.insertAdjacentHTML('beforeend', `
                 <tr id="${m.id}">
-                    <td>${mx+1}</td>
+                    <td>${rc+1}</td>
                     <td>${m.dd.last_name} ${m.dd.first_name} ${m.dd?.other_name || ''}</td>
                     <td>${m.dd.admission_no}</td>
                     <td>${m.dd.dob}</td>
@@ -135,7 +133,7 @@ if(ss && 'masterOfForm' in ss.data){
                     <td>${tot.toFixed()} / ${avg}</td>
                 </tr>
             `);
-        });
+        }
 
         tbody.addEventListener('keypress', (e) => {
             if(!e.target.hasAttribute('contenteditable') || e.target.parentElement.className.includes('w')) return;
