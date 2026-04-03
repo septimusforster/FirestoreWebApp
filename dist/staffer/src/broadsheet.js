@@ -18,7 +18,6 @@ let session = MONTH >= 8 ? String(new Date().getFullYear() + 1) : String(new Dat
 
 const ss = JSON.parse(sessionStorage.snapshotId);   //id & data
 //remove snapshotId from session storage
-//notify
 const notf = document.getElementById('notf');
 function notify(msg,err=false){
     notf.querySelector('p').textContent = msg;
@@ -31,15 +30,41 @@ function notify(msg,err=false){
 const main = document.querySelector('main');
 main.removeAttribute('inert');
 
-if(ss && 'masterOfForm' in ss.data){
-    const master = Object.entries(ss.data.masterOfForm)[0];
+if(ss && 'masterOfForm' in ss.data || ss.data?.isAdmin){
+    let master = ss.data?.masterOfForm ? Object.entries(ss.data.masterOfForm)[0] : ['Admin','View'];
     const avatar = document.querySelector('#avatar');
     avatar.nextElementSibling.querySelectorAll('p, small').forEach((el,ex) => {
-        el.innerHTML = ex ? `${ss.data.fullName} &bull; ${master[0]} ${master[1]}` : ss.data.username;
+        el.innerHTML = ex ? `${ss.data.fullName} &bull; ${master.join(' ')}` : ss.data.username;
     });
     const popsettings = document.getElementById('popsettings');
     const formSettings = popsettings.querySelector('form');
-
+    //insert classes
+    if(ss.data?.isAdmin){
+        formSettings.insertAdjacentHTML('afterbegin', `
+            <label for="cls">Class</label>
+            <select name="cls" id="cls" required>
+                <option value="">Choose Class</option>
+                <option value="0">7th Grade</option>
+                <option value="1">8th Grade</option>
+                <option value="2">9th Grade</option>
+                <option value="3">10th Grade</option>
+                <option value="4">11th Grade</option>
+                <option value="5">12th Grade</option>
+            </select>
+            <label for="arm">Arm</label>
+            <select name="arm" id="arm" required>
+                <option value="">Choose Class</option>
+                <option>Brilliance</option>
+                <option>Classic</option>
+                <option>Distinction</option>
+                <option>Excellence</option>
+                <option>Genius</option>
+                <option>Merit</option>
+                <option>Perfection</option>
+                <option>Radiance</option>
+            </select>
+        `);
+    }
     //insert range of sessions
     let opt = '';
     for(let o = 2023; o < Number(session); o++) opt += `<option value="${o+1}">${o}/${o+1}</option>`;
@@ -56,19 +81,24 @@ if(ss && 'masterOfForm' in ss.data){
     document.getElementById('chng-sesn').onclick = function(){
         popsettings.showPopover();
     }
-    formSettings.addEventListener('submit',(e) => {
+    formSettings.addEventListener('submit', async (e) => {
         e.preventDefault();
         e.submitter.disabled = true;
         popsettings.querySelector('.wrp').classList.add('on');
     
-        term = Number(e.target[0].value);
-        session = e.target[1].value;
-
+        term = Number(formSettings.querySelector('select#trm').value);
+        session = formSettings.querySelector('select#ssn').value;
+        if(ss.data?.isAdmin) {
+            master = [
+                configs[7][formSettings.querySelector('select#cls').value],
+                formSettings.querySelector('select#arm').value
+            ]
+        }
         // get EOT and subject collections for both junior and senior secondary
         
-        const worker = new Worker(new URL('dist/staffer/src/worker_bundle.js', location.origin));
-        worker.postMessage(session);    //THIS SERVICE WORKER IS NOT BEING USED; DESTROY LATER.
-        worker.onmessage = async ({data}) => {
+        // const worker = new Worker(new URL('dist/staffer/src/worker_bundle.js', location.origin));
+        // worker.postMessage(session);    //THIS SERVICE WORKER IS NOT BEING USED; DESTROY LATER.
+        // worker.onmessage = async ({data}) => {
             // const EOT = data;   //worker.js
             /*|| ["First","Second","Third"].indexOf(data?.this_term);*/
             // console.log(data.this_term, term);
@@ -89,7 +119,7 @@ if(ss && 'masterOfForm' in ss.data){
                 e.submitter.disabled = false;
                 // popsettings.querySelector('.wrp').classList.remove('on');
             }
-        };
+        // };
     });
     let IDs = [], names = [], promotion = [], studentSnap, scoresSnap = [];
     const table = document.querySelector('table');
@@ -121,7 +151,8 @@ if(ss && 'masterOfForm' in ss.data){
                 names.push({na: `${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`, nb: s.data()?.promo_status || null});
             }
         });
-
+        //reload class and arm
+        document.querySelector('small').innerHTML = `${ss.data.fullName} &bull; ${master.join(' ')}`;
         const tbody = table.querySelector('tbody');
         
         //populate table header with the [abbr] of the subjects
