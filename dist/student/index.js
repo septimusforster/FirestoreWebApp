@@ -41,8 +41,11 @@ window.addEventListener('beforeunload', (e) => {
     }
 });
 //get and store test array in fb_arr
-let start = '';
-let fb_arr = new Array(8).fill(null);
+let start = '', fb_arr = {};
+for(const k in mois.offered) fb_arr[k] = {[term]: Array(8).fill(null)}
+Object.assign(fb_arr, mois?.record);
+
+/*
 (async function postWorker(){
     const wkr = new Worker(new URL('worker.js', import.meta.url));
     wkr.postMessage({mois, ssn});
@@ -59,6 +62,7 @@ let fb_arr = new Array(8).fill(null);
         }
     }
 })();
+*/
 //fetch server timestamp
 let fb_stamp = null, try_fetch = 0;
 (async function fetchStamp(){
@@ -166,7 +170,6 @@ section.addEventListener('click', (e) => {
     if ((e.target.className).includes('copy')) {
         const x = e.target.closest('.ui_card').getAttribute('data-cat');
         ofd_n = [...e.currentTarget.children].indexOf(e.target.closest('.ui_card'));
-        console.log(ofd_n);
         input_code.setAttribute('placeholder', `Enter Code for #${x}`);
         input_code.setAttribute('value', e.target.previousElementSibling.innerText);
         pop_code.showPopover();
@@ -210,7 +213,7 @@ cde_fm.addEventListener('submit', (e) => {
         document.querySelector('.scr_hr>span:nth-child(2)').innerHTML = `${pg_hdg.textContent} &bull; ${clsNames[mois.cls]} &bull; #${ofd_n+1}`;
         tmer.textContent = `${c.duration} : 00`;
         screen.removeAttribute('style');
-        console.log("Index where test will be recorded:", start);
+        // console.log("Index where test will be recorded:", start);
     }
 });
 pop_code.addEventListener('toggle', (e) => {

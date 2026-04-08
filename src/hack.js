@@ -18,28 +18,26 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 1;
+const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 0;
 chooseConfig(clx); //projects
 
-//remove old entrance exams
+//remove old entrance students
 const twoMonthsAgo = new Date(new Date(Date.now() - (86400000 * 60))); // in seconds
-const q = query(collection(db, 'session/2025/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '<', twoMonthsAgo)), orderBy('first_name'));
+const q = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '<', twoMonthsAgo)), orderBy('first_name'));
 // const c = await getCountFromServer(q);
 // console.log(c.data().count);
-let shotCount = 0;
+let deleted = 0;
 const snapShots = await getDocs(q);
 if(!snapShots.empty){
-    // const toDelete = snapShots.docs.map(async d => {
-    //     await deleteDoc(doc(db, 'session/2025/students', d.id));
-    // });
-    // await Promise.allSettled(toDelete);
+    console.log(snapShots.docs[0].data().admission_no);
     for await(const shots of snapShots.docs){
-        await deleteDoc(doc(db, 'session/2025/students', shots.id));
-        shotCount++;
+        await deleteDoc(doc(db, 'session/2026/students', shots.id));
+        deleted++;
     }
-    console.log("Finished deletion", shotCount);
+    console.log("Files deleted:", deleted);
+}else{
+    console.log("No file to delete.");
 }
-console.log("No file to delete.");
 /*
 const q = query(collection(db, 'session/2026/students'), where('arm', '==', 'Genius'));
 const snapshot = await getDocs(q);

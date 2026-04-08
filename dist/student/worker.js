@@ -10,11 +10,11 @@ function useApp(n){
 }
 self.addEventListener('message', async ({ data }) => {
     useApp(data.mois.cls);
-    const scoreRef = doc(db,'session', data.ssn, 'students', data.mois.id, 'scores', 'records');
+    const scoreRef = doc(db,'session', data.ssn, 'students', data.mois.id);
     try{
         const my_ca = await getDoc(scoreRef);
         if(my_ca.exists) {
-            self.postMessage(my_ca.data());
+            self.postMessage({record: my_ca.data()?.record} || {offered: my_ca.data()?.offered});
         }
     }catch(err){
         self.postMessage("Worker-based Error.");
