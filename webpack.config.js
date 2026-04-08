@@ -36,7 +36,7 @@ module.exports = {
 }
 *
 //ROOT hack.js
-*
+*/
 module.exports = {
     mode: "development",
     entry: "./src/hack.js",
@@ -229,7 +229,7 @@ module.exports = {
 }
 
 // STAFFER broadsheet.js
-*/
+/
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",

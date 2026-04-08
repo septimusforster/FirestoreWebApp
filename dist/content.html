@@ -103,13 +103,27 @@
             .rowIndex__hidden {
                 display: none;
             }
+            .load_more{
+                pointer-events:none;
+                opacity:0;
+                display:block;
+                margin:1rem auto;
+                padding:.5rem 1.2rem;
+                border:1px solid #aaa;
+                border-radius:24px;
+                transition:opacity .2s ease;
+            }
+            .load_more.on{
+                opacity:1;
+                pointer-events:all;
+            }
         </style>
     </head>
     <body>
         <h3 id="students"></h3>
         <div class="content">
             <div>Please select a <em>Classroom</em> and an <em>Arm</em> to begin.</div>
-            <div>
+            <div class="table_content">
                 <table>
                     <thead>
                         <tr>
@@ -124,6 +138,7 @@
     
                     </tbody>
                 </table>
+                <button type="button" class="load_more">Load more</button>
             </div>
         </div>
         <div id="preview">

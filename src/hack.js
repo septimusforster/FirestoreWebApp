@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app"
-import { getFirestore, getCountFromServer, collection, startAfter, getDoc, getDocs, updateDoc, doc, query, where, orderBy, setDoc, limit, runTransaction, deleteField } from "firebase/firestore"
+import { getFirestore, getCountFromServer, collection, startAfter, deleteDoc, getDoc, getDocs, updateDoc, doc, and, query, where, orderBy, setDoc, limit, runTransaction, deleteField } from "firebase/firestore"
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
 
 const badge = document.querySelector('aside:nth-child(1)');
@@ -18,9 +18,29 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
-const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 4;
+const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 1;
 chooseConfig(clx); //projects
 
+//remove old entrance exams
+const twoMonthsAgo = new Date(new Date(Date.now() - (86400000 * 60))); // in seconds
+const q = query(collection(db, 'session/2025/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '<', twoMonthsAgo)), orderBy('first_name'));
+// const c = await getCountFromServer(q);
+// console.log(c.data().count);
+let shotCount = 0;
+const snapShots = await getDocs(q);
+if(!snapShots.empty){
+    // const toDelete = snapShots.docs.map(async d => {
+    //     await deleteDoc(doc(db, 'session/2025/students', d.id));
+    // });
+    // await Promise.allSettled(toDelete);
+    for await(const shots of snapShots.docs){
+        await deleteDoc(doc(db, 'session/2025/students', shots.id));
+        shotCount++;
+    }
+    console.log("Finished deletion", shotCount);
+}
+console.log("No file to delete.");
+/*
 const q = query(collection(db, 'session/2026/students'), where('arm', '==', 'Genius'));
 const snapshot = await getDocs(q);
 console.log([...snapshot.docs][0].data().record)

@@ -1,7 +1,8 @@
 import { initializeApp, deleteApp } from "firebase/app"
 import {
-    getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp, setDoc, getDocsFromCache,
-    writeBatch
+    getFirestore, collection, getCountFromServer, getDoc, getDocs, addDoc, deleteDoc, doc, updateDoc, and, query, where, orderBy, limit, serverTimestamp, setDoc, getDocsFromCache,
+    writeBatch,
+    startAfter
 } from "firebase/firestore"
 import pk from "../src/JSON/upass.json" assert {type: 'json'};
 import  configs from "./JSON/configurations.json" assert {type: 'json'};
@@ -61,7 +62,7 @@ window.addEventListener('click', (e) => {
 await getDoc(eotRef).then(async (res) => { // load EOT
     eotData = res.data();
     term = ["First","Second","Third"].indexOf(eotData.this_term);
-    console.log(eotData?.this_term);
+    console.log("Term", term);
     //chk gmode
     const cities = ['ZAGREB', 'COPENHAGEN', 'PRAGUE', 'MOSCOW', 'SOBIBOR', 'WARSAW', 'TELAVIV'];
     const c = Math.floor(Math.random() * cities.length);
@@ -180,17 +181,22 @@ function preload() {
 }
 
 const DCA = 'DCA';
-let data;
-async function setIframeAttr(para1) {
-    //there are two hidden elems: the second one holds upass value
+let data, limited = false, lastDoc, para1;
+async function setIframeAttr() {
     myIframe.setAttribute('data-class-arm', para1);
-    // hiddenElems[0].value = para1;
     if (sessionStorage.hasOwnProperty('preview')) sessionStorage.removeItem('preview');
     data = [];
-    // console.log(term)
     const armRef = collection(db, 'session', session, 'students');
-    const q = query(armRef, where("arm", "==", para1), orderBy("first_name"));   //startAfter() to be included
+    const twoMonthsAgo = new Date(new Date(Date.now() - (86400000 * 60))); // in seconds
+    console.log('Two Months Ago', twoMonthsAgo);
+    const constraint = para1.trim().toLowerCase() == 'entrance' ? where("createdAt", ">", twoMonthsAgo) : where("arm", "==", para1);
+    const q = !limited ? query(armRef, constraint, orderBy("first_name"), limit(30)) : query(armRef, constraint, orderBy("first_name"), limit(30), startAfter(lastDoc));
+
     await getDocs(q).then(docs => {
+        if(docs.empty) return;
+        limited = true;
+        myIframe.contentDocument.querySelector('button.load_more').classList.add('on');
+        lastDoc = docs.docs[docs.docs.length - 1];
         docs.docs.forEach(obj => {
             // if (obj.data()?.admission_no.toUpperCase().includes(DCA)) data.push(obj.data());
             if (['recruit'].includes(obj.data().arm.toLowerCase())) {
@@ -201,11 +207,9 @@ async function setIframeAttr(para1) {
         });
         size = data.filter(({admission_no}) => admission_no.toUpperCase().startsWith(DCA));
         console.log("size:", size.length)
-        // console.log(marked);
         sessionStorage.setItem('preview', JSON.stringify(size));
-        // console.log('Done.')
     });
-    myIframe.contentDocument.querySelector('tbody').innerHTML = '';
+    
     data.forEach((student, index) => {
         myIframe.contentDocument.querySelector('tbody').insertAdjacentHTML('beforeend',`
             <tr onclick="deleteStudent('${student.id}',this.children[3].textContent, this)">
@@ -219,6 +223,12 @@ async function setIframeAttr(para1) {
     })
     myIframe.contentDocument.querySelector('table').style.display = 'block';
 }
+//load more btn event
+myIframe.contentDocument.querySelector('button.load_more').onclick = async e => {
+    e.target.classList.remove('on');
+    await setIframeAttr();
+}
+
 let clsTarget, num;
 const topNavAnchors = document.querySelectorAll('.top-nav a');
 topNavAnchors.forEach((a, i, anchors) => {
@@ -250,8 +260,10 @@ leftNavAnchors.forEach((a, i, anchors) => {
     a.addEventListener('click', async (e) => {
         anchors.forEach((link) => link.classList.remove('active-left-nav'))
         a.classList.add('active-left-nav');
-        await setIframeAttr(e.target.textContent);
-    })
+        para1 = e.target.textContent;
+        myIframe.contentDocument.querySelector('tbody').innerHTML = '';
+        await setIframeAttr();
+    });
 });
 
 function randomKey() {
@@ -501,19 +513,22 @@ sidePanelBtns[5].onclick = () => {
         addDialog.showModal();
     }
 }
+
 const addSubForm = document.querySelector('form#addSub');
 addSubForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.submitter.disabled = true, e.submitter.nextElementSibling.disabled = true;
     e.submitter.style.cursor = 'not-allowed';
 
-    let data = {};
+    let offered = {};
+    let record = {};
     addSubForm.querySelectorAll('input').forEach(inp => {
         if (inp.checked == true) {
-            data[inp.name] = inp.value;
+            offered[inp.name] = inp.value;
+            record[inp.name] = {[term]: Array(8).fill(null)}
         }
     });
-    await updateDoc(doc(db, 'session', session, 'students', myid), {offered: data});
+    await updateDoc(doc(db, 'session', session, 'students', myid), {offered, record});
     alert("Subject updated.");
     e.submitter.disabled = false, e.submitter.nextElementSibling.disabled = false;
     e.submitter.style.cursor = 'pointer';

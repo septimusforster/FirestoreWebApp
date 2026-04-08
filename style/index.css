@@ -233,11 +233,13 @@ button[title="PIN"]:hover::after {
 #addSub > div:first-of-type {
     text-align: left;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction:column;
     gap: 1em;
     margin-bottom: 20px;
+    padding:1rem;
     height: 400px;
-    overflow-y: scroll;
+    min-width:300px;
+    overflow-y: auto;
 }
 #addSub > div > label {
     display: inline-flex;
