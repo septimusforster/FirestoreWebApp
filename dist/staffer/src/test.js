@@ -46,7 +46,7 @@ function loadSubs() {
     });
 }
 //create Find Test button
-if (JSON.parse(sessionStorage.getItem('snapshot')).data.username !== 'guestmode') {
+if (JSON.parse(sessionStorage.getItem('snapshotId')).data.username !== 'guestmode') {
     document.body.querySelector('header > div:first-of-type').insertAdjacentHTML('afterbegin', `
         <button onclick="document.querySelector('[data-tst-conditions]').showModal();">Edit Test</button>
     `);

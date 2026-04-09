@@ -18,11 +18,14 @@ function chooseConfig(num) {
     // init services
     db = getFirestore()
 }
+const pre = document.querySelector('pre');
 const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 0;
 chooseConfig(clx); //projects
 
-//remove old entrance students
 const twoMonthsAgo = new Date(new Date(Date.now() - (86400000 * 60))); // in seconds
+console.log(twoMonthsAgo.getTime());
+//remove old entrance students
+/*
 const q = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '<', twoMonthsAgo)), orderBy('first_name'));
 // const c = await getCountFromServer(q);
 // console.log(c.data().count);
@@ -38,6 +41,73 @@ if(!snapShots.empty){
 }else{
     console.log("No file to delete.");
 }
+*/
+//import entrance students for local db
+/*
+let lastSnapshot, entranceQuery, jsonData = "", entrance_students = 0;
+async function getEntrance(){
+    if(lastSnapshot){
+        entranceQuery = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '>', twoMonthsAgo)), limit(30), startAfter(lastSnapshot))
+    }else{
+        entranceQuery = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '>', twoMonthsAgo)), limit(30));
+    }
+
+    const snapshot = await getDocs(entranceQuery);
+    if(snapshot.empty){
+        //create JSON file if jsonData not empty
+        const ok = window.prompt("Entrance File ready for download. Continue?", "Ok"); //returns default str (OK) or null(CANCEL)
+        if(ok){
+            if(!jsonData.length) return console.log("No document to download.");
+            const blob = new Blob([jsonData],{type: 'text/plain'});
+            const a = document.createElement('a');
+            a.download = 'entrance.db';
+            a.href = URL.createObjectURL(blob);
+            a.click();
+        }
+        return;
+    }else{
+        lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
+        console.log(snapshot.docs[0].data().admission_no); //REMOVE THIS; 'TWAS FOR TESTING
+        //append json data
+        for await (const shot of snapshot.docs){
+            const sbjs = shot.data()?.record || {
+                    "ENGE": {"1": Array(8).fill(null)},
+                    "MTHE": {"1": Array(8).fill(null)},
+                    "GEN": {"1": Array(8).fill(null)},
+                };
+            jsonData += JSON.stringify({
+                stid: shot.data().admission_no,
+                enrolled: shot.data().admission_year,
+                arm: 'ENTRANCE',
+                dob: shot.data().dob,
+                fname: shot.data().first_name,
+                lname: shot.data().last_name,
+                oname: shot.data()?.other_name || '',
+                gender: shot.data()?.gender,
+                _id: shot.id,
+                sbjs,
+                pwd: shot.data().password,
+                createdAt: {"$$date": Date.now()},
+                updatedAt: {"$$date": Date.now()},
+                sync: false,
+            }) + '\n';
+            entrance_students++;
+            if(!shot.data()?.record){
+                await updateDoc(doc(db, 'session/2026/students', shot.id), {record: sbjs})
+            }
+        }
+    }
+}
+const loadMoreBtn = document.createElement('button');
+loadMoreBtn.type = 'button';
+loadMoreBtn.textContent = 'Load More';
+loadMoreBtn.setAttribute('style', 'width:max-content;margin:2rem auto;font-weight:500;border:1px solid #ccc;padding:.5rem 1rem; border-radius:24px;');
+loadMoreBtn.addEventListener('click', async e => {
+    await getEntrance();
+    console.log("Entrance Students:", entrance_students, "pupils");
+});
+document.body.appendChild(loadMoreBtn);
+*/
 /*
 const q = query(collection(db, 'session/2026/students'), where('arm', '==', 'Genius'));
 const snapshot = await getDocs(q);
@@ -141,7 +211,6 @@ myBtn.addEventListener('click', async (e) => {
 document.body.appendChild(myBtn);
 */
 /*
-const pre = document.querySelector('pre');
 let snapshots = [];
 const now = Date.now();
 

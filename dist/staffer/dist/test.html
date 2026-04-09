@@ -146,7 +146,6 @@
     </dialog>
     <script type="module" src="../src/test_bundle.js"></script>
     <script>
-        // set min attr for date input
         // document.querySelector('input[type="date"]').setAttribute('min', Intl.DateTimeFormat('en-us', {dateStyle: "medium"}).format(new Date()))
         // const iframe = document.querySelector('iframe');
         // load srcdoc
@@ -158,7 +157,6 @@
         const imgframe = document.querySelector('#imgframe');
         const file = document.querySelector("input[type='file']");
         file.onchange = (e) => {
-            console.log(e);
             const fs = new FileReader();
             fs.onload = function () {
                 // iframe.removeAttribute('srcdoc');

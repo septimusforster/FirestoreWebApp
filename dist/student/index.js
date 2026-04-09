@@ -44,7 +44,7 @@ window.addEventListener('beforeunload', (e) => {
 let start = '', fb_arr = {};
 for(const k in mois.offered) fb_arr[k] = {[term]: Array(8).fill(null)}
 Object.assign(fb_arr, mois?.record);
-
+// console.log(fb_arr, ssn);
 /*
 (async function postWorker(){
     const wkr = new Worker(new URL('worker.js', import.meta.url));
@@ -335,9 +335,7 @@ submtBtn.addEventListener('click', async (e) => {
     try{
         if(fb_data){
             fb_data.splice(start, 1, score);
-            await setDoc(doc(db, 'session', ssn, 'students', mois.id, 'scores', 'records'), {
-                [ofd]:{[term]:fb_data}
-            },{merge:true});
+            await updateDoc(doc(db, 'session', ssn, 'students', mois.id), {[`record.${ofd}`]: {[term]:fb_data}});
             //clear localStorage
             localStorage.removeItem(ofd+ofd_n);
             test_over=true;

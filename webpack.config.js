@@ -36,7 +36,7 @@ module.exports = {
 }
 *
 //ROOT hack.js
-*
+*/
 module.exports = {
     mode: "development",
     entry: "./src/hack.js",
@@ -253,7 +253,7 @@ module.exports = {
 }
 
 //STUDENT index.js
-*/
+/
 module.exports = {
     mode: "development",
     entry: "./dist/student/index.js",
