@@ -23,7 +23,6 @@ const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 0;
 chooseConfig(clx); //projects
 
 const twoMonthsAgo = new Date(new Date(Date.now() - (86400000 * 60))); // in seconds
-console.log(twoMonthsAgo.getTime());
 //remove old entrance students
 /*
 const q = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '<', twoMonthsAgo)), orderBy('first_name'));
@@ -43,7 +42,7 @@ if(!snapShots.empty){
 }
 */
 //import entrance students for local db
-/*
+
 let lastSnapshot, entranceQuery, jsonData = "", entrance_students = 0;
 async function getEntrance(){
     if(lastSnapshot){
@@ -55,6 +54,7 @@ async function getEntrance(){
     const snapshot = await getDocs(entranceQuery);
     if(snapshot.empty){
         //create JSON file if jsonData not empty
+        // return console.log("File emptied.")
         const ok = window.prompt("Entrance File ready for download. Continue?", "Ok"); //returns default str (OK) or null(CANCEL)
         if(ok){
             if(!jsonData.length) return console.log("No document to download.");
@@ -67,7 +67,6 @@ async function getEntrance(){
         return;
     }else{
         lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
-        console.log(snapshot.docs[0].data().admission_no); //REMOVE THIS; 'TWAS FOR TESTING
         //append json data
         for await (const shot of snapshot.docs){
             const sbjs = shot.data()?.record || {
@@ -107,7 +106,7 @@ loadMoreBtn.addEventListener('click', async e => {
     console.log("Entrance Students:", entrance_students, "pupils");
 });
 document.body.appendChild(loadMoreBtn);
-*/
+
 /*
 const q = query(collection(db, 'session/2026/students'), where('arm', '==', 'Genius'));
 const snapshot = await getDocs(q);

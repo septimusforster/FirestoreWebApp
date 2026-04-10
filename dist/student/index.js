@@ -147,12 +147,13 @@ function loadCBT(cbt){
     section.innerHTML='';
     // console.log(fb_stamp);
     cbt.forEach((d,x) => {
+        // ${Boolean(fb_stamp>new Date(d.startDate+'T'+d.startTime).getTime()-60e3) && Boolean(fb_stamp<new Date(d.startDate+'T'+d.startTime).setHours(20) + (d.duration*60e3)) ? `<code>${d.code}</code><div class="btn copy">COPY</div>` : "<code>NOT AVAILABLE</code>"}
         section.insertAdjacentHTML('beforeend', `
             <div class="ui_card" data-cat="${d.catNo}">
                 <p>Assessment ${d.catNo}</p>
                 <p>${Intl.DateTimeFormat('en-US', {dateStyle: 'full'}).format(new Date(d.startDate))}</p>
                 <div class="code">
-                    ${Boolean(fb_stamp>new Date(d.startDate+'T'+d.startTime).getTime()-60e3) && Boolean(fb_stamp<new Date(d.startDate+'T'+d.startTime).setHours(15) + (d.duration*60e3)) ? `<code>${d.code}</code><div class="btn copy">COPY</div>` : "<code>NOT AVAILABLE</code>"}
+                    ${Boolean(fb_stamp>new Date(d.startDate+'T'+d.startTime).getTime()-60e3) ? `<code>${d.code}</code><div class="btn copy">COPY</div>` : "<code>NOT AVAILABLE</code>"}
                 </div>
                 <div class="actn">
                     <span>${d.questions}</span><span>${d.rating}</span><span>${d.duration>60?Math.floor(d.duration/60)+','+d.duration%60:d.duration}</span>
@@ -201,7 +202,8 @@ cde_fm.addEventListener('submit', (e) => {
     // const gdu = gtm + (c.duration*60*1000); //duration: normal human beings
 
     if(input_code.value !== c.code) return e.target.setAttribute('data-err', 'Incorrect code.');
-    if(fb_stamp < gtm || fb_stamp > gdu) return e.target.setAttribute('data-err', 'Permission denied.');
+    if(fb_stamp < gtm) return e.target.setAttribute('data-err', 'Permission denied.');
+    // if(fb_stamp < gtm || fb_stamp > gdu) return e.target.setAttribute('data-err', 'Permission denied.');
 
     fb_data = fb_arr[ofd][term];
     start = [0,2,4,6][c.catNo-1];
