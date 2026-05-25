@@ -21,8 +21,10 @@ function chooseConfig(num) {
 const pre = document.querySelector('pre');
 const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 0;
 chooseConfig(clx); //projects
+const nulls = Array(8).fill(null);
 
-const twoMonthsAgo = new Date(new Date(Date.now() - (86400000 * 60))); // in seconds
+const someTimeAgo = new Date(new Date(Date.now() - (86400000 * 30))); // in milliseconds
+console.log('One month Ago:', someTimeAgo);
 //remove old entrance students
 /*
 const q = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '<', twoMonthsAgo)), orderBy('first_name'));
@@ -46,9 +48,9 @@ if(!snapShots.empty){
 let lastSnapshot, entranceQuery, jsonData = "", entrance_students = 0;
 async function getEntrance(){
     if(lastSnapshot){
-        entranceQuery = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '>', twoMonthsAgo)), limit(30), startAfter(lastSnapshot))
+        entranceQuery = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '>', someTimeAgo)), limit(30), startAfter(lastSnapshot))
     }else{
-        entranceQuery = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '>', twoMonthsAgo)), limit(30));
+        entranceQuery = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '>', someTimeAgo)), limit(30));
     }
 
     const snapshot = await getDocs(entranceQuery);
@@ -66,14 +68,17 @@ async function getEntrance(){
         }
         return;
     }else{
+        console.clear();
+        console.log("Students found:", snapshot.docs.length);
         lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
         //append json data
         for await (const shot of snapshot.docs){
+            console.log(shot.data().first_name);
             const sbjs = shot.data()?.record || {
-                    "ENGE": {"1": Array(8).fill(null)},
-                    "MTHE": {"1": Array(8).fill(null)},
-                    "GEN": {"1": Array(8).fill(null)},
-                };
+                "ENGE": {"2": nulls},
+                "MTHE": {"2": nulls},
+                "GEN": {"2": nulls},
+            };
             jsonData += JSON.stringify({
                 stid: shot.data().admission_no,
                 enrolled: shot.data().admission_year,
@@ -90,8 +95,8 @@ async function getEntrance(){
                 updatedAt: {"$$date": Date.now()},
                 sync: false,
             }) + '\n';
-            entrance_students++;
             if(!shot.data()?.record){
+                entrance_students++;
                 await updateDoc(doc(db, 'session/2026/students', shot.id), {record: sbjs})
             }
         }
@@ -103,15 +108,35 @@ loadMoreBtn.textContent = 'Load More';
 loadMoreBtn.setAttribute('style', 'width:max-content;margin:2rem auto;font-weight:500;border:1px solid #ccc;padding:.5rem 1rem; border-radius:24px;');
 loadMoreBtn.addEventListener('click', async e => {
     await getEntrance();
-    console.log("Entrance Students:", entrance_students, "pupils");
+    console.log("New entrance Students:", entrance_students, "pupils");
 });
 document.body.appendChild(loadMoreBtn);
 
+//reset subjects per term
 /*
-const q = query(collection(db, 'session/2026/students'), where('arm', '==', 'Genius'));
-const snapshot = await getDocs(q);
-console.log([...snapshot.docs][0].data().record)
-
+(async function resetSbj(){
+    // return console.log("Thread blocked on Line 113.");
+    const clss = 'Radiance';
+    const q = query(collection(db, 'session/2026/students'), where('arm', '==', clss));
+    const snapshot = await getDocs(q);
+    console.log(classroom[clx] + ' ' + clss, snapshot.size);
+    if(!snapshot.size){
+        return;
+    }else{
+        const n = Array(8).fill(null);
+        const prom = snapshot.docs.map(async m => {
+            let x = {};
+            for(const a in m.data().record){
+                if(!m.data().record[a]?.['0']) continue;
+                x[a] = Object.assign(m.data().record[a], {0: n}); //0 is First Term
+            }
+            await updateDoc(doc(db, 'session/2026/students', m.id),{record: x});
+        });
+        await Promise.allSettled(prom);
+        console.log("Settled.");
+    }
+})();
+*/
 // const offered = {
 //     AGR: "Agricultural Science",
 //     BSC: "Basic Science",

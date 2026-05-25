@@ -34,9 +34,9 @@ module.exports = {
     },
     watch: true
 }
-*
-//ROOT hack.js
 /
+//ROOT hack.js
+
 module.exports = {
     mode: "development",
     entry: "./src/hack.js",
@@ -46,7 +46,6 @@ module.exports = {
     },
     watch: true
 }
-
 //ROOT hacks_ssn.js
 /*
 module.exports = {
@@ -229,7 +228,7 @@ module.exports = {
 }
 
 // STAFFER broadsheet.js
-/
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",
@@ -253,7 +252,7 @@ module.exports = {
 }
 
 //STUDENT index.js
-*/
+*
 module.exports = {
     mode: "development",
     entry: "./dist/student/index.js",
@@ -265,7 +264,7 @@ module.exports = {
 }
 
 //STUDENT logon.js
-/*
+*/
 module.exports = {
     mode: "development",
     entry: "./dist/student/logon.js",

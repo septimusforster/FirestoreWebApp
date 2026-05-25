@@ -1,5 +1,5 @@
 import { initializeApp, deleteApp } from "firebase/app";
-import { getFirestore, collection, doc, getDoc,updateDoc, getDocs, setDoc, query, where, and, or, serverTimestamp} from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc,updateDoc, limit, orderBy, getDocs, setDoc, query, where, and, or, serverTimestamp, startAfter} from "firebase/firestore";
 import configs from "../../src/JSON/configurations.json" assert {type: 'json'};
 
 var app, db;
@@ -13,6 +13,52 @@ document.querySelector('.tab.out+i').addEventListener('click', (e) => {
     localStorage.clear();
     location.replace('logon.html');
 });
+//inner hack
+/*
+useApp(0);
+const nulls = Array(8).fill(null);
+let lastDoc;
+const twoWeeksAgo = new Date(new Date(Date.now() - (86400000 * 14))); // in milliseconds
+
+async function updateEntrance(){
+    let q, cnt = 0;
+    if(lastDoc){
+        q = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '>', twoWeeksAgo)), orderBy('first_name'), limit(30), startAfter(lastDoc));
+    }else{
+        q = query(collection(db, 'session/2026/students'), and(where('arm', '==', 'ENTRANCE'), where('createdAt', '>', twoWeeksAgo)), orderBy('first_name'), limit(30));
+    }
+    const docse = await getDocs(q);
+    if(docse.empty) return console.log("Nothing else to do.");
+    console.log(docse.size, 'STUDENTS');
+
+    lastDoc = docse.docs[docse.docs.length - 1];
+    const fil = docse.docs.filter(fl => 'record' in fl.data());
+    console.log(fil.length, 'valid...');
+    for await(const f of fil){
+        if(!f.data()?.record?.['ENGE']) continue;
+        if('2' in f.data().record?.['ENGE']) continue;
+        cnt++;
+        await updateDoc(doc(db, `session/2026/students/${f.id}`), {
+            record: {
+                'ENGE': {'2': f.data().record?.['ENGE'] || nulls},
+                'GEN': {'2': f.data().record?.['GEN'] || nulls},
+                'MTHE': {'2': f.data().record?.['MTHE'] || nulls},
+            }
+        })
+        // .then(res => {
+        //     console.log(res, 'Update complete.');
+        // })
+    }
+    console.log(cnt, 'updated');
+}
+
+const btnn = document.createElement('button');
+btnn.textContent = 'click';
+btnn.addEventListener('click', async e => {
+    await updateEntrance();
+});
+document.body.appendChild(btnn);
+*/
 //nav tabs
 document.querySelector('nav').addEventListener('click', (e) => {
     if (e.target.className.includes('tab')) e.currentTarget.classList.toggle('opn');

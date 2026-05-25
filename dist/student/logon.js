@@ -17,16 +17,15 @@ document.addEventListener('DOMContentLoaded', (e) => {
 });
 window.addEventListener('online', amionline, false);
 window.addEventListener('offline', amionline, false);
-
-const myZone = new Date(Date.now()).getTimezoneOffset();
+// const myZone = new Date(Date.now()).getTimezoneOffset();
 const timeDOM = document.getElementById('time');
 function amionline() {
     if (navigator.onLine) {
-        if(myZone === -60){
+        // if(myZone === -60){
             timeDOM.innerHTML = `<div>${Intl.DateTimeFormat('en-US', {dateStyle: 'full'}).format(Date.now())}</div>`;
-        }else{
-            timeDOM.innerHTML = `<div>Please check your system time.</div>`;
-        }
+        // }else{
+        //     timeDOM.innerHTML = `<div>Please check your system time.</div>`;
+        // }
     } else {
         timeDOM.innerHTML = "<span id='offline'></span><span>Offline</span>";
         document.querySelectorAll('.opq').forEach(opq => opq ? opq.classList.remove('opq') : false);
@@ -79,7 +78,7 @@ fms.namedItem('login').addEventListener('submit', async (e) => {
             await getDocs(q)
             .then(async val => {
                 const v = val.size;
-                if(myZone !== -60) throw Error("Time zone mismatch.",{cause: true});
+                // if(myZone !== -60) throw Error("Time zone mismatch.",{cause: true});
                 if(v===1) {
                     mois = val.docs.map(m => m.data())[0];
                     if(Object.hasOwn(mois, 'offered')){
