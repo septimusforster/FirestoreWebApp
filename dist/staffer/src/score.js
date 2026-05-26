@@ -93,7 +93,7 @@ if(storage){
             [mySub, myClass, myArm] = fd.values();
             chooseConfig(parseInt(myClass));
             const neoSnap = await getDocs(query(collection(db, `session/${session}/students`), where('arm', '==', myArm)));
-
+            console.log(session, term);
             data = [...neoSnap.docs].map(m => {
                 return {
                     id: m.id,

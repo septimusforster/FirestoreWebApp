@@ -71,8 +71,7 @@ module.exports = {
 }
 
 //ROOT result.js
-*/
-/*
+/
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -82,7 +81,6 @@ module.exports = {
     },
     watch: true
 }
-*/
 
 //ROOT photos.js
 /*
@@ -216,7 +214,7 @@ module.exports = {
 }
 */
 // STAFFER score.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/score.js",
@@ -264,7 +262,7 @@ module.exports = {
 }
 
 //STUDENT logon.js
-*/
+*
 module.exports = {
     mode: "development",
     entry: "./dist/student/logon.js",

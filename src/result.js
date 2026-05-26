@@ -11,7 +11,7 @@ function chooseConfig(num) {
     deleteApp(app);
     app = initializeApp(configs[num]);
     // init services
-    db = getFirestore()
+    db = getFirestore();
 }
 const MONTH = new Date().getMonth();
 let session = MONTH >= 8 ? String(new Date().getFullYear() + 1) : String(new Date().getFullYear());
@@ -65,6 +65,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     princDiv.querySelector('p').textContent = eotData?.princ.name || '';
 
     function computeData(page){
+        console.log(term, session);
         document.querySelector('footer span').innerHTML = `<i>${page+1}</i> of ${size}`;
         const {
             admission_no, last_name, first_name, other_name='', gender, dob,
@@ -306,16 +307,18 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
 
     document.forms.namedItem('rez_fom').addEventListener('submit', async (e) => {
         e.preventDefault();
-        
         e.submitter.disabled = true;
         loadbar.showPopover();
         const fd = new FormData(e.target);
         
-        chooseConfig(6);
+        if(app) deleteApp(app);
+        app = initializeApp(configs[6]);
+        db = getFirestore(app);
+        // chooseConfig(6);
+
         FORM = fd.get('cls') || FORM;
         const sbjs = await getDoc(FORM.includes('JSS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
         offd = sbjs.data();
-        
         session = fd.get('snn') || session;
         ARM = fd.get('arm') || ARM;
         term = fd.get('term') || term;
@@ -325,53 +328,49 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         //load stamp
         const stamp = `../img/stamp${String(parseInt(term) + 1).padStart(2,'0')}_${session}.png`;
         stampImg.src = stamp;
-        
+
         if(ss.data?.isAdmin) await eot();
         if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
         document.querySelector('dialog').hidePopover();
-        // console.log(session, FORM, ARM, term, percentile, oth);
-        // try {
-            chooseConfig(configs[7].indexOf(FORM))
-            loaded(30);
-            
-            const studentsRef = collection(db, 'session', session, 'students');
-            const studentsQuery = ARM == "ENTRANCE" ? query(studentsRef, and(where("admission_year", ">=", new Date().getFullYear()), where("arm", "==", "ENTRANCE"))) : query(studentsRef, where("arm", "==", ARM), orderBy('last_name'));
-            loaded(40);
-            const studentsSnapshot = await getDocs(studentsQuery);
-            //second width
-            if(studentsSnapshot.empty) return alert("No student exists.")
-            const DCA = 'DCA';
-            studentData = [];
-            for(let s = 0; s < studentsSnapshot.docs.length; s++){
-                if(studentsSnapshot.docs[s].data()?.blocked?.includes(String(term))) continue;
-                if (studentsSnapshot.docs[s].data().admission_no.toUpperCase().includes(DCA) && 'record' in studentsSnapshot.docs[s].data()) {
-                    studentData.push(studentsSnapshot.docs[s].data());
-                }
+
+        chooseConfig(configs[7].indexOf(FORM))
+        loaded(30);
+        
+        const studentsRef = collection(db, 'session', session, 'students');
+        const studentsQuery = ARM == "ENTRANCE" ? query(studentsRef, and(where("admission_year", ">=", new Date().getFullYear()), where("arm", "==", "ENTRANCE"))) : query(studentsRef, where("arm", "==", ARM), orderBy('last_name'));
+        loaded(40);
+        const studentsSnapshot = await getDocs(studentsQuery);
+        //second width
+        if(studentsSnapshot.empty) return alert("No student exists.")
+        const DCA = 'DCA';
+        studentData = [];
+        for(let s = 0; s < studentsSnapshot.docs.length; s++){
+            if(studentsSnapshot.docs[s].data()?.blocked?.includes(String(term))) continue;
+            if (studentsSnapshot.docs[s].data().admission_no.toUpperCase().includes(DCA) && 'record' in studentsSnapshot.docs[s].data()) {
+                studentData.push(studentsSnapshot.docs[s].data());
             }
-            // studentsSnapshot.docs.forEach(d => {
-            // });
-            page = 0;
-            size = studentData.length;
-            //compute and insert entire data
-            computeData(page);
-        // } catch (err) {
-        //     console.error(err.message);
-            loadbar.hidePopover();
-            dialog.hidePopover();
-            pt = 7;
-            loaded(0);
-            e.submitter.disabled = false;
-        // } finally {
-            loaded(1);
-            loadbar.hidePopover();
-            dialog.hidePopover();
-            e.submitter.disabled = false;
-            pt = 7;
-            loaded(0);
-        // }
+        }
+
+        page = 0;
+        size = studentData.length;
+        //compute and insert entire data
+        computeData(page);
+
+        loadbar.hidePopover();
+        dialog.hidePopover();
+        pt = 7;
+        loaded(0);
+        e.submitter.disabled = false;
+
+        loaded(1);
+        loadbar.hidePopover();
+        dialog.hidePopover();
+        e.submitter.disabled = false;
+        pt = 7;
+        loaded(0);
     });
     
-    async function eot() {
+    async function eot() {//this is function is inoperational; check and remove
         app = initializeApp(configs[6]);
         db = getFirestore(app);
 
@@ -379,11 +378,11 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         await getDoc(eotRef).then(async (res) => {
             eotData = res.data();
             const t = ["First","Second","Third"].indexOf(eotData?.this_term);
-            term = t !== -1 ? t : function(n){
-                if(n <= 3) return 1; //second term
-                if(n <= 7) return 2; //third term
-                return 0; //first term
-            }(MONTH);
+            // term = t !== -1 ? t : function(n){
+            //     if(n <= 3) return 1; //second term
+            //     if(n <= 7) return 2; //third term
+            //     return 0; //first term
+            // }(MONTH);
             document.forms[0].querySelector('button').style.opacity = 1;
             const photo = "../img/user.png" || ss.photo_src;
             //load photo
