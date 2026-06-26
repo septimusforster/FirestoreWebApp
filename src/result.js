@@ -405,7 +405,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     }
     pdfBtn.addEventListener('click', generatePDF);
     function isPromoted(){
-        if(term == 2) {
+        if(term == 2 && percentile == 100) {
             if(FORM.startsWith('JSS')){ //JSS class
                 if(core_lower <= 49.4){
                     return percent.textContent = 'Not promoted.';
@@ -435,7 +435,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             // console.log(core_lower);
             const criteria = [80,65,50,40,30,0,];
             const status = ['A','B','C','D','E','F'].indexOf(criteria.findIndex(c => c <= core_lower));
-            percent.textContent = status == -1 ? 'N/A' : status;
+            percent.textContent = status == -1 ? '' : status;
         }
     }
 }

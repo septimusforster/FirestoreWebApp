@@ -93,7 +93,7 @@ if(ss && 'masterOfForm' in ss.data){
         VIS: "Visual Arts",
     };
     const SUBJ = Object.keys(ss.data.masterOfForm)[0].startsWith('JSS') ? jnrSubs : snrSubs;
-    
+
     let snapDocs = [], snappedChange = [], term_reversed = false;
     chooseConfig(classArray.indexOf(master[0]))
     const q = query(collection(db, 'session', session, 'students'), where("arm", "==", master[1]));

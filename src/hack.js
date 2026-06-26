@@ -19,7 +19,7 @@ function chooseConfig(num) {
     db = getFirestore()
 }
 const pre = document.querySelector('pre');
-const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 0;
+const classroom = ['JS1','JS2','JS3','SS1','SS2','SS3'], clx = 5;
 chooseConfig(clx); //projects
 const nulls = Array(8).fill(null);
 
@@ -44,7 +44,7 @@ if(!snapShots.empty){
 }
 */
 //import entrance students for local db
-
+/*
 let lastSnapshot, entranceQuery, jsonData = "", entrance_students = 0;
 async function getEntrance(){
     if(lastSnapshot){
@@ -111,32 +111,42 @@ loadMoreBtn.addEventListener('click', async e => {
     console.log("New entrance Students:", entrance_students, "pupils");
 });
 document.body.appendChild(loadMoreBtn);
-
+*/
 //reset subjects per term
-/*
-(async function resetSbj(){
+const missingSubjectPersons = ["DCA/20/0661","DCA/20/0690","DCA/20/0833","DCA/20/0735","DCA/20/0668","DCA/20/0707","DCA/20/0680"];
+
+async function resetSbj(){
     // return console.log("Thread blocked on Line 113.");
-    const clss = 'Radiance';
+    const clss = 'Distinction';
     const q = query(collection(db, 'session/2026/students'), where('arm', '==', clss));
     const snapshot = await getDocs(q);
     console.log(classroom[clx] + ' ' + clss, snapshot.size);
     if(!snapshot.size){
-        return;
+        return console.log("Empty snapshot.");
     }else{
         const n = Array(8).fill(null);
         const prom = snapshot.docs.map(async m => {
             let x = {};
+            //for missingSubjectPersons
+            /*
+            if(!missingSubjectPersons.includes(m.data().admission_no)) return;
+            x = Object.assign(m.data().record, {'FRE': {0: n}});
+            await updateDoc(doc(db, 'session/2026/students', m.id), {record: x})
+            */
+            //for resetSbj
+            /*
             for(const a in m.data().record){
                 if(!m.data().record[a]?.['0']) continue;
                 x[a] = Object.assign(m.data().record[a], {0: n}); //0 is First Term
             }
-            await updateDoc(doc(db, 'session/2026/students', m.id),{record: x});
+            */
+            // await updateDoc(doc(db, 'session/2026/students', m.id),{record: x});
         });
         await Promise.allSettled(prom);
         console.log("Settled.");
     }
-})();
-*/
+};
+
 // const offered = {
 //     AGR: "Agricultural Science",
 //     BSC: "Basic Science",
