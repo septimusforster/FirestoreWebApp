@@ -76,7 +76,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         for(let el = 1; el <= 4; el++)
             document.querySelectorAll(`#section-bio table:nth-child(1) tr td:nth-child(2)`)[el-1].textContent = [admission_no, fullName, 'Male Female'.split(' ').filter(x => x.startsWith(gender))[0], new Date(Date.now() - new Date(dob).getTime()).getUTCFullYear() - 1970 || ''][el-1];
         for(let el = 1; el <= 5; el++)
-            document.querySelectorAll(`#section-bio table:nth-child(2) tr td:nth-child(2)`)[el-1].textContent = [`${configs[7].indexOf(FORM) + 7}th Grade ${ARM}`, size, daysOpen, days_present[term], daysOpen - days_present[term] || 0][el-1];
+            document.querySelectorAll(`#section-bio table:nth-child(2) tr td:nth-child(2)`)[el-1].textContent = [`${configs[7].indexOf(FORM) + 7}th Grade ${ARM}`, size, eotData.days_open[term], days_present[term], eotData.days_open[term] - days_present[term] || 0][el-1];
         for(let el = 1; el <= 4; el++)
             document.querySelectorAll(`#section-bio table:nth-child(3) tr td:nth-child(2)`)[el-1].textContent = [['First', 'Second', 'Third'][term], `${session-1}/${session}`, percentile < 100 ? '' : eotData?.next_term?.[term] || '', eotData?.date_issued ? Intl.DateTimeFormat('en-US', {dateStyle:'medium'}).format(new Date(eotData.date_issued[term].seconds * 1000)) : ''][el-1];
         
@@ -324,7 +324,6 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         term = fd.get('term') || term;
         percentile = Number(fd.get('res')) ? Number(fd.get('res')) : Number(fd.get('oth'));
 
-        daysOpen = eotData?.days_open[term];
         //load stamp
         const stamp = `../img/stamp${String(parseInt(term) + 1).padStart(2,'0')}_${session}.png`;
         stampImg.src = stamp;
