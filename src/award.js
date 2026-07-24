@@ -76,9 +76,10 @@ function chooseConfig(projNum) {
 let app = initializeApp(configs[6]); //FirebasePro config
 let db = getFirestore(app);
 
-// console.log(allScores.length)
+const now = new Date();
+const ssn = (now.getMonth() > 9 ? now.getFullYear()+1 : now.getFullYear()).toString();
 // get EOT and subject collections for both junior and senior secondary
-const EOT = await getDoc(doc(db,"reserved","EOT"));
+const EOT = await getDoc(doc(db, "EOT", ssn));
 const jrsub = await getDoc(doc(db, "reserved", "2aOQTzkCdD24EX8Yy518"));
 const srsub = await getDoc(doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq"));
 
@@ -94,8 +95,6 @@ const classDialog = document.getElementById("class-dialog");
 const closeDialogBtn = document.getElementById("close-dialog");
 awardBtn.onclick = () => {classDialog.showModal()};
 closeDialogBtn.onclick = () => {classDialog.close()};
-const now = new Date();
-const ssn = (now.getMonth() > 9 ? now.getFullYear()+1 : now.getFullYear()).toString();
 //populate table header with the [abbr] of the subjects
 const table = document.querySelector("table");
 const thead = table.querySelector('thead');
@@ -136,8 +135,11 @@ classForm.addEventListener("submit", async (e) => {
     chooseConfig(classes.indexOf(className));
     //fetch from collection "students"
     let IDs = [];
-    const q1 = query(collection(db, 'session', ssn, 'students'), where("arm", "!=", null));  //and where("days_present","array-contains","null")
+    const q1 = query(collection(db, 'session', ssn, 'students'), where("arm", "!=", 'ENTRANCE'));  //and where("days_present","array-contains","null")
     const studentSnap = await getDocs(q1);
+    console.log(studentSnap.docs.length);
+    let students = studentSnap.docs.map(n => n.data());
+    /*
     studentSnap.docs.forEach(s => {
         IDs.push(s.id);
         names.push(`${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`);
@@ -148,15 +150,15 @@ classForm.addEventListener("submit", async (e) => {
         await getDoc(doc(db, 'session', ssn, 'students', id, 'scores', 'records')).then(snap => scoresSnap.push(snap.data()));
     });
     await Promise.all(p1);
-
+*/
     loader.innerText = 'Loading...it may seem eternally...';
     let term = ["first","second","third"].indexOf(EOT.data().this_term.toLowerCase());
 
     // populate tbody with student name and total score for each subject
     const benchmark = abbr_unmutated.length;
-    names.forEach((n, i) => {
-        let tds = `<td>${i+1}</td><td>${n}</td>`;
-        const obj = scoresSnap[i];
+    students.forEach((n, i) => {
+        let tds = `<td>${i+1}</td><td>${n.last_name + ' ' + n.first_name}</td>`;
+        const obj = n?.record;
         if (!obj) return;
         let rt = 0;
         let scoreEntries = Object.entries(obj).sort();
@@ -181,6 +183,33 @@ classForm.addEventListener("submit", async (e) => {
         tbody.insertAdjacentHTML('beforeend', `
             <tr id="${IDs[i]}">${tds}</tr>
         `)
+    // names.forEach((n, i) => {
+    //     let tds = `<td>${i+1}</td><td>${n}</td>`;
+    //     const obj = scoresSnap[i];
+    //     if (!obj) return;
+    //     let rt = 0;
+    //     let scoreEntries = Object.entries(obj).sort();
+    //     let f = 0;  //rt: running total
+    //     if (obj) {
+    //         for (const [k, v] of scoreEntries) {
+    //             let idx = abbr_unmutated.indexOf(k);
+    //             // console.log(idx);
+    //             let slice = idx - f;
+    //             if (slice) {
+    //                 for (let j = 0; j < slice; j++) tds += "<td></td>";
+    //             }
+    //             let s = (v[0]?.reduce((a,c) => a + c) || 0) + (v[1]?.reduce((a,c) => a + c) || 0) + (v[2]?.reduce((a,c) => a + c) || 0);
+    //             rt += s;
+    //             tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
+    //             f = idx + 1;
+    //         }
+    //     }
+    //     for (f; f < benchmark + 1; f++) {
+    //         f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/(scoreEntries.length * (term + 1))).toFixed(1)}</td>`;
+    //     }
+    //     tbody.insertAdjacentHTML('beforeend', `
+    //         <tr id="${IDs[i]}">${tds}</tr>
+    //     `)
     });
     
     loader.style.visibility = 'hidden';

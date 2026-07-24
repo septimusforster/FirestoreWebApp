@@ -117,7 +117,7 @@ module.exports = {
     },
     watch: true
 }
-*/
+
 //ROOT recruitment.js
 /*
 module.exports = {

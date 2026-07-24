@@ -71,11 +71,11 @@ nav>a.on::after{width:100%;}
 [contenteditable]{
     outline:none;
     cursor:pointer;
-    border:1px solid transparent;
+    transition:background .2s ease;
 }
 [contenteditable]:hover,
 [contenteditable]:focus{
-    border-color:#ccc;
+    background:#ddd;
 }
 #notf {
     min-width:220px;
