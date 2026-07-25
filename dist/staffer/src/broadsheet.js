@@ -121,7 +121,7 @@ if(ss && 'masterOfForm' in ss.data || ss.data?.isAdmin){
             }
         // };
     });
-    let IDs = [], names = [], promotion = [], studentSnap, scoresSnap = [];
+    let IDs = [], names = [], promotion = [], studentSnap, scoresSnap = [], col;
     const table = document.querySelector('table');
     async function setBroadSheet() {
         // console.log(jrsub.data());
@@ -137,7 +137,7 @@ if(ss && 'masterOfForm' in ss.data || ss.data?.isAdmin){
             abbr = ['BSC', 'BIO', 'CCA', 'COM', 'CRS', 'ICT', 'PHE', 'ENG', 'MTH'].sort();
             abbr_unmutated = ['BSC', 'BIO', 'CCA', 'COM', 'CRS', 'ICT', 'PHE', 'ENG', 'MTH'].sort();
         }
-    
+        col = abbr.length - 1;
         // reset app and query the students of the masterOfForm's arm
         const school = 'DCA';
         chooseConfig(configs[7].indexOf(master[0]));
@@ -156,12 +156,12 @@ if(ss && 'masterOfForm' in ss.data || ss.data?.isAdmin){
         const tbody = table.querySelector('tbody');
         
         //populate table header with the [abbr] of the subjects
-        abbr.push('AVE');   //last column
+        abbr.push('TOT','AVE','STATUS','POS');   //last column
         const th = abbr.unshift('#','NAME'); //mutates array & returns new length of same array
         table.querySelector('thead').innerHTML = '<tr></tr>'; //reset thead
         for (let i = 0; i < th; i++) {
             table.querySelector('thead>tr').insertAdjacentHTML('beforeend', `
-            <th>${abbr[i]}</th>
+            <th${abbr[i] === 'TOT' ? ' id="total"' : ''}>${abbr[i]}</th>
             `);
         }        
         // populate tbody with student name and total score for each subject
@@ -193,7 +193,8 @@ if(ss && 'masterOfForm' in ss.data || ss.data?.isAdmin){
                 promotion.push(core);
                 
                 for (f; f < benchmark + 1; f++) {
-                    f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/scoreEntries.length).toFixed(1)}</td>`;
+                    // f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/scoreEntries.length).toFixed(1)}</td>`;
+                    f < benchmark ? tds += '<td></td>' : tds += '';
                 }
             }
             tbody.insertAdjacentHTML('beforeend', `
@@ -203,7 +204,7 @@ if(ss && 'masterOfForm' in ss.data || ss.data?.isAdmin){
         promotion.forEach(p => {
             for(const sb in p) p[sb] == 0 ? delete p[sb] : p[sb] = Number(p[sb]);
         });
-        isPromoted();
+        // isPromoted();
         // compute total and average for each subject and store in td string
         let aveStr = '', totStr = '';
         abbr.forEach((ab,ix) => {
@@ -219,10 +220,11 @@ if(ss && 'masterOfForm' in ss.data || ss.data?.isAdmin){
                 aveStr += '<td></td><td>Average</td>';
             }
         });
-    
+        
         // insert total and average in tfoot tr
         insertFoot(totStr, aveStr, th);
         studentTotal();
+        isPromoted();
     }
     
     function insertFoot(a, t, th) {
@@ -239,98 +241,15 @@ if(ss && 'masterOfForm' in ss.data || ss.data?.isAdmin){
     let positionArray = [];
     function studentTotal () {
         names.forEach((n, i) => {
-            let x = [...document.querySelectorAll(`tbody tr:nth-child(${i+1}) td:not(td:last-child)`)];
-            let y = x.map(f => Number(f.innerText));
-            y.splice(0,2);
-            let z = y.reduce((a,c) => a + c, 0);
-    
-            const wrapperDiv = document.createElement('DIV');
-            const childDiv = document.createElement('DIV');
-            const txt = document.createTextNode(z.toFixed());
-            positionArray.push(Number(z.toFixed()));
-            childDiv.classList.add('snum');
-            childDiv.append(txt);
-            wrapperDiv.append(childDiv)
-
-            document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(2)`).appendChild(wrapperDiv);
+            const x = [...document.querySelectorAll(`tbody tr:nth-child(${i+1}) td`)].slice(2, col+4); //slice is to exclude tot/ave/status/pos <td>s
+            const y = x.map(f => Number(f.innerText));
+            const count = y.reduce((a, c) => typeof c === 'number' && c > 1 ? a + 1 : a + 0, 0);
+            const z = y.reduce((a,c) => a + c, 0);
+            // if(!i) console.log(y);
+            document.querySelector(`tbody tr:nth-child(${i+1})`).insertAdjacentHTML('beforeend', `<td>${z.toFixed(1)}</td><td>${Math.round(z/count)}</td>`);
+            positionArray.push(z.toFixed(1));
         });
     }
-    
-    // calculate position according to positionArray
-    positionArray.sort((a, b) => a - b).reverse();
-    
-    let computedPos = false;
-    //compute pos and insert in DOM
-    document.getElementById('revl-pos').addEventListener('click', (e) => {
-        const posState = e.target.classList.toggle('on');
-        document.querySelectorAll("div.ps").forEach(ps => ps.classList.toggle("show", posState));   
-        if (!computedPos) {
-            let s = [...document.querySelectorAll(".snum")];
-            for (let i = 0; i < names.length; i++) {
-                const pos = positionArray.indexOf(Number(s[i].innerText));
-                document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(2) > div`).insertAdjacentHTML('beforeend', `
-                    <div class="ps show">${pos+1}</div>
-                `)
-            }
-            computedPos = true;
-        }
-    })
-    //for setting promotion status
-    /*
-    const dialogs = document.querySelectorAll("dialog");
-    const promoTabBody = document.querySelector("table#promo-tab tbody");
-    const promoForm = document.querySelector("form#promo-form");
-    let computedProm = false;
-    let newBtn = document.createElement("button");
-    newBtn.type = "button";
-    newBtn.textContent = "Promotion Settings";
-    newBtn.id = "promo-btn";
-    newBtn.addEventListener("click", (e) => {
-        if (!computedProm) {
-            //get tbody tr IDs and names and insert into the promoTab tbody rows cells having newly created radio buttons
-            const rows = [...document.querySelectorAll('tbody tr')];
-            rows.forEach((tr, ix) => {
-                const id = tr.id;
-                const name = tr.children[1].firstChild.textContent;
-                promoTabBody.insertAdjacentHTML('beforeend', `
-                    <tr>
-                        <td>${ix+1}</td>
-                        <td>${name}</td>
-                        <td><input type="radio" name="${id}" value="Promoted"/></td>
-                        <td><input type="radio" name="${id}" value="Probation"/></td>
-                        <td><input type="radio" name="${id}" value="Advised to repeat"/></td>
-                        <td><input type="radio" name="${id}" value="Not promoted"/></td>
-                    </tr>
-                `);
-            });
-            computedProm = true;
-        }
-        dialogs[0].showModal();
-    });
-    document.querySelector("header").appendChild(newBtn);
-    
-    //promotion status form submission
-    /*
-    promoForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        e.submitter.disabled = true;
-        e.submitter.style.cursor = 'not-allowed';
-    
-        let data = [];
-        const fd = new FormData(promoForm);
-        for (const [k, v] of fd.entries()) {
-            data.push({id: k, pr: v});
-        }
-        const p = data.map(async ({id, pr}) => {
-            await updateDoc(doc(db, 'session', session, 'students', id), {promo_status: pr});
-        });
-        await Promise.all(p);
-        window.alert('Promotion Settings applied successfully.');
-        e.submitter.disabled = false;
-        e.submitter.style.cursor = 'pointer';
-        closeBtn.click();
-    });
-    */
     const closeBtn = document.querySelector("input#close");
     closeBtn.addEventListener('click', () => closeBtn.closest('dialog').close());
     
@@ -342,41 +261,53 @@ if(ss && 'masterOfForm' in ss.data || ss.data?.isAdmin){
         promPop.showPopover();
     }
     function isPromoted(){
-        const cell = document.querySelectorAll('main tbody tr td:nth-child(2)');
         if(term == 2) {
             if(/^JSS/.test(master[0])){ //JSS class
                 promotion.forEach((o,ox) => {
+                    const cell = document.querySelector(`main tbody tr:nth-child(${ox+1})`);
                     let ol = Object.values(o);
                     let rol = (ol.reduce((v,w) => v + w, 0)) / ol.length;
                     if(rol <= 49.4){
-                        cell[ox].insertAdjacentHTML('afterbegin', '<code>Not Promoted.</code><br>'), nprm++;
+                        cell.insertAdjacentHTML('beforeend', '<td class="not_promoted">Not Promoted</td>'), nprm++;
                     }else if(rol >= 49.5 && rol <= 54.5){
-                        cell[ox].insertAdjacentHTML('afterbegin', '<code>Probation.</code><br>'), prob++;
+                        cell.insertAdjacentHTML('beforeend', '<td class="probation">Probation</td>'), prob++;
                     }else{
-                        cell[ox].insertAdjacentHTML('afterbegin', '<code>Promoted.</code><br>'), prom++;
+                        cell.insertAdjacentHTML('beforeend', '<td class="promoted">Promoted</td>'), prom++;
                     }
                 });
             }
             if(master[0].startsWith('SSS')){ //SSS class
                 promotion.forEach((p2,px) => {
+                    const cell = document.querySelector(`main tbody tr:nth-child(${px+1})`);
                     const nb = names[px]['nb'];
                     if(nb !== null){
-                        cell[px].insertAdjacentHTML('afterbegin', `<code>${nb}.</code><br>`);
+                        cell.insertAdjacentHTML('beforeend', `<td>${nb}.</td>`);
                         if(nb.toLowerCase() === 'promoted') prom++;
                         if(nb.toLowerCase() === 'probation') prob++
                         if(nb.toLowerCase() === 'repeated') nprm++;
                     }else{
                         const {MTH, ENG, ...others} = p2;
                         if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
-                            cell[px].insertAdjacentHTML('afterbegin', '<code>Promoted.</code><br>'), prom++;
+                            cell.insertAdjacentHTML('beforeend', '<td class="promoted">Promoted</td>'), prom++;
                         }else if((MTH >= 50 || ENG >= 50) && Object.values(p2).filter(n => n >= 50).length >= 2){
-                            cell[px].insertAdjacentHTML('afterbegin', '<code>Probation.</code><br>'), prob++;
+                            cell.insertAdjacentHTML('beforeend', '<td class="probation">Probation</td>'), prob++;
                         }else if(Object.values(p2).every(n => n < 50) || (MTH < 50 && ENG < 50)){
-                            cell[px].insertAdjacentHTML('afterbegin', '<code>Not promoted.</code><br>'), nprm++;
+                            cell.insertAdjacentHTML('beforeend', '<td class="not_promoted">Not promoted</td>'), nprm++;
                         }
                     }
                 })
             }
+        }
+        // calculate position according to positionArray
+        positionArray.sort((a, b) => a - b).reverse();
+        const totalColumn = document.querySelector('th#total').cellIndex + 1; //plus 1, i.e. because cellIndex is zero-based
+
+        for (let i = 0; i < names.length; i++) {
+            // console.log(positionArray[i], document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(${totalColumn})`).innerText)
+            const pos = positionArray.indexOf(document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(${totalColumn})`).innerText);
+            document.querySelector(`tbody tr:nth-child(${i+1})`).insertAdjacentHTML('beforeend', `
+                <td>${pos+1}</td>
+            `)
         }
     }
 }

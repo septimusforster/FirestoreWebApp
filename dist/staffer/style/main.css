@@ -34,7 +34,7 @@ a,button,::after,::before{transition:200ms ease;}
 }
 select,button{display:block;outline:none;background:none;border:0;cursor:pointer;}
 html,body{height:100dvh;font-family:system-ui,sans-serif;font-size:0.95rem;color:#555;}
-#container{height:100%;width:50%;min-width:1250px;margin:auto;display:grid;grid-template-rows:minmax(2rem, 5rem) 80%;}
+#container{height:100%;width:50%;min-width:1250px;margin:auto;display:flex;flex-direction:column;overflow:hidden;}
 header, main{padding:1rem;}
 #nav-title{font-size:150%;}
 a{text-decoration:none;color:unset;padding:.7rem 1rem;position:relative;}
