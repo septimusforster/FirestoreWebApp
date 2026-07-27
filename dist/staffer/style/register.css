@@ -23,7 +23,7 @@ main[inert] table::after{
     border:1px solid #ccc;
 }
 div#tableau {
-    height: 84%;
+    height: 60%;
     overflow: auto;
     border-bottom:3px solid #1a73e8;
     border-radius:14px 14px 0 0;
