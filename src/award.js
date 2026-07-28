@@ -187,11 +187,11 @@ function isPromoted(){
                 let ol = Object.values(o[1]);
                 let rol = (ol.reduce((v,w) => v + Number(w), 0)) / ol.length;
                 if(rol <= 49.4){
-                    cell.insertAdjacentHTML('beforeend', '<td class="not_promoted"></td>'), nprm++;
+                    cell.insertAdjacentHTML('beforeend', '<td class="not_promoted">Not promoted</td>'), nprm++;
                 }else if(rol >= 49.5 && rol <= 54.5){
-                    cell.insertAdjacentHTML('beforeend', '<td class="probation"></td>'), prob++;
+                    cell.insertAdjacentHTML('beforeend', '<td class="probation">Probation</td>'), prob++;
                 }else{
-                    cell.insertAdjacentHTML('beforeend', '<td class="promoted"></td>'), prom++;
+                    cell.insertAdjacentHTML('beforeend', '<td class="promoted">Promoted</td>'), prom++;
                 }
             });
         }
@@ -207,11 +207,11 @@ function isPromoted(){
                 // }else{
                     const {MTH, ENG, ...others} = p2[1];
                     if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
-                        cell.insertAdjacentHTML('beforeend', '<td class="promoted"></td>'), prom++;
+                        cell.insertAdjacentHTML('beforeend', '<td class="promoted">Promoted</td>'), prom++;
                     }else if((MTH >= 50 || ENG >= 50) && Object.values(p2[1]).filter(n => n >= 50).length >= 2){
-                        cell.insertAdjacentHTML('beforeend', '<td class="probation"></td>'), prob++;
+                        cell.insertAdjacentHTML('beforeend', '<td class="probation">Probation</td>'), prob++;
                     }else if(Object.values(p2[1]).every(n => n < 50) || (MTH < 50 && ENG < 50)){
-                        cell.insertAdjacentHTML('beforeend', '<td class="not_promoted"></td>'), nprm++;
+                        cell.insertAdjacentHTML('beforeend', '<td class="not_promoted">Not promoted</td>'), nprm++;
                     }
                 // }
             })
