@@ -128,7 +128,7 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
         const q1 = query(collection(db, 'session', ssn, 'students'), where("arm", "!=", 'ENTRANCE'));  //and where("days_present","array-contains","null")
         const studentSnap = await getDocs(q1);
         console.log(studentSnap.docs.length);
-        let students = studentSnap.docs.map(n => {return {'id': '_' + n.id, 'data': n.data()}}); //prefixed id with _, because ids may start with a Number
+        let students = studentSnap.docs.map(n => {return {'id': '_' + n.id, 'data': n.data()}}).sort((a, b) => a.data.last_name.localeCompare(b.data.last_name)); //prefixed id with _, because ids may start with a Number
         term = ["first","second","third"].indexOf(EOT.data().this_term.toLowerCase());
 
         // populate tbody with student name and total score for each subject
@@ -140,12 +140,12 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
             if (!obj) return;
             if(!('MTH' in obj)) return console.log('No mathematics.');
             const numOfTerms = Object.keys(obj['MTH']).length; //MTH because everyone offers it
-            // if(n.admission_no === 'DCA/24/1755') console.log(numOfTerms);
+            
             let rt = 0;
             let scoreEntries = Object.entries(obj).sort();
             let f = 0;  //rt: running total
             if (obj) {
-                let core = Object.assign({MTH:0, ENG:0}, '345'.includes(cls) ? {LIT:0, CIV:0, GOV:0, PHY:0, CHEM:0, ACCT:0, COMM:0} : null);
+                let core = {MTH:0, ENG:0, CIV:0};
                 // {MTH:0, ENG:0, {'345'.includes(cls) ? };
                 for (const [k, v] of scoreEntries) {
                     let idx = abbr_unmutated.indexOf(k);
@@ -155,9 +155,10 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
                         for (let j = 0; j < slice; j++) tds += "<td></td>";
                     }
                     const ck = Object.values(v);
+
                     if('345'.includes(cls)){
-                        core[k] = (ck.flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1)
-                    }else{
+                        if(k in core || k in {LIT:0, GOV:0, PHY:0, CHE:0, ACCT:0, COMM:0}) core[k] = (ck.flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1)
+                    }else if('012'.includes(cls)){
                         core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1);
                     }
                     let s = (v[0]?.reduce((a,c) => a + c) || 0) + (v[1]?.reduce((a,c) => a + c) || 0) + v[2]?.reduce((a,c) => a + c) || 0;
@@ -165,6 +166,7 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
                     tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
                     f = idx + 1;
                 }
+                if(data.admission_no === 'DCA/21/1045') console.log(core);
                 promotion = [...promotion, [id, core]]; //still needs to remove all symbols in replaceAll, and also on the 4th line below, from here
             }
             for (f; f < benchmark + 1; f++) {
