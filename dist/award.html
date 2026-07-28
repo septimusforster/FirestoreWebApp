@@ -7,37 +7,77 @@
     <link rel="stylesheet" href="../style/award.css">
 </head>
 <body>
-    <header></header>
-    <div id="loader">Loading...</div>
-    <main style="display: none;">
-        <div><button type="button" id="award-btn">AWARD</button></div>
-        <div><button type="button" id="positioning" disabled>POSITIONING</button></div>
+    <svg style="display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <symbol id="chevron-down" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+        <symbol id="loader" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></symbol>
+        <symbol id="circle-x" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+        <symbol id="circle-check" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+        <symbol id="circle-minus" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></symbol>
+        <symbol id="copy" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    </svg>
+    <header>
+        <div class="container">
+            <h2>Award</h2>
+            <button type="button" class="drop_btn" id="class-btn">
+                <span>Classroom</span>
+                <svg><use href="#chevron-down"></use></svg>
+                <menu id="class-form">
+                    <li data-val="0">7th Grade</li>
+                    <li data-val="1">8th Grade</li>
+                    <li data-val="2">9th Grade</li>
+                    <li data-val="3">10th Grade</li>
+                    <li data-val="4">11th Grade</li>
+                    <li data-val="5">12th Grade</li>
+                </menu>
+            </button>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="table"></div>
+            <aside>
+                <button type="button" class="drop_btn">
+                    <span>Total Scores</span>
+                    <svg><use href="#chevron-down"></use></svg>
+                    <menu>
+                        <li>Total Scores</li>
+                        <li>Positioning</li>
+                    </menu>
+                </button>
+                <div class="key">
+                    <h4>Status</h4>
+                    <ul>
+                        <li id="promoted">
+                            <svg><use href="#circle-check"></use></svg>
+                            <span>Promoted</span>
+                            <strong>0</strong>
+                        </li>
+                        <li id="not-promoted">
+                            <svg><use href="#circle-x"></use></svg>
+                            <span>Not Promoted</span>
+                            <strong>0</strong>
+                        </li>
+                        <li id="probation">
+                            <svg><use href="#circle-minus"></use></svg>
+                            <span>Probation</span>
+                            <strong>0</strong>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+        <!-- <div><button type="button" id="positioning" disabled>POSITIONING</button></div>
         <table>
             <thead></thead>
             <tbody>
             </tbody>
             <tfoot>
                 <tr>
-                    <!-- <td>Award Doc</td> -->
+                    
                 </tr>
             </tfoot>
-        </table>
+        </table> -->
     </main>
-    <dialog id="class-dialog">
-        <div><div class="button" id="close-dialog"><span>&times;</span></div></div>
-        <form name="class-form" id="class-form">
-            <select name="classroom" id="classroom">
-                <option value="">Choose classroom</option>
-                <option value="JSS 1">JSS 1</option>
-                <option value="JSS 2">JSS 2</option>
-                <option value="JSS 3">JSS 3</option>
-                <option value="SSS 1">SSS 1</option>
-                <option value="SSS 2">SSS 2</option>
-                <option value="SSS 3">SSS 3</option>
-            </select>
-            <input type="submit" value="OPEN">
-        </form>
-    </dialog>
     <script type="module" src="../src/award_bundle.js"></script>
 </body>
 </html>

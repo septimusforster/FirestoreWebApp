@@ -107,7 +107,7 @@ module.exports = {
 }
 */
 //ROOT award.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/award.js",
@@ -226,7 +226,7 @@ module.exports = {
 }
 
 // STAFFER broadsheet.js
-/*/
+/*
 module.exports = {
     mode: "development",
     entry: "./dist/staffer/src/broadsheet.js",

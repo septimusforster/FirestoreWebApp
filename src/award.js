@@ -78,167 +78,158 @@ let db = getFirestore(app);
 
 const now = new Date();
 const ssn = (now.getMonth() > 9 ? now.getFullYear()+1 : now.getFullYear()).toString();
+
+const main = document.querySelector("main");
+const tableDiv = document.querySelector('div.table');
+const loader = document.createElement('svg');
+loader.classList.add('loader');
+loader.innerHTML = '<use href="#loader"></use>';
+tableDiv.appendChild(loader);
 // get EOT and subject collections for both junior and senior secondary
 const EOT = await getDoc(doc(db, "EOT", ssn));
 const jrsub = await getDoc(doc(db, "reserved", "2aOQTzkCdD24EX8Yy518"));
 const srsub = await getDoc(doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq"));
 
-//remove #loader & display <main>
-const loader = document.getElementById("loader");
-const main = document.querySelector("main");
-loader.style.visibility = 'hidden';
-main.removeAttribute("style");
+loader.remove();
+console.log('okay');
+//get classroom
+let names, abbr, abbr_unmutated, cls, promotion = [], term;
+const table = document.createElement('table');
+document.querySelector('menu#class-form').addEventListener('click', async e => {
+    if(e.target.tagName === 'LI'){
+        e.target.closest('button').querySelector('span').textContent = e.target.textContent;
+        e.target.closest('button').blur();
+        cls = e.target.dataset.val;
+        names = [], abbr = [], abbr_unmutated = [], promotion = [];
+        //reset table
+        table.innerHTML = '';
+        tableDiv.appendChild(loader);
+        //collect class name
+        if('012'.includes(cls)) {//junior class
+            abbr = Object.keys(jrsub.data()).sort();
+            abbr_unmutated = Object.keys(jrsub.data()).sort();
+        }else if('345'.includes(cls)) {//senior class
+            abbr = Object.keys(srsub.data()).sort();
+            abbr_unmutated = Object.keys(srsub.data()).sort();
+        }
+        abbr.push('AVE', 'STAT');
+        const th = abbr.unshift('#','NAME'); //mutates array & returns new length of same array
+        // tfoot_td.setAttribute('colspan', th);
+        const thead = document.createElement('thead');
+        const theadRow = document.createElement('tr');
+        for (let i = 0; i < th; i++) {
+            theadRow.insertAdjacentHTML('beforeend', `<th>${abbr[i]}</th>`);
+        }
+        thead.appendChild(theadRow);
+        //change configuration
+        chooseConfig(Number(cls));
+        //fetch from collection "students"
+        let IDs = [];
+        const q1 = query(collection(db, 'session', ssn, 'students'), where("arm", "!=", 'ENTRANCE'));  //and where("days_present","array-contains","null")
+        const studentSnap = await getDocs(q1);
+        console.log(studentSnap.docs.length);
+        let students = studentSnap.docs.map(n => {return {'id': '_' + n.id, 'data': n.data()}}); //prefixed id with _, because ids may start with a Number
+        term = ["first","second","third"].indexOf(EOT.data().this_term.toLowerCase());
 
-//reference the AWARD button and its logic create
-const awardBtn = document.querySelector("button#award-btn");
-const classDialog = document.getElementById("class-dialog");
-const closeDialogBtn = document.getElementById("close-dialog");
-awardBtn.onclick = () => {classDialog.showModal()};
-closeDialogBtn.onclick = () => {classDialog.close()};
-//populate table header with the [abbr] of the subjects
-const table = document.querySelector("table");
-const thead = table.querySelector('thead');
-const tbody = table.querySelector('tbody');
-let names, abbr, abbr_unmutated;
-//reference form and its submit logic create
-const classForm = document.getElementById("class-form");
-classForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    names = [], abbr = [], abbr_unmutated = [];
-    //reset table
-    document.querySelector('thead').innerHTML = '<tr></tr>';
-    tbody.innerHTML = '';
-
-    closeDialogBtn.click();
-    loader.innerText = 'Loading...';
-    loader.style.visibility = 'visible';
-    //collect class name
-    const fd = new FormData(classForm);
-    const className = fd.get("classroom");
-    console.log(className);
-
-    if (className.startsWith("JSS")) {
-        abbr = Object.keys(jrsub.data()).sort();
-        abbr_unmutated = Object.keys(jrsub.data()).sort();
-    } else if (className.startsWith("SSS")) {
-        abbr = Object.keys(srsub.data()).sort();
-        abbr_unmutated = Object.keys(srsub.data()).sort();
-    }
-    const th = abbr.unshift('#','NAME'); //mutates array & returns new length of same array
-    // tfoot_td.setAttribute('colspan', th);
-    for (let i = 0; i < th; i++) {
-        thead.querySelector('tr').insertAdjacentHTML('beforeend', `
-        <th>${abbr[i]}</th>
-        `);
-    }
-    //change configuration
-    chooseConfig(classes.indexOf(className));
-    //fetch from collection "students"
-    let IDs = [];
-    const q1 = query(collection(db, 'session', ssn, 'students'), where("arm", "!=", 'ENTRANCE'));  //and where("days_present","array-contains","null")
-    const studentSnap = await getDocs(q1);
-    console.log(studentSnap.docs.length);
-    let students = studentSnap.docs.map(n => n.data());
-    /*
-    studentSnap.docs.forEach(s => {
-        IDs.push(s.id);
-        names.push(`${s.data().last_name} ${s.data().first_name} ${s.data()?.other_name}`);
-    });
-    //fetch from collection "scores"
-    let scoresSnap = [];
-    const p1 = IDs.map(async id => {
-        await getDoc(doc(db, 'session', ssn, 'students', id, 'scores', 'records')).then(snap => scoresSnap.push(snap.data()));
-    });
-    await Promise.all(p1);
-*/
-    loader.innerText = 'Loading...it may seem eternally...';
-    let term = ["first","second","third"].indexOf(EOT.data().this_term.toLowerCase());
-
-    // populate tbody with student name and total score for each subject
-    const benchmark = abbr_unmutated.length;
-    students.forEach((n, i) => {
-        let tds = `<td>${i+1}</td><td>${n.last_name + ' ' + n.first_name}</td>`;
-        const obj = n?.record;
-        if (!obj) return;
-        let rt = 0;
-        let scoreEntries = Object.entries(obj).sort();
-        let f = 0;  //rt: running total
-        if (obj) {
-            for (const [k, v] of scoreEntries) {
-                let idx = abbr_unmutated.indexOf(k);
-                // console.log(idx);
-                let slice = idx - f;
-                if (slice) {
-                    for (let j = 0; j < slice; j++) tds += "<td></td>";
+        // populate tbody with student name and total score for each subject
+        const benchmark = abbr_unmutated.length;
+        const tbody = document.createElement('tbody');
+        students.forEach(({id, data}, i) => {
+            let tds = `<td>${i+1}</td><td>${data.last_name + ' ' + data.first_name}</td>`;
+            const obj = data?.record;
+            if (!obj) return;
+            if(!('MTH' in obj)) return console.log('No mathematics.');
+            const numOfTerms = Object.keys(obj['MTH']).length; //MTH because everyone offers it
+            // if(n.admission_no === 'DCA/24/1755') console.log(numOfTerms);
+            let rt = 0;
+            let scoreEntries = Object.entries(obj).sort();
+            let f = 0;  //rt: running total
+            if (obj) {
+                let core = Object.assign({MTH:0, ENG:0}, '345'.includes(cls) ? {LIT:0, CIV:0, GOV:0, PHY:0, CHEM:0, ACCT:0, COMM:0} : null);
+                // {MTH:0, ENG:0, {'345'.includes(cls) ? };
+                for (const [k, v] of scoreEntries) {
+                    let idx = abbr_unmutated.indexOf(k);
+                    // console.log(idx);
+                    let slice = idx - f;
+                    if (slice) {
+                        for (let j = 0; j < slice; j++) tds += "<td></td>";
+                    }
+                    const ck = Object.values(v);
+                    if('345'.includes(cls)){
+                        core[k] = (ck.flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1)
+                    }else{
+                        core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1);
+                    }
+                    let s = (v[0]?.reduce((a,c) => a + c) || 0) + (v[1]?.reduce((a,c) => a + c) || 0) + v[2]?.reduce((a,c) => a + c) || 0;
+                    rt += s;
+                    tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
+                    f = idx + 1;
                 }
-                let s = (v[0]?.reduce((a,c) => a + c) || 0) + (v[1]?.reduce((a,c) => a + c) || 0) + (v[2]?.reduce((a,c) => a + c) || 0);
-                rt += s;
-                tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
-                f = idx + 1;
+                promotion = [...promotion, [id, core]]; //still needs to remove all symbols in replaceAll, and also on the 4th line below, from here
             }
-        }
-        for (f; f < benchmark + 1; f++) {
-            f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/(scoreEntries.length * (term + 1))).toFixed(1)}</td>`;
-        }
-        tbody.insertAdjacentHTML('beforeend', `
-            <tr id="${IDs[i]}">${tds}</tr>
-        `)
-    // names.forEach((n, i) => {
-    //     let tds = `<td>${i+1}</td><td>${n}</td>`;
-    //     const obj = scoresSnap[i];
-    //     if (!obj) return;
-    //     let rt = 0;
-    //     let scoreEntries = Object.entries(obj).sort();
-    //     let f = 0;  //rt: running total
-    //     if (obj) {
-    //         for (const [k, v] of scoreEntries) {
-    //             let idx = abbr_unmutated.indexOf(k);
-    //             // console.log(idx);
-    //             let slice = idx - f;
-    //             if (slice) {
-    //                 for (let j = 0; j < slice; j++) tds += "<td></td>";
-    //             }
-    //             let s = (v[0]?.reduce((a,c) => a + c) || 0) + (v[1]?.reduce((a,c) => a + c) || 0) + (v[2]?.reduce((a,c) => a + c) || 0);
-    //             rt += s;
-    //             tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
-    //             f = idx + 1;
-    //         }
-    //     }
-    //     for (f; f < benchmark + 1; f++) {
-    //         f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/(scoreEntries.length * (term + 1))).toFixed(1)}</td>`;
-    //     }
-    //     tbody.insertAdjacentHTML('beforeend', `
-    //         <tr id="${IDs[i]}">${tds}</tr>
-    //     `)
-    });
-    
-    loader.style.visibility = 'hidden';
-    e.submitter.disabled = false;
-    document.querySelector('button#positioning').disabled = false;
-    e.submitter.style.cursor = 'pointer';
-});
-const positioningBtn = document.querySelector('button#positioning');
-positioningBtn.addEventListener('click', (e) => {
-    abbr_unmutated.forEach((n, i) => {
-        let tds = [...document.querySelectorAll(`tbody tr td:nth-child(${i + 3})`)];
-        let td = tds.filter(f => Boolean(f.textContent)).map(t => Number(t.textContent));
-        td.sort((a, b) => a - b).reverse();
-
-        document.querySelectorAll(`tbody tr td:nth-child(${i + 3})`).forEach(el => {
-            const cnt = Number(el.textContent);
-            if (td.includes(cnt)) el.textContent = td.indexOf(cnt) + 1;
+            for (f; f < benchmark + 1; f++) {
+                f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/(scoreEntries.length * numOfTerms)).toFixed(1)}</td>`;
+            }
+            tbody.insertAdjacentHTML('beforeend', `<tr data-id="${id}">${tds}</tr>`);
         });
-    });
-    document.querySelectorAll('tbody tr td:not(td:nth-child(1), td:nth-child(2)').forEach(td => {
-        if (td.innerText == 1) {
-            td.style.fontWeight = 'bold', td.style.backgroundColor = '#1a73e844';
-        }
-        if (td.innerText == 2) {
-            td.style.fontWeight = 'bold', td.style.backgroundColor = '#00957844';
-        }
-        if (td.innerText == 3) {
-            td.style.fontWeight = 'bold', td.style.backgroundColor = '#ffa50044';
-        }
-    });
-    positioningBtn.disabled = true;
+        table.append(thead, tbody);
+        isPromoted();
+        loader.remove();
+        tableDiv.appendChild(table);
+    }
 });
+function isPromoted(){
+    let prom=0,prob=0,nprm=0;
+    if(term == 2) {
+        if('012'.includes(cls)){//JSS class
+            promotion.forEach((o,ox) => {
+                const cell = table.querySelector(`tbody tr[data-id="${o[0]}"]`);
+                let ol = Object.values(o[1]);
+                let rol = (ol.reduce((v,w) => v + Number(w), 0)) / ol.length;
+                if(rol <= 49.4){
+                    cell.insertAdjacentHTML('beforeend', '<td class="not_promoted"></td>'), nprm++;
+                }else if(rol >= 49.5 && rol <= 54.5){
+                    cell.insertAdjacentHTML('beforeend', '<td class="probation"></td>'), prob++;
+                }else{
+                    cell.insertAdjacentHTML('beforeend', '<td class="promoted"></td>'), prom++;
+                }
+            });
+        }
+        if('345'.includes(cls)){//SSS class
+            promotion.forEach((p2,px) => {
+                const cell = table.querySelector(`tbody tr[data-id="${p2[0]}"]`);
+                // const nb = names[px]['nb'];
+                // if(nb !== null){
+                //     cell.insertAdjacentHTML('beforeend', `<td>${nb}.</td>`);
+                //     if(nb.toLowerCase() === 'promoted') prom++;
+                //     if(nb.toLowerCase() === 'probation') prob++
+                //     if(nb.toLowerCase() === 'repeated') nprm++;
+                // }else{
+                    const {MTH, ENG, ...others} = p2[1];
+                    if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
+                        cell.insertAdjacentHTML('beforeend', '<td class="promoted"></td>'), prom++;
+                    }else if((MTH >= 50 || ENG >= 50) && Object.values(p2[1]).filter(n => n >= 50).length >= 2){
+                        cell.insertAdjacentHTML('beforeend', '<td class="probation"></td>'), prob++;
+                    }else if(Object.values(p2[1]).every(n => n < 50) || (MTH < 50 && ENG < 50)){
+                        cell.insertAdjacentHTML('beforeend', '<td class="not_promoted"></td>'), nprm++;
+                    }
+                // }
+            })
+        }
+    }
+    //insert no. of promoted, probated or repeated
+    document.querySelector('li#promoted').querySelector('strong').textContent = prom;
+    document.querySelector('li#not-promoted').querySelector('strong').textContent = nprm;
+    document.querySelector('li#probation').querySelector('strong').textContent = prob;
+    // calculate position according to positionArray
+    // positionArray.sort((a, b) => a - b).reverse();
+    // const totalColumn = document.querySelector('th#total').cellIndex + 1; //plus 1, i.e. because cellIndex is zero-based
+
+    // for (let i = 0; i < names.length; i++) {
+    //     // console.log(positionArray[i], document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(${totalColumn})`).innerText)
+    //     const pos = positionArray.indexOf(document.querySelector(`tbody tr:nth-child(${i+1}) td:nth-child(${totalColumn})`).innerText);
+    //     document.querySelector(`tbody tr:nth-child(${i+1})`).insertAdjacentHTML('beforeend', `
+    //         <td>${pos+1}</td>
+    //     `)
+    // }
+}
