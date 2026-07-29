@@ -27,7 +27,7 @@ let master_props = {    //very critical here, the order of the properties
     'FORM_NAME': ss_props?.FORM_NAME || '',
     'MASTER': ss_props?.MASTER || '',
 }
-
+console.log(ss_props);
 let promoID, promoIndex;;
 const changeFormBtn = document.querySelector('button#change_form');
 const logoutBtn = document.querySelector('button#logout');
@@ -42,7 +42,7 @@ logoutBtn.onclick = () => {
     location.replace('login-cat.html');
 }
 //populate promo_tab.html
-const promoOptions = ['Promote', 'Probation', 'Repeat', 'On trial'];
+const promoOptions = ['Promote', 'Probation', 'Not Promoted', 'On trial'];
 const statusMenu = document.createElement('ul');
 for(let a = 0; a < promoOptions.length; a++) statusMenu.insertAdjacentHTML('beforeend', `<li data-val="${a}">${promoOptions[a]}</li>`);
 statusMenu.addEventListener('click', e => {
@@ -67,7 +67,7 @@ function insertData (master, students) {
             <tr>
                 <td>${ix+1}</td>
                 <td>${ME.admission_no}</td>
-                <td class="${['prom','prob','rept',''].at(['Promoted','Probation','Repeated'].indexOf(ME?.promo_status))}">${ME.last_name} ${ME.first_name} ${ME.other_name}</td>
+                <td class="${['prom','prob','rept','trial',''].at(['Promoted','Probation','Not Promoted','Promoted on Trial'].indexOf(ME?.promo_status))}">${ME.last_name} ${ME.first_name} ${ME.other_name}</td>
                 <td>${ME.admission_year}</td>
                 <td>
                     <button type="button" class="drop_btn"></button>
@@ -84,7 +84,6 @@ function promoteBtnsHandler () {
     prBtns.forEach((btn, btx) => {
         btn.addEventListener('click', e => {
             e.target.appendChild(statusMenu);
-            // promoteHandler(btn.closest('td'), btn);
         });
         btn.addEventListener('blur', e => {
             statusMenu.remove();
@@ -107,6 +106,7 @@ async function getMasterFromServer (uname, upwd, cont, err) {
     chooseConfig(configs[6]);
     const masterQ = query(collection(db, 'staffCollection'), and(where('username', '==', uname), where('password', '==', upwd)));
     await getDocs(masterQ).then(async res => {
+        console.log(res);
         if (res.empty) {
             loginDataErr('Error logging in.', cont, err);
             exception = true;
@@ -121,6 +121,7 @@ async function getMasterFromServer (uname, upwd, cont, err) {
         }
         const cls = Object.keys(resMap)[0];
         const arm = Object.values(resMap)[0];
+        console.log(cls, arm);
         Object.defineProperties(master_props, { //object.defineproperties returns a modified master_props
             MASTER: {value: fname},
             FORM_NAME: {value: cls},
@@ -246,6 +247,7 @@ admin_form.addEventListener('submit', async (e) => {
     master_props.FORM_ARM = arm;
 
     await getStudents(cls, arm, cont, err);
+    sessionStorage.setItem('master_util', JSON.stringify(master_props));
     e.submitter.disabled = false, e.submitter.nextElementSibling.disabled = false;
     e.submitter.classList.remove('clk');
 
@@ -276,7 +278,7 @@ function promoteHandler(tr, btx) {
             break;
         case '2':
             container.firstElementChild.firstElementChild.textContent =  `repeat ${STUDENT_NAME} in ${old_form}`;
-            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'REPEAT';
+            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'NOT PROMOTED';
             container.classList.replace('prm', 'rpt') ? true : container.classList.add('rpt');
             break;
         case '3':
@@ -297,7 +299,7 @@ const carouselBtn = container.querySelector('div > button:last-of-type');
 carouselBtn.addEventListener('click', async (e) => {
     carouselBtn.disabled = true, carouselBtn.previousElementSibling.disabled = true;
     carouselBtn.classList.add('clk');
-    notify.lastElementChild.textContent = ['Promoted','Probated','Repeated','On Trial'][promoIndex];
+    notify.lastElementChild.textContent = ['Promoted','Probated','Not Promoted','On Trial'][promoIndex];
     //check if result already exists
     switch (promoIndex) {
         case '0':
@@ -307,10 +309,10 @@ carouselBtn.addEventListener('click', async (e) => {
             await finalPromotionHandler(old_form, 'Probation');
             break;
         case '2':
-            await finalPromotionHandler(old_form, 'Repeated');
+            await finalPromotionHandler(old_form, 'Not Promoted');
             break;
         case '3':
-            await finalPromotionHandler(new_form, 'On Trial');
+            await finalPromotionHandler(new_form, 'Promoted on Trial');
             break;
         default:
             break;
@@ -320,10 +322,12 @@ carouselBtn.addEventListener('click', async (e) => {
 let x = new Array(8);
 x.fill(null);   //8 nulls for SCORES collection
 const NULLS = {
-    0: x, 1: x, 2: x,
+    0: x/*, 1: x, 2: x,*/
 }
 
 async function finalPromotionHandler (form_state, promomsg) {
+    // console.log(old_form, configs[configs[7].indexOf(old_form)]);
+    // return;
     chooseConfig(configs[configs[7].indexOf(old_form)]);
     const promoteDoc = await getDoc(doc(db, 'session', String(new_session), 'students', promoID));
     if (promoteDoc.exists()) {
@@ -342,20 +346,20 @@ async function finalPromotionHandler (form_state, promomsg) {
         data['comment'] = {0: '', 1: '', 2: ''};
         data['days_present'] = [0,0,0];
         data['promo_status'] = null;
-
         //create empty "records" of student subjects
         let records = {};
-        for (let k of Object.keys(data.offered)) records[k] = NULLS;
+        // for (let k of Object.keys(data.offered)) records[k] = NULLS;
+        for(let k in data['record']) data['record'][k] = NULLS;
         
         //check if old_form is JSS 3
         if(old_form == configs[7][2]) {
             delete data['offered'];
-            records = {};   //reset records
+            data['record'] = {};//reset records
         }
         await updateDoc(doc(db, 'session', master_props.SESSION, 'students', promoID), {
             promo_status: promomsg
         });
-        if (['Promoted', 'Repeated', 'On Trial'].includes(promomsg)){
+        if (['Promoted', 'Not Promoted', 'Promoted on Trial'].includes(promomsg)){
             chooseConfig(configs[configs[7].indexOf(form_state)]);
             //setDoc to STUDENTS collection and thereafter SCORES collection
             await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);

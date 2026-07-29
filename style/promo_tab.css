@@ -270,3 +270,6 @@ tr:has(.prob){
 tr:has(.rept){
     color:#e35;
 }
+tr:has(.trial){
+    color:orange;
+}
