@@ -71,7 +71,7 @@ module.exports = {
 }
 
 //ROOT result.js
-
+*/
 module.exports = {
     mode: "development",
     entry: "./src/result.js",
@@ -131,7 +131,7 @@ module.exports = {
 }
 
 //ROOT promo.tab.js
-*/
+
 module.exports = {
     mode: "development",
     entry: "./src/promo.tab.js",

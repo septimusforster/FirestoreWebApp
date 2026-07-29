@@ -25,7 +25,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
     let FORM = master[0];
     let ARM = master[1];
     const percent = document.getElementById('percent');
-    let fullName, eotData, percentile, offd, size = 0, daysOpen = 0;
+    let fullName, eotData, percentile, offd, size = 0, daysOpen = 0, graderObject = {};
     
     const dialog = document.querySelector('dialog');
     const loadbar = dialog.querySelector('#loadbar');
@@ -87,7 +87,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             document.querySelector('#section-grade > table:nth-child(2)').style.display = 'none';
         }
         let total = 0, i;
-        let graderObject = {
+        graderObject = {
             "A": 80/100*percentile, //consider using toFixed() to trim fractional part;
             "B": 65/100*percentile, //but these grades are fine because they return integers
             "C": 50/100*percentile,
@@ -198,6 +198,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
                 <tr>
                     ${txt}
                     <td>${term < 2 || percentile < 100 ? '-' : how_many_terms}</td>
+                    <td>${Object.entries(graderObject).filter(x => x[1] <= Number(how_many_terms))[0][0]}</td>
                 </tr>
             `);
         }
@@ -261,6 +262,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         `);
         for (let colNum = 0; colNum < 5; colNum++) { //less than 5 because there are 5 cols in table 2
             let ft = 0;
+            if(colNum == 4) continue;
             const tds = tbodyTerm.querySelectorAll(`tr td:nth-child(${colNum + 1}`);
             tds.forEach(td => {
                 if(!(td.innerText == '-' || td.innerText == undefined)) ft += Number(td.innerText);
@@ -428,9 +430,6 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
                         percent.textContent = 'Not promoted';
                     }
                 }
-                tfootCumm.querySelector('tr').insertAdjacentHTML('beforeend', `
-                    <td>${core_lower}</td>
-                `);
             }
         }else{
             // console.log(core_lower);

@@ -28,7 +28,7 @@ let master_props = {    //very critical here, the order of the properties
     'MASTER': ss_props?.MASTER || '',
 }
 
-let promoID;
+let promoID, promoIndex;;
 const changeFormBtn = document.querySelector('button#change_form');
 const logoutBtn = document.querySelector('button#logout');
 const loginDialog = document.querySelector('dialog#login_dg');
@@ -42,6 +42,15 @@ logoutBtn.onclick = () => {
     location.replace('login-cat.html');
 }
 //populate promo_tab.html
+const promoOptions = ['Promote', 'Probation', 'Repeat', 'On trial'];
+const statusMenu = document.createElement('ul');
+for(let a = 0; a < promoOptions.length; a++) statusMenu.insertAdjacentHTML('beforeend', `<li data-val="${a}">${promoOptions[a]}</li>`);
+statusMenu.addEventListener('click', e => {
+    e.stopPropagation();
+    promoIndex = e.target.dataset.val
+    promoteHandler(e.target.closest('tr'), promoIndex);
+});
+
 function insertData (master, students) {
     //insert master
     const vals =  Object.values(master);
@@ -61,7 +70,7 @@ function insertData (master, students) {
                 <td class="${['prom','prob','rept',''].at(['Promoted','Probation','Repeated'].indexOf(ME?.promo_status))}">${ME.last_name} ${ME.first_name} ${ME.other_name}</td>
                 <td>${ME.admission_year}</td>
                 <td>
-                    <button type="button"></button><button type="button"></button><button type="button"></button>
+                    <button type="button" class="drop_btn"></button>
                 </td>
             </tr>    
         `);
@@ -70,13 +79,15 @@ function insertData (master, students) {
     document.querySelector('footer > div > div').firstElementChild.textContent = xy.length;
     promoteBtnsHandler();
 }
-let promoIndex;
 function promoteBtnsHandler () {
-    const prBtns = document.querySelectorAll('tr > td > button');
+    const prBtns = document.querySelectorAll('tr > td:last-of-type > button');
     prBtns.forEach((btn, btx) => {
-        btn.addEventListener('click', () => {
-            promoIndex = [...btn.closest('td').querySelectorAll('button')].indexOf(btn);
-            promoteHandler(btn.closest('td'), promoIndex);
+        btn.addEventListener('click', e => {
+            e.target.appendChild(statusMenu);
+            // promoteHandler(btn.closest('td'), btn);
+        });
+        btn.addEventListener('blur', e => {
+            statusMenu.remove();
         });
     });
 }
@@ -245,28 +256,33 @@ admin_form.addEventListener('submit', async (e) => {
 });
 
 let old_form, new_form, new_session = Number(master_props.SESSION) + 1;
-function promoteHandler(td, btx) {
-    const STUDENT_NAME = td.closest('tr').children[2].textContent;
-    const ADM_NO = td.closest('tr').children[1].textContent;
+function promoteHandler(tr, btx) {
+    const STUDENT_NAME = tr.children[2].textContent;
+    const ADM_NO = tr.children[1].textContent;
     old_form = master_props.FORM_NAME;
     new_form = configs[7][configs[7].indexOf(old_form) + 1];
     
     Object.entries(std_props).some(([key, val]) => {if (val.admission_no == ADM_NO) promoID = key});
     switch (btx) {
-        case 0:
+        case '0':
             container.firstElementChild.firstElementChild.textContent = `promote ${STUDENT_NAME} to ${new_form}`;
             container.lastElementChild.lastElementChild.firstElementChild.textContent = 'PROMOTE';
             container.classList.replace('rpt', 'prm') ? true : container.classList.add('prm');
             break;
-        case 1:
+        case '1':
             container.firstElementChild.firstElementChild.textContent = `set ${STUDENT_NAME} on Probation`;
             container.lastElementChild.lastElementChild.firstElementChild.textContent = 'Probation';
             container.classList.remove('rpt', 'prm');
             break;
-        case 2:
+        case '2':
             container.firstElementChild.firstElementChild.textContent =  `repeat ${STUDENT_NAME} in ${old_form}`;
             container.lastElementChild.lastElementChild.firstElementChild.textContent = 'REPEAT';
             container.classList.replace('prm', 'rpt') ? true : container.classList.add('rpt');
+            break;
+        case '3':
+            container.firstElementChild.firstElementChild.textContent =  `promote ${STUDENT_NAME} on trial to ${new_form}`;
+            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'ON TRIAL';
+            container.classList.replace('rpt', 'prm') ? true : container.classList.add('prm');
             break;
         default:
             break;
@@ -281,17 +297,20 @@ const carouselBtn = container.querySelector('div > button:last-of-type');
 carouselBtn.addEventListener('click', async (e) => {
     carouselBtn.disabled = true, carouselBtn.previousElementSibling.disabled = true;
     carouselBtn.classList.add('clk');
-    notify.lastElementChild.textContent = ['Promoted','PROBATED','Repeated'][promoIndex];
+    notify.lastElementChild.textContent = ['Promoted','Probated','Repeated','On Trial'][promoIndex];
     //check if result already exists
     switch (promoIndex) {
-        case 0:
+        case '0':
             await finalPromotionHandler(new_form, 'Promoted');
             break;
-        case 1:
+        case '1':
             await finalPromotionHandler(old_form, 'Probation');
             break;
-        case 2:
+        case '2':
             await finalPromotionHandler(old_form, 'Repeated');
+            break;
+        case '3':
+            await finalPromotionHandler(new_form, 'On Trial');
             break;
         default:
             break;
@@ -336,11 +355,11 @@ async function finalPromotionHandler (form_state, promomsg) {
         await updateDoc(doc(db, 'session', master_props.SESSION, 'students', promoID), {
             promo_status: promomsg
         });
-        if (promomsg == 'Promoted' || promomsg == 'Repeated'){
+        if (['Promoted', 'Repeated', 'On Trial'].includes(promomsg)){
             chooseConfig(configs[configs[7].indexOf(form_state)]);
             //setDoc to STUDENTS collection and thereafter SCORES collection
             await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);
-            await setDoc(doc(db, 'session', String(new_session), 'students', promoID, 'scores', 'records'), records);
+            // await setDoc(doc(db, 'session', String(new_session), 'students', promoID, 'scores', 'records'), records);
         }
     }
 

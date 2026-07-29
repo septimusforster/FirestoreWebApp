@@ -300,9 +300,7 @@ td, .h4 {
     flex:1;
 }
 #section-footer > div > div:not(.h4) {
-    padding: 7px 30px;
     border-radius: 7px 7px 0 0;
-    margin: 1em;
     color: #555;
     position: relative;
 }
@@ -313,9 +311,6 @@ td, .h4 {
     &>small{
         font-weight:500;
     }
-}
-div:has(#percent){
-    padding:0 0 1rem 0 !important;
 }
 .h4 {margin-bottom: 1em;text-align:center;}
 blockquote {
@@ -337,11 +332,15 @@ blockquote::before {
     color: #777;
 }
 #section-footer > div {
-    padding:1rem;
     border-radius: 7px;
     background-color: #fff;
+    padding:1rem;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
 #section-footer > div:nth-child(2) {
+    align-items:center;
     flex-basis: 25%;
     margin: 0 auto;
     text-align: center;
