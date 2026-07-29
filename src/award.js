@@ -139,9 +139,9 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
             const obj = data?.record;
             if (!obj) return;
             if(!('MTH' in obj)) return console.log('No mathematics.');
-            const numOfTerms = Object.keys(obj['MTH']).length; //MTH because everyone offers it
+            const numOfTerms = Object.keys(obj['MTH']).length; //MTH because everyone offers it;
             
-            let rt = 0;
+            let rt = 0, offered = 0;
             let scoreEntries = Object.entries(obj).sort();
             let f = 0;  //rt: running total
             if (obj) {
@@ -162,17 +162,19 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
                         core[k] = (Object.values(v).flat().reduce((x,y) => x + y, 0) / ck.length).toFixed(1);
                     }
                     let s = (v[0]?.reduce((a,c) => a + c) || 0) + (v[1]?.reduce((a,c) => a + c) || 0) + v[2]?.reduce((a,c) => a + c) || 0;
+                    if(s != 0) offered++;
                     rt += s;
                     tds += `<td>${parseFloat(s.toFixed(1))}</td>`;
                     f = idx + 1;
                 }
-                if(data.admission_no === 'DCA/21/1045') console.log(core);
+
                 promotion = [...promotion, [id, core]]; //still needs to remove all symbols in replaceAll, and also on the 4th line below, from here
             }
             for (f; f < benchmark + 1; f++) {
-                f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/(scoreEntries.length * numOfTerms)).toFixed(1)}</td>`;
+                f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/(offered * numOfTerms)).toFixed(1)}</td>`;
             }
             tbody.insertAdjacentHTML('beforeend', `<tr data-id="${id}">${tds}</tr>`);
+            if(data.admission_no === 'DCA/21/1045') console.log(rt, offered, numOfTerms);
         });
         table.append(thead, tbody);
         isPromoted();

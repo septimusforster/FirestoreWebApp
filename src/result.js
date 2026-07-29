@@ -215,7 +215,6 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
             const yy = elem/factor;
             yy ? subAverage.push(yy) : false;
         });
-
         const xx = subAverage.reduce((acc, cur) => acc + cur,0);
         const CLS_AVERAGE = (xx/size).toFixed(1);
         let term_grade;
@@ -260,13 +259,13 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
                 <td>${CLS_AVERAGE}</td>
             </tr>
         `);
-        for (let colNum = 0; colNum < 4; colNum++) { //less than 4 because there are 4 cols in table 2
+        for (let colNum = 0; colNum < 5; colNum++) { //less than 5 because there are 5 cols in table 2
             let ft = 0;
             const tds = tbodyTerm.querySelectorAll(`tr td:nth-child(${colNum + 1}`);
             tds.forEach(td => {
                 if(!(td.innerText == '-' || td.innerText == undefined)) ft += Number(td.innerText);
             });
-            core_lower = colNum == 3 ? (ft/ME.length).toFixed(1) : ft.toFixed(1) || '';
+            core_lower = colNum == 3 ? (ft/rowCount).toFixed(1) : ft.toFixed(1) || '';
             tfootCumm.querySelector('tr').insertAdjacentHTML('beforeend', `
                 <td>${core_lower}</td>
             `);
@@ -407,28 +406,31 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         if(term == 2 && percentile == 100) {
             if(FORM.startsWith('JSS')){ //JSS class
                 if(core_lower <= 49.4){
-                    return percent.textContent = 'Not promoted.';
+                    return percent.textContent = `Not promoted (${core_lower} ave.)`;
                 }else if(core_lower >= 49.5 && core_lower <= 54.5){
-                    return percent.textContent = 'Probation.';
+                    return percent.textContent = `Probation (${core_lower} ave.)`;
                 }else{
-                    return percent.textContent = 'Promoted.';
+                    return percent.textContent = `Promoted (${core_lower} ave.)`;
                 }
             }
             if(FORM.startsWith('SSS')){ //SSS class
-                const promo = studentData[page]?.promo;
+                const promo = studentData[page]?.promo_status;
                 if(promo) {
                     percent.textContent = promo;
                 }else{
                     for(const s in core) if(core[s] < 1) delete core[s];
                      const {MTH, ENG, ...others} = core;
                     if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
-                        percent.textContent = 'Promoted.';
+                        percent.textContent = 'Promoted';
                     }else if((MTH >= 50 || ENG >= 50) && Object.values(core).filter(n => n >= 50).length >= 2){
                         percent.textContent = 'Probation';
                     }else if(Object.values(core).every(n => n < 50) || (MTH < 50 && ENG < 50)){
-                        percent.textContent = 'Not promoted.';
+                        percent.textContent = 'Not promoted';
                     }
                 }
+                tfootCumm.querySelector('tr').insertAdjacentHTML('beforeend', `
+                    <td>${core_lower}</td>
+                `);
             }
         }else{
             // console.log(core_lower);

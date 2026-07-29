@@ -381,32 +381,6 @@ p#percent {
     position: relative;
     text-transform:capitalize;
 }
-p#percent::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    transform: translate(-30%, -50%) rotate(45deg);
-    height: 10px;
-    width: 10px;
-    border-width: 1px 1px 0 0;
-    border-color: #555;
-    border-style: solid;
-    display: inline-block;
-}
-p#percent::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 10%;
-    transform: translate(-30%, -50%) rotate(45deg);
-    height: 10px;
-    width: 10px;
-    border-width: 0 0 1px 1px;
-    border-color: #555;
-    border-style: solid;
-    display: inline-block;
-}
 .overstats {
     text-align: left;
 }

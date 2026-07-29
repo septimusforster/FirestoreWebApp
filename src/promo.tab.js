@@ -58,7 +58,7 @@ function insertData (master, students) {
             <tr>
                 <td>${ix+1}</td>
                 <td>${ME.admission_no}</td>
-                <td class="${['prom','prob','rept',''].at(['PROMOTED','PROBATION','REPEATED'].indexOf(ME?.promo_status))}">${ME.last_name} ${ME.first_name} ${ME.other_name}</td>
+                <td class="${['prom','prob','rept',''].at(['Promoted','Probation','Repeated'].indexOf(ME?.promo_status))}">${ME.last_name} ${ME.first_name} ${ME.other_name}</td>
                 <td>${ME.admission_year}</td>
                 <td>
                     <button type="button"></button><button type="button"></button><button type="button"></button>
@@ -259,8 +259,8 @@ function promoteHandler(td, btx) {
             container.classList.replace('rpt', 'prm') ? true : container.classList.add('prm');
             break;
         case 1:
-            container.firstElementChild.firstElementChild.textContent = `set ${STUDENT_NAME} on probation`;
-            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'PROBATION';
+            container.firstElementChild.firstElementChild.textContent = `set ${STUDENT_NAME} on Probation`;
+            container.lastElementChild.lastElementChild.firstElementChild.textContent = 'Probation';
             container.classList.remove('rpt', 'prm');
             break;
         case 2:
@@ -281,17 +281,17 @@ const carouselBtn = container.querySelector('div > button:last-of-type');
 carouselBtn.addEventListener('click', async (e) => {
     carouselBtn.disabled = true, carouselBtn.previousElementSibling.disabled = true;
     carouselBtn.classList.add('clk');
-    notify.lastElementChild.textContent = ['PROMOTED','PROBATED','REPEATED'][promoIndex];
+    notify.lastElementChild.textContent = ['Promoted','PROBATED','Repeated'][promoIndex];
     //check if result already exists
     switch (promoIndex) {
         case 0:
-            await finalPromotionHandler(new_form, 'PROMOTED');
+            await finalPromotionHandler(new_form, 'Promoted');
             break;
         case 1:
-            await finalPromotionHandler(old_form, 'PROBATION');
+            await finalPromotionHandler(old_form, 'Probation');
             break;
         case 2:
-            await finalPromotionHandler(old_form, 'REPEATED');
+            await finalPromotionHandler(old_form, 'Repeated');
             break;
         default:
             break;
@@ -336,7 +336,7 @@ async function finalPromotionHandler (form_state, promomsg) {
         await updateDoc(doc(db, 'session', master_props.SESSION, 'students', promoID), {
             promo_status: promomsg
         });
-        if (promomsg == 'PROMOTED' || promomsg == 'REPEATED'){
+        if (promomsg == 'Promoted' || promomsg == 'Repeated'){
             chooseConfig(configs[configs[7].indexOf(form_state)]);
             //setDoc to STUDENTS collection and thereafter SCORES collection
             await setDoc(doc(db, 'session', String(new_session), 'students', promoID), data);
