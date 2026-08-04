@@ -94,6 +94,24 @@ main > .container {
         position:relative;
         overflow:auto;
     }
+    & > div.table > #copy-btn{
+        height:42px;
+        width:42px;
+        border-radius:14px;
+        color:#333;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        position:sticky;
+        left:94%;
+        top:1rem;
+        z-index:1000;
+        background:#f5f5f5;
+        transition:background .25s ease;
+    }
+    & > div.table > #copy-btn:hover{
+        background:#eee;
+    }
     & > aside{
         width:240px;
         display:flex;
@@ -219,29 +237,3 @@ tfoot {
 tfoot tr {
     font-weight: bold;
 }
-/*
-main > div {
-    text-align: center;
-}
-main > div > button {
-    font-size:15px;
-    padding:12px 20px;
-    background-color:#e35;
-    color:#fff;
-    font-weight:550;
-    transition: box-shadow .17s ease;
-}
-main > div> button:hover {
-    box-shadow: 0 3px 24px #ccc;
-}
-div.button {
-    height: 3em;
-    width: 3em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-*/

@@ -127,7 +127,7 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
         let IDs = [];
         const q1 = query(collection(db, 'session', ssn, 'students'), where("arm", "!=", 'ENTRANCE'));  //and where("days_present","array-contains","null")
         const studentSnap = await getDocs(q1);
-        console.log(studentSnap.docs.length);
+        // console.log(studentSnap.docs.length);
         let students = studentSnap.docs.map(n => {return {'id': '_' + n.id, 'data': n.data()}}).sort((a, b) => a.data.last_name.localeCompare(b.data.last_name)); //prefixed id with _, because ids may start with a Number
         term = ["first","second","third"].indexOf(EOT.data().this_term.toLowerCase());
 
@@ -174,7 +174,7 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
                 f < benchmark ? tds += '<td></td>' : tds += `<td>${(rt/(offered * numOfTerms)).toFixed(1)}</td>`;
             }
             tbody.insertAdjacentHTML('beforeend', `<tr data-id="${id}">${tds}</tr>`);
-            if(data.admission_no === 'DCA/21/1045') console.log(rt, offered, numOfTerms);
+            // if(data.admission_no === 'DCA/21/1045') console.log(rt, offered, numOfTerms);
         });
         table.append(thead, tbody);
         isPromoted();
@@ -182,6 +182,20 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
         tableDiv.appendChild(table);
     }
 });
+//copy btn
+document.querySelector('button#copy-btn').addEventListener('click', e => {
+    if(e.target.closest('button')){
+        if(tableDiv.contains(table)){
+            navigator.clipboard.writeText(document.querySelector('table').innerText)
+            // navigator.clipboard.write(table)
+            .then(value => {
+                e.target.closest('button').querySelector('[href]').setAttribute('href', '#check');
+                setTimeout(() => e.target.closest('button').querySelector('[href]').setAttribute('href', '#copy'), 3000);
+            })
+            .catch(err => console.log("Clipboard error:", err))
+        }
+    }
+})
 function isPromoted(){
     let prom=0,prob=0,nprm=0;
     if(term == 2) {

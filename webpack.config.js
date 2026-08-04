@@ -107,7 +107,7 @@ module.exports = {
 }
 */
 //ROOT award.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/award.js",
@@ -131,7 +131,7 @@ module.exports = {
 }
 
 //ROOT promo.tab.js
-*/
+*
 module.exports = {
     mode: "development",
     entry: "./src/promo.tab.js",
