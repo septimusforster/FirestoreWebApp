@@ -113,7 +113,7 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
             abbr_unmutated = Object.keys(srsub.data()).sort();
         }
         abbr.push('AVE', 'STAT');
-        const th = abbr.unshift('#','NAME'); //mutates array & returns new length of same array
+        const th = abbr.unshift('#','NAME', 'ARM'); //mutates array & returns new length of same array
         // tfoot_td.setAttribute('colspan', th);
         const thead = document.createElement('thead');
         const theadRow = document.createElement('tr');
@@ -128,14 +128,14 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
         const q1 = query(collection(db, 'session', ssn, 'students'), where("arm", "!=", 'ENTRANCE'));  //and where("days_present","array-contains","null")
         const studentSnap = await getDocs(q1);
         // console.log(studentSnap.docs.length);
-        let students = studentSnap.docs.map(n => {return {'id': '_' + n.id, 'data': n.data()}}).sort((a, b) => a.data.last_name.localeCompare(b.data.last_name)); //prefixed id with _, because ids may start with a Number
+        let students = studentSnap.docs.map(n => {return {'id': '_' + n.id, 'data': n.data()}}).sort((a, b) => a.data.last_name.localeCompare(b.data.last_name)).sort((c, d) => c.data.arm.localeCompare(d.data.arm)); //prefixed id with _, because ids may start with a Number
         term = ["first","second","third"].indexOf(EOT.data().this_term.toLowerCase());
 
         // populate tbody with student name and total score for each subject
         const benchmark = abbr_unmutated.length;
         const tbody = document.createElement('tbody');
         students.forEach(({id, data}, i) => {
-            let tds = `<td>${i+1}</td><td>${data.last_name + ' ' + data.first_name}</td>`;
+            let tds = `<td>${i+1}</td><td>${data.last_name + ' ' + data.first_name}</td><td>${data.arm.toUpperCase()[0]}</td>`;
             const obj = data?.record;
             if (!obj) return;
             if(!('MTH' in obj)) return console.log('No mathematics.');
