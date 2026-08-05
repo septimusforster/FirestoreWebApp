@@ -317,7 +317,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         db = getFirestore(app);
         // chooseConfig(6);
         term = fd.get('term') || term;
-        if(ARM != fd.get('arm') && FORM != fd.get('cls')){
+        if(ARM != fd.get('arm') || FORM != fd.get('cls')){
             FORM = fd.get('cls') || FORM;
             const sbjs = await getDoc(FORM.includes('JSS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
             offd = sbjs.data();
