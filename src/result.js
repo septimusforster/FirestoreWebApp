@@ -78,7 +78,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         for(let el = 1; el <= 5; el++)
             document.querySelectorAll(`#section-bio table:nth-child(2) tr td:nth-child(2)`)[el-1].textContent = [`${configs[7].indexOf(FORM) + 7}th Grade ${ARM}`, size, eotData.days_open[term], days_present[term], eotData.days_open[term] - days_present[term] || 0][el-1];
         for(let el = 1; el <= 4; el++)
-            document.querySelectorAll(`#section-bio table:nth-child(3) tr td:nth-child(2)`)[el-1].textContent = [['First', 'Second', 'Third'][term], `${session-1}/${session}`, percentile < 100 ? '' : eotData?.next_term?.[term] || '', eotData?.date_issued ? Intl.DateTimeFormat('en-US', {dateStyle:'medium'}).format(new Date(eotData.date_issued[term].seconds * 1000)) : ''][el-1];
+            document.querySelectorAll(`#section-bio table:nth-child(3) tr td:nth-child(2)`)[el-1].textContent = [['First', 'Second', 'Third'][term], `${session-1}/${session}`, percentile < 100 ? '' : eotData?.next_term?.[term] || '', eotData?.date_issued?.[term] ? Intl.DateTimeFormat('en-US', {dateStyle:'medium'}).format(new Date(eotData.date_issued[term].seconds * 1000)) : ''][el-1];
         
         if (percentile < 100) {
             theadFirstRow.innerText = "Progressive Report";
@@ -198,7 +198,7 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
                 <tr>
                     ${txt}
                     <td>${term < 2 || percentile < 100 ? '-' : how_many_terms}</td>
-                    <td>${Object.entries(graderObject).filter(x => x[1] <= Number(how_many_terms))[0][0]}</td>
+                    <td>${term == 2 ? Object.entries(graderObject).filter(x => x[1] <= Number(how_many_terms))[0][0] : ''}</td>
                 </tr>
             `);
         }
@@ -316,43 +316,45 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
         app = initializeApp(configs[6]);
         db = getFirestore(app);
         // chooseConfig(6);
-
-        FORM = fd.get('cls') || FORM;
-        const sbjs = await getDoc(FORM.includes('JSS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
-        offd = sbjs.data();
-        session = fd.get('snn') || session;
-        ARM = fd.get('arm') || ARM;
         term = fd.get('term') || term;
-        percentile = Number(fd.get('res')) ? Number(fd.get('res')) : Number(fd.get('oth'));
-
-        //load stamp
-        const stamp = `../img/stamp${String(parseInt(term) + 1).padStart(2,'0')}_${session}.png`;
-        stampImg.src = stamp;
-
-        if(ss.data?.isAdmin) await eot();
-        if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
-        document.querySelector('dialog').hidePopover();
-
-        chooseConfig(configs[7].indexOf(FORM))
-        loaded(30);
-        
-        const studentsRef = collection(db, 'session', session, 'students');
-        const studentsQuery = ARM == "ENTRANCE" ? query(studentsRef, and(where("admission_year", ">=", new Date().getFullYear()), where("arm", "==", "ENTRANCE"))) : query(studentsRef, where("arm", "==", ARM), orderBy('last_name'));
-        loaded(40);
-        const studentsSnapshot = await getDocs(studentsQuery);
-        //second width
-        if(studentsSnapshot.empty) return alert("No student exists.")
-        const DCA = 'DCA';
-        studentData = [];
-        for(let s = 0; s < studentsSnapshot.docs.length; s++){
-            if(studentsSnapshot.docs[s].data()?.blocked?.includes(String(term))) continue;
-            if (studentsSnapshot.docs[s].data().admission_no.toUpperCase().includes(DCA) && 'record' in studentsSnapshot.docs[s].data()) {
-                studentData.push(studentsSnapshot.docs[s].data());
+        if(ARM != fd.get('arm') && FORM != fd.get('cls')){
+            FORM = fd.get('cls') || FORM;
+            const sbjs = await getDoc(FORM.includes('JSS') ? doc(db, 'reserved/2aOQTzkCdD24EX8Yy518') : doc(db, 'reserved/eWfgh8PXIEid5xMVPkoq'));
+            offd = sbjs.data();
+            session = fd.get('snn') || session;
+            ARM = fd.get('arm') || ARM;
+            percentile = Number(fd.get('res')) ? Number(fd.get('res')) : Number(fd.get('oth'));
+    
+            //load stamp
+            const stamp = `../img/stamp${String(parseInt(term) + 1).padStart(2,'0')}_${session}.png`;
+            stampImg.src = stamp;
+    
+            if(ss.data?.isAdmin) await eot();
+            if (typeof eotData === 'undefined') return alert("Still awaiting sessional records."); // EOT not finished loading
+            document.querySelector('dialog').hidePopover();
+    
+            chooseConfig(configs[7].indexOf(FORM))
+            loaded(30);
+            
+            const studentsRef = collection(db, 'session', session, 'students');
+            const studentsQuery = ARM == "ENTRANCE" ? query(studentsRef, and(where("admission_year", ">=", new Date().getFullYear()), where("arm", "==", "ENTRANCE"))) : query(studentsRef, where("arm", "==", ARM), orderBy('last_name'));
+            loaded(40);
+            const studentsSnapshot = await getDocs(studentsQuery);
+            //second width
+            if(studentsSnapshot.empty) return alert("No student exists.")
+            const DCA = 'DCA';
+            studentData = [];
+            for(let s = 0; s < studentsSnapshot.docs.length; s++){
+                if(studentsSnapshot.docs[s].data()?.blocked?.includes(String(term))) continue;
+                if (studentsSnapshot.docs[s].data().admission_no.toUpperCase().includes(DCA) && 'record' in studentsSnapshot.docs[s].data()) {
+                    studentData.push(studentsSnapshot.docs[s].data());
+                }
             }
         }
 
         page = 0;
         size = studentData.length;
+        console.log(size);
         //compute and insert entire data
         computeData(page);
 
