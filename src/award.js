@@ -93,7 +93,7 @@ const srsub = await getDoc(doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq"));
 loader.remove();
 console.log('okay');
 //get classroom
-let names, abbr, abbr_unmutated, cls, promotion = [], term;
+let names, abbr, abbr_unmutated, cls, promotion = [], term, male = 0, female = 0;
 const table = document.createElement('table');
 document.querySelector('menu#class-form').addEventListener('click', async e => {
     if(e.target.tagName === 'LI'){
@@ -113,7 +113,7 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
             abbr_unmutated = Object.keys(srsub.data()).sort();
         }
         abbr.push('AVE', 'STAT');
-        const th = abbr.unshift('#','NAME', 'ARM'); //mutates array & returns new length of same array
+        const th = abbr.unshift('#','NAME', 'ARM','GENDER'); //mutates array & returns new length of same array
         // tfoot_td.setAttribute('colspan', th);
         const thead = document.createElement('thead');
         const theadRow = document.createElement('tr');
@@ -135,12 +135,12 @@ document.querySelector('menu#class-form').addEventListener('click', async e => {
         const benchmark = abbr_unmutated.length;
         const tbody = document.createElement('tbody');
         students.forEach(({id, data}, i) => {
-            let tds = `<td>${i+1}</td><td>${data.last_name + ' ' + data.first_name}</td><td>${data.arm.toUpperCase()[0]}</td>`;
+            let tds = `<td>${i+1}</td><td>${data.last_name + ' ' + data.first_name}</td><td>${data.arm.toUpperCase()[0]}</td><td>${data.gender}</td>`;
             const obj = data?.record;
             if (!obj) return;
             if(!('MTH' in obj)) return console.log('No mathematics.');
             const numOfTerms = Object.keys(obj['MTH']).length; //MTH because everyone offers it;
-            
+            data.gender == 'M' ? male++ : female++; //count male and female
             let rt = 0, offered = 0;
             let scoreEntries = Object.entries(obj).sort();
             let f = 0;  //rt: running total
@@ -239,6 +239,8 @@ function isPromoted(){
     document.querySelector('li#promoted').querySelector('strong').textContent = prom;
     document.querySelector('li#not-promoted').querySelector('strong').textContent = nprm;
     document.querySelector('li#probation').querySelector('strong').textContent = prob;
+    document.querySelector('li#male').querySelector('strong').textContent = male;
+    document.querySelector('li#female').querySelector('strong').textContent = female;
     // calculate position according to positionArray
     // positionArray.sort((a, b) => a - b).reverse();
     // const totalColumn = document.querySelector('th#total').cellIndex + 1; //plus 1, i.e. because cellIndex is zero-based

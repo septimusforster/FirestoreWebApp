@@ -55,6 +55,7 @@ thead th{
 }
 th, td{
     padding:.5rem 1rem;
+    border-right:1px solid #ddd;
 }
 th:nth-child(n + 4),
 td:nth-child(n + 4){

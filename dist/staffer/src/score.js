@@ -79,6 +79,12 @@ if(storage){
         if(!e.target.hasAttribute('contenteditable') || e.target.parentElement.className.includes('w')) return;
         e.target.parentElement.classList.add('w');
     })
+    //text selection in a cell
+    // table.addEventListener('click', e => {
+    //     if(e.target.hasAttribute('contenteditable')){
+    //         document.createRange().selectNodeContents(e.target);
+    //     }
+    // })
     //load form submit handler
     loadForm.addEventListener('submit', async (e) => {
         e.preventDefault();
