@@ -27,7 +27,7 @@ let master_props = {    //very critical here, the order of the properties
     'FORM_NAME': ss_props?.FORM_NAME || '',
     'MASTER': ss_props?.MASTER || '',
 }
-console.log(ss_props);
+// console.log(ss_props);
 let promoID, promoIndex;;
 const changeFormBtn = document.querySelector('button#change_form');
 const logoutBtn = document.querySelector('button#logout');
@@ -257,12 +257,13 @@ admin_form.addEventListener('submit', async (e) => {
     }
 });
 
-let old_form, new_form, new_session = Number(master_props.SESSION) + 1;
+let old_form, new_form, new_session = Number(master_props.SESSION) + 1, selectedRow;
 function promoteHandler(tr, btx) {
     const STUDENT_NAME = tr.children[2].textContent;
     const ADM_NO = tr.children[1].textContent;
     old_form = master_props.FORM_NAME;
     new_form = configs[7][configs[7].indexOf(old_form) + 1];
+    selectedRow = tr.rowIndex;
     
     Object.entries(std_props).some(([key, val]) => {if (val.admission_no == ADM_NO) promoID = key});
     switch (btx) {
@@ -304,15 +305,19 @@ carouselBtn.addEventListener('click', async (e) => {
     switch (promoIndex) {
         case '0':
             await finalPromotionHandler(new_form, 'Promoted');
+            document.querySelectorAll('table tr')[selectedRow].lastElementChild.classList.add('prom');
             break;
         case '1':
             await finalPromotionHandler(old_form, 'Probation');
+            document.querySelectorAll('table tr')[selectedRow].lastElementChild.classList.add('prob');
             break;
         case '2':
             await finalPromotionHandler(old_form, 'Not Promoted');
+            document.querySelectorAll('table tr')[selectedRow].lastElementChild.classList.add('rept');
             break;
         case '3':
             await finalPromotionHandler(new_form, 'Promoted on Trial');
+            document.querySelectorAll('table tr')[selectedRow].lastElementChild.classList.add('trial');
             break;
         default:
             break;
@@ -326,7 +331,7 @@ const NULLS = {
 }
 
 async function finalPromotionHandler (form_state, promomsg) {
-    // console.log(old_form, configs[configs[7].indexOf(old_form)]);
+    // console.log(form_state, old_form, configs[configs[7].indexOf(old_form)], new_session);
     // return;
     chooseConfig(configs[configs[7].indexOf(old_form)]);
     const promoteDoc = await getDoc(doc(db, 'session', String(new_session), 'students', promoID));
