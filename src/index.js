@@ -50,7 +50,7 @@ let refrs = {
     srSubs: doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq")
 }
 
-const eotRef = doc(db, 'EOT', session);
+console.log(session)
 const leftNav = document.querySelector('.left-nav');
 let menu;
 window.addEventListener('click', (e) => {
@@ -59,97 +59,104 @@ window.addEventListener('click', (e) => {
         menu = null;
     }
 }, true);
-await getDoc(eotRef).then(async (res) => { // load EOT
-    eotData = res.data();
-    term = ["First","Second","Third"].indexOf(eotData.this_term);
-    console.log("Term", term);
-    //chk gmode
-    const cities = ['ZAGREB', 'COPENHAGEN', 'PRAGUE', 'MOSCOW', 'SOBIBOR', 'WARSAW', 'TELAVIV'];
-    const c = Math.floor(Math.random() * cities.length);
-    const city = cities[c];
-    const user = ss.data.fullName.toLowerCase();
-    let adminmode = false, adminSetup = document.querySelector('#admin-setup');
-    //session link: ssl
-    adminSetup.classList.add('opq');
-    sslnk.addEventListener('click', (e) => {
-        menu = e.target.nextElementSibling;
-        e.target.nextElementSibling.classList.add('shw');
-    });
-    sslnk.nextElementSibling.querySelectorAll('li').forEach(li => {
-        li.addEventListener('click', (e) => {
-            sslnk.textContent = session = li.textContent;
-            myIframe.contentDocument.querySelector('#preview ul').innerHTML = '';
-            myIframe.contentDocument.querySelector('tbody').innerHTML = '';
+async function adminColl(session){
+    const eotRef = doc(db, 'EOT', session);
+    await getDoc(eotRef).then(async (res) => { // load EOT
+        console.log(res.exists())
+        if (!res.exists()) return await adminColl(String(parseInt(session) - 1));
+        eotData = res.data();
+        term = ["First","Second","Third"].indexOf(eotData.this_term);
+        console.log("Term", term);
+        //chk gmode
+        const cities = ['ZAGREB', 'COPENHAGEN', 'PRAGUE', 'MOSCOW', 'SOBIBOR', 'WARSAW', 'TELAVIV'];
+        const c = Math.floor(Math.random() * cities.length);
+        const city = cities[c];
+        const user = ss.data.fullName.toLowerCase();
+        let adminmode = false, adminSetup = document.querySelector('#admin-setup');
+        //session link: ssl
+        adminSetup.classList.add('opq');
+        sslnk.addEventListener('click', (e) => {
+            menu = e.target.nextElementSibling;
+            e.target.nextElementSibling.classList.add('shw');
         });
-    });
-    if (user !== 'guest user') {
-        //create gmode and eventListener
-        adminmode = true;
-        adminSetup.insertAdjacentHTML('afterbegin', `
-            <div class="gmode">
-                <div>Guest Mode</div>
-                <div>
-                    <input type="checkbox" name="chkmode" id="chkmode">
-                    <label for="chkmode" id="lblmode" class="lblmode"></label>
+        sslnk.nextElementSibling.querySelectorAll('li').forEach(li => {
+            li.addEventListener('click', (e) => {
+                sslnk.textContent = session = li.textContent;
+                myIframe.contentDocument.querySelector('#preview ul').innerHTML = '';
+                myIframe.contentDocument.querySelector('tbody').innerHTML = '';
+            });
+        });
+        if (user !== 'guest user') {
+            //create gmode and eventListener
+            adminmode = true;
+            adminSetup.insertAdjacentHTML('afterbegin', `
+                <div class="gmode">
+                    <div>Guest Mode</div>
+                    <div>
+                        <input type="checkbox" name="chkmode" id="chkmode">
+                        <label for="chkmode" id="lblmode" class="lblmode"></label>
+                    </div>
                 </div>
-            </div>
-        `);
-        adminSetup.insertAdjacentHTML('beforeend', `
-            <div id="caap">
-                <span>C.A. Permissions</span>
-                <svg id="caap-lnk" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14 7H16C18.7614 7 21 9.23858 21 12C21 14.7614 18.7614 17 16 17H14M10 7H8C5.23858 7 3 9.23858 3 12C3 14.7614 5.23858 17 8 17H10M8 12H16" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-        `);
-        document.querySelector('header > button.logout').insertAdjacentHTML('beforebegin', `
-            <button type="button" class="link" onclick="location.href='./reserved.html'">Reserved</button>
-            <button type="button" class="link" onclick="location.href='award.html'">Award</button>
-            <button type="button" class="link" onclick="location.href='hack.html'">Fix</button>
-        `);
-        const chkmode = document.querySelector('#chkmode');
-        if ('guestmode' in eotData) {
-            Object.values(eotData.guestmode)[0] === 1 ? chkmode.checked = true : chkmode.checked = false;
-        }
-        //chkmode listener
-        document.querySelector('#chkmode').addEventListener('change', async (e) => {
-            e.target.classList.add('disabled');
-            // console.log(city);
-            toggleState = e.target.checked;
-            console.log('@start:', toggleState);
-            gmodeToggler(e.target);
-            
-            if (!adminmode) {
-                alert('Sorry! You do not have this privilege.');
-                e.target.checked = false;
-                e.target.classList.remove('disabled');
-                return;
+            `);
+            adminSetup.insertAdjacentHTML('beforeend', `
+                <div id="caap">
+                    <span>C.A. Permissions</span>
+                    <svg id="caap-lnk" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 7H16C18.7614 7 21 9.23858 21 12C21 14.7614 18.7614 17 16 17H14M10 7H8C5.23858 7 3 9.23858 3 12C3 14.7614 5.23858 17 8 17H10M8 12H16" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            `);
+            document.querySelector('header > button.logout').insertAdjacentHTML('beforebegin', `
+                <button type="button" class="link" onclick="location.href='./reserved.html'">Reserved</button>
+                <button type="button" class="link" onclick="location.href='award.html'">Award</button>
+                <button type="button" class="link" onclick="location.href='hack.html'">Fix</button>
+            `);
+            const chkmode = document.querySelector('#chkmode');
+            if ('guestmode' in eotData) {
+                Object.values(eotData.guestmode)[0] === 1 ? chkmode.checked = true : chkmode.checked = false;
             }
-            let reply = window.prompt('First enter your password.');
-            if (reply !== ss.data.password) {   // Object.keys(eotData.guestmode)[0]
-                alert("The password is incorrect.");
-                console.log('@if:', toggleState);
-            } else {
-                chkmode.classList.add('disabled');
-                console.log('MAIN TOGGLE STATE:', toggleState);
-                chooseConfig(6);
-                const batch = writeBatch(db);
-                if (toggleState) {
-                    batch.set(doc(db, 'EOT', session), {guestmode: {mahogany: 0}}, { merge: true });
-                    batch.set(doc(db, 'staffCollection', 'aR6h4JTAI0vCAz12XCk6'), { code: city }, {merge: true});
-                } else {
-                    batch.set(doc(db, 'EOT', session), {guestmode: {mahogany: 1}}, { merge: true });
-                    batch.set(doc(db, 'staffCollection', 'aR6h4JTAI0vCAz12XCk6'), { code: 'USADEY' }, { merge: true });
+            //chkmode listener
+            document.querySelector('#chkmode').addEventListener('change', async (e) => {
+                e.target.classList.add('disabled');
+                // console.log(city);
+                toggleState = e.target.checked;
+                console.log('@start:', toggleState);
+                gmodeToggler(e.target);
+                
+                if (!adminmode) {
+                    alert('Sorry! You do not have this privilege.');
+                    e.target.checked = false;
+                    e.target.classList.remove('disabled');
+                    return;
                 }
-                await batch.commit();
+                let reply = window.prompt('First enter your password.');
+                if (reply !== ss.data.password) {   // Object.keys(eotData.guestmode)[0]
+                    alert("The password is incorrect.");
+                    console.log('@if:', toggleState);
+                } else {
+                    chkmode.classList.add('disabled');
+                    console.log('MAIN TOGGLE STATE:', toggleState);
+                    chooseConfig(6);
+                    const batch = writeBatch(db);
+                    if (toggleState) {
+                        batch.set(doc(db, 'EOT', session), {guestmode: {mahogany: 0}}, { merge: true });
+                        batch.set(doc(db, 'staffCollection', 'aR6h4JTAI0vCAz12XCk6'), { code: city }, {merge: true});
+                    } else {
+                        batch.set(doc(db, 'EOT', session), {guestmode: {mahogany: 1}}, { merge: true });
+                        batch.set(doc(db, 'staffCollection', 'aR6h4JTAI0vCAz12XCk6'), { code: 'USADEY' }, { merge: true });
+                    }
+                    await batch.commit();
+    
+                    console.log('@else:', toggleState);
+                    toggleState ? chkmode.checked = false : chkmode.checked = true;
+                    chkmode.classList.remove('disabled');
+                }
+            });
+        }
+    });
+}
+await adminColl(session);
 
-                console.log('@else:', toggleState);
-                toggleState ? chkmode.checked = false : chkmode.checked = true;
-                chkmode.classList.remove('disabled');
-            }
-        });
-    }
-});
 function gmodeToggler(target) {
     if (target.checked) {
         toggleState = false;

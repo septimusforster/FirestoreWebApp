@@ -1,6 +1,6 @@
 const path = require("path");
 //ROOT index.js
-/*
+
 module.exports = {
     mode: "development",
     entry: "./src/index.js",
@@ -131,7 +131,7 @@ module.exports = {
 }
 
 //ROOT promo.tab.js
-*/
+
 module.exports = {
     mode: "development",
     entry: "./src/promo.tab.js",

@@ -75,7 +75,7 @@ div.notify, .err_div {
     background-color: rgba(0,0,0,.7);
     transition: .2s ease;
 }
-div.notify {bottom: 7%;left: 5%;z-index: -1;}
+div.notify {bottom: 7%;left: 5%;z-index: 100;}
 .err_div {
     width: 75%;
     background-color: #444;
@@ -174,7 +174,7 @@ dialog > div.container > form > button.clk:first-of-type > .txt {opacity: 0;}
 dialog > div.container > form > button.clk:first-of-type > .carousel {opacity: 1;animation-name: carousel;}
 dialog > div.container, output {max-width: 370px;}
 output > span {font-size: 1.2em;font-weight: 500;word-spacing: 2px;}
-dialog#pr_dg > div.container > div {display: flex;justify-content: flex-end;align-items: center;gap: 24px;}
+dialog#pr_dg > div.container > div {display: flex;justify-content: flex-end;align-items: center;gap: 12px;}
 dialog#pr_dg > div.container > div > button {
     background-color: #e7e7e7;
     border-radius: 24px;
