@@ -37,8 +37,11 @@ header > .container{
     align-items:inherit;
     gap:24px;
 }
-#class-btn{
+.action_box{
     margin-left:auto;
+    display: flex;
+    align-items:center;
+    column-gap:14px;
 }
 .drop_btn{
     position:relative;

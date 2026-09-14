@@ -68,16 +68,16 @@ const classes = [
     "SSS 2",
     "SSS 3"
 ];
+let app = initializeApp(configs[6]); //FirebasePro config
+let db = getFirestore(app);
 function chooseConfig(projNum) {
     deleteApp(app);
     app = initializeApp(configs[projNum]);
     db = getFirestore(app);
 }
-let app = initializeApp(configs[6]); //FirebasePro config
-let db = getFirestore(app);
 
 const now = new Date();
-const ssn = (now.getMonth() > 9 ? now.getFullYear()+1 : now.getFullYear()).toString();
+let ssn, EOT;// = (now.getMonth() > 9 ? now.getFullYear()+1 : now.getFullYear()).toString();
 
 const main = document.querySelector("main");
 const tableDiv = document.querySelector('div.table');
@@ -86,17 +86,29 @@ loader.classList.add('loader');
 loader.innerHTML = '<use href="#loader"></use>';
 tableDiv.appendChild(loader);
 // get EOT and subject collections for both junior and senior secondary
-const EOT = await getDoc(doc(db, "EOT", ssn));
 const jrsub = await getDoc(doc(db, "reserved", "2aOQTzkCdD24EX8Yy518"));
 const srsub = await getDoc(doc(db, "reserved", "eWfgh8PXIEid5xMVPkoq"));
 
 loader.remove();
 console.log('okay');
 //get classroom
-let names, abbr, abbr_unmutated, cls, promotion = [], term, male = 0, female = 0;
+let names, abbr, abbr_unmutated, cls, promotion = [], term = 2, male = 0, female = 0;
 const table = document.createElement('table');
+//session btn
+document.querySelector('menu#session-form').addEventListener('click', e => {
+    if(e.target.tagName === 'LI'){
+        ssn = e.target.dataset.val;
+        EOT = undefined;
+        e.target.closest('button').querySelector('span').textContent = e.target.textContent;
+    }
+});
+//classroom btn
 document.querySelector('menu#class-form').addEventListener('click', async e => {
     if(e.target.tagName === 'LI'){
+        if (!ssn) return alert("No session selected.");
+        console.log(ssn)
+        chooseConfig[6];
+        if (!EOT) EOT = await getDoc(doc(db, "EOT", ssn));
         e.target.closest('button').querySelector('span').textContent = e.target.textContent;
         e.target.closest('button').blur();
         cls = e.target.dataset.val;
@@ -228,7 +240,7 @@ function isPromoted(){
                         cell.insertAdjacentHTML('beforeend', '<td class="promoted">Promoted</td>'), prom++;
                     }else if((MTH >= 50 || ENG >= 50) && Object.values(p2[1]).filter(n => n >= 50).length >= 2){
                         cell.insertAdjacentHTML('beforeend', '<td class="probation">Probation</td>'), prob++;
-                    }else if(Object.values(p2[1]).every(n => n < 50) || (MTH < 50 && ENG < 50)){
+                    }else if(Object.values(p2[1]).every(n => n < 50) || (MTH < 50 || ENG < 50)){
                         cell.insertAdjacentHTML('beforeend', '<td class="not_promoted">Not promoted</td>'), nprm++;
                     }
                 // }
