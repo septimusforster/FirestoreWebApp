@@ -423,18 +423,19 @@ if(ss && ('masterOfForm' in ss.data || ss.data.isAdmin)){
                     percent.textContent = promo;
                 }else{
                     for(const s in core) if(core[s] < 1) delete core[s];
-                     const {MTH, ENG, ...others} = core;
+                    const {MTH, ENG, ...others} = core;
                     if(MTH >= 50 && ENG >= 50 && Object.values(others).some(n => n >= 50)){
                         percent.textContent = 'Promoted';
                     }else if((MTH >= 50 || ENG >= 50) && Object.values(core).filter(n => n >= 50).length >= 2){
                         percent.textContent = 'Probation';
-                    }else if(Object.values(core).every(n => n < 50) || (MTH < 50 && ENG < 50)){
+                    }else if(Object.values(core).every(n => n < 50) || (MTH < 50 || ENG < 50)){
                         percent.textContent = 'Not promoted';
+                    }else{
+                       percent.textContent = 'Undetermined';
                     }
                 }
             }
         }else{
-            // console.log(core_lower);
             const criteria = [80,65,50,40,30,0,];
             const status = ['A','B','C','D','E','F'].indexOf(criteria.findIndex(c => c <= core_lower));
             percent.textContent = status == -1 ? '' : status;
